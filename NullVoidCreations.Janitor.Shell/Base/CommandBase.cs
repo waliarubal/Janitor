@@ -8,18 +8,25 @@ namespace NullVoidCreations.Janitor.Shell.Base
         bool _isExecuting, _isEnabled;
         string _title;
         Func<object, bool> _canExecute;
+        ViewModelBase _viewModel;
 
         public event EventHandler CanExecuteChanged;
 
-        protected CommandBase()
+        #region constructor / destructor
+
+        protected CommandBase(ViewModelBase viewModel)
         {
-            IsEnabled = true;
+            _isEnabled = true;
+            _viewModel = viewModel;
         }
 
-        protected CommandBase(Func<object, bool> canExecute)
+        protected CommandBase(ViewModelBase viewModel, Func<object, bool> canExecute)
         {
             _canExecute = canExecute;
+            _viewModel = viewModel;
         }
+
+        #endregion
 
         #region properties
 
@@ -62,6 +69,11 @@ namespace NullVoidCreations.Janitor.Shell.Base
                 _title = value;
                 RaisePropertyChanged("Title");
             }
+        }
+
+        protected ViewModelBase ViewModel
+        {
+            get { return _viewModel; }
         }
 
         #endregion

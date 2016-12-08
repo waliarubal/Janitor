@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="NullVoidCreations.Janitor.Shell.Views.UpdateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="480" d:DesignWidth="640">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <!--header-->
+        <Border Style="{StaticResource ResourceKey=HeaderStyle}">
+            <TextBlock Text="Update" Style="{StaticResource ResourceKey=HeaderTitleStyle}" />
+        </Border>
+
+        <!--target database update-->
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="11" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Image VerticalAlignment="Top" Margin="0 0 8 0" Grid.RowSpan="4" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Update.png" />
+            <TextBlock Text="Scan Target Database Update" Grid.Column="1" FontSize="12" FontWeight="Bold" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="Updating from version 1.0.0 to version 1.0.11."  />
+            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+                <TextBlock Text="Update Progress: "  />
+                <TextBlock Text="5100 kB / 29000 kB" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
+                <TextBlock Text="File Name: "  />
+                <TextBlock Text="update file name comes here" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
+            </StackPanel>
+            <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Content="Cancel Update" HorizontalAlignment="Left" Margin="0 12" MinWidth="120"/>
+            <ProgressBar Grid.Column="2" IsIndeterminate="True" Background="{StaticResource ResourceKey=BackgroundActiveBrush}" />
+        </Grid>
+        
+        <Separator Grid.Row="2" Margin="20 0"/>
+
+        <!--program update-->
+        <Grid Grid.Row="3" Margin="20">
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="11" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Image VerticalAlignment="Top" Margin="0 0 8 0" Grid.RowSpan="4" Source="/NullVoidCreations.Janitor.Shell;component/Resources/UpdateProgram.png" />
+            <TextBlock Text="Product Update" Grid.Column="1" FontSize="12" FontWeight="Bold" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="Installed version 1.0.20 is up to date."  />
+            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+                <TextBlock Text="Update Progress: "  />
+                <TextBlock Text="5100 kB / 29000 kB" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
+                <TextBlock Text="File Name: "  />
+                <TextBlock Text="update file name comes here" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
+            </StackPanel>
+            <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Content="Check for Updates" HorizontalAlignment="Left" Margin="0 12" MinWidth="120"/>
+            <ProgressBar Grid.Column="2" IsIndeterminate="True" Background="{StaticResource ResourceKey=BackgroundActiveBrush}" />
+        </Grid>
+    </Grid>
+</UserControl>

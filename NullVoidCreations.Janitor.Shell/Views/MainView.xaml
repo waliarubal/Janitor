@@ -1,0 +1,211 @@
+﻿<Window x:Class="NullVoidCreations.Janitor.Shell.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:v="clr-namespace:NullVoidCreations.Janitor.Shell.Views"
+        Title="PC Mechanic Pro" 
+        Height="600" 
+        Width="800" 
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanMinimize"
+        Background="{StaticResource ResourceKey=BackgroundBrush}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Height="40" 
+                BorderBrush="{StaticResource ResourceKey=HeaderBorderBrush}"
+                Background="{StaticResource ResourceKey=HeaderBackgroundBrush}"
+                BorderThickness="0 0 0 1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Margin="8 0 0 0" 
+                       Width="32" 
+                       Height="32" 
+                       SnapsToDevicePixels="True"
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       RenderOptions.EdgeMode="Aliased"
+                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/Logo.png" />
+                <TextBlock Text="PC Mechanic Pro" 
+                           Grid.Column="1"
+                           Foreground="Black"
+                           VerticalAlignment="Center"
+                           Margin="4 0"
+                           FontFamily="Tahoma"
+                           FontWeight="Bold"
+                           FontSize="18"/>
+            </Grid>
+        </Border>
+
+        <TabControl Grid.Row="1" 
+                    TabStripPlacement="Left">
+            <TabControl.Resources>
+                <!--left side navigation panel style-->
+                <Style TargetType="TabControl">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabControl">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <TabPanel Grid.Column="0"
+                                              Panel.ZIndex="1"
+                                              Margin="0 40 0 0"
+                                              IsItemsHost="True" />
+                                    <TextBlock Text="Cleaning at your fingertips !"
+                                               Grid.Row="1" 
+                                               HorizontalAlignment="Center" 
+                                               Foreground="{StaticResource ResourceKey=TextBrush}"
+                                               FontSize="12"
+                                               Margin="0 18"/>
+                                    <Border Grid.Column="1"
+                                            Grid.RowSpan="2"
+                                            Background="{StaticResource ResourceKey=BackgroundBrush}" 
+                                            BorderBrush="{StaticResource ResourceKey=BorderBrush}"
+                                            BorderThickness="1 0 0 0">
+                                        <Border.Effect>
+                                            <DropShadowEffect Direction="180" Color="#EDF0F5" ShadowDepth=".5" />
+                                        </Border.Effect>
+                                        <ContentPresenter ContentSource="SelectedContent" />
+                                    </Border>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                
+                <!--navigation links style-->
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border Name="Border" BorderThickness="0 1 0 1" MinWidth="200" Margin="-1 0 0 0" MinHeight="40">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <ContentPresenter ContentSource="Header" Margin="12 0 0 0" />
+                                        <Polyline Grid.Column="1" VerticalAlignment="Center" Points="12,0 0,8, 12,15" 
+                                                 Stroke="{StaticResource ResourceKey=BorderBrush}" 
+                                                 Fill="{StaticResource ResourceKey=BackgroundBrush}" 
+                                                 Margin="0 0 -1 0"
+                                                 Name="Arrow">
+                                            <Polyline.Effect>
+                                                <DropShadowEffect Direction="180" Color="#EDF0F5" ShadowDepth=".5" />
+                                            </Polyline.Effect>
+                                        </Polyline>
+                                    </Grid>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ResourceKey=BorderBrush}" />
+                                        <Setter TargetName="Border" Property="Background" Value="{StaticResource ResourceKey=BackgroundActiveBrush}" />
+                                        <Setter TargetName="Arrow" Property="Visibility" Value="Visible" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ResourceKey=BackgroundBrush}" />
+                                        <Setter TargetName="Border" Property="Background" Value="{StaticResource ResourceKey=BackgroundBrush}" />
+                                        <Setter TargetName="Arrow" Property="Visibility" Value="Hidden" />
+                                    </Trigger>
+                                    <Trigger Property="Name" Value="Home">
+                                        <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource ResourceKey=BackgroundActiveBrush}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                
+                <Style TargetType="Image" x:Key="NavigationImageStyle">
+                    <Setter Property="Width" Value="32" />
+                    <Setter Property="Height" Value="32" />
+                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                    <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
+                    <Setter Property="RenderOptions.EdgeMode" Value="Aliased" />
+                </Style>
+                <Style TargetType="TextBlock" x:Key="NavigationTextStyle">
+                    <Setter Property="Margin" Value="8 0 0 0" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+                </Style>
+            </TabControl.Resources>
+
+            <TabItem Name="Home" IsSelected="True">
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Style="{StaticResource ResourceKey=NavigationImageStyle}" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Home.png" />
+                        <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Home" />
+                    </Grid>
+                </TabItem.Header>
+                <v:HomeView />
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Style="{StaticResource ResourceKey=NavigationImageStyle}"   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Scan.png" />
+                        <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Computer Scan"/>
+                    </Grid>
+                </TabItem.Header>
+                <v:ComputerScanView />
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Style="{StaticResource ResourceKey=NavigationImageStyle}"  Source="/NullVoidCreations.Janitor.Shell;component/Resources/Update.png" />
+                        <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Update" />
+                    </Grid>
+                </TabItem.Header>
+                <v:UpdateView />
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Style="{StaticResource ResourceKey=NavigationImageStyle}"  Source="/NullVoidCreations.Janitor.Shell;component/Resources/Settings.png" />
+                        <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Settings" />
+                    </Grid>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Style="{StaticResource ResourceKey=NavigationImageStyle}" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Help.png" />
+                        <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Help and Support" />
+                    </Grid>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

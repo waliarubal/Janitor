@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NullVoidCreations.Janitor.Shell.Base
+namespace NullVoidCreations.Janitor.Shared.Base
 {
     public sealed class DelegateCommand : CommandBase
     {

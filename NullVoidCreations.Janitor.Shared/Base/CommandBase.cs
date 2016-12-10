@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace NullVoidCreations.Janitor.Shell.Base
+namespace NullVoidCreations.Janitor.Shared.Base
 {
     public abstract class CommandBase: NotificationBase, ICommand
     {

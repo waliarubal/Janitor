@@ -1,5 +1,5 @@
 ﻿
-namespace NullVoidCreations.Janitor.Shell.Base
+namespace NullVoidCreations.Janitor.Shared.Base
 {
     public abstract class ViewModelBase: NotificationBase
     {

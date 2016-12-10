@@ -50,17 +50,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Base\CommandBase.cs" />
-    <Compile Include="Base\DelegateCommand.cs" />
-    <Compile Include="Base\NotificationBase.cs" />
-    <Compile Include="Base\ViewModelBase.cs" />
-    <Compile Include="Engine\CleaningEngine.cs" />
-    <Compile Include="Engine\DirectoryWalker.cs" />
-    <Compile Include="Models\DirectoryScanArea.cs" />
-    <Compile Include="Models\RegistryScanArea.cs" />
-    <Compile Include="Models\ScanAreaBase.cs" />
-    <Compile Include="Models\ScanTarget.cs" />
-    <Compile Include="Models\ScanTargetDatabase.cs" />
+    <Compile Include="Engine.cs" />
+    <Compile Include="ViewModels\ComputerScanViewModel.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Compile Include="Views\UpdateView.xaml.cs">
       <DependentUpon>UpdateView.xaml</DependentUpon>
     </Compile>
@@ -120,7 +113,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <ProjectReference Include="..\NullVoidCreations.Janitor.Shared\NullVoidCreations.Janitor.Shared.csproj">
+      <Project>{828E8A68-B06C-4750-97D4-4E6B25B8523D}</Project>
+      <Name>NullVoidCreations.Janitor.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Logo.png" />
@@ -161,6 +157,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\UpdateProgram.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

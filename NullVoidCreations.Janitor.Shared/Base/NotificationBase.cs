@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace NullVoidCreations.Janitor.Shell.Base
+namespace NullVoidCreations.Janitor.Shared.Base
 {
     public abstract class NotificationBase: INotifyPropertyChanged
     {

@@ -1,16 +1,23 @@
-﻿using NullVoidCreations.Janitor.Shell.Base;
+﻿using System;
+using NullVoidCreations.Janitor.Shared.Base;
 
-namespace NullVoidCreations.Janitor.Shell.Models
+namespace NullVoidCreations.Janitor.Shared.Models
 {
     public abstract class ScanAreaBase : NotificationBase
     {
         string _name;
-        ScanTarget _target;
+        ScanTargetBase _target;
+        bool _isSelected;
 
         #region constructor / destructor
 
-        public ScanAreaBase(string name, ScanTarget target)
+        public ScanAreaBase(string name, ScanTargetBase target)
         {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+            if (target == null)
+                throw new ArgumentNullException("target");
+
             _name = name;
             _target = target;
         }
@@ -31,9 +38,22 @@ namespace NullVoidCreations.Janitor.Shell.Models
             }
         }
 
-        protected ScanTarget Target
+        protected ScanTargetBase Target
         {
             get { return _target; }
+        }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (value == _isSelected)
+                    return;
+
+                _isSelected = value;
+                RaisePropertyChanged("IsSelected");
+            }
         }
 
         #endregion

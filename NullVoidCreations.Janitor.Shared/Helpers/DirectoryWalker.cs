@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace NullVoidCreations.Janitor.Shell.Engine
+namespace NullVoidCreations.Janitor.Shared.Helpers
 {
-    class DirectoryWalker: IEnumerable<string>
+    public class DirectoryWalker: IEnumerable<string>
     {
         string _rootDirectory;
         Func<string, bool> _directoryFilter, _fileFilter;
@@ -22,6 +22,9 @@ namespace NullVoidCreations.Janitor.Shell.Engine
 
         public DirectoryWalker(string rootDirectory, Func<string, bool> directoryFilter, Func<string, bool> fileFilter)
         {
+            if (string.IsNullOrEmpty(rootDirectory))
+                throw new ArgumentNullException("rootDirectory");
+
             _rootDirectory = rootDirectory;
             _directoryFilter = directoryFilter;
             _fileFilter = fileFilter;
@@ -42,32 +45,42 @@ namespace NullVoidCreations.Janitor.Shell.Engine
                 {
                     var directory = directories.Dequeue();
 
+                    string[] subDirectories = null;
                     try
                     {
-                        var subDirectories = Directory.GetDirectories(directory);
+                        subDirectories = Directory.GetDirectories(directory);
+                    }
+                    catch
+                    {
+
+                    }
+
+                    if (subDirectories != null)
+                    {
                         foreach (var path in subDirectories)
                         {
                             if (_directoryFilter == null || _directoryFilter(path))
                                 directories.Enqueue(path);
                         }
                     }
+
+                    string[] subFiles = null;
+                    try
+                    {
+                        subFiles = Directory.GetFiles(directory);
+                    }
                     catch
                     {
 
                     }
 
-                    try
+                    if (subFiles != null)
                     {
-                        var subFiles = Directory.GetFiles(directory);
                         foreach (var path in subFiles)
                         {
                             if (_fileFilter == null || _fileFilter(path))
                                 files.Enqueue(path);
                         }
-                    }
-                    catch
-                    {
-
                     }
                 }
             }

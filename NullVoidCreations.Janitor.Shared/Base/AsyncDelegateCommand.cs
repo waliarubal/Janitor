@@ -23,7 +23,7 @@ namespace NullVoidCreations.Janitor.Shared.Base
             if (method == null)
                 throw new ArgumentNullException("method");
             if (callback == null)
-                throw new ArgumentNullException("method");
+                throw new ArgumentNullException("callback");
 
             _method = method;
             _callback = callback;

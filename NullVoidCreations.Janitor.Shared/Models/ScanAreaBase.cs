@@ -58,6 +58,20 @@ namespace NullVoidCreations.Janitor.Shared.Models
 
         #endregion
 
+        protected abstract long Analyse();
+
+        protected abstract long Fix();
+
+        public long ScanForIssues()
+        {
+            return Analyse();
+        }
+
+        public long FixIssues()
+        {
+            return Fix();
+        }
+
         public override int GetHashCode()
         {
             return string.Format("{0}{1}", _target.Name, Name).GetHashCode();

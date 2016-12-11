@@ -6,7 +6,7 @@ namespace NullVoidCreations.Janitor.Shared.Base
     public abstract class CommandBase: NotificationBase, ICommand
     {
         bool _isExecuting, _isEnabled;
-        string _title;
+        string _title, _description;
         Func<object, bool> _canExecute;
         ViewModelBase _viewModel;
 
@@ -68,6 +68,19 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
                 _title = value;
                 RaisePropertyChanged("Title");
+            }
+        }
+
+        public string Description
+        {
+            get { return _description; }
+            set
+            {
+                if (value == _description)
+                    return;
+
+                _description = value;
+                RaisePropertyChanged("Description");
             }
         }
 

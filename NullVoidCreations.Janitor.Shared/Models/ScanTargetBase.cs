@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NullVoidCreations.Janitor.Shared.Base;
 
 namespace NullVoidCreations.Janitor.Shared.Models
@@ -9,6 +10,7 @@ namespace NullVoidCreations.Janitor.Shared.Models
         Version _version;
         DateTime _date;
         bool _isSelected;
+        List<ScanAreaBase> _areas;
 
         #region constructor / destructor
 
@@ -38,6 +40,7 @@ namespace NullVoidCreations.Janitor.Shared.Models
             _date = date;
             _description = description;
             _iconSource = iconSource;
+            _areas = new List<ScanAreaBase>();
         }
 
         #endregion
@@ -118,6 +121,19 @@ namespace NullVoidCreations.Janitor.Shared.Models
 
                 _isSelected = value;
                 RaisePropertyChanged("IsSelected");
+            }
+        }
+
+        public List<ScanAreaBase> Areas
+        {
+            get { return _areas; }
+            protected set
+            {
+                if (value == _areas)
+                    return;
+
+                _areas = value;
+                RaisePropertyChanged("Areas");
             }
         }
 

@@ -3,8 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="480" d:DesignWidth="640">
+    <UserControl.DataContext>
+        <vm:ComputerScanViewModel />
+    </UserControl.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -45,8 +49,11 @@
                 </Grid.RowDefinitions>
                 
                 <Image Margin="0 0 8 0" Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanAlternate.png" />
-                <TextBlock Text="Smart Scan" Grid.Column="1" FontSize="12" FontWeight="Bold" />
-                <ProgressBar Grid.Column="2" IsIndeterminate="True" />
+                <TextBlock Text="{Binding Path=ActiveScan.Type, Mode=OneWay, FallbackValue='Not Scanning'}" Grid.Column="1" FontSize="12" FontWeight="Bold" />
+                <ProgressBar Grid.Column="2" 
+                             Minimum="{Binding Path=ActiveScan.Progress.ProgressMin, Mode=OneWay, FallbackValue=0}"
+                             Maximum="{Binding Path=ActiveScan.Progress.ProgressMax, Mode=OneWay, FallbackValue=0}"
+                             Value="{Binding Path=ActiveScan.Progress.Progress, Mode=OneWay, FallbackValue=0}"/>
                 <Button Grid.Column="3" Margin="4 0 0 0"  Style="{StaticResource ResourceKey=ImageButtonStyle}">
                     <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Pause.png" />
                 </Button>
@@ -56,7 +63,7 @@
 
                 <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Margin="0 20 0 0">
                     <TextBlock Text="Issues Found: "  />
-                    <TextBlock Text="0" FontWeight="Bold" Foreground="{StaticResource ResourceKey=BadBrush}" />
+                    <TextBlock Text="{Binding Path=ActiveScan.Progress.IssueCount, Mode=OneWay, FallbackValue='0'}" FontWeight="Bold" Foreground="{StaticResource ResourceKey=BadBrush}" />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4">
@@ -66,12 +73,12 @@
 
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4">
                     <TextBlock Text="Scan Target: " />
-                    <TextBlock Text="name of scan target" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
+                    <TextBlock Text="{Binding Path=ActiveScan.Progress.ActiveTarget.Name, Mode=OneWay, FallbackValue='Not Scanning'}" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4">
                     <TextBlock Text="Scanning: " />
-                    <TextBlock Text="name of object being scanned comes here" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
+                    <TextBlock Text="{Binding Path=ActiveScan.Progress.ActiveArea.Name, Mode=OneWay, FallbackValue='Not Scanning'}" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
                 </StackPanel>
             </Grid>
         </Border>
@@ -112,7 +119,7 @@
                     <Setter Property="VerticalAlignment" Value="Top" />
                 </Style>
             </Grid.Resources>
-            <Button>
+            <Button Command="{Binding Path=SmartScan, Mode=OneTime}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -123,8 +130,8 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Image Grid.RowSpan="2" Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanFull.png" />
-                    <TextBlock Grid.Column="1" Style="{StaticResource ResourceKey=ScanNameStyle}" Text="Smart Scan" />
-                    <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource ResourceKey=ScanDescriptionStyle}" Text="Perform a full system scan looking all the scan targets for issues."  />
+                    <TextBlock Grid.Column="1" Style="{StaticResource ResourceKey=ScanNameStyle}" Text="{Binding Path=SmartScan.Title, Mode=OneTime}" />
+                    <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource ResourceKey=ScanDescriptionStyle}" Text="{Binding Path=SmartScan.Description, Mode=OneTime}"  />
                 </Grid>
             </Button>
             <Button Grid.Column="1">

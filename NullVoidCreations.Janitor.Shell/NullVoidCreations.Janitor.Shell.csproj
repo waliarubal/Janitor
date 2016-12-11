@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>C:\ProgramData\Janitor\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -50,7 +50,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Engine.cs" />
+    <Compile Include="Commands\SmartScanCommand.cs" />
+    <Compile Include="Core\PluginManager.cs" />
+    <Compile Include="Core\Proxy.cs" />
+    <Compile Include="Core\Settings.cs" />
+    <Compile Include="Models\Scan.cs" />
+    <Compile Include="Models\ScanProgress.cs" />
     <Compile Include="ViewModels\ComputerScanViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
@@ -158,9 +163,7 @@
   <ItemGroup>
     <Resource Include="Resources\UpdateProgram.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

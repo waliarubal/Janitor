@@ -1,12 +1,14 @@
-﻿using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shell.Models;
+﻿using NullVoidCreations.Janitor.Core.Models;
+using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Commands;
+using NullVoidCreations.Janitor.Shell.Models;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class ComputerScanViewModel: ViewModelBase
     {
         volatile Scan _scan;
+        volatile ScanProgressEventArgs _progress;
         CommandBase _smartScan, _customScan;
 
         public ComputerScanViewModel()
@@ -29,11 +31,29 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
+        public ScanProgressEventArgs ActiveScanProgress
+        {
+            get { return _progress; }
+            set
+            {
+                if (value == _progress)
+                    return;
+
+                _progress = value;
+                RaisePropertyChanged("ActiveScanProgress");
+            }
+        }
+
         #endregion
 
         #region commands
 
         public CommandBase SmartScan
+        {
+            get { return _smartScan; }
+        }
+
+        public CommandBase CustomScan
         {
             get { return _smartScan; }
         }

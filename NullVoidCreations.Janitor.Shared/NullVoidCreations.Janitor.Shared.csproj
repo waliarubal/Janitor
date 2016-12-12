@@ -50,6 +50,7 @@
     <Compile Include="Base\NotificationBase.cs" />
     <Compile Include="Base\ViewModelBase.cs" />
     <Compile Include="Helpers\DirectoryWalker.cs" />
+    <Compile Include="Models\Issue.cs" />
     <Compile Include="Models\ScanAreaBase.cs" />
     <Compile Include="Models\ScanTargetBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -1,7 +1,7 @@
-﻿using NullVoidCreations.Janitor.Shared.Models;
-using System;
-using NullVoidCreations.Janitor.Shared.Helpers;
+﻿using System;
 using System.Collections.Generic;
+using NullVoidCreations.Janitor.Shared.Helpers;
+using NullVoidCreations.Janitor.Shared.Models;
 
 namespace NullVoidCreations.Janitor.Plugin.Browser.InternetExplorer
 {
@@ -15,18 +15,18 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.InternetExplorer
             _files = new List<string>();
         }
 
-        protected override long Analyse()
+        public override List<Issue> Analyse()
         {
             var directory = Environment.GetFolderPath(Environment.SpecialFolder.InternetCache);
             foreach (var file in new DirectoryWalker(directory))
-                _files.Add(file);
+                Issues.Add(new Issue(Target, this, file));
 
-            return _files.Count;
+            return Issues;
         }
 
-        protected override long Fix()
+        public override List<Issue> Fix()
         {
-            return 0;
+            return null;
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shell.ViewModels;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Threading;
+using NullVoidCreations.Janitor.Core.Models;
+using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Models;
-using NullVoidCreations.Janitor.Shared.Models;
+using NullVoidCreations.Janitor.Shell.ViewModels;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
@@ -46,50 +46,46 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _worker.ProgressChanged += new ProgressChangedEventHandler(Worker_ProgressChanged);
             _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
 
-            _viewModel.ActiveScan = new Scan();
-            _viewModel.ActiveScan.Type = ScanType.SmartScan;
+            _viewModel.ActiveScan = new Scan(ScanType.SmartScan);
+            _viewModel.ActiveScan.Initialize();
+            foreach (var target in _viewModel.ActiveScan.Targets)
+            {
+                target.IsSelected = true;
+                foreach (var area in target.Areas)
+                    area.IsSelected = true;
+            }
+
             _worker.RunWorkerAsync(_viewModel.ActiveScan);
         }
 
         void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            _viewModel.ActiveScan.Progress = e.UserState as ScanProgress;
+            _viewModel.ActiveScanProgress = e.UserState as ScanProgressEventArgs;
         }
 
         void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
 
-            var scan = e.Argument as Scan;
-            scan.Initialize();
-
-            var progress = new ScanProgress();
-            progress.IssueCount = 0;
-            progress.ProgressMin = 0;
-            progress.ProgressMax = 0;
-            foreach (var target in scan.Targets)
-                progress.ProgressMax += target.Areas.Count;
-
-            _worker.ReportProgress(-1, progress);
-            foreach (var target in scan.Targets)
+            var activeScan = e.Argument as Scan;
+            if (activeScan != null)
             {
-                progress.ActiveTarget = target;
-                _worker.ReportProgress(-1, progress);
-                foreach (var area in target.Areas)
-                {
-                    progress.ActiveArea = area;
-                    progress.Progress += 1;
-                    progress.IssueCount += area.ScanForIssues();
-                    _worker.ReportProgress(-1, progress);
-                }
+                activeScan.OnScanProgress += new Scan.ScanProgress(ActiveScan_OnScanProgress);
+                activeScan.Analyse();
+                activeScan.OnScanProgress -= new Scan.ScanProgress(ActiveScan_OnScanProgress);
             }
-            progress.ActiveTarget = null;
-            progress.ActiveArea = null;
-            _worker.ReportProgress(-1, progress);
+
+            e.Result = activeScan;
+        }
+
+        void ActiveScan_OnScanProgress(ScanProgressEventArgs e)
+        {
+            _worker.ReportProgress(-1, e);
         }
 
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            _viewModel.ActiveScan = e.Result as Scan;
             _viewModel.IsExecuting = IsExecuting = false;
         }
     }

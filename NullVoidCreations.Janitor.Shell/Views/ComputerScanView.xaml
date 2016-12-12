@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
+             xmlns:wpf="http://schemas.microsoft.com/wpf/2008/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="480" d:DesignWidth="640">
     <UserControl.DataContext>
@@ -12,16 +13,15 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
+
         <!--header-->
         <Border Style="{StaticResource ResourceKey=HeaderStyle}">
             <TextBlock Text="Computer Scan" Style="{StaticResource ResourceKey=HeaderTitleStyle}" />
         </Border>
-        
+
         <!--active scan area-->
         <Border Style="{StaticResource ResourceKey=ActiveAreaStyle}" 
                 Grid.Row="1">
@@ -46,43 +46,78 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                
+
                 <Image Margin="0 0 8 0" Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanAlternate.png" />
                 <TextBlock Text="{Binding Path=ActiveScan.Type, Mode=OneWay, FallbackValue='Not Scanning'}" Grid.Column="1" FontSize="12" FontWeight="Bold" />
-                <ProgressBar Grid.Column="2" 
-                             Minimum="{Binding Path=ActiveScan.Progress.ProgressMin, Mode=OneWay, FallbackValue=0}"
-                             Maximum="{Binding Path=ActiveScan.Progress.ProgressMax, Mode=OneWay, FallbackValue=0}"
-                             Value="{Binding Path=ActiveScan.Progress.Progress, Mode=OneWay, FallbackValue=0}"/>
-                <Button Grid.Column="3" Margin="4 0 0 0"  Style="{StaticResource ResourceKey=ImageButtonStyle}">
-                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Pause.png" />
-                </Button>
-                <Button Grid.Column="4" Margin="4 0 0 0" Style="{StaticResource ResourceKey=ImageButtonStyle}">
+                <ProgressBar Grid.Column="2" />
+                
+                <Button Grid.Column="3" Margin="4 0 0 0" Style="{StaticResource ResourceKey=ImageButtonStyle}" ToolTip="Stop Scan">
                     <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Stop.png" />
                 </Button>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Margin="0 20 0 0">
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="0 20 0 0">
                     <TextBlock Text="Issues Found: "  />
-                    <TextBlock Text="{Binding Path=ActiveScan.Progress.IssueCount, Mode=OneWay, FallbackValue='0'}" FontWeight="Bold" Foreground="{StaticResource ResourceKey=BadBrush}" />
+                    <TextBlock Text="{Binding Path=ActiveScanProgress.IssueCount, Mode=OneWay, FallbackValue=0}" FontWeight="Bold" Foreground="{StaticResource ResourceKey=BadBrush}" />
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4">
-                    <TextBlock Text="Objects Scanned: "  />
-                    <TextBlock Text="0" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
+                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3">
+                    <TextBlock Text="Targets Scanned: " />
+                    <TextBlock Text="{Binding Path=ActiveScanProgress.AreaScanned, Mode=OneWay, FallbackValue=0}" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4">
-                    <TextBlock Text="Scan Target: " />
-                    <TextBlock Text="{Binding Path=ActiveScan.Progress.ActiveTarget.Name, Mode=OneWay, FallbackValue='Not Scanning'}" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
+                <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3">
+                    <TextBlock Text="Areas Scanned: "  />
+                    <TextBlock Text="{Binding Path=ActiveScanProgress.AreaScanned, Mode=OneWay, FallbackValue=0}" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4">
+                <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3">
                     <TextBlock Text="Scanning: " />
-                    <TextBlock Text="{Binding Path=ActiveScan.Progress.ActiveArea.Name, Mode=OneWay, FallbackValue='Not Scanning'}" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
+                    <TextBlock Text="{Binding Path=ActiveScanProgress.Target.Name, Mode=OneWay, FallbackValue=''}" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
+                    <TextBlock Text="{Binding Path=ActiveScanProgress.Area.Name, Mode=OneWay, FallbackValue='', StringFormat=' ({0})...'}" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
                 </StackPanel>
+                
+                <TextBlock Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Margin="0 8 0 0" TextWrapping="Wrap" Text="The following list contains issues that were found during a computer scan and must be cleaned to ensure system performance." />
+
+                <wpf:DataGrid Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Margin="0 8 0 0" ItemsSource="{Binding Path=ActiveScan.Issues, Mode=OneWay}" Foreground="{StaticResource ResourceKey=BadBrush}">
+                    <wpf:DataGrid.Columns>
+                        <wpf:DataGridTemplateColumn Header="Details" Width="280" MinWidth="280">
+                            <wpf:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Details, Mode=OneWay}" 
+                                               TextTrimming="CharacterEllipsis" 
+                                               Padding="6 0 2 0" 
+                                               ToolTip="{Binding Path=Details, Mode=OneWay}" />
+                                </DataTemplate>
+                            </wpf:DataGridTemplateColumn.CellTemplate>
+                        </wpf:DataGridTemplateColumn>
+                        <wpf:DataGridTemplateColumn Header="Target" MinWidth="100" Width="100">
+                            <wpf:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Target.Name, Mode=OneWay}" 
+                                               TextTrimming="CharacterEllipsis" 
+                                               Padding="6 0 2 0" 
+                                               ToolTip="{Binding Path=Target.Name, Mode=OneWay}"/>
+                                </DataTemplate>
+                            </wpf:DataGridTemplateColumn.CellTemplate>
+                        </wpf:DataGridTemplateColumn>
+                        <wpf:DataGridTemplateColumn Header="Area" MinWidth="100" Width="100">
+                            <wpf:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Area.Name, Mode=OneWay}" 
+                                               TextTrimming="CharacterEllipsis" 
+                                               Padding="6 0 2 0" 
+                                               ToolTip="{Binding Path=Area.Name, Mode=OneWay}"/>
+                                </DataTemplate>
+                            </wpf:DataGridTemplateColumn.CellTemplate>
+                        </wpf:DataGridTemplateColumn>
+                    </wpf:DataGrid.Columns>
+                </wpf:DataGrid>
             </Grid>
         </Border>
-        
+
         <!--scan buttons-->
         <Grid Grid.Row="2" Margin="20 20 20 0">
             <Grid.ColumnDefinitions>

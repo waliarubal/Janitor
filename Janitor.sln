@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullVoidCreations.Janitor.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullVoidCreations.Janitor.Shared", "NullVoidCreations.Janitor.Shared\NullVoidCreations.Janitor.Shared.csproj", "{828E8A68-B06C-4750-97D4-4E6B25B8523D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullVoidCreations.Janitor.Plugin.Browser", "NullVoidCreations.Janitor.Plugin.InternetExplorer\NullVoidCreations.Janitor.Plugin.Browser.csproj", "{E008224F-57D7-4BFC-B7DC-A592EF2683E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullVoidCreations.Janitor.Plugin.Browser", "NullVoidCreations.Janitor.Plugin.Browser\NullVoidCreations.Janitor.Plugin.Browser.csproj", "{E008224F-57D7-4BFC-B7DC-A592EF2683E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -46,21 +46,20 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _worker.ProgressChanged += new ProgressChangedEventHandler(Worker_ProgressChanged);
             _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
 
-            _viewModel.ActiveScan = new Scan(ScanType.SmartScan);
-            _viewModel.ActiveScan.Initialize();
-            foreach (var target in _viewModel.ActiveScan.Targets)
+            _viewModel.Scan = new Scan(ScanType.SmartScan);
+            foreach (var target in _viewModel.Scan.Targets)
             {
                 target.IsSelected = true;
                 foreach (var area in target.Areas)
                     area.IsSelected = true;
             }
 
-            _worker.RunWorkerAsync(_viewModel.ActiveScan);
+            _worker.RunWorkerAsync(_viewModel.Scan);
         }
 
         void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            _viewModel.ActiveScanProgress = e.UserState as ScanProgressEventArgs;
+            _viewModel.ScanStatus = e.UserState as ScanStatus;
         }
 
         void Worker_DoWork(object sender, DoWorkEventArgs e)
@@ -78,14 +77,14 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             e.Result = activeScan;
         }
 
-        void ActiveScan_OnScanProgress(ScanProgressEventArgs e)
+        void ActiveScan_OnScanProgress(ScanStatus e)
         {
             _worker.ReportProgress(-1, e);
         }
 
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            _viewModel.ActiveScan = e.Result as Scan;
+            _viewModel.Scan = e.Result as Scan;
             _viewModel.IsExecuting = IsExecuting = false;
         }
     }

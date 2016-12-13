@@ -3,9 +3,9 @@ using NullVoidCreations.Janitor.Shared.Models;
 
 namespace NullVoidCreations.Janitor.Shell.Models
 {
-    public class ScanProgressEventArgs: NotificationBase
+    public class ScanStatus: NotificationBase
     {
-        public ScanProgressEventArgs(ScanTargetBase target, ScanAreaBase area, bool isRunning)
+        public ScanStatus(ScanTargetBase target, ScanAreaBase area, bool isRunning)
         {
             Target = target;
             Area = area;
@@ -33,6 +33,29 @@ namespace NullVoidCreations.Janitor.Shell.Models
         }
 
         public long IssueCount
+        {
+            get;
+            set;
+        }
+
+        public bool IsHavingIssues
+        {
+            get { return IssueCount > 0; }
+        }
+
+        public int ProgressMax
+        {
+            get;
+            set;
+        }
+
+        public int ProgressMin
+        {
+            get;
+            set;
+        }
+
+        public int ProgressCurrent
         {
             get;
             set;

@@ -39,12 +39,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Firefox\FirefoxAreaCache.cs" />
+    <Compile Include="Firefox\FirefoxAreaHistory.cs" />
+    <Compile Include="Firefox\FirefoxAreaSession.cs" />
+    <Compile Include="Firefox\FirefoxTarget.cs" />
     <Compile Include="InternetExplorer\IEAreaAutocompleteFormHistory.cs" />
     <Compile Include="InternetExplorer\IEAreaCookies.cs" />
     <Compile Include="InternetExplorer\IEAreaHistory.cs" />
-    <Compile Include="InternetExplorer\IEAreaLastDownloadLocation.cs" />
-    <Compile Include="InternetExplorer\IEAreaRecentltTypedUrls.cs" />
-    <Compile Include="InternetExplorer\IEAreaSavedPasswords.cs" />
     <Compile Include="InternetExplorer\IEAreaTemporaryInternetFiles.cs" />
     <Compile Include="InternetExplorer\IETarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

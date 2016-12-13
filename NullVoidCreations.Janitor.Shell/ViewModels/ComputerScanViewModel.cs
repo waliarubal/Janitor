@@ -8,17 +8,18 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     public class ComputerScanViewModel: ViewModelBase
     {
         volatile Scan _scan;
-        volatile ScanProgressEventArgs _progress;
+        volatile ScanStatus _progress;
         CommandBase _smartScan, _customScan;
 
         public ComputerScanViewModel()
         {
+            _progress = new ScanStatus(null, null, false);
             _smartScan = new SmartScanCommand(this);
         }
 
         #region properties
 
-        public Scan ActiveScan
+        public Scan Scan
         {
             get { return _scan; }
             set
@@ -27,11 +28,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     return;
 
                 _scan = value;
-                RaisePropertyChanged("ActiveScan");
+                RaisePropertyChanged("Scan");
             }
         }
 
-        public ScanProgressEventArgs ActiveScanProgress
+        public ScanStatus ScanStatus
         {
             get { return _progress; }
             set
@@ -40,7 +41,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     return;
 
                 _progress = value;
-                RaisePropertyChanged("ActiveScanProgress");
+                RaisePropertyChanged("ScanStatus");
             }
         }
 

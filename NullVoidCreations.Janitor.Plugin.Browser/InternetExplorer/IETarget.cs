@@ -9,8 +9,12 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.InternetExplorer
         public IETarget()
             : base("Internet Explorer", new Version("1.0.0.0"), DateTime.Now)
         {
-            var areas = new List<ScanAreaBase>();
-            areas.Add(new IEAreaTemporaryInternetFiles(this));
+            var areas = new List<ScanAreaBase>()
+            {
+                new IEAreaTemporaryInternetFiles(this),
+                new IEAreaHistory(this),
+                new IEAreaCookies(this)
+            };
             Areas = areas;
         }
 

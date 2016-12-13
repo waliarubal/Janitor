@@ -9,15 +9,27 @@ namespace NullVoidCreations.Janitor.Shell.Core
     {
         AppDomain _container;
         readonly Dictionary<string, ScanTargetBase> _targets;
+        static PluginManager _instance;
 
-        public PluginManager()
+        private PluginManager()
         {
             _targets = new Dictionary<string, ScanTargetBase>();
 
-            CreateContainer();
+            LoadPlugins();
         }
 
         #region properties
+
+        public static PluginManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new PluginManager();
+
+                return _instance;
+            }
+        }
 
         public ScanTargetBase this[string name]
         {

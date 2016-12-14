@@ -9,7 +9,6 @@ namespace NullVoidCreations.Janitor.Shared.Models
         string _name, _description, _iconSource;
         Version _version;
         DateTime _date;
-        bool _isSelected;
         List<ScanAreaBase> _areas;
 
         #region constructor / destructor
@@ -108,19 +107,6 @@ namespace NullVoidCreations.Janitor.Shared.Models
 
                 _iconSource = value;
                 RaisePropertyChanged("IconSource");
-            }
-        }
-
-        public bool IsSelected
-        {
-            get { return _isSelected; }
-            set
-            {
-                if (value == _isSelected)
-                    return;
-
-                _isSelected = value;
-                RaisePropertyChanged("IsSelected");
             }
         }
 

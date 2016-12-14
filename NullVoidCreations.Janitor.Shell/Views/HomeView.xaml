@@ -3,7 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
              mc:Ignorable="d" d:DesignHeight="480" d:DesignWidth="640">
+    <UserControl.DataContext>
+        <vm:HomeViewModel />
+    </UserControl.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -33,7 +37,7 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Button">
-                                            <Border BorderThickness="1" BorderBrush="#4A4B4D" Padding="0 4" MinWidth="120">
+                                            <Border x:Name="bdrOuter" BorderThickness="1" BorderBrush="#4A4B4D" Padding="0 4" MinWidth="120">
                                                 <Border.Background>
                                                     <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                                         <GradientStop Color="#636162" Offset="0" />
@@ -42,6 +46,17 @@
                                                 </Border.Background>
                                                 <ContentPresenter Margin="4" HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Content" />
                                             </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property ="Border.Effect" TargetName="bdrOuter">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect ShadowDepth="0"
+                                                                              Color="#4A4B4D"
+                                                                              Opacity="1" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>

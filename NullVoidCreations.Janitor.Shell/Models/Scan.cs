@@ -17,6 +17,7 @@ namespace NullVoidCreations.Janitor.Core.Models
     public class Scan: NotificationBase, IDisposable, IObserver
     {
         ScanType _type;
+        string _name;
         readonly ObservableCollection<ScanTargetBase> _targets;
         List<Issue> _issues;
 
@@ -25,6 +26,7 @@ namespace NullVoidCreations.Janitor.Core.Models
         public Scan(ScanType type)
         {
             _type = type;
+            _name = _type == ScanType.SmartScan ? "Smart Scan" : "Custom Scan";
             _targets = new ObservableCollection<ScanTargetBase>();
             _issues = new List<Issue>();
 
@@ -54,6 +56,11 @@ namespace NullVoidCreations.Janitor.Core.Models
         public ScanType Type
         {
             get { return _type; }
+        }
+
+        public string Name
+        {
+            get { return _name; }
         }
 
         public ObservableCollection<ScanTargetBase> Targets
@@ -99,7 +106,7 @@ namespace NullVoidCreations.Janitor.Core.Models
 
         internal void Analyse()
         {
-            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStarted);
+            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStarted, false);
 
             var issues = new List<Issue>();
             var targets = 0;
@@ -108,39 +115,35 @@ namespace NullVoidCreations.Janitor.Core.Models
             var progressCurrent = 0;
             var progressMax = 0;
             foreach (var target in Targets)
-                if (target.IsSelected)
-                    foreach (var area in target.Areas)
-                        if (area.IsSelected)
-                            progressMax++;
+                foreach (var area in target.Areas)
+                    if (area.IsSelected)
+                        progressMax++;
 
             RaiseProgessChanged(null, null, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
             foreach (var target in Targets)
             {
-                if (target.IsSelected)
+                targets++;
+                RaiseProgessChanged(target, null, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                foreach (var area in target.Areas)
                 {
-                    targets++;
-                    RaiseProgessChanged(target, null, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
-                    foreach (var area in target.Areas)
+                    if (area.IsSelected)
                     {
-                        if (area.IsSelected)
+                        progressCurrent++;
+                        areas++;
+                        RaiseProgessChanged(target, area, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                        foreach (var issue in area.Analyse())
                         {
-                            progressCurrent++;
-                            areas++;
                             RaiseProgessChanged(target, area, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
-                            foreach (var issue in area.Analyse())
-                            {
-                                RaiseProgessChanged(target, area, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
-                                issues.Add(issue);
-                            }
+                            issues.Add(issue);
                         }
-                            
                     }
+                            
                 }
             }
             RaiseProgessChanged(null, null, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
             Issues = issues;
 
-            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStopped);
+            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStopped, issues.Count > 0);
         }
 
         internal void Fix()

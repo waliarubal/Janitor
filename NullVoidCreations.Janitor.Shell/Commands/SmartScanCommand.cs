@@ -58,7 +58,6 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _viewModel.Scan = new Scan(ScanType.SmartScan);
             foreach (var target in _viewModel.Scan.Targets)
             {
-                target.IsSelected = true;
                 foreach (var area in target.Areas)
                     area.IsSelected = true;
             }
@@ -73,7 +72,8 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
+            Thread.CurrentThread.IsBackground = true;
+            Thread.CurrentThread.Priority = ThreadPriority.Lowest;
 
             var activeScan = e.Argument as Scan;
             if (activeScan != null)

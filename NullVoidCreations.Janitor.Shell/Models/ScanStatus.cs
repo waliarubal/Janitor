@@ -10,6 +10,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
             Target = target;
             Area = area;
             IsRunning = isRunning;
+            ProgressMax = 1;
         }
 
         #region properties

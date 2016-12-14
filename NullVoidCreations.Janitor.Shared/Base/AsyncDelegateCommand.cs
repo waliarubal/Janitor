@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading;
 
 namespace NullVoidCreations.Janitor.Shared.Base
 {
@@ -41,6 +42,9 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
         void DoWork(object sender, DoWorkEventArgs target)
         {
+            Thread.CurrentThread.IsBackground = true;
+            Thread.CurrentThread.Priority = ThreadPriority.Lowest;
+
             target.Result = _method.Invoke(target.Argument);   
         }
 

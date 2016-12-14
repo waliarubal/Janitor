@@ -28,6 +28,7 @@
             <GradientStop Color="#CACDD4" Offset="1" />
         </LinearGradientBrush>
 
+        <!--named styles-->
         <Style TargetType="Border" x:Key="HeaderStyle">
             <Setter Property="Background" Value="{StaticResource ResourceKey=BackgroundActiveBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=BorderBrush}" />
@@ -44,7 +45,7 @@
             <Setter Property="Background" Value="{StaticResource ResourceKey=BackgroundActiveBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=BorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="CornerRadius" Value="2" />
             <Setter Property="Padding" Value="8" />
             <Setter Property="Margin" Value="20 20 20 0" />
         </Style>
@@ -52,21 +53,33 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Padding="3 0">
-                            <ContentPresenter ContentSource="Content" 
+                        <Border x:Name="bdrOuter" Padding="3 0">
+                            <ContentPresenter x:Name="cpContent" ContentSource="Content" 
                                                   HorizontalAlignment="Center" 
                                                   VerticalAlignment="Center"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Border.Background" TargetName="bdrOuter" Value="{StaticResource ResourceKey=ButtonBackgroundBrush}" />
+                                <Setter Property ="Border.Effect" TargetName="bdrOuter">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0"
+                                                          Color="#C8CBD2"
+                                                          Opacity="1" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
         <Style x:Key="Spinner" TargetType="Image">
-            <Setter Property="Height" Value="22" />
-            <Setter Property="Width" Value="22" />
+            <Setter Property="Height" Value="18" />
+            <Setter Property="Width" Value="18" />
             <Setter Property="Image.RenderTransform">
                 <Setter.Value>
-                    <RotateTransform CenterX="11" CenterY="11" />
+                    <RotateTransform CenterX="9" CenterY="9" />
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
@@ -87,6 +100,7 @@
             </Style.Triggers>
         </Style>
 
+        <!--default styles-->
         <Style TargetType="Separator">
             <Setter Property="Background" Value="{StaticResource ResourceKey=BorderBrush}"/>
             <Setter Property="Margin" Value="0,2,0,2"/>
@@ -119,9 +133,20 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border BorderThickness="1" BorderBrush="#D0D2D9" Padding="1" MinWidth="80" Background="{StaticResource ResourceKey=ButtonBackgroundBrush}">
+                        <Border x:Name="bdrOuter" BorderThickness="1" BorderBrush="#D0D2D9" Padding="1" MinWidth="80" Background="{StaticResource ResourceKey=ButtonBackgroundBrush}">
                             <ContentPresenter Margin="4" HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Content" />
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property ="Border.Effect" TargetName="bdrOuter">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0"
+                                                          Color="#C8CBD2"
+                                                          Opacity="1" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>

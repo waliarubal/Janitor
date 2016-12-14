@@ -27,6 +27,8 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Image Margin="8 0 0 0" 
                        Width="32" 
@@ -37,12 +39,24 @@
                        Source="/NullVoidCreations.Janitor.Shell;component/Resources/Logo.png" />
                 <TextBlock Text="PC Mechanic Pro" 
                            Grid.Column="1"
-                           Foreground="Black"
+                           Foreground="{StaticResource ResourceKey=BackgroundBrush}"
                            VerticalAlignment="Center"
                            Margin="4 0"
                            FontFamily="Tahoma"
                            FontWeight="Bold"
                            FontSize="18"/>
+                <Image Grid.Column="2"  
+                       Width="28"
+                       Height="28"
+                       Margin="0 0 8 0"
+                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png" 
+                       Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}"/>
+                <Image Grid.Column="3" 
+                       Width="32"
+                       Height="32"
+                       Margin="0 0 8 0"
+                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png" 
+                       Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"/>
             </Grid>
         </Border>
 
@@ -167,10 +181,21 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Image Style="{StaticResource ResourceKey=NavigationImageStyle}"   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Scan.png" />
                         <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Computer Scan"/>
-                        <Image Style="{StaticResource ResourceKey=Spinner}" Grid.Column="2" Margin="0 0 8 0" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png" Visibility="{Binding Path=IsScanning, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                        <Image Style="{StaticResource ResourceKey=Spinner}" 
+                               Grid.Column="2" 
+                               Margin="0 0 4 0" 
+                               Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png" 
+                               Visibility="{Binding Path=IsScanning, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                        <Image Width="18" 
+                               Height="18"
+                               Grid.Column="3" 
+                               Margin="0 0 4 0" 
+                               Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png" 
+                               Visibility="{Binding Path=IsHavingIssues, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                     </Grid>
                 </TabItem.Header>
                 <v:ComputerScanView />
@@ -185,7 +210,7 @@
                         </Grid.ColumnDefinitions>
                         <Image Style="{StaticResource ResourceKey=NavigationImageStyle}"  Source="/NullVoidCreations.Janitor.Shell;component/Resources/Update.png" />
                         <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Update" />
-                        <Image Style="{StaticResource ResourceKey=Spinner}" Grid.Column="2" Margin="0 0 8 0" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png" Visibility="{Binding Path=IsUpdating, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                        <Image  Style="{StaticResource ResourceKey=Spinner}" Grid.Column="2" Margin="0 0 4 0" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png" Visibility="{Binding Path=IsUpdating, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                     </Grid>
                 </TabItem.Header>
                 <v:UpdateView />

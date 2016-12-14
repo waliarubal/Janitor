@@ -52,7 +52,7 @@
                 </Grid.RowDefinitions>
 
                 <Image Margin="0 0 8 0" Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanAlternate.png" />
-                <TextBlock Text="{Binding Path=Scan.Type, Mode=OneWay, FallbackValue='Not Scanning'}" Grid.Column="1" FontSize="12" FontWeight="Bold" />
+                <TextBlock Text="{Binding Path=Scan.Name, Mode=OneWay, FallbackValue='Not Scanning'}" Grid.Column="1" FontSize="12" FontWeight="Bold" />
                 <ProgressBar Grid.Column="2" 
                              Maximum="{Binding Path=ScanStatus.ProgressMax, Mode=OneWay, FallbackValue=1}" 
                              Minimum="{Binding Path=ScanStatus.ProgressMin, Mode=OneWay, FallbackValue=0}"
@@ -164,11 +164,18 @@
             </Grid.RowDefinitions>
             <Grid.Resources>
                 <Style TargetType="Button">
-                    <Setter Property="Margin" Value="0 0 20 20" />
+                    <Setter Property="Margin" Value="0 0 16 16" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="Button">
-                                <ContentPresenter ContentSource="Content" />
+                                <Border x:Name="bdrOuter" BorderBrush="Transparent" BorderThickness="1" CornerRadius="2" Padding="4">
+                                    <ContentPresenter ContentSource="Content"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property ="Border.BorderBrush" TargetName="bdrOuter" Value="{StaticResource ResourceKey=BorderBrush}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>

@@ -14,14 +14,11 @@ namespace NullVoidCreations.Janitor.Core.Models
         CustomScan
     }
 
-    public class Scan: NotificationBase, IDisposable
+    public class Scan: NotificationBase, IDisposable, IObserver
     {
         ScanType _type;
         readonly ObservableCollection<ScanTargetBase> _targets;
         List<Issue> _issues;
-
-        public delegate void ScanProgress(ScanStatus e);
-        public event ScanProgress OnScanProgress;
 
         #region constructor / destructor
 
@@ -33,6 +30,8 @@ namespace NullVoidCreations.Janitor.Core.Models
 
             foreach (var target in PluginManager.Instance.Targets)
                 _targets.Add(target);
+
+            Subject.Instance.AddObserver(this);
         }
 
         ~Scan()
@@ -42,6 +41,8 @@ namespace NullVoidCreations.Janitor.Core.Models
 
         public void Dispose()
         {
+            Subject.Instance.RemoveObserver(this);
+
             _issues.Clear();
             _targets.Clear();
         }
@@ -86,22 +87,20 @@ namespace NullVoidCreations.Janitor.Core.Models
             int progressMin, 
             int progressCurrent)
         {
-            var handler = OnScanProgress;
-            if (handler != null)
-            {
-                var progress = new ScanStatus(target, area, isRunning);
-                progress.TargetScanned = targetsScanned;
-                progress.AreaScanned = areasScanned;
-                progress.IssueCount = issueCount;
-                progress.ProgressMax = progressMax;
-                progress.ProgressMin = progressMin;
-                progress.ProgressCurrent = progressCurrent;
-                handler(progress);
-            }
+            var status = new ScanStatus(target, area, isRunning);
+            status.TargetScanned = targetsScanned;
+            status.AreaScanned = areasScanned;
+            status.IssueCount = issueCount;
+            status.ProgressMax = progressMax;
+            status.ProgressMin = progressMin;
+            status.ProgressCurrent = progressCurrent;
+            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStatusChanged, status);
         }
 
-        public void Analyse()
+        internal void Analyse()
         {
+            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStarted);
+
             var issues = new List<Issue>();
             var targets = 0;
             var areas = 0;
@@ -140,9 +139,11 @@ namespace NullVoidCreations.Janitor.Core.Models
             }
             RaiseProgessChanged(null, null, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
             Issues = issues;
+
+            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStopped);
         }
 
-        public void Fix()
+        internal void Fix()
         {
             //foreach (var target in Targets)
             //    if (target.IsSelected)
@@ -150,6 +151,11 @@ namespace NullVoidCreations.Janitor.Core.Models
             //            if (area.IsSelected)
             //                foreach (var issue in area.Fix())
             //                    _issues.Remove(issue);
+        }
+
+        public void Update(IObserver sender, MessageCode code, params object[] data)
+        {
+            
         }
     }
 }

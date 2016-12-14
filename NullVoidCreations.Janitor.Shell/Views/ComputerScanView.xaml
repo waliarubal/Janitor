@@ -110,7 +110,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Foreground="{StaticResource ResourceKey=TextBrush}" TextWrapping="Wrap" Text="The following list contains issues that found during computer scan and must be cleaned to ensure system performance. Click on fix issues button to resolve them." />
+                    <TextBlock Foreground="{StaticResource ResourceKey=TextBrush}" TextWrapping="Wrap" Text="The following list contains issues found during computer scan and must be cleaned to ensure system performance. Click on fix issues button to resolve them." />
                     <Button Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" Margin="0 2" HorizontalAlignment="Right">Fix Issues</Button>
                 </Grid>
                 

@@ -2,16 +2,19 @@
 using System.Threading;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Models;
 using NullVoidCreations.Janitor.Shell.ViewModels;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
-    public class SmartScanCommand: CommandBase
+    public class SmartScanCommand: CommandBase, IObserver
     {
         ComputerScanViewModel _viewModel;
         BackgroundWorker _worker;
 
+        #region constructor / destructor
+       
         public SmartScanCommand(ComputerScanViewModel viewModel)
             : base(viewModel)
         {
@@ -19,10 +22,14 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             Description = "Perform a full system scan looking all the scan targets for issues.";
 
             _viewModel = ViewModel as ComputerScanViewModel;
+
+            Subject.Instance.AddObserver(this);
         }
 
         ~SmartScanCommand()
         {
+            Subject.Instance.RemoveObserver(this);
+
             if (_worker == null)
                 return;
 
@@ -31,6 +38,8 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _worker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
             _worker.Dispose();
         }
+
+        #endregion
 
         public override void Execute(object parameter)
         {
@@ -68,24 +77,26 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
             var activeScan = e.Argument as Scan;
             if (activeScan != null)
-            {
-                activeScan.OnScanProgress += new Scan.ScanProgress(ActiveScan_OnScanProgress);
                 activeScan.Analyse();
-                activeScan.OnScanProgress -= new Scan.ScanProgress(ActiveScan_OnScanProgress);
-            }
 
             e.Result = activeScan;
-        }
-
-        void ActiveScan_OnScanProgress(ScanStatus e)
-        {
-            _worker.ReportProgress(-1, e);
         }
 
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             _viewModel.Scan = e.Result as Scan;
             _viewModel.IsExecuting = IsExecuting = false;
+        }
+
+        public void Update(IObserver sender, MessageCode code, params object[] data)
+        {
+            switch(code)
+            {
+                case MessageCode.ScanStatusChanged:
+                    if (_worker.IsBusy)
+                        _worker.ReportProgress(-1, data[0]);
+                    break;
+            }
         }
     }
 }

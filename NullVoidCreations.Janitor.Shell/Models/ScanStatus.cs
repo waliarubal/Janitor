@@ -20,6 +20,11 @@ namespace NullVoidCreations.Janitor.Shell.Models
             private set;
         }
 
+        public bool IsHavingIssues
+        {
+            get { return IssueCount > 0; }
+        }
+
         public int TargetScanned
         {
             get;
@@ -36,11 +41,6 @@ namespace NullVoidCreations.Janitor.Shell.Models
         {
             get;
             set;
-        }
-
-        public bool IsHavingIssues
-        {
-            get { return IssueCount > 0; }
         }
 
         public int ProgressMax

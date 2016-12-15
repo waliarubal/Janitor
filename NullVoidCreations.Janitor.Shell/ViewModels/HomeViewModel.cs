@@ -8,12 +8,13 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     {
         readonly CommandBase _getSystemInformation;
         string _computerName, _operatingSyetem, _processor, _model;
-        long _memory;
+        decimal _memory;
 
         #region constructor / destructor
 
         public HomeViewModel()
         {
+            _computerName = _operatingSyetem = _processor = _model = "Analysing...";
             _getSystemInformation = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, SystemInformationReceived);
         }
 
@@ -60,7 +61,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
-        public long Memory
+        public decimal Memory
         {
             get { return _memory; }
             private set
@@ -121,7 +122,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
             ComputerName = sysInfo[0] as string;
             Model = sysInfo[1] as string;
-            Memory = Convert.ToInt64(sysInfo[2]) / 1024 / 1024 / 1024;
+            Memory = Convert.ToDecimal(sysInfo[2]) / 1024 / 1024 / 1024;
             OperatingSystem = string.Format("{0} ({1})", sysInfo[3], sysInfo[4]);
             Processor = sysInfo[5] as string;
         }

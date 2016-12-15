@@ -5,7 +5,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
 {
     class Settings
     {
-        static Settings _instance;
+        static volatile Settings _instance;
         string _codeName, _appDirectory, _pluginsDirectory, _pluginsSearchFilter;
 
         private Settings()

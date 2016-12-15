@@ -12,7 +12,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <!--header-->
         <Border Background="{StaticResource ResourceKey=BackgroundActiveBrush}"
                 BorderBrush="{StaticResource ResourceKey=BorderBrush}"
                 BorderThickness="0 0 0 1">
@@ -31,41 +33,58 @@
                 <Image Grid.RowSpan="3" Grid.Column="1" Source="/NullVoidCreations.Janitor.Shell;component/Resources/LogoBig.png" />
                 <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="24 4 0 12">
                     <!--buy now-->
-                    <Button Margin="0 0 4 0" Content="Buy Now" Foreground="{StaticResource ResourceKey=BackgroundBrush}" FontSize="12">
-                        <Button.Resources>
-                            <Style TargetType="Button">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border x:Name="bdrOuter" BorderThickness="1" BorderBrush="#4A4B4D" Padding="0 4" MinWidth="120">
-                                                <Border.Background>
-                                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                                        <GradientStop Color="#636162" Offset="0" />
-                                                        <GradientStop Color="#1F2120" Offset="1" />
-                                                    </LinearGradientBrush>
-                                                </Border.Background>
-                                                <ContentPresenter Margin="4" HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Content" />
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property ="Border.Effect" TargetName="bdrOuter">
-                                                        <Setter.Value>
-                                                            <DropShadowEffect ShadowDepth="0"
-                                                                              Color="#4A4B4D"
-                                                                              Opacity="1" />
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                    <Button Margin="0 0 4 0" Content="Buy Now" Foreground="{StaticResource ResourceKey=BackgroundBrush}" FontSize="12" MinWidth="120" Style="{StaticResource ResourceKey=BlackButtonStyle}"/>
                     <!--activate-->
                     <Button Margin="4 0 0 0" Content="Activate Product" Foreground="{StaticResource ResourceKey=TextBrush}" FontSize="12" MinWidth="120" />
                 </StackPanel>
+                
+                
+            </Grid>
+        </Border>
+
+        <!--system info-->
+        <Border Background="{StaticResource ResourceKey=BackgroundActiveBrush}"
+                BorderBrush="{StaticResource ResourceKey=BorderBrush}"
+                BorderThickness="0 1 0 0"
+                Grid.Row="2"
+                Padding="8">
+            <Border.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+                <Style TargetType="Image">
+                    <Setter Property="Width" Value="18" />
+                    <Setter Property="Height" Value="18" />
+                    <Setter Property="Margin" Value="0 2 4 2" />
+                </Style>
+            </Border.Resources>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/System.png" />
+                <TextBlock Grid.Column="1" Text="{Binding Path=ComputerName, Mode=OneWay}" />
+
+                <Image Grid.Row="1" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Windows.png" />
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Path=OperatingSystem, Mode=OneWay}" />
+
+                <Image Grid.Row="2" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Memory.png" />
+                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Path=Memory, Mode=OneWay, StringFormat='{}{0:N2} GB'}" />
+
+                <Image Grid.Row="3" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Processor.png" />
+                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Path=Processor, Mode=OneWay}" />
+
+                <Image Grid.Row="4" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Bios.png" />
+                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Path=Model, Mode=OneWay}" />
             </Grid>
         </Border>
     </Grid>

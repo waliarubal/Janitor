@@ -44,7 +44,7 @@
                            Margin="4 0"
                            FontFamily="Tahoma"
                            FontWeight="Bold"
-                           FontSize="18"/>
+                           FontSize="22"/>
                 <Image Grid.Column="2"  
                        Width="28"
                        Height="28"
@@ -81,11 +81,12 @@
                                               Panel.ZIndex="1"
                                               Margin="0 40 0 0"
                                               IsItemsHost="True" />
-                                    <TextBlock Text="Cleaning at your fingertips !"
+                                    <TextBlock Text="CLEANING AT YOUR FINGERTIPS"
                                                Grid.Row="1" 
                                                HorizontalAlignment="Center" 
                                                Foreground="{StaticResource ResourceKey=TextBrush}"
-                                               FontSize="12"
+                                               FontSize="9"
+                                               FontWeight="Bold"
                                                Margin="0 18"/>
                                     <Border Grid.Column="1"
                                             Grid.RowSpan="2"

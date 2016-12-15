@@ -51,7 +51,7 @@
                 <TextBlock Text="update file name comes here" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
             </StackPanel>
             <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Content="Cancel Update" HorizontalAlignment="Left" Margin="0 12" MinWidth="120"/>
-            <ProgressBar Grid.Column="2" IsIndeterminate="True" Background="{StaticResource ResourceKey=BackgroundActiveBrush}" />
+            <ProgressBar Grid.Column="2" />
         </Grid>
         
         <Separator Grid.Row="2" Margin="20 0"/>
@@ -89,7 +89,7 @@
                 <TextBlock Text="update file name comes here" Foreground="{StaticResource ResourceKey=TextAlternateBrush}"  />
             </StackPanel>
             <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Content="Check for Updates" HorizontalAlignment="Left" Margin="0 12" MinWidth="120"/>
-            <ProgressBar Grid.Column="2" IsIndeterminate="True" Background="{StaticResource ResourceKey=BackgroundActiveBrush}" />
+            <ProgressBar Grid.Column="2" />
         </Grid>
     </Grid>
 </UserControl>

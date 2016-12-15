@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="NullVoidCreations.Janitor.Shell.Views.AboutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="480" d:DesignWidth="640">
+    <UserControl.DataContext>
+        <vm:AboutViewModel />
+    </UserControl.DataContext>
+    <Grid Background="{StaticResource ResourceKey=BackgroundActiveBrush}">
+        <Grid Margin="20">
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="11" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+                    <Setter Property="Margin" Value="1" />
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="PC Mechanic Pro" FontWeight="Bold" />
+                <TextBlock Text=", Version 1.0.0.0" />
+            </StackPanel>
+            <TextBlock Grid.Row="1" Text="Copyright © 2016-2017 NullVoid Creations. All rights reserved." />
+            <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0 12 0 0">
+                <TextBlock Text="License Valid Until: " />
+                <TextBlock Text="1/12/2016" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="3">
+                <TextBlock Text="License Type: " />
+                <TextBlock Text="Not for Resale Single PC License" FontWeight="Bold"/>
+            </StackPanel>
+            <TextBlock Grid.Row="4" Margin="0 12 0 2" Text="{Binding Path=Targets.Count, Mode=OneWay, StringFormat='The following list contains loaded plugins with {0} scan targets. These scan targets will be looked for issues during an active scan operation.', FallbackValue='No plugin loaded with scan targets.'}" TextWrapping="Wrap"/>
+            <Border Grid.Row="5" 
+                    CornerRadius="2"
+                    BorderThickness="1" 
+                    BorderBrush="{StaticResource ResourceKey=BorderBrush}"
+                    Background="{StaticResource ResourceKey=BackgroundBrush}">
+                <ListBox  ItemsSource="{Binding Path=Targets, Mode=OneWay}" 
+                          BorderThickness="0" 
+                          Margin="2"
+                          Background="{StaticResource ResourceKey=BackgroundBrush}">
+                    <ListBox.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                    </ListBox.Resources>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DataTemplate.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="FontSize" Value="10" />
+                                    <Setter Property="Margin" Value="2 0" />
+                                    <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+                                </Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Width" Value="22" />
+                                    <Setter Property="Height" Value="22" />
+                                </Style>
+                            </DataTemplate.Resources>
+                            <StackPanel Orientation="Horizontal" Margin="4 1">
+                                <Image Source="{Binding Path=IconSource, Mode=OneWay}" />
+                                <TextBlock Text="{Binding Path=Name, Mode=OneWay}" FontWeight="Bold" FontSize="12"/>
+                                <TextBlock Text="{Binding Path=Version, Mode=OneWay, StringFormat='(version {0}'}" />
+                                <TextBlock Text="{Binding Path=Date, Mode=OneWay, StringFormat=' released on {0:MM/dd/yyyy})'}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+            <TextBlock Margin="0 12 0 0" Grid.Row="6" Text="Warning:" FontWeight="Bold" />
+            <TextBlock Grid.Row="7" TextWrapping="Wrap" Text="This program is protected by copyright and international treaties. Copying or distributing without express permission from NullVoid Creations by any means, in part or ful, is strictly prohibited and will result in prosecution to the full extent that the law will allow internationally." />
+        </Grid>
+    </Grid>
+</UserControl>

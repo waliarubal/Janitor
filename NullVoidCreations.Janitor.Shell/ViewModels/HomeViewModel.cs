@@ -15,7 +15,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         public HomeViewModel()
         {
             _computerName = _operatingSyetem = _processor = _model = "Analysing...";
-            _getSystemInformation = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, SystemInformationReceived);
+            _getSystemInformation = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, GetSystemInformationComplete);
         }
 
         #endregion
@@ -116,7 +116,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             return sysInfo;
         }
 
-        void SystemInformationReceived(object result)
+        void GetSystemInformationComplete(object result)
         {
             var sysInfo = result as object[];
 

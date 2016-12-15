@@ -14,6 +14,7 @@ namespace NullVoidCreations.Janitor.Shared.Base
             : base(viewModel, canExecute)
         {
             _worker = new BackgroundWorker();
+            _worker.WorkerSupportsCancellation = true;
             _worker.DoWork += new DoWorkEventHandler(DoWork);
             _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(WorkCompleted);
         }

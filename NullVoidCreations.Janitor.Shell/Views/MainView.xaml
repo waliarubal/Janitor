@@ -30,24 +30,23 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Image Margin="8 0 0 0" 
-                       Width="32" 
-                       Height="32" 
+                <Image Margin="8 0 8 0" 
+                       Width="28" 
+                       Height="28" 
                        SnapsToDevicePixels="True"
                        RenderOptions.BitmapScalingMode="HighQuality"
                        RenderOptions.EdgeMode="Aliased"
                        Source="/NullVoidCreations.Janitor.Shell;component/Resources/Logo.png" />
-                <TextBlock Text="PC Mechanic Pro" 
+                <TextBlock Text="PC MECHANIC PRO" 
                            Grid.Column="1"
                            Foreground="{StaticResource ResourceKey=BackgroundBrush}"
                            VerticalAlignment="Center"
-                           Margin="4 0"
-                           FontFamily="Tahoma"
-                           FontWeight="Bold"
-                           FontSize="22"/>
+                           FontFamily="Arial"
+                           FontWeight="Normal"
+                           FontSize="18"/>
                 <Image Grid.Column="2"  
-                       Width="28"
-                       Height="28"
+                       Width="32"
+                       Height="32"
                        Margin="0 0 8 0"
                        Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png" 
                        Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}"/>
@@ -141,6 +140,9 @@
                                     <Trigger Property="Name" Value="Home">
                                         <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource ResourceKey=BackgroundActiveBrush}" />
                                     </Trigger>
+                                    <Trigger Property="Name" Value="About">
+                                        <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource ResourceKey=BackgroundActiveBrush}" />
+                                    </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
@@ -228,7 +230,7 @@
                     </Grid>
                 </TabItem.Header>
             </TabItem>
-            <TabItem>
+            <TabItem Name="About">
                 <TabItem.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -236,9 +238,10 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Image Style="{StaticResource ResourceKey=NavigationImageStyle}" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Help.png" />
-                        <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Help and Support" />
+                        <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Help and About" />
                     </Grid>
                 </TabItem.Header>
+                <v:AboutView />
             </TabItem>
         </TabControl>
     </Grid>

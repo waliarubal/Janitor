@@ -487,9 +487,14 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             _infoCache.Clear();
         }
 
-        public void Fill(string className)
+        public void Fill(string className, bool reload = false)
         {
-            if (!_infoCache.ContainsKey(className))
+            if (_infoCache.ContainsKey(className))
+            {
+                if (!reload)
+                    return;
+            }
+            else
                 _infoCache.Add(className, new Dictionary<string, object>());
 
             using (var managementClass = new ManagementClass(className))

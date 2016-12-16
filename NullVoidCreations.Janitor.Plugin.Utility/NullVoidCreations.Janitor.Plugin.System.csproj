@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E008224F-57D7-4BFC-B7DC-A592EF2683E9}</ProjectGuid>
+    <ProjectGuid>{AEE51337-2D6F-4DE6-987A-F1C37A152A91}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NullVoidCreations.Janitor.Plugin.Browser</RootNamespace>
-    <AssemblyName>NullVoidCreations.Janitor.Plugin.Browser</AssemblyName>
+    <RootNamespace>NullVoidCreations.Janitor.Plugin.System</RootNamespace>
+    <AssemblyName>NullVoidCreations.Janitor.Plugin.System</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\ProgramData\Janitor\</OutputPath>
+    <OutputPath>..\..\..\ProgramData\Janitor\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -39,15 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Firefox\FirefoxAreaCache.cs" />
-    <Compile Include="Firefox\FirefoxAreaHistory.cs" />
-    <Compile Include="Firefox\FirefoxAreaSession.cs" />
-    <Compile Include="Firefox\FirefoxTarget.cs" />
-    <Compile Include="InternetExplorer\IEAreaCookies.cs" />
-    <Compile Include="InternetExplorer\IEAreaHistory.cs" />
-    <Compile Include="InternetExplorer\IEAreaTemporaryInternetFiles.cs" />
-    <Compile Include="InternetExplorer\IETarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\SystemTarget.cs" />
+    <Compile Include="WindowsExplorer\ExplorerAreaRecentDocuments.cs" />
+    <Compile Include="WindowsExplorer\ExplorerAreaThumbnailCache.cs" />
+    <Compile Include="WindowsExplorer\ExplorerTarget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NullVoidCreations.Janitor.Shared\NullVoidCreations.Janitor.Shared.csproj">
@@ -55,9 +51,12 @@
       <Name>NullVoidCreations.Janitor.Shared</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Resources\Firefox.png" />
-    <Resource Include="Resources\InternetExplorer.png" />
+    <Resource Include="Resources\Explorer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\System.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

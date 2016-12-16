@@ -87,7 +87,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             var evidence = AppDomain.CurrentDomain.Evidence;
 
             var setupInfo = new AppDomainSetup();
-            setupInfo.ApplicationBase = Settings.Instance.AppDirectory;
+            setupInfo.ApplicationBase = Settings.Instance.PluginsDirectory;
 
             _container = AppDomain.CreateDomain("ScanTargets", evidence, setupInfo);
         }

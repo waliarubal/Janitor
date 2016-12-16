@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shared.Models;
@@ -16,11 +15,12 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.InternetExplorer
 
         public override List<Issue> Analyse()
         {
-            var pathRoot = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)).FullName;
             var paths = new string[]
             {
-                Path.Combine(pathRoot, @"Local\Microsoft\Windows\History\History.IE5"),
-                Path.Combine(pathRoot, @"Local\Microsoft\Internet Explorer\Recovery\Last Active")
+                Path.Combine(KnownPaths.Instance.AppDataLocal, @"Microsoft\Windows\History\History.IE5"),
+                Path.Combine(KnownPaths.Instance.AppDataLocal, @"Microsoft\Internet Explorer\Recovery\Last Active"),
+                Path.Combine(KnownPaths.Instance.AppDataLocal, @"Microsoft\Internet Explorer\Recovery\High\Last Active"),
+                Path.Combine(KnownPaths.Instance.AppDataLocal, @"Microsoft\Internet Explorer\Recovery\High\Active")
             };
 
             Issues.Clear();

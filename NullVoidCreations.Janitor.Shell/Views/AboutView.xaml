@@ -42,7 +42,7 @@
                 <TextBlock Text="License Type: " />
                 <TextBlock Text="Not for Resale Single PC License" FontWeight="Bold"/>
             </StackPanel>
-            <TextBlock Grid.Row="4" Margin="0 12 0 2" Text="{Binding Path=Targets.Count, Mode=OneWay, StringFormat='The following list contains loaded plugins with {0} scan targets. These scan targets will be looked for issues during an active scan operation.', FallbackValue='No plugin loaded with scan targets.'}" TextWrapping="Wrap"/>
+            <TextBlock Grid.Row="4" Margin="0 12 0 2" Text="{Binding Path=Targets.Count, Mode=OneWay, StringFormat='The following list contains loaded plugins with {0} scan targets. Scan targets are looked for issues during an active scan operation.', FallbackValue='No plugin loaded with scan targets.'}" TextWrapping="Wrap"/>
             <Border Grid.Row="5" 
                     CornerRadius="2"
                     BorderThickness="1" 

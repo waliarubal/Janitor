@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shared.Models;
@@ -16,11 +15,10 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.InternetExplorer
 
         public override List<Issue> Analyse()
         {
-            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var paths = new string[]
             {
-                Path.Combine(appData, @"Microsoft\Windows\Cookies"),
-                Path.Combine(Directory.GetParent(appData).FullName, @"LocalLow\Microsoft\Internet Explorer\DOMStore")
+                Path.Combine(KnownPaths.Instance.AppDataRoaming, @"Microsoft\Windows\Cookies"),
+                Path.Combine(KnownPaths.Instance.AppDataLocalLow, @"Microsoft\Internet Explorer\DOMStore")
             };
 
             Issues.Clear();

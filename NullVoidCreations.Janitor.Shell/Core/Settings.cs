@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -12,11 +13,9 @@ namespace NullVoidCreations.Janitor.Shell.Core
         {
             _codeName = "Janitor";
             _appDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), CodeName);
-            _pluginsDirectory = AppDirectory;
+            _pluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
             _pluginsSearchFilter = "NullVoidCreations.Janitor.Plugin.*.dll";
 
-            if (!Directory.Exists(AppDirectory))
-                Directory.CreateDirectory(AppDirectory);
             if (!Directory.Exists(PluginsDirectory))
                 Directory.CreateDirectory(PluginsDirectory);
         }
@@ -26,11 +25,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
         public string CodeName
         {
             get { return _codeName; }
-        }
-
-        public string AppDirectory
-        {
-            get { return _appDirectory; }
         }
 
         public string PluginsDirectory

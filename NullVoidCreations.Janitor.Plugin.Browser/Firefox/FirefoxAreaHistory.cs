@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shared.Models;
@@ -16,13 +15,12 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Firefox
 
         public override List<Issue> Analyse()
         {
-            var appData = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)).FullName;
             var profiles = (Target as FirefoxTarget).Profiles;
 
             var paths = new List<string>();
             foreach (var profile in profiles)
             {
-                paths.Add(Path.Combine(appData, string.Format(@"Local\Mozilla\Firefox\Profiles\{0}\thumbnails", profile)));
+                paths.Add(Path.Combine(KnownPaths.Instance.AppDataLocal, string.Format(@"Mozilla\Firefox\Profiles\{0}\thumbnails", profile)));
             }
 
             Issues.Clear();

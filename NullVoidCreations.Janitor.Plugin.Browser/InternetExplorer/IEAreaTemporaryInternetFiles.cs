@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shared.Models;
+using System.IO;
 
 namespace NullVoidCreations.Janitor.Plugin.Browser.InternetExplorer
 {
@@ -16,11 +16,16 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.InternetExplorer
 
         public override List<Issue> Analyse()
         {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.InternetCache);
+            var paths = new string[]
+            {
+                KnownPaths.Instance.InternetCache,
+                Path.Combine(KnownPaths.Instance.AppDataLocal, @"Microsoft\FeedsCache")
+            };
 
             Issues.Clear();
-            foreach (var file in new DirectoryWalker(path))
-                Issues.Add(new Issue(Target, this, file));
+            foreach(var path in paths)
+                foreach (var file in new DirectoryWalker(path))
+                    Issues.Add(new Issue(Target, this, file));
 
             return Issues;
         }

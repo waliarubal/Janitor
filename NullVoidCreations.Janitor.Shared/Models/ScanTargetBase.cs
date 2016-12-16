@@ -97,6 +97,9 @@ namespace NullVoidCreations.Janitor.Shared.Models
             }
         }
 
+        /// <summary>
+        /// This should point to 22 x 22 image resource.
+        /// </summary>
         public string IconSource
         {
             get { return _iconSource; }

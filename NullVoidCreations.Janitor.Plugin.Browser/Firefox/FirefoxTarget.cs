@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shared.Models;
 
 namespace NullVoidCreations.Janitor.Plugin.Browser.Firefox
@@ -14,7 +15,7 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Firefox
         {
             IconSource = "/NullVoidCreations.Janitor.Plugin.Browser;component/Resources/Firefox.png";
 
-            var configFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Mozilla\Firefox\profiles.ini");
+            var configFile = Path.Combine(KnownPaths.Instance.AppDataRoaming, @"Mozilla\Firefox\profiles.ini");
 
             _profiles = new List<string>();
             foreach (var line in File.ReadAllLines(configFile))

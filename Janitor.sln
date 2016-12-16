@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullVoidCreations.Janitor.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullVoidCreations.Janitor.Plugin.Browser", "NullVoidCreations.Janitor.Plugin.Browser\NullVoidCreations.Janitor.Plugin.Browser.csproj", "{E008224F-57D7-4BFC-B7DC-A592EF2683E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullVoidCreations.Janitor.Plugin.System", "NullVoidCreations.Janitor.Plugin.Utility\NullVoidCreations.Janitor.Plugin.System.csproj", "{AEE51337-2D6F-4DE6-987A-F1C37A152A91}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{E008224F-57D7-4BFC-B7DC-A592EF2683E9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E008224F-57D7-4BFC-B7DC-A592EF2683E9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E008224F-57D7-4BFC-B7DC-A592EF2683E9}.Release|x86.ActiveCfg = Release|Any CPU
+		{AEE51337-2D6F-4DE6-987A-F1C37A152A91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEE51337-2D6F-4DE6-987A-F1C37A152A91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEE51337-2D6F-4DE6-987A-F1C37A152A91}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AEE51337-2D6F-4DE6-987A-F1C37A152A91}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AEE51337-2D6F-4DE6-987A-F1C37A152A91}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AEE51337-2D6F-4DE6-987A-F1C37A152A91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEE51337-2D6F-4DE6-987A-F1C37A152A91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEE51337-2D6F-4DE6-987A-F1C37A152A91}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AEE51337-2D6F-4DE6-987A-F1C37A152A91}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AEE51337-2D6F-4DE6-987A-F1C37A152A91}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

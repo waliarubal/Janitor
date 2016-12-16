@@ -117,23 +117,15 @@
 
                 <wpf:DataGrid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding Path=Scan.Issues, Mode=OneWay}" Foreground="{StaticResource ResourceKey=BadBrush}">
                     <wpf:DataGrid.Columns>
-                        <wpf:DataGridTemplateColumn Header="Details" Width="280" MinWidth="280">
+                        <wpf:DataGridTemplateColumn Header="Details" MinWidth="380" Width="380">
                             <wpf:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Path=Details, Mode=OneWay}" 
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{Binding Path=Target.IconSource, Mode=OneWay}" Width="16" Height="16" Margin="6 0 2 0" ToolTip="{Binding Path=Target.Name, Mode=OneWay}"/>
+                                        <TextBlock Text="{Binding Path=Details, Mode=OneWay}" 
                                                TextTrimming="CharacterEllipsis" 
-                                               Padding="6 0 2 0" 
-                                               ToolTip="{Binding Path=Details, Mode=OneWay}" />
-                                </DataTemplate>
-                            </wpf:DataGridTemplateColumn.CellTemplate>
-                        </wpf:DataGridTemplateColumn>
-                        <wpf:DataGridTemplateColumn Header="Target" MinWidth="100" Width="100">
-                            <wpf:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Path=Target.Name, Mode=OneWay}" 
-                                               TextTrimming="CharacterEllipsis" 
-                                               Padding="6 0 2 0" 
-                                               ToolTip="{Binding Path=Target.Name, Mode=OneWay}"/>
+                                               ToolTip="{Binding Path=Details, Mode=OneWay}"/>
+                                    </StackPanel>
                                 </DataTemplate>
                             </wpf:DataGridTemplateColumn.CellTemplate>
                         </wpf:DataGridTemplateColumn>

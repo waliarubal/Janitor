@@ -16,18 +16,17 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Firefox
 
         public override List<Issue> Analyse()
         {
-            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var profiles = (Target as FirefoxTarget).Profiles;
 
             var paths = new List<string>();
             foreach (var profile in profiles)
             {
-                paths.Add(Path.Combine(appData, string.Format(@"Mozilla\Firefox\Profiles\{0}", profile)));
+                paths.Add(Path.Combine(KnownPaths.Instance.AppDataRoaming, string.Format(@"Mozilla\Firefox\Profiles\{0}", profile)));
             }
 
             Issues.Clear();
             foreach(var directory in paths)
-                foreach (var file in new DirectoryWalker(directory, (fileName) => fileName.EndsWith("sessionCheckpoints.json", StringComparison.InvariantCultureIgnoreCase) || fileName.Contains("sessionstore-backups")))
+                foreach (var file in new DirectoryWalker(directory, IncludeFile))
                     Issues.Add(new Issue(Target, this, file));
 
             return Issues;
@@ -36,6 +35,12 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Firefox
         public override List<Issue> Fix()
         {
             return null;
+        }
+
+        bool IncludeFile(string path)
+        {
+            return path.EndsWith("sessionCheckpoints.json", StringComparison.InvariantCultureIgnoreCase) || 
+                path.Contains("sessionstore-backups");
         }
     }
 }

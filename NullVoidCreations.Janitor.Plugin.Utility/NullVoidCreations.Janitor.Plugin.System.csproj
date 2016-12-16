@@ -40,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\SystemAreaErrorReporting.cs" />
+    <Compile Include="System\SystemAreaTemporaryFiles.cs" />
+    <Compile Include="System\SystemAreaRecycleBin.cs" />
     <Compile Include="System\SystemTarget.cs" />
     <Compile Include="WindowsExplorer\ExplorerAreaRecentDocuments.cs" />
     <Compile Include="WindowsExplorer\ExplorerAreaThumbnailCache.cs" />

@@ -13,7 +13,9 @@ namespace NullVoidCreations.Janitor.Plugin.System.System
 
             var areas = new List<ScanAreaBase>()
             {
-                
+                new SystemAreaRecycleBin(this),
+                new SystemAreaTemporaryFiles(this),
+                new SystemAreaErrorReporting(this)
             };
             Areas = areas;
         }

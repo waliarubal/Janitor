@@ -6,10 +6,13 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
     public class KnownPaths
     {
         static volatile KnownPaths _instance;
-        readonly string _appDataRoaming, _appDataLocal, _appDataLocalLow, _appData, _internetCache, _appDirectory;
+        readonly string _appDataRoaming, _appDataLocal, _appDataLocalLow, _appData, _internetCache, _appDirectory, _systemTemp, _userTemp, _programData;
 
         private KnownPaths()
         {
+            _programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            _systemTemp = Environment.GetEnvironmentVariable("TEMP", EnvironmentVariableTarget.Machine);
+            _userTemp = Environment.GetEnvironmentVariable("TEMP", EnvironmentVariableTarget.User);
             _appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             _internetCache = Environment.GetFolderPath(Environment.SpecialFolder.InternetCache);
             _appDataRoaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -19,6 +22,21 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
         }
 
         #region properties
+
+        public string ProgramDataDirectory
+        {
+            get { return _programData; }
+        }
+
+        public string SystemTempDirectory
+        {
+            get { return _systemTemp; }
+        }
+
+        public string UserTempDirectory
+        {
+            get { return _userTemp; }
+        }
 
         public string ApplicationDirectory
         {

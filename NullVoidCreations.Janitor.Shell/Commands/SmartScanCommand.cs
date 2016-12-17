@@ -55,7 +55,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _worker.ProgressChanged += new ProgressChangedEventHandler(Worker_ProgressChanged);
             _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
 
-            _viewModel.Scan = new Scan(ScanType.SmartScan);
+            _viewModel.Scan = new ScanModel(ScanType.SmartScan);
             foreach (var target in _viewModel.Scan.Targets)
             {
                 foreach (var area in target.Areas)
@@ -67,7 +67,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            _viewModel.ScanStatus = e.UserState as ScanStatus;
+            _viewModel.ScanStatus = e.UserState as ScanStatusModel;
         }
 
         void Worker_DoWork(object sender, DoWorkEventArgs e)
@@ -75,7 +75,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             Thread.CurrentThread.IsBackground = true;
             Thread.CurrentThread.Priority = ThreadPriority.Lowest;
 
-            var activeScan = e.Argument as Scan;
+            var activeScan = e.Argument as ScanModel;
             if (activeScan != null)
                 activeScan.Analyse();
 
@@ -84,7 +84,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            _viewModel.Scan = e.Result as Scan;
+            _viewModel.Scan = e.Result as ScanModel;
             _viewModel.IsExecuting = IsExecuting = false;
         }
 

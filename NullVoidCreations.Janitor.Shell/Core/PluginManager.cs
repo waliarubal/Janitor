@@ -5,18 +5,28 @@ using NullVoidCreations.Janitor.Shared.Models;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
-    sealed class PluginManager
+    sealed class PluginManager: IObserver
     {
         AppDomain _container;
         readonly Dictionary<string, ScanTargetBase> _targets;
         static PluginManager _instance;
 
+        #region constructor/destructor
+
         private PluginManager()
         {
             _targets = new Dictionary<string, ScanTargetBase>();
 
+            Subject.Instance.AddObserver(this);
             LoadPlugins();
         }
+
+        ~PluginManager()
+        {
+            Subject.Instance.RemoveObserver(this);
+        }
+
+        #endregion
 
         #region properties
 
@@ -57,7 +67,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             var proxyType = typeof(Proxy);
             var proxy = (Proxy)_container.CreateInstanceAndUnwrap(proxyType.Assembly.FullName, proxyType.FullName);
 
-            var pluginFiles = Directory.GetFiles(Settings.Instance.PluginsDirectory, Settings.Instance.PluginsSearchFilter);
+            var pluginFiles = Directory.GetFiles(SettingsManager.Instance.PluginsDirectory, SettingsManager.Instance.PluginsSearchFilter);
             foreach (var pluginFile in pluginFiles)
             {
                 var assembly = proxy.GetAssembly(pluginFile);
@@ -73,6 +83,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
                     }
                 }
             }
+
+            Subject.Instance.NotifyAllObservers(this, MessageCode.PluginsLoaded, Targets);
         }
 
         public void UnloadPlugins()
@@ -80,6 +92,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
             _targets.Clear();
             DestroyContainer();
             CreateContainer();
+
+            Subject.Instance.NotifyAllObservers(this, MessageCode.PluginsUnloaded);
         }
 
         void CreateContainer()
@@ -87,7 +101,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             var evidence = AppDomain.CurrentDomain.Evidence;
 
             var setupInfo = new AppDomainSetup();
-            setupInfo.ApplicationBase = Settings.Instance.PluginsDirectory;
+            setupInfo.ApplicationBase = SettingsManager.Instance.PluginsDirectory;
 
             _container = AppDomain.CreateDomain("ScanTargets", evidence, setupInfo);
         }
@@ -100,5 +114,10 @@ namespace NullVoidCreations.Janitor.Shell.Core
             _container = null;
         }
 
+
+        public void Update(IObserver sender, MessageCode code, params object[] data)
+        {
+            
+        }
     }
 }

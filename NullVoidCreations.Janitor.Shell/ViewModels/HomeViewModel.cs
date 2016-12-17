@@ -1,26 +1,64 @@
-﻿using NullVoidCreations.Janitor.Shared.Base;
+﻿using System;
+using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
-using System;
+using NullVoidCreations.Janitor.Shell.Core;
+using NullVoidCreations.Janitor.Shell.Models;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
-    public class HomeViewModel: ViewModelBase
+    public class HomeViewModel: ViewModelBase, IObserver
     {
         readonly CommandBase _getSystemInformation;
         string _computerName, _operatingSyetem, _processor, _model;
         decimal _memory;
+        bool _isLicensed;
+        LicenseModel _license;
 
         #region constructor / destructor
 
         public HomeViewModel()
         {
+            Subject.Instance.AddObserver(this);
+
+            _license = new LicenseModel();
             _computerName = _operatingSyetem = _processor = _model = "Analysing...";
-            _getSystemInformation = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, GetSystemInformationComplete);
+            _getSystemInformation = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, null);
+        }
+
+        ~HomeViewModel()
+        {
+            Subject.Instance.RemoveObserver(this);
         }
 
         #endregion
 
         #region properties
+
+        public LicenseModel License
+        {
+            get { return _license; }
+            private set
+            {
+                if (value == _license)
+                    return;
+
+                _license = value;
+                RaisePropertyChanged("License");
+            }
+        }
+
+        public bool IsLicensed
+        {
+            get { return _isLicensed; }
+            private set
+            {
+                if (value == _isLicensed)
+                    return;
+
+                _isLicensed = value;
+                RaisePropertyChanged("IsLicensed");
+            }
+        }
 
         public string ComputerName
         {
@@ -100,31 +138,37 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         object ExecuteGetSystemInformation(object parameter)
         {
+            // load plugins
+            PluginManager.Instance.LoadPlugins();
+
+            // load license
+            LicenseManager.Instance.LoadLicense();
+
+            // load system information
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.ComputerSystem);
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.OperatingSystem);
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.Processor);
-            
-            var sysInfo = new object[] 
-            {
-                SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "Name"],
-                SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "Model"],
-                SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "TotalPhysicalMemory"],
-                SysInformation.Instance[SysInformation.ManagementClassNames.OperatingSystem, "Caption"],
-                SysInformation.Instance[SysInformation.ManagementClassNames.OperatingSystem, "OSArchitecture"],
-                SysInformation.Instance[SysInformation.ManagementClassNames.Processor, "Name"]
-            };
-            return sysInfo;
+            Subject.Instance.NotifyAllObservers(this, MessageCode.SystemInformationLoaded);
+
+            return null;
         }
 
-        void GetSystemInformationComplete(object result)
+        public void Update(IObserver sender, MessageCode code, params object[] data)
         {
-            var sysInfo = result as object[];
+            switch(code)
+            {
+                case MessageCode.SystemInformationLoaded:
+                    ComputerName = SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "Name"] as string;
+                    Model = SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "Model"] as string;
+                    Memory = Convert.ToDecimal(SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "TotalPhysicalMemory"]) / 1024 / 1024 / 1024;
+                    OperatingSystem = string.Format("{0} ({1})", SysInformation.Instance[SysInformation.ManagementClassNames.OperatingSystem, "Caption"], SysInformation.Instance[SysInformation.ManagementClassNames.OperatingSystem, "OSArchitecture"]);
+                    Processor = SysInformation.Instance[SysInformation.ManagementClassNames.Processor, "Name"] as string;
+                    break;
 
-            ComputerName = sysInfo[0] as string;
-            Model = sysInfo[1] as string;
-            Memory = Convert.ToDecimal(sysInfo[2]) / 1024 / 1024 / 1024;
-            OperatingSystem = string.Format("{0} ({1})", sysInfo[3], sysInfo[4]);
-            Processor = sysInfo[5] as string;
+                case MessageCode.LicenseChanged:
+                    License = LicenseManager.Instance.License;
+                    break;
+            }
         }
     }
 }

@@ -4,12 +4,12 @@ using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
-    class Settings
+    class SettingsManager
     {
-        static volatile Settings _instance;
+        static volatile SettingsManager _instance;
         string _codeName, _appDirectory, _pluginsDirectory, _pluginsSearchFilter;
 
-        private Settings()
+        private SettingsManager()
         {
             _codeName = "Janitor";
             _appDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), CodeName);
@@ -37,12 +37,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
             get { return _pluginsSearchFilter; }
         }
 
-        public static Settings Instance
+        public static SettingsManager Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new Settings();
+                    _instance = new SettingsManager();
 
                 return _instance;
             }

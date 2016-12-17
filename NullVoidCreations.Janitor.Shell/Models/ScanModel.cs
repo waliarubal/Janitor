@@ -14,7 +14,7 @@ namespace NullVoidCreations.Janitor.Core.Models
         CustomScan
     }
 
-    public class Scan: NotificationBase, IDisposable, IObserver
+    public class ScanModel: NotificationBase, IDisposable, IObserver
     {
         ScanType _type;
         string _name;
@@ -23,7 +23,7 @@ namespace NullVoidCreations.Janitor.Core.Models
 
         #region constructor / destructor
 
-        public Scan(ScanType type)
+        public ScanModel(ScanType type)
         {
             _type = type;
             _name = _type == ScanType.SmartScan ? "Smart Scan" : "Custom Scan";
@@ -36,7 +36,7 @@ namespace NullVoidCreations.Janitor.Core.Models
             Subject.Instance.AddObserver(this);
         }
 
-        ~Scan()
+        ~ScanModel()
         {
             Dispose();
         }
@@ -94,7 +94,7 @@ namespace NullVoidCreations.Janitor.Core.Models
             int progressMin, 
             int progressCurrent)
         {
-            var status = new ScanStatus(target, area, isRunning);
+            var status = new ScanStatusModel(target, area, isRunning);
             status.TargetScanned = targetsScanned;
             status.AreaScanned = areasScanned;
             status.IssueCount = issueCount;

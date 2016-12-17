@@ -14,14 +14,16 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Firefox
             : base("Mozilla Firefox", new Version("1.0.0.0"), DateTime.Now)
         {
             IconSource = "/NullVoidCreations.Janitor.Plugin.Browser;component/Resources/Firefox.png";
+            _profiles = new List<string>();
 
             var configFile = Path.Combine(KnownPaths.Instance.AppDataRoaming, @"Mozilla\Firefox\profiles.ini");
-
-            _profiles = new List<string>();
-            foreach (var line in File.ReadAllLines(configFile))
+            if (File.Exists(configFile))
             {
-                if (line.StartsWith("Path=Profiles/", StringComparison.InvariantCultureIgnoreCase))
-                    _profiles.Add(line.Substring("Path=Profiles/".Length));
+                foreach (var line in File.ReadAllLines(configFile))
+                {
+                    if (line.StartsWith("Path=Profiles/", StringComparison.InvariantCultureIgnoreCase))
+                        _profiles.Add(line.Substring("Path=Profiles/".Length));
+                }
             }
 
             var areas = new List<ScanAreaBase>()

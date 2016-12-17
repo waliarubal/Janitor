@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
-using NullVoidCreations.Janitor.Shell.ViewModels;
+﻿using System.Windows.Controls;
 
 namespace NullVoidCreations.Janitor.Shell.Views
 {
@@ -12,18 +10,6 @@ namespace NullVoidCreations.Janitor.Shell.Views
         public AboutView()
         {
             InitializeComponent();
-            Loaded += new System.Windows.RoutedEventHandler(AboutView_Loaded);
-        }
-
-        void AboutView_Loaded(object sender, EventArgs e)
-        {
-            Loaded -= new System.Windows.RoutedEventHandler(AboutView_Loaded);
-
-            var viewModel = DataContext as AboutViewModel;
-            if (viewModel == null)
-                return;
-
-            viewModel.GetTargets.Execute(null);
         }
     }
 }

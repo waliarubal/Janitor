@@ -6,7 +6,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
     {
         ScanStatusChanged,
         ScanStarted,
-        ScanStopped
+        ScanStopped,
+        PluginsLoaded,
+        PluginsUnloaded,
+        SystemInformationLoaded,
+        LicenseChanged
     }
 
     class Subject
@@ -56,8 +60,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         public void NotifyAllObservers(IObserver sender, MessageCode code, params object[] data)
         {
             foreach (var observer in _observers)
-                if (observer != sender)
-                    observer.Update(sender, code, data);
+                observer.Update(sender, code, data);
         }
     }
 }

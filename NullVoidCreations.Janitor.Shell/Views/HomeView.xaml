@@ -20,6 +20,7 @@
                 BorderThickness="0 0 0 1">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
@@ -28,17 +29,20 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Text="Maximum Cleaning" Foreground="{StaticResource ResourceKey=GoodBrush}" FontWeight="Heavy" FontSize="22" Margin="24 12 0 0"/>
-                <TextBlock Grid.Row="1"  Margin="24 4 0 0" FontSize="12" Text="Product is not activated. Please click 'Buy Now' to purchase a license or 'Activate Product' to activate the product." TextWrapping="Wrap" Foreground="{StaticResource ResourceKey=TextBrush}" />
-                <Image Grid.RowSpan="3" Grid.Column="1" Source="/NullVoidCreations.Janitor.Shell;component/Resources/LogoBig.png" />
-                <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="24 4 0 12">
-                    <!--buy now-->
+
+                <Image Margin="24 12 0 0" Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" Grid.RowSpan="2" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png" VerticalAlignment="Top" />
+                <Image Margin="24 12 0 0" Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" Grid.RowSpan="2" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png" VerticalAlignment="Top" />
+
+                <TextBlock Grid.Column="1" Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" Text="Maximum Cleaning" TextWrapping="Wrap" Foreground="{StaticResource ResourceKey=GoodBrush}" FontWeight="Heavy" FontSize="22" Margin="12 12 0 0"/>
+                <TextBlock Grid.Column="1" Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" Text="Maximum cleaning is not ensured" TextWrapping="Wrap" Foreground="{StaticResource ResourceKey=BadBrush}" FontWeight="Heavy" FontSize="22" Margin="12 12 0 0"/>
+
+                <TextBlock Grid.Column="1" Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" Grid.Row="1"  Margin="12 4 0 0" FontSize="12" Text="Product is not activated. Please click 'Buy Now' to purchase a license or 'Activate Product' to activate the product." TextWrapping="Wrap" Foreground="{StaticResource ResourceKey=TextBrush}" />
+                <StackPanel Grid.Column="1" Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" Orientation="Horizontal" Grid.Row="2" Margin="12 4 0 12">
                     <Button Margin="0 0 4 0" Content="Buy Now" Foreground="{StaticResource ResourceKey=BackgroundBrush}" FontSize="12" MinWidth="120" Style="{StaticResource ResourceKey=BlackButtonStyle}"/>
-                    <!--activate-->
                     <Button Margin="4 0 0 0" Content="Activate Product" Foreground="{StaticResource ResourceKey=TextBrush}" FontSize="12" MinWidth="120" />
                 </StackPanel>
                 
-                
+                <Image Grid.Column="2" Grid.RowSpan="3" Source="/NullVoidCreations.Janitor.Shell;component/Resources/LogoBig.png" />
             </Grid>
         </Border>
 
@@ -78,7 +82,7 @@
                 <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Path=OperatingSystem, Mode=OneWay}" />
 
                 <Image Grid.Row="2" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Memory.png" />
-                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Path=Memory, Mode=OneWay, StringFormat='{}{0:N2} GB'}" />
+                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Path=Memory, Mode=OneWay, StringFormat='{}{0:N2} GB RAM'}" />
 
                 <Image Grid.Row="3" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Processor.png" />
                 <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Path=Processor, Mode=OneWay}" />

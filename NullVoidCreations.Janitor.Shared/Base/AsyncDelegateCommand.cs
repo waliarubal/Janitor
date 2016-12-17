@@ -24,8 +24,6 @@ namespace NullVoidCreations.Janitor.Shared.Base
         {
             if (method == null)
                 throw new ArgumentNullException("method");
-            if (callback == null)
-                throw new ArgumentNullException("callback");
 
             _method = method;
             _callback = callback;
@@ -51,7 +49,7 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
         void WorkCompleted(object sender, RunWorkerCompletedEventArgs target)
         {
-            if (target.Error == null)
+            if (target.Error == null && _callback != null)
                 _callback.Invoke(target.Result);
 
             ViewModel.IsExecuting = IsExecuting = false;

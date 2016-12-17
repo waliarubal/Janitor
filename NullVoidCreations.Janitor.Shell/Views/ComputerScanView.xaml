@@ -114,18 +114,26 @@
                     <Button Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" Margin="0 2" HorizontalAlignment="Right">Fix Issues</Button>
                 </Grid>
                 
-
-                <wpf:DataGrid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding Path=Scan.Issues, Mode=OneWay}" Foreground="{StaticResource ResourceKey=BadBrush}">
+                <wpf:DataGrid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding Path=Scan.Issues, Mode=OneWay}" Foreground="{StaticResource ResourceKey=TextBrush}">
                     <wpf:DataGrid.Columns>
                         <wpf:DataGridTemplateColumn Header="Details" MinWidth="380" Width="380">
                             <wpf:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="{Binding Path=Target.IconSource, Mode=OneWay}" Width="16" Height="16" Margin="6 0 2 0" ToolTip="{Binding Path=Target.Name, Mode=OneWay}"/>
-                                        <TextBlock Text="{Binding Path=Details, Mode=OneWay}" 
+                                    <Grid Margin="6 0 2 0" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Grid.Column="0"
+                                               Source="{Binding Path=Target.IconSource, Mode=OneWay}" 
+                                               Width="16" 
+                                               Height="16" 
+                                               Margin="0 0 2 0"
+                                               ToolTip="{Binding Path=Target.Name, Mode=OneWay}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Path=Details, Mode=OneWay}" 
                                                TextTrimming="CharacterEllipsis" 
                                                ToolTip="{Binding Path=Details, Mode=OneWay}"/>
-                                    </StackPanel>
+                                    </Grid>
                                 </DataTemplate>
                             </wpf:DataGridTemplateColumn.CellTemplate>
                         </wpf:DataGridTemplateColumn>

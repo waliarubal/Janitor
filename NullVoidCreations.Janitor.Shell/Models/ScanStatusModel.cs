@@ -3,9 +3,9 @@ using NullVoidCreations.Janitor.Shared.Models;
 
 namespace NullVoidCreations.Janitor.Shell.Models
 {
-    public class ScanStatus: NotificationBase
+    public class ScanStatusModel: NotificationBase
     {
-        public ScanStatus(ScanTargetBase target, ScanAreaBase area, bool isRunning)
+        public ScanStatusModel(ScanTargetBase target, ScanAreaBase area, bool isRunning)
         {
             Target = target;
             Area = area;

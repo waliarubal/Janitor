@@ -18,6 +18,7 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.InternetExplorer
             var paths = new string[]
             {
                 Path.Combine(KnownPaths.Instance.AppDataLocal, @"Microsoft\Windows\History\History.IE5"),
+                Path.Combine(KnownPaths.Instance.AppDataLocal, @"Microsoft\Windows\History\Low\History.IE5"),
                 Path.Combine(KnownPaths.Instance.AppDataLocal, @"Microsoft\Internet Explorer\Recovery\Last Active"),
                 Path.Combine(KnownPaths.Instance.AppDataLocal, @"Microsoft\Internet Explorer\Recovery\High\Last Active"),
                 Path.Combine(KnownPaths.Instance.AppDataLocal, @"Microsoft\Internet Explorer\Recovery\High\Active")

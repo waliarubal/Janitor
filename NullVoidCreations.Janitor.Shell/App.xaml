@@ -5,6 +5,7 @@
              xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Converters"
              StartupUri="/NullVoidCreations.Janitor.Shell;component/Views/MainView.xaml">
     <Application.Resources>
+
         <!--converters-->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <c:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
@@ -35,14 +36,14 @@
             <Setter Property="BorderThickness" Value="0 0 0 1" />
             <Setter Property="Height" Value="40" />
         </Style>
-        
+
         <Style TargetType="TextBlock" x:Key="HeaderTitleStyle">
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
-        
+
         <Style TargetType="Border" x:Key="ActiveAreaStyle">
             <Setter Property="Background" Value="{StaticResource ResourceKey=BackgroundActiveBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=BorderBrush}" />
@@ -51,7 +52,7 @@
             <Setter Property="Padding" Value="8" />
             <Setter Property="Margin" Value="20 20 20 0" />
         </Style>
-        
+
         <Style TargetType="Button" x:Key="BlackButtonStyle">
             <Setter Property="Template">
                 <Setter.Value>
@@ -80,7 +81,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="Button" x:Key="ImageButtonStyle">
             <Setter Property="Template">
                 <Setter.Value>
@@ -106,7 +107,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style x:Key="Spinner" TargetType="Image">
             <Setter Property="Height" Value="18" />
             <Setter Property="Width" Value="18" />
@@ -150,11 +151,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="FrameworkElement">
             <Setter Property="Margin" Value="2" />
         </Style>
-       
+
         <Style TargetType="Button">
             <Setter Property="Template">
                 <Setter.Value>
@@ -177,13 +178,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style TargetType="Image">
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
             <Setter Property="RenderOptions.EdgeMode" Value="Aliased" />
         </Style>
-        
+
         <Style TargetType="{x:Type wpf:DataGrid}">
             <Setter Property="Background" Value="{StaticResource ResourceKey=BackgroundBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=BorderBrush}" />
@@ -192,7 +193,7 @@
             <Setter Property="AutoGenerateColumns" Value="False" />
             <Setter Property="GridLinesVisibility" Value="None" />
         </Style>
-        
+
         <Style TargetType="{x:Type wpf:DataGridColumnHeader}">
             <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
             <Setter Property="BorderThickness" Value="0 0 1 1" />
@@ -338,6 +339,6 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-         </Style>
+        </Style>
     </Application.Resources>
 </Application>

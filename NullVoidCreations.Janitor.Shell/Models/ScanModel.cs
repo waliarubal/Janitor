@@ -31,7 +31,10 @@ namespace NullVoidCreations.Janitor.Core.Models
             _issues = new List<Issue>();
 
             foreach (var target in PluginManager.Instance.Targets)
+            {
+                target.Reset(type == ScanType.SmartScan);
                 _targets.Add(target);
+            }
 
             Subject.Instance.AddObserver(this);
         }

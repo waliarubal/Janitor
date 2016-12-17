@@ -6,7 +6,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
 {
     class LicenseManager: IObserver
     {
-        const string LicenseFileName = "License.key";
         internal const string EncryptionKey = "QFByb3Blcl9QYXRvbGEhMjAxNQ==";
 
         static volatile LicenseManager _instance;
@@ -50,19 +49,14 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         public void LoadLicense()
         {
-            var licenseKey = Path.Combine(KnownPaths.Instance.ApplicationDirectory, LicenseFileName);
-            if (File.Exists(licenseKey))
-            {
-                licenseKey = File.ReadAllText(licenseKey);
-                _license.Validate(licenseKey);
-            }
-
+            _license.Validate(SettingsManager.Instance.LicenseKey);
             Subject.Instance.NotifyAllObservers(this, MessageCode.LicenseChanged);
         }
 
         public bool ValidateLicense(string key)
         {
             var result = _license.Validate(key);
+            SettingsManager.Instance.LicenseKey = key;
             Subject.Instance.NotifyAllObservers(this, MessageCode.LicenseChanged);
 
             return result;

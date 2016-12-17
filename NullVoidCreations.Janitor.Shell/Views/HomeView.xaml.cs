@@ -18,7 +18,7 @@ namespace NullVoidCreations.Janitor.Shell.Views
         void HomeView_Loaded(object sender, EventArgs e)
         {
             Loaded -= new System.Windows.RoutedEventHandler(HomeView_Loaded);
-            
+
             var viewModel = DataContext as HomeViewModel;
             if (viewModel == null)
                 return;

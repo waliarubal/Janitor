@@ -9,12 +9,12 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     {
         volatile ScanModel _scan;
         volatile ScanStatusModel _progress;
-        CommandBase _smartScan, _customScan;
+        CommandBase _doScan;
 
         public ComputerScanViewModel()
         {
             _progress = new ScanStatusModel(null, null, false);
-            _smartScan = new SmartScanCommand(this);
+            _doScan = new ScanCommand(this);
         }
 
         #region properties
@@ -49,14 +49,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #region commands
 
-        public CommandBase SmartScan
+        public CommandBase DoScan
         {
-            get { return _smartScan; }
-        }
-
-        public CommandBase CustomScan
-        {
-            get { return _smartScan; }
+            get { return _doScan; }
         }
 
         #endregion

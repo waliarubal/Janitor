@@ -3,11 +3,11 @@
 namespace NullVoidCreations.Janitor.Shell.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ScanTargetBrowserView.xaml
     /// </summary>
-    public partial class MainView
+    public partial class CustomScanView : Window
     {
-        public MainView()
+        public CustomScanView()
         {
             InitializeComponent();
         }

@@ -8,25 +8,22 @@ using NullVoidCreations.Janitor.Shell.ViewModels;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
-    public class SmartScanCommand: CommandBase, IObserver
+    public class ScanCommand: CommandBase, IObserver
     {
         ComputerScanViewModel _viewModel;
         BackgroundWorker _worker;
 
         #region constructor / destructor
        
-        public SmartScanCommand(ComputerScanViewModel viewModel)
+        public ScanCommand(ComputerScanViewModel viewModel)
             : base(viewModel)
         {
-            Title = "Smart Scan";
-            Description = "Perform a full system scan looking all the scan targets for issues.";
-
             _viewModel = ViewModel as ComputerScanViewModel;
 
             Subject.Instance.AddObserver(this);
         }
 
-        ~SmartScanCommand()
+        ~ScanCommand()
         {
             Subject.Instance.RemoveObserver(this);
 
@@ -43,6 +40,44 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         public override void Execute(object parameter)
         {
+            switch(parameter as string)
+            {
+                case "Smart":
+                    StartScan(ScanType.SmartScan);
+                    break;
+
+                case "Custom":
+                    StartScan(ScanType.CustomScan);
+                    break;
+
+                case "Repeat":
+                    break;
+
+                case "Cancel":
+                    CancelScan();
+                    break;
+
+                case "Fix":
+                    // TODO: add cleaner starting code
+                    break;
+            }
+
+            
+        }
+
+        public void Update(IObserver sender, MessageCode code, params object[] data)
+        {
+            switch(code)
+            {
+                case MessageCode.ScanStatusChanged:
+                    if (_worker.IsBusy)
+                        _worker.ReportProgress(-1, data[0]);
+                    break;
+            }
+        }
+
+        void StartScan(ScanType type)
+        {
             if (_viewModel.IsExecuting)
                 return;
 
@@ -55,11 +90,15 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _worker.ProgressChanged += new ProgressChangedEventHandler(Worker_ProgressChanged);
             _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
 
-            _viewModel.Scan = new ScanModel(ScanType.SmartScan);
-            foreach (var target in _viewModel.Scan.Targets)
+            _viewModel.Scan = new ScanModel(type);
+            if (type == ScanType.SmartScan)
             {
-                foreach (var area in target.Areas)
-                    area.IsSelected = true;
+                // select all areas for smart scan
+                foreach (var target in _viewModel.Scan.Targets)
+                {
+                    foreach (var area in target.Areas)
+                        area.IsSelected = true;
+                }
             }
 
             _worker.RunWorkerAsync(_viewModel.Scan);
@@ -75,6 +114,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             Thread.CurrentThread.IsBackground = true;
             Thread.CurrentThread.Priority = ThreadPriority.Lowest;
 
+            // TODO: allow scan cancellation
+            if (_worker.CancellationPending)
+                return;
+
             var activeScan = e.Argument as ScanModel;
             if (activeScan != null)
                 activeScan.Analyse();
@@ -88,15 +131,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _viewModel.IsExecuting = IsExecuting = false;
         }
 
-        public void Update(IObserver sender, MessageCode code, params object[] data)
+        void CancelScan()
         {
-            switch(code)
-            {
-                case MessageCode.ScanStatusChanged:
-                    if (_worker.IsBusy)
-                        _worker.ReportProgress(-1, data[0]);
-                    break;
-            }
+            if (_worker != null && _worker.IsBusy)
+                _worker.CancelAsync();
         }
     }
 }

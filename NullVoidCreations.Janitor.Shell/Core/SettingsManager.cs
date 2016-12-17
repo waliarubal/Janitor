@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using NullVoidCreations.Janitor.Shared.Helpers;
+using NullVoidCreations.Janitor.Shell.Properties;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -18,6 +19,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
             if (!Directory.Exists(PluginsDirectory))
                 Directory.CreateDirectory(PluginsDirectory);
+        }
+
+        ~SettingsManager()
+        {
+            Settings.Default.Save();
         }
 
         #region properties
@@ -45,6 +51,18 @@ namespace NullVoidCreations.Janitor.Shell.Core
                     _instance = new SettingsManager();
 
                 return _instance;
+            }
+        }
+
+        public string LicenseKey
+        {
+            get { return Settings.Default.LicenseKey; }
+            set
+            {
+                if (value == Settings.Default.LicenseKey)
+                    return;
+
+                Settings.Default.LicenseKey = value;
             }
         }
 

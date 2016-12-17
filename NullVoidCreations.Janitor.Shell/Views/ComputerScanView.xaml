@@ -54,11 +54,16 @@
                 <Image Margin="0 0 8 0" Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanAlternate.png" />
                 <TextBlock Text="{Binding Path=Scan.Name, Mode=OneWay, FallbackValue='Not Scanning'}" Grid.Column="1" FontSize="12" FontWeight="Bold" />
                 <ProgressBar Grid.Column="2" 
+                             Visibility="{Binding Path=ScanStatus.IsRunning, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"
                              Maximum="{Binding Path=ScanStatus.ProgressMax, Mode=OneWay, FallbackValue=1}" 
                              Minimum="{Binding Path=ScanStatus.ProgressMin, Mode=OneWay, FallbackValue=0}"
                              Value="{Binding Path=ScanStatus.ProgressCurrent, Mode=OneWay, FallbackValue=0}"/>
-                
-                <Button Grid.Column="3" Margin="4 0 0 0" Style="{StaticResource ResourceKey=ImageButtonStyle}" ToolTip="Stop Scan">
+
+                <Button Grid.Column="3" Margin="4 0 0 0" 
+                        Style="{StaticResource ResourceKey=ImageButtonStyle}" 
+                        ToolTip="Stop Scan" 
+                        Command="{Binding Path=DoScan, Mode=OneTime}" CommandParameter="Cancel"
+                        Visibility="{Binding Path=ScanStatus.IsRunning, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
                     <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Stop.png" />
                 </Button>
 
@@ -90,7 +95,7 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Image Margin="0 0 8 0" Grid.RowSpan="2" HorizontalAlignment="Center" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png" Visibility="{Binding Path=ScanStatus.IsHavingIssues, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"/>
                     <Image Margin="0 0 8 0" Grid.RowSpan="2" HorizontalAlignment="Center" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png" Visibility="{Binding Path=ScanStatus.IsHavingIssues, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}"/>
@@ -98,7 +103,7 @@
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="Warning" Style="{StaticResource ResourceKey=HeaderTitleStyle}" HorizontalAlignment="Left" Foreground="{StaticResource ResourceKey=BadBrush}" Visibility="{Binding Path=ScanStatus.IsHavingIssues, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"/>
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="Maximum Performance" Style="{StaticResource ResourceKey=HeaderTitleStyle}" HorizontalAlignment="Left" Foreground="{StaticResource ResourceKey=GoodBrush}" Visibility="{Binding Path=ScanStatus.IsHavingIssues, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}"/>
 
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="One or more issues found." Foreground="{StaticResource ResourceKey=TextBrush}" Visibility="{Binding Path=ScanStatus.IsHavingIssues, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=ScanStatus.IssueCount, Mode=OneWay, StringFormat='{}{0} issues found which need your attention.'}" Foreground="{StaticResource ResourceKey=TextBrush}" Visibility="{Binding Path=ScanStatus.IsHavingIssues, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" TextWrapping="Wrap"/>
                     <TextBlock Grid.Row="1" Grid.Column="1" Text="No issue found." Foreground="{StaticResource ResourceKey=TextBrush}" Visibility="{Binding Path=ScanStatus.IsHavingIssues, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
                 </Grid>
 
@@ -111,12 +116,12 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Foreground="{StaticResource ResourceKey=TextBrush}" TextWrapping="Wrap" Text="The following list contains issues found during computer scan and must be cleaned to ensure system performance. Click on fix issues button to resolve them." />
-                    <Button Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" Margin="0 2" HorizontalAlignment="Right">Fix Issues</Button>
+                    <Button Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" Margin="4 2 0 2" HorizontalAlignment="Right"  Command="{Binding Path=DoScan, Mode=OneTime}" CommandParameter="Fix">Fix Issues</Button>
                 </Grid>
                 
                 <wpf:DataGrid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding Path=Scan.Issues, Mode=OneWay}" Foreground="{StaticResource ResourceKey=TextBrush}">
                     <wpf:DataGrid.Columns>
-                        <wpf:DataGridTemplateColumn Header="Details" MinWidth="380" Width="380">
+                        <wpf:DataGridTemplateColumn Header="Details" Width="360">
                             <wpf:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid Margin="6 0 2 0" >
@@ -137,7 +142,7 @@
                                 </DataTemplate>
                             </wpf:DataGridTemplateColumn.CellTemplate>
                         </wpf:DataGridTemplateColumn>
-                        <wpf:DataGridTemplateColumn Header="Area" MinWidth="100" Width="100">
+                        <wpf:DataGridTemplateColumn Header="Area" Width="100">
                             <wpf:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Path=Area.Name, Mode=OneWay}" 
@@ -195,7 +200,7 @@
                     <Setter Property="VerticalAlignment" Value="Top" />
                 </Style>
             </Grid.Resources>
-            <Button Command="{Binding Path=SmartScan, Mode=OneTime}">
+            <Button Command="{Binding Path=DoScan, Mode=OneTime}" CommandParameter="Smart">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -206,11 +211,11 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Image Grid.RowSpan="2" Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanFull.png" />
-                    <TextBlock Grid.Column="1" Style="{StaticResource ResourceKey=ScanNameStyle}" Text="{Binding Path=SmartScan.Title, Mode=OneTime}" />
-                    <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource ResourceKey=ScanDescriptionStyle}" Text="{Binding Path=SmartScan.Description, Mode=OneTime}"  />
+                    <TextBlock Grid.Column="1" Style="{StaticResource ResourceKey=ScanNameStyle}" Text="Smart Scan" />
+                    <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource ResourceKey=ScanDescriptionStyle}" Text="Perform a full system scan looking all the scan targets for issues."  />
                 </Grid>
             </Button>
-            <Button Grid.Column="1">
+            <Button Grid.Column="1" Command="{Binding Path=DoScan, Mode=OneTime}" CommandParameter="Custom">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -225,7 +230,7 @@
                     <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource ResourceKey=ScanDescriptionStyle}" Text="Perform a system scan looking only the selected scan targets for issues."  />
                 </Grid>
             </Button>
-            <Button Grid.Row="1">
+            <Button Grid.Row="1" Command="{Binding Path=DoScan, Mode=OneTime}" CommandParameter="Repeat">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />

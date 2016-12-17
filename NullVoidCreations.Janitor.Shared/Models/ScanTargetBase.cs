@@ -128,6 +128,25 @@ namespace NullVoidCreations.Janitor.Shared.Models
 
         #endregion
 
+        /// <summary>
+        /// This method sets selected state of areas previously selected by user and clears list of issues from previous scan.
+        /// It is necessary because targets are shared among various scan operations.
+        /// </summary>
+        public void Reset(bool selectAllAreas)
+        {
+            if (_areas != null && _areas.Count > 0)
+            {
+                foreach (var area in _areas)
+                {
+                    // if area is previously selected, clear its issue list
+                    if (area.IsSelected && area.Issues != null)
+                        area.Issues.Clear();
+
+                    area.IsSelected = selectAllAreas;
+                }
+            }
+        }
+
         public override int GetHashCode()
         {
             return ToString().GetHashCode();

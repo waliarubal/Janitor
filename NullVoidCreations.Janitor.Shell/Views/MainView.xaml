@@ -4,15 +4,29 @@
         xmlns:v="clr-namespace:NullVoidCreations.Janitor.Shell.Views"
         xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
         xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
-        Title="PC Mechanic Pro" 
+        Title="PC MECHANIC PRO™" 
         Height="580" 
         Width="780" 
         WindowStartupLocation="CenterScreen" 
         ResizeMode="CanMinimize"
         Background="{StaticResource ResourceKey=BackgroundBrush}">
-    <Window.DataContext>
+    <c:CustomWindow.DataContext>
         <vm:MainViewModel />
-    </Window.DataContext>
+    </c:CustomWindow.DataContext>
+    <c:CustomWindow.HeaderContent>
+        <Grid>
+            <Image Width="32"
+                   Height="32"
+                   Margin="0 0 8 0"
+                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png" 
+                   Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}"/>
+            <Image Width="32"
+                   Height="32"
+                   Margin="0 0 8 0"
+                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png" 
+                   Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"/>
+        </Grid>
+    </c:CustomWindow.HeaderContent>
     <!--<Border Height="40" 
                 BorderBrush="{StaticResource ResourceKey=HeaderBorderBrush}"
                 Background="{StaticResource ResourceKey=HeaderBackgroundBrush}"

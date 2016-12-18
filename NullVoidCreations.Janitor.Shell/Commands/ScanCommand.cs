@@ -5,6 +5,7 @@ using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Models;
 using NullVoidCreations.Janitor.Shell.ViewModels;
+using NullVoidCreations.Janitor.Shell.Views;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
@@ -47,6 +48,9 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                     break;
 
                 case "Custom":
+                    var scanParameters = new CustomScanView();
+                    scanParameters.ShowDialog();
+
                     StartScan(ScanType.CustomScan);
                     break;
 

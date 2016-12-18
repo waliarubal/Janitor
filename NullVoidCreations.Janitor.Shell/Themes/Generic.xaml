@@ -5,6 +5,7 @@
 
     <Style TargetType="{x:Type local:CustomWindow}">
         <Style.Resources>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <SolidColorBrush x:Key="HeaderBorderBrush" Color="#44525F" />
             <SolidColorBrush x:Key="BackgroundBrush" Color="#FFFFFF" />
             <LinearGradientBrush x:Key="HeaderBackgroundBrush" StartPoint="0.5,0" EndPoint="0.5,1">
@@ -18,17 +19,18 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="bdrOuter" 
-                                    Background="{StaticResource ResourceKey=HeaderBackgroundBrush}">
+                                    Background="{StaticResource ResourceKey=HeaderBackgroundBrush}"
+                                    BorderThickness="1">
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Content" />
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Border.BorderThickness" Value="1" TargetName="bdrOuter" />
                                     <Setter Property="Border.CornerRadius" Value="2" TargetName="bdrOuter" />
+                                    <Setter Property="Border.BorderBrush" Value="#FFFFFF" TargetName="bdrOuter" />
                                     <Setter Property ="Border.Effect" TargetName="bdrOuter">
                                         <Setter.Value>
                                             <DropShadowEffect ShadowDepth="0"
-                                                              Color="#44525F"
+                                                              Color="#FFFFFF"
                                                               Opacity="1" />
                                         </Setter.Value>
                                     </Setter>
@@ -68,8 +70,9 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <Image Margin="8 0 4 0" 
+                                    <Image Margin="8 0 8 0" 
                                            Width="28" 
                                            Height="28" 
                                            VerticalAlignment="Center"
@@ -84,7 +87,10 @@
                                                FontFamily="Verdana"
                                                FontWeight="Normal"
                                                FontSize="18"/>
-                                    <Button Grid.Column="2" Name="PART_Minimize" Style="{StaticResource ResourceKey=WindowButtonStyle}">
+                                    <ContentPresenter VerticalAlignment="Center" Grid.Column="2" Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HeaderContent}" />
+                                    <Button Grid.Column="3" Name="PART_Minimize" 
+                                            Style="{StaticResource ResourceKey=WindowButtonStyle}" 
+                                            Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMinimizeAllowed, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
                                         <Canvas Width="16" Height="16" Margin="2">
                                             <Path Stroke="{StaticResource ResourceKey=BackgroundBrush}" StrokeThickness="3">
                                                 <Path.Data>
@@ -99,7 +105,9 @@
                                             </Path>
                                         </Canvas>
                                     </Button>
-                                    <Button Grid.Column="3" Margin="4 0 8 0" Name="PART_Close" Style="{StaticResource ResourceKey=WindowButtonStyle}">
+                                    <Button Grid.Column="4" Margin="4 0 8 0" Name="PART_Close" 
+                                            Style="{StaticResource ResourceKey=WindowButtonStyle}"
+                                            Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsCloseAllowed, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
                                         <Canvas Width="16" Height="16" Margin="2">
                                             <Path Stroke="{StaticResource ResourceKey=BackgroundBrush}" StrokeThickness="3">
                                                 <Path.Data>

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:wpf="http://schemas.microsoft.com/wpf/2008/toolkit"
              xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Converters"
+             xmlns:local="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
              StartupUri="/NullVoidCreations.Janitor.Shell;component/Views/MainView.xaml">
     <Application.Resources>
 
@@ -132,6 +133,132 @@
                     </Trigger.EnterActions>
                 </Trigger>
             </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type local:CustomWindow}" x:Key="ChildWindowStyle">
+            <Style.Resources>
+                <Style TargetType="Button" x:Key="WindowButtonStyle">
+                    <Setter Property="Foreground" Value="{StaticResource ResourceKey=BackgroundBrush}" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="bdrOuter" 
+                                    Background="{StaticResource ResourceKey=HeaderBackgroundBrush}"
+                                    BorderThickness="1">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Content" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Border.CornerRadius" Value="2" TargetName="bdrOuter" />
+                                        <Setter Property="Border.BorderBrush" Value="#FFFFFF" TargetName="bdrOuter" />
+                                        <Setter Property ="Border.Effect" TargetName="bdrOuter">
+                                            <Setter.Value>
+                                                <DropShadowEffect ShadowDepth="0"
+                                                              Color="#FFFFFF"
+                                                              Opacity="1" />
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Style.Resources>
+            <Setter Property="AllowsTransparency" Value="True"/>
+            <Setter Property="WindowStyle" Value="None"/>
+            <Setter Property="ResizeMode" Value="NoResize"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="MaxWidth" Value="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}" />
+            <Setter Property="MaxHeight" Value="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type local:CustomWindow}">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{StaticResource ResourceKey=HeaderBorderBrush}"
+                            BorderThickness="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Border Height="28" 
+                                    BorderBrush="{StaticResource ResourceKey=HeaderBorderBrush}"
+                                    Background="{StaticResource ResourceKey=HeaderBackgroundBrush}"
+                                    BorderThickness="0 0 0 1"
+                                    Name="PART_Title">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Margin="4 0" 
+                                           Width="22" 
+                                           Height="22" 
+                                           VerticalAlignment="Center"
+                                           SnapsToDevicePixels="True"
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Logo.png" />
+                                        <TextBlock Text="{TemplateBinding Title}" 
+                                               Grid.Column="1"
+                                               Foreground="{StaticResource ResourceKey=BackgroundBrush}"
+                                               VerticalAlignment="Center"
+                                               FontFamily="Verdana"
+                                               FontWeight="Normal"
+                                               FontSize="14"/>
+                                        <ContentPresenter VerticalAlignment="Center" Grid.Column="2" Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HeaderContent}" />
+                                        <Button Grid.Column="3" Name="PART_Minimize" 
+                                            Style="{StaticResource ResourceKey=WindowButtonStyle}" 
+                                            Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMinimizeAllowed, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+                                            <Canvas Width="16" Height="16" Margin="2">
+                                                <Path Stroke="{StaticResource ResourceKey=BackgroundBrush}" StrokeThickness="3">
+                                                    <Path.Data>
+                                                        <PathGeometry>
+                                                            <PathGeometry.Figures>
+                                                                <PathFigure StartPoint="2,8">
+                                                                    <LineSegment Point="14,8"/>
+                                                                </PathFigure>
+                                                            </PathGeometry.Figures>
+                                                        </PathGeometry>
+                                                    </Path.Data>
+                                                </Path>
+                                            </Canvas>
+                                        </Button>
+                                        <Button Grid.Column="4" Margin="4 0 4 0" Name="PART_Close" 
+                                            Style="{StaticResource ResourceKey=WindowButtonStyle}"
+                                            Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsCloseAllowed, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+                                            <Canvas Width="16" Height="16" Margin="2">
+                                                <Path Stroke="{StaticResource ResourceKey=BackgroundBrush}" StrokeThickness="3">
+                                                    <Path.Data>
+                                                        <PathGeometry>
+                                                            <PathGeometry.Figures>
+                                                                <PathFigure StartPoint="2,2">
+                                                                    <LineSegment Point="14,14"/>
+                                                                </PathFigure>
+                                                                <PathFigure StartPoint="2,14">
+                                                                    <LineSegment Point="14,2"/>
+                                                                </PathFigure>
+                                                            </PathGeometry.Figures>
+                                                        </PathGeometry>
+                                                    </Path.Data>
+                                                </Path>
+                                            </Canvas>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                                <AdornerDecorator Grid.Row="1">
+                                    <ContentPresenter Margin="0 1 0 1" ContentSource="{TemplateBinding Content}" />
+                                </AdornerDecorator>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!--default styles-->

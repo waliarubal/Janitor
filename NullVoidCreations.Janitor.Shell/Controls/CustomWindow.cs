@@ -12,10 +12,43 @@ namespace NullVoidCreations.Janitor.Shell.Controls
         Border _title;
         Button _minimize, _close;
 
+        public static readonly DependencyProperty HeaderContentProperty, IsMinimizeAllowedProperty, IsCloseAllowedProperty;
+
         static CustomWindow()
         {
+            HeaderContentProperty = DependencyProperty.Register("HeaderContent", typeof(FrameworkElement), typeof(CustomWindow));
+            IsMinimizeAllowedProperty = DependencyProperty.Register("IsMinimizeAllowed", typeof(bool), typeof(CustomWindow));
+            IsCloseAllowedProperty = DependencyProperty.Register("IsCloseAllowed", typeof(bool), typeof(CustomWindow));
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CustomWindow), new FrameworkPropertyMetadata(typeof(CustomWindow)));
         }
+
+        public CustomWindow()
+        {
+            IsMinimizeAllowed = true;
+            IsCloseAllowed = true;
+        }
+
+        #region properties
+
+        public FrameworkElement HeaderContent
+        {
+            get { return (FrameworkElement)GetValue(HeaderContentProperty); }
+            set { SetValue(HeaderContentProperty, value); }
+        }
+
+        public bool IsMinimizeAllowed
+        {
+            get { return (bool)GetValue(IsMinimizeAllowedProperty); }
+            set { SetValue(IsMinimizeAllowedProperty, value); }
+        }
+
+        public bool IsCloseAllowed
+        {
+            get { return (bool)GetValue(IsCloseAllowedProperty); }
+            set { SetValue(IsCloseAllowedProperty, value); }
+        }
+
+        #endregion
 
         public override void OnApplyTemplate()
         {

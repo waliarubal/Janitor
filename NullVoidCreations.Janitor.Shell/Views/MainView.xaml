@@ -1,15 +1,15 @@
 ﻿<c:CustomWindow x:Class="NullVoidCreations.Janitor.Shell.Views.MainView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:v="clr-namespace:NullVoidCreations.Janitor.Shell.Views"
-        xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
-        xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
-        Title="PC MECHANIC PRO™" 
-        Height="580" 
-        Width="780" 
-        WindowStartupLocation="CenterScreen" 
-        ResizeMode="CanMinimize"
-        Background="{StaticResource ResourceKey=BackgroundBrush}">
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
+                xmlns:v="clr-namespace:NullVoidCreations.Janitor.Shell.Views"
+                xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
+                Title="PC MECHANIC PRO™"
+                Width="780"
+                Height="580"
+                Background="{StaticResource ResourceKey=BackgroundBrush}"
+                ResizeMode="CanMinimize"
+                WindowStartupLocation="CenterScreen">
     <c:CustomWindow.DataContext>
         <vm:MainViewModel />
     </c:CustomWindow.DataContext>
@@ -18,90 +18,97 @@
             <Image Width="32"
                    Height="32"
                    Margin="0 0 8 0"
-                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png" 
-                   Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}"/>
+                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png"
+                   Visibility="{Binding Path=IsOk,
+                                        Mode=OneWay,
+                                        Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
             <Image Width="32"
                    Height="32"
                    Margin="0 0 8 0"
-                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png" 
-                   Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"/>
+                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png"
+                   Visibility="{Binding Path=IsOk,
+                                        Mode=OneWay,
+                                        Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
         </Grid>
     </c:CustomWindow.HeaderContent>
-    <!--<Border Height="40" 
-                BorderBrush="{StaticResource ResourceKey=HeaderBorderBrush}"
-                Background="{StaticResource ResourceKey=HeaderBackgroundBrush}"
-                BorderThickness="0 0 0 1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Image Margin="8 0 8 0" 
-                       Width="28" 
-                       Height="28" 
-                       SnapsToDevicePixels="True"
-                       RenderOptions.BitmapScalingMode="HighQuality"
-                       RenderOptions.EdgeMode="Aliased"
-                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/Logo.png" />
-                <TextBlock Text="PC MECHANIC PRO" 
-                           Grid.Column="1"
-                           Foreground="{StaticResource ResourceKey=BackgroundBrush}"
-                           VerticalAlignment="Center"
-                           FontFamily="Arial"
-                           FontWeight="Normal"
-                           FontSize="18"/>
-                <Image Grid.Column="2"  
-                       Width="32"
-                       Height="32"
-                       Margin="0 0 8 0"
-                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png" 
-                       Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}"/>
-                <Image Grid.Column="3" 
-                       Width="32"
-                       Height="32"
-                       Margin="0 0 8 0"
-                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png" 
-                       Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"/>
-            </Grid>
-        </Border>-->
+    <!--
+        <Border Height="40"
+        BorderBrush="{StaticResource ResourceKey=HeaderBorderBrush}"
+        Background="{StaticResource ResourceKey=HeaderBackgroundBrush}"
+        BorderThickness="0 0 0 1">
+        <Grid>
+        <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Image Margin="8 0 8 0"
+        Width="28"
+        Height="28"
+        SnapsToDevicePixels="True"
+        RenderOptions.BitmapScalingMode="HighQuality"
+        RenderOptions.EdgeMode="Aliased"
+        Source="/NullVoidCreations.Janitor.Shell;component/Resources/Logo.png" />
+        <TextBlock Text="PC MECHANIC PRO"
+        Grid.Column="1"
+        Foreground="{StaticResource ResourceKey=BackgroundBrush}"
+        VerticalAlignment="Center"
+        FontFamily="Arial"
+        FontWeight="Normal"
+        FontSize="18"/>
+        <Image Grid.Column="2"
+        Width="32"
+        Height="32"
+        Margin="0 0 8 0"
+        Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png"
+        Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}"/>
+        <Image Grid.Column="3"
+        Width="32"
+        Height="32"
+        Margin="0 0 8 0"
+        Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png"
+        Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"/>
+        </Grid>
+        </Border>
+    -->
 
-    <TabControl Grid.Row="1" 
-                    TabStripPlacement="Left">
+    <TabControl Grid.Row="1" TabStripPlacement="Left">
         <TabControl.Resources>
-            <!--left side navigation panel style-->
+            <!--  left side navigation panel style  -->
             <Style TargetType="TabControl">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="TabControl">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TabPanel Grid.Column="0"
-                                              Panel.ZIndex="1"
-                                              Margin="0 40 0 0"
-                                              IsItemsHost="True" />
-                                <TextBlock Text="CLEANING AT YOUR FINGERTIPS"
-                                               Grid.Row="1" 
-                                               HorizontalAlignment="Center" 
-                                               Foreground="{StaticResource ResourceKey=TextBrush}"
-                                               FontSize="9"
-                                               FontWeight="Bold"
-                                               Margin="0 18"/>
-                                <Border Grid.Column="1"
-                                            Grid.RowSpan="2"
-                                            Background="{StaticResource ResourceKey=BackgroundBrush}" 
-                                            BorderBrush="{StaticResource ResourceKey=BorderBrush}"
-                                            BorderThickness="1 0 0 0">
+                                          Margin="0 40 0 0"
+                                          Panel.ZIndex="1"
+                                          IsItemsHost="True" />
+                                <TextBlock Grid.Row="1"
+                                           Margin="0 18"
+                                           HorizontalAlignment="Center"
+                                           FontSize="9"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource ResourceKey=TextBrush}"
+                                           Text="CLEANING AT YOUR FINGERTIPS" />
+                                <Border Grid.RowSpan="2"
+                                        Grid.Column="1"
+                                        Background="{StaticResource ResourceKey=BackgroundBrush}"
+                                        BorderBrush="{StaticResource ResourceKey=BorderBrush}"
+                                        BorderThickness="1 0 0 0">
                                     <Border.Effect>
-                                        <DropShadowEffect Direction="180" Color="#EDF0F5" ShadowDepth=".5" />
+                                        <DropShadowEffect Direction="180"
+                                                          ShadowDepth=".5"
+                                                          Color="#EDF0F5" />
                                     </Border.Effect>
                                     <ContentPresenter ContentSource="SelectedContent" />
                                 </Border>
@@ -111,25 +118,32 @@
                 </Setter>
             </Style>
 
-            <!--navigation links style-->
+            <!--  navigation links style  -->
             <Style TargetType="TabItem">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="TabItem">
-                            <Border Name="Border" BorderThickness="0 1 0 1" MinWidth="200" MinHeight="40">
+                            <Border Name="Border"
+                                    MinWidth="200"
+                                    MinHeight="40"
+                                    BorderThickness="0 1 0 1">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <ContentPresenter ContentSource="Header" Margin="12 0 0 0" />
-                                    <Polyline Grid.Column="1" VerticalAlignment="Center" Points="12,0 0,8, 12,15" 
-                                                 Stroke="{StaticResource ResourceKey=BorderBrush}" 
-                                                 Fill="{StaticResource ResourceKey=BackgroundBrush}" 
-                                                 Margin="0 0 -1 0"
-                                                 Name="Arrow">
+                                    <ContentPresenter Margin="12 0 0 0" ContentSource="Header" />
+                                    <Polyline Name="Arrow"
+                                              Grid.Column="1"
+                                              Margin="0 0 -1 0"
+                                              VerticalAlignment="Center"
+                                              Fill="{StaticResource ResourceKey=BackgroundBrush}"
+                                              Points="12,0 0,8, 12,15"
+                                              Stroke="{StaticResource ResourceKey=BorderBrush}">
                                         <Polyline.Effect>
-                                            <DropShadowEffect Direction="180" Color="#EDF0F5" ShadowDepth=".5" />
+                                            <DropShadowEffect Direction="180"
+                                                              ShadowDepth=".5"
+                                                              Color="#EDF0F5" />
                                         </Polyline.Effect>
                                     </Polyline>
                                 </Grid>
@@ -157,14 +171,14 @@
                 </Setter>
             </Style>
 
-            <Style TargetType="Image" x:Key="NavigationImageStyle">
+            <Style x:Key="NavigationImageStyle" TargetType="Image">
                 <Setter Property="Width" Value="32" />
                 <Setter Property="Height" Value="32" />
                 <Setter Property="SnapsToDevicePixels" Value="True" />
                 <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
                 <Setter Property="RenderOptions.EdgeMode" Value="Aliased" />
             </Style>
-            <Style TargetType="TextBlock" x:Key="NavigationTextStyle">
+            <Style x:Key="NavigationTextStyle" TargetType="TextBlock">
                 <Setter Property="Margin" Value="8 0 0 0" />
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="FontSize" Value="12" />
@@ -179,8 +193,10 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Image Style="{StaticResource ResourceKey=NavigationImageStyle}" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Home.png" />
-                    <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Home" />
+                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Home.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=NavigationTextStyle}"
+                               Text="Home" />
                 </Grid>
             </TabItem.Header>
             <v:HomeView />
@@ -194,19 +210,25 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Image Style="{StaticResource ResourceKey=NavigationImageStyle}"   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Scan.png" />
-                    <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Computer Scan"/>
-                    <Image Style="{StaticResource ResourceKey=Spinner}" 
-                               Grid.Column="2" 
-                               Margin="0 0 4 0" 
-                               Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png" 
-                               Visibility="{Binding Path=IsScanning, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
-                    <Image Width="18" 
-                               Height="18"
-                               Grid.Column="3" 
-                               Margin="0 0 4 0" 
-                               Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png" 
-                               Visibility="{Binding Path=IsHavingIssues, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Scan.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=NavigationTextStyle}"
+                               Text="Computer Scan" />
+                    <Image Grid.Column="2"
+                           Margin="0 0 4 0"
+                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png"
+                           Style="{StaticResource ResourceKey=Spinner}"
+                           Visibility="{Binding Path=IsScanning,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                    <Image Grid.Column="3"
+                           Width="18"
+                           Height="18"
+                           Margin="0 0 4 0"
+                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png"
+                           Visibility="{Binding Path=IsHavingIssues,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                 </Grid>
             </TabItem.Header>
             <v:ComputerScanView />
@@ -219,9 +241,17 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Image Style="{StaticResource ResourceKey=NavigationImageStyle}"  Source="/NullVoidCreations.Janitor.Shell;component/Resources/Update.png" />
-                    <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Update" />
-                    <Image  Style="{StaticResource ResourceKey=Spinner}" Grid.Column="2" Margin="0 0 4 0" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png" Visibility="{Binding Path=IsUpdating, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Update.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=NavigationTextStyle}"
+                               Text="Update" />
+                    <Image Grid.Column="2"
+                           Margin="0 0 4 0"
+                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png"
+                           Style="{StaticResource ResourceKey=Spinner}"
+                           Visibility="{Binding Path=IsUpdating,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                 </Grid>
             </TabItem.Header>
             <v:UpdateView />
@@ -233,8 +263,10 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Image Style="{StaticResource ResourceKey=NavigationImageStyle}"  Source="/NullVoidCreations.Janitor.Shell;component/Resources/Settings.png" />
-                    <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Settings" />
+                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Settings.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=NavigationTextStyle}"
+                               Text="Settings" />
                 </Grid>
             </TabItem.Header>
         </TabItem>
@@ -245,8 +277,10 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Image Style="{StaticResource ResourceKey=NavigationImageStyle}" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Help.png" />
-                    <TextBlock Style="{StaticResource ResourceKey=NavigationTextStyle}" Grid.Column="1" Text="Help and About" />
+                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Help.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=NavigationTextStyle}"
+                               Text="Help and About" />
                 </Grid>
             </TabItem.Header>
             <v:AboutView />

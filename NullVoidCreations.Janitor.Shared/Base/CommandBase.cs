@@ -5,7 +5,7 @@ namespace NullVoidCreations.Janitor.Shared.Base
 {
     public abstract class CommandBase: NotificationBase, ICommand
     {
-        bool _isExecuting, _isEnabled;
+        bool _isExecuting, _isEnabled, _isRepeatedCallAllowed;
         string _title, _description;
         Func<object, bool> _canExecute;
         ViewModelBase _viewModel;
@@ -40,6 +40,20 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
                 _isEnabled = value;
                 RaisePropertyChanged("IsEnabled");
+                RaiseCanExecuteChanged();
+            }
+        }
+
+        public bool IsRepeatedCallAllowed
+        {
+            get { return _isRepeatedCallAllowed; }
+            set
+            {
+                if (value == _isRepeatedCallAllowed)
+                    return;
+
+                _isRepeatedCallAllowed = value;
+                RaisePropertyChanged("IsRepeatedCallAllowed");
                 RaiseCanExecuteChanged();
             }
         }
@@ -96,7 +110,10 @@ namespace NullVoidCreations.Janitor.Shared.Base
             if (_canExecute != null)
                 return _canExecute(parameter) && !IsExecuting;
 
-            return IsEnabled && !IsExecuting;
+            if (IsRepeatedCallAllowed)
+                return IsEnabled;
+            else
+                return IsEnabled && !IsExecuting;
         }
 
         public abstract void Execute(object parameter);

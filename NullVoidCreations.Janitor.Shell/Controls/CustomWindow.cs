@@ -26,6 +26,7 @@ namespace NullVoidCreations.Janitor.Shell.Controls
         {
             IsMinimizeAllowed = true;
             IsCloseAllowed = true;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
 
         #region properties

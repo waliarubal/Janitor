@@ -1,10 +1,12 @@
 ﻿<UserControl x:Class="NullVoidCreations.Janitor.Shell.Views.HomeView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
-             mc:Ignorable="d" d:DesignHeight="480" d:DesignWidth="640">
+             d:DesignHeight="480"
+             d:DesignWidth="640"
+             mc:Ignorable="d">
     <UserControl.DataContext>
         <vm:HomeViewModel />
     </UserControl.DataContext>
@@ -14,7 +16,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <!--header-->
+        <!--  header  -->
         <Border Background="{StaticResource ResourceKey=BackgroundActiveBrush}"
                 BorderBrush="{StaticResource ResourceKey=BorderBrush}"
                 BorderThickness="0 0 0 1">
@@ -30,27 +32,83 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Image Margin="24 12 0 0" Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" Grid.RowSpan="2" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png" VerticalAlignment="Top" />
-                <Image Margin="24 12 0 0" Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" Grid.RowSpan="2" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png" VerticalAlignment="Top" />
+                <Image Grid.RowSpan="2"
+                       Margin="24 12 0 0"
+                       VerticalAlignment="Top"
+                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png"
+                       Visibility="{Binding Path=IsLicensed,
+                                            Mode=OneWay,
+                                            Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                <Image Grid.RowSpan="2"
+                       Margin="24 12 0 0"
+                       VerticalAlignment="Top"
+                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png"
+                       Visibility="{Binding Path=IsLicensed,
+                                            Mode=OneWay,
+                                            Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
 
-                <TextBlock Grid.Column="1" Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" Text="Maximum Cleaning" TextWrapping="Wrap" Foreground="{StaticResource ResourceKey=GoodBrush}" FontWeight="Heavy" FontSize="22" Margin="12 12 0 0"/>
-                <TextBlock Grid.Column="1" Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" Text="Maximum cleaning is not ensured" TextWrapping="Wrap" Foreground="{StaticResource ResourceKey=BadBrush}" FontWeight="Heavy" FontSize="22" Margin="12 12 0 0"/>
+                <TextBlock Grid.Column="1"
+                           Margin="12 12 0 0"
+                           FontSize="22"
+                           FontWeight="Heavy"
+                           Foreground="{StaticResource ResourceKey=GoodBrush}"
+                           Text="Maximum Cleaning"
+                           TextWrapping="Wrap"
+                           Visibility="{Binding Path=IsLicensed,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                <TextBlock Grid.Column="1"
+                           Margin="12 12 0 0"
+                           FontSize="22"
+                           FontWeight="Heavy"
+                           Foreground="{StaticResource ResourceKey=BadBrush}"
+                           Text="Maximum cleaning is not ensured"
+                           TextWrapping="Wrap"
+                           Visibility="{Binding Path=IsLicensed,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
 
-                <TextBlock Grid.Column="1" Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" Grid.Row="1"  Margin="12 4 0 0" FontSize="12" Text="Product is not activated. Please click buy now button to purchase a license or activate product button to activate the product." TextWrapping="Wrap" Foreground="{StaticResource ResourceKey=TextBrush}" />
-                <StackPanel Grid.Column="1" Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" Orientation="Horizontal" Grid.Row="2" Margin="12 4 0 12">
-                    <Button Margin="0 0 4 0" Content="Buy Now" Foreground="{StaticResource ResourceKey=BackgroundBrush}" FontSize="12" MinWidth="120" Style="{StaticResource ResourceKey=BlackButtonStyle}"/>
-                    <Button Margin="4 0 0 0" Content="Activate Product" Foreground="{StaticResource ResourceKey=TextBrush}" FontSize="12" MinWidth="120" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           Margin="12 4 0 0"
+                           FontSize="12"
+                           Foreground="{StaticResource ResourceKey=TextBrush}"
+                           Text="Product is not activated. Please click buy now button to purchase a license or activate product button to activate the product."
+                           TextWrapping="Wrap"
+                           Visibility="{Binding Path=IsLicensed,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                <StackPanel Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="12 4 0 12"
+                            Orientation="Horizontal"
+                            Visibility="{Binding Path=IsLicensed,
+                                                 Mode=OneWay,
+                                                 Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}">
+                    <Button MinWidth="120"
+                            Margin="0 0 4 0"
+                            Content="Buy Now"
+                            FontSize="12"
+                            Foreground="{StaticResource ResourceKey=BackgroundBrush}"
+                            Style="{StaticResource ResourceKey=BlackButtonStyle}" />
+                    <Button MinWidth="120"
+                            Margin="4 0 0 0"
+                            Content="Activate Product"
+                            FontSize="12"
+                            Foreground="{StaticResource ResourceKey=TextBrush}" />
                 </StackPanel>
-                
-                <Image Grid.Column="2" Grid.RowSpan="3" Source="/NullVoidCreations.Janitor.Shell;component/Resources/LogoBig.png" />
+
+                <Image Grid.RowSpan="3"
+                       Grid.Column="2"
+                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/LogoBig.png" />
             </Grid>
         </Border>
 
-        <!--system info-->
-        <Border Background="{StaticResource ResourceKey=BackgroundActiveBrush}"
+        <!--  system info  -->
+        <Border Grid.Row="2"
+                Background="{StaticResource ResourceKey=BackgroundActiveBrush}"
                 BorderBrush="{StaticResource ResourceKey=BorderBrush}"
                 BorderThickness="0 1 0 0"
-                Grid.Row="2"
                 Padding="8">
             <Border.Resources>
                 <Style TargetType="TextBlock">
@@ -79,16 +137,29 @@
                 <TextBlock Grid.Column="1" Text="{Binding Path=ComputerName, Mode=OneWay}" />
 
                 <Image Grid.Row="1" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Windows.png" />
-                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Path=OperatingSystem, Mode=OneWay}" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           Text="{Binding Path=OperatingSystem,
+                                          Mode=OneWay}" />
 
                 <Image Grid.Row="2" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Memory.png" />
-                <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Path=Memory, Mode=OneWay, StringFormat='{}{0:N2} GB RAM'}" />
+                <TextBlock Grid.Row="2"
+                           Grid.Column="1"
+                           Text="{Binding Path=Memory,
+                                          Mode=OneWay,
+                                          StringFormat='{}{0:N2} GB RAM'}" />
 
                 <Image Grid.Row="3" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Processor.png" />
-                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Path=Processor, Mode=OneWay}" />
+                <TextBlock Grid.Row="3"
+                           Grid.Column="1"
+                           Text="{Binding Path=Processor,
+                                          Mode=OneWay}" />
 
                 <Image Grid.Row="4" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Bios.png" />
-                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Path=Model, Mode=OneWay}" />
+                <TextBlock Grid.Row="4"
+                           Grid.Column="1"
+                           Text="{Binding Path=Model,
+                                          Mode=OneWay}" />
             </Grid>
         </Border>
     </Grid>

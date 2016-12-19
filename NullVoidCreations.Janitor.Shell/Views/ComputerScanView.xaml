@@ -275,46 +275,10 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Grid.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Margin" Value="0 0 16 16" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="bdrOuter"
-                                        BorderBrush="Transparent"
-                                        BorderThickness="1"
-                                        CornerRadius="2"
-                                        Padding="4">
-                                    <ContentPresenter ContentSource="Content" />
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="bdrOuter" Property="Border.BorderBrush" Value="{StaticResource ResourceKey=BorderBrush}" />
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-                <Style x:Key="ScanNameStyle" TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="12" />
-                    <Setter Property="FontWeight" Value="Normal" />
-                    <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextAlternateBrush}" />
-                    <Setter Property="Margin" Value="8 0 0 0" />
-                </Style>
-                <Style x:Key="ScanDescriptionStyle"
-                       BasedOn="{StaticResource ResourceKey=ScanNameStyle}"
-                       TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="11" />
-                    <Setter Property="TextWrapping" Value="Wrap" />
-                    <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
-                </Style>
-                <Style TargetType="Image">
-                    <Setter Property="VerticalAlignment" Value="Top" />
-                </Style>
-            </Grid.Resources>
-            <Button Command="{Binding Path=DoScan, Mode=OneTime}" CommandParameter="Smart">
+            <Button Command="{Binding Path=DoScan,
+                                      Mode=OneTime}"
+                    CommandParameter="Smart"
+                    Style="{StaticResource ResourceKey=ScanButtonStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -324,7 +288,9 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Image Grid.RowSpan="2" Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanFull.png" />
+                    <Image Grid.RowSpan="2"
+                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanFull.png"
+                           Style="{StaticResource ResourceKey=ScanIconStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=ScanNameStyle}"
                                Text="Smart Scan" />
@@ -337,7 +303,8 @@
             <Button Grid.Column="1"
                     Command="{Binding Path=DoScan,
                                       Mode=OneTime}"
-                    CommandParameter="Custom">
+                    CommandParameter="Custom"
+                    Style="{StaticResource ResourceKey=ScanButtonStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -347,7 +314,9 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Image Grid.RowSpan="2" Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanCustom.png" />
+                    <Image Grid.RowSpan="2"
+                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanCustom.png"
+                           Style="{StaticResource ResourceKey=ScanIconStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=ScanNameStyle}"
                                Text="Custom Scan..." />
@@ -360,7 +329,8 @@
             <Button Grid.Row="1"
                     Command="{Binding Path=DoScan,
                                       Mode=OneTime}"
-                    CommandParameter="Repeat">
+                    CommandParameter="Repeat"
+                    Style="{StaticResource ResourceKey=ScanButtonStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -371,7 +341,9 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Image Grid.RowSpan="2" Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanRepeat.png" />
+                    <Image Grid.RowSpan="2"
+                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanRepeat.png"
+                           Style="{StaticResource ResourceKey=ScanIconStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=ScanNameStyle}"
                                Text="Repeat Last Scan" />

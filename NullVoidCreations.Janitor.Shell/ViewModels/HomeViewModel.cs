@@ -12,7 +12,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         readonly CommandBase _load, _activate;
         string _computerName, _operatingSyetem, _processor, _model;
         decimal _memory;
-        bool _isLicensed;
+        int _issueCount;
+        bool _isLicensed, _isHavingIssues, _isHavingPluginUpdatesAvailable, _isHavingUpdatesAvailable;
         LicenseModel _license;
 
         #region constructor / destructor
@@ -61,6 +62,58 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 _isLicensed = value;
                 RaisePropertyChanged("IsLicensed");
+            }
+        }
+
+        public bool IsHavingIssues
+        {
+            get { return _isHavingIssues; }
+            private set
+            {
+                if (value == _isHavingIssues)
+                    return;
+
+                _isHavingIssues = value;
+                RaisePropertyChanged("IsHavingIssues");
+            }
+        }
+
+        public int IssueCount
+        {
+            get { return _issueCount; }
+            private set
+            {
+                if (value == _issueCount)
+                    return;
+
+                _issueCount = value;
+                RaisePropertyChanged("IssueCount");
+            }
+        }
+
+        public bool IsHavingPluginUpdatesAvailable
+        {
+            get { return _isHavingPluginUpdatesAvailable; }
+            private set
+            {
+                if (value == _isHavingPluginUpdatesAvailable)
+                    return;
+
+                _isHavingPluginUpdatesAvailable = value;
+                RaisePropertyChanged("IsHavingPluginUpdatesAvailable");
+            }
+        }
+
+        public bool IsHavingUpdatesAvailable
+        {
+            get { return _isHavingUpdatesAvailable; }
+            private set
+            {
+                if (value == _isHavingUpdatesAvailable)
+                    return;
+
+                _isHavingUpdatesAvailable = value;
+                RaisePropertyChanged("IsHavingUpdatesAvailable");
             }
         }
 
@@ -151,6 +204,21 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             activation.ShowDialog();
         }
 
+        void WeHaveProblems()
+        {
+            byte problems = 0;
+            if (!IsLicensed)
+                problems++;
+            if (IsHavingIssues)
+                problems++;
+            if (IsHavingPluginUpdatesAvailable)
+                problems++;
+            if (IsHavingUpdatesAvailable)
+                problems++;
+
+            Subject.Instance.NotifyAllObservers(this, MessageCode.ProblemsAppeared, problems);
+        }
+
         object ExecuteGetSystemInformation(object parameter)
         {
             // load plugins
@@ -182,6 +250,20 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 case MessageCode.LicenseChanged:
                     License = LicenseManager.Instance.License;
+                    IsLicensed = License != null && !License.IsTrial;
+                    WeHaveProblems();
+                    break;
+
+                case MessageCode.ScanStarted:
+                    IssueCount = 0;
+                    IsHavingIssues = false;
+                    WeHaveProblems();
+                    break;
+
+                case MessageCode.ScanStopped:
+                    IssueCount = (int)data[0];
+                    IsHavingIssues = IssueCount > 0;
+                    WeHaveProblems();
                     break;
             }
         }

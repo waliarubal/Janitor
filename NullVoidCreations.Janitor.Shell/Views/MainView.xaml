@@ -192,11 +192,24 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Home.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=NavigationTextStyle}"
                                Text="Home" />
+                    <TextBlock Grid.Column="2"
+                               Margin="0 0 6 0"
+                               VerticalAlignment="Center"
+                               Background="{StaticResource ResourceKey=BadBrush}"
+                               FontSize="11"
+                               Foreground="{StaticResource ResourceKey=BackgroundBrush}"
+                               Padding=" 4 0"
+                               Text="{Binding Path=ProblemsCount,
+                                              Mode=OneWay}"
+                               Visibility="{Binding Path=IsOk,
+                                                    Mode=OneWay,
+                                                    Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
                 </Grid>
             </TabItem.Header>
             <v:HomeView />

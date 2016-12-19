@@ -22,7 +22,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             : base(viewModel)
         {
             _viewModel = ViewModel as ComputerScanViewModel;
-            IsRepeatedCallAllowed = true;
+            IsRecallAllowed = true;
 
             Subject.Instance.AddObserver(this);
         }
@@ -172,7 +172,6 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                         progressCurrent++;
                         areas++;
                         RaiseProgessChanged(target, area, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
-                        Thread.Sleep(200);
                         foreach (var issue in area.Analyse())
                         {
                             if (_worker.CancellationPending)
@@ -191,7 +190,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             RaiseProgessChanged(null, null, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
             activeScan.Issues = issues;
 
-            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStopped, issues.Count > 0);
+            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStopped, issues.Count);
 
             e.Result = activeScan;
         }

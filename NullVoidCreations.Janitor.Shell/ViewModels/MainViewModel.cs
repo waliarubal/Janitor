@@ -7,6 +7,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     public class MainViewModel: ViewModelBase, IObserver
     {
         bool _isScanning, _isUpdating, _isOk, _isHavingIssues;
+        byte _problemsCount;
 
         #region constructor / destructor
 
@@ -52,6 +53,20 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
+        public byte ProblemsCount
+        {
+            get { return _problemsCount; }
+            private set
+            {
+                if (value == _problemsCount)
+                    return;
+
+                _problemsCount = value;
+                RaisePropertyChanged("ProblemsCount");
+            }
+        }
+        
+
         public bool IsOk
         {
             get { return _isOk; }
@@ -91,8 +106,12 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 case MessageCode.ScanStopped:
                     IsScanning = false;
-                    IsOk = !(bool)data[0];
-                    IsHavingIssues = (bool)data[0];
+                    IsHavingIssues = (int)data[0] > 0;
+                    break;
+
+                case MessageCode.ProblemsAppeared:
+                    ProblemsCount = (byte)data[0];
+                    IsOk = ProblemsCount == 0;
                     break;
             }
 

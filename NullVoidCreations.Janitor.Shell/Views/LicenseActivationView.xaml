@@ -4,7 +4,7 @@
                 xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
                 Title="PC MECHANIC PRO™"
                 Width="580"
-                Height="460"
+                Height="310"
                 Background="{StaticResource ResourceKey=BackgroundBrush}"
                 IsMinimizeAllowed="False"
                 ShowInTaskbar="False"
@@ -15,6 +15,7 @@
                 <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
                 <Setter Property="TextWrapping" Value="Wrap" />
                 <Setter Property="Margin" Value="0 8" />
+                <Setter Property="FontSize" Value="11" />
             </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
@@ -26,9 +27,12 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Separator Grid.RowSpan="4"
+        <Separator Grid.RowSpan="7"
                    Grid.Column="1"
                    Margin="20 0"
                    VerticalAlignment="Stretch"
@@ -43,16 +47,28 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox BorderBrush="{StaticResource ResourceKey=BorderBrush}"
-                     BorderThickness="1"
-                     Padding="2 4" />
-            <Image Grid.Column="1"
-                   Width="18"
-                   Height="18"
-                   Margin="4 0 0 0"
-                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Paste.png" />
+            <TextBox />
+            <Button Grid.Column="1"
+                    Margin="4 0 0 0"
+                    Style="{StaticResource ResourceKey=ImageButtonStyle}"
+                    ToolTip="Paste from Clipboard">
+                <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Paste.png" />
+            </Button>
         </Grid>
-
+        <TextBlock Grid.Row="3"
+                   Margin="0 20 0 4"
+                   Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                   Text="Where I can find the license key?" />
+        <TextBlock Grid.Row="4"
+                   Margin="0 0 0 4"
+                   Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                   Text="I have username and password, what do I do?" />
+        <Button Grid.Row="5"
+                Margin="0 8 0 0"
+                HorizontalAlignment="Left"
+                Content="Activate"
+                FontSize="12"
+                Style="{StaticResource ResourceKey=BlueButtonStyle}" />
 
         <TextBlock Grid.Column="2"
                    HorizontalAlignment="Left"
@@ -60,6 +76,32 @@
                    Text="I want to purchase a new license" />
         <TextBlock Grid.Row="1"
                    Grid.Column="2"
-                   Text="An activated product fixes even the newest issues with improved speed." />
+                   Text="An activated product finds and fixes even the newest issues with improved speed." />
+        <Button Grid.Row="2"
+                Grid.RowSpan="2"
+                Grid.Column="2"
+                Margin="0 12 0 0"
+                Style="{StaticResource ResourceKey=ScanButtonStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Image Grid.RowSpan="2"
+                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/Cart.png"
+                       Style="{StaticResource ResourceKey=ScanIconStyle}" />
+                <TextBlock Grid.Column="1"
+                           Style="{StaticResource ResourceKey=ScanNameStyle}"
+                           Text="Purchase License" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
+                           Text="Purchase a new license for this product." />
+            </Grid>
+        </Button>
     </Grid>
 </c:CustomWindow>

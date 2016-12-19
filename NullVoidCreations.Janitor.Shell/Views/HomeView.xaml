@@ -106,6 +106,142 @@
             </Grid>
         </Border>
 
+        <!--  problems  -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Margin="20">
+                <StackPanel.Resources>
+                    <Style x:Key="HeaderStyle" TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{StaticResource ResourceKey=BadBrush}" />
+                        <Setter Property="FontSize" Value="12" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                    </Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Margin" Value="0 0 0 8" />
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+                        <Setter Property="FontSize" Value="12" />
+                        <Setter Property="Margin" Value="0 2" />
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                    </Style>
+                </StackPanel.Resources>
+                <StackPanel Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource ResourceKey=HeaderStyle}" Text="Product Not Activated" />
+                    <TextBlock Text="Maximum cleaning is not ensured as the product is not activated. An activated product finds and fixes even the newest issues with improved speed." />
+                    <Separator Margin="0 8" />
+                </StackPanel>
+                <StackPanel Visibility="{Binding Path=IsHavingIssues, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource ResourceKey=HeaderStyle}" Text="Issues Found" />
+                    <TextBlock Text="{Binding Path=IssueCount, Mode=OneWay, StringFormat='{}{0} issues found during a computer scan which need your attention. Issues hamper system performance so they must be fixed as soon as possible.'}" />
+                    <Separator Margin="0 8" />
+                </StackPanel>
+                <StackPanel Visibility="{Binding Path=IsHavingPluginUpdatesAvailable, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource ResourceKey=HeaderStyle}" Text="Scan Target plugins are not up to date" />
+                    <TextBlock Text="Their are updates available for scan targets plugins. Scan targets look for issues in specific computer areas and fix them, update them to ensure maximum cleaning." />
+                    <Separator Margin="0 8" />
+                </StackPanel>
+                <StackPanel Visibility="{Binding Path=IsHavingUpdatesAvailable, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource ResourceKey=HeaderStyle}" Text="Program is not up to date" />
+                    <TextBlock Text="A new version of program is available. Program update contain patches for discovered issues, always keep the mechanic updated to ensure maximum system performance." />
+                    <Separator Margin="0 8" />
+                </StackPanel>
+
+                <!--  quick actions  -->
+                <Grid Margin="0 0 0 8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock FontSize="12"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource ResourceKey=TextBrush}"
+                               Text="Quick Actions" />
+                    <Button Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="0 0 0 8"
+                            Style="{StaticResource ResourceKey=ScanButtonStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Grid.RowSpan="2"
+                                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanFull.png"
+                                   Style="{StaticResource ResourceKey=ScanIconStyle}" />
+                            <TextBlock Grid.Column="1"
+                                       Style="{StaticResource ResourceKey=ScanNameStyle}"
+                                       Text="Smart Scan" />
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
+                                       Text="Perform a full system scan looking all the scan targets for issues." />
+                        </Grid>
+                    </Button>
+                    <Button Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="0 0 0 8"
+                            Style="{StaticResource ResourceKey=ScanButtonStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Grid.RowSpan="2"
+                                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanCustom.png"
+                                   Style="{StaticResource ResourceKey=ScanIconStyle}" />
+                            <TextBlock Grid.Column="1"
+                                       Style="{StaticResource ResourceKey=ScanNameStyle}"
+                                       Text="Custom Scan..." />
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
+                                       Text="Perform a system scan looking only the selected scan targets for issues." />
+                        </Grid>
+                    </Button>
+                    <Button Grid.Row="2"
+                            Grid.Column="2"
+                            Margin="0 0 0 8"
+                            Style="{StaticResource ResourceKey=ScanButtonStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Grid.RowSpan="2"
+                                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Cart.png"
+                                   Style="{StaticResource ResourceKey=ScanIconStyle}" />
+                            <TextBlock Grid.Column="1"
+                                       Style="{StaticResource ResourceKey=ScanNameStyle}"
+                                       Text="Purchase License" />
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
+                                       Text="Purchase a new license for this product." />
+                        </Grid>
+                    </Button>
+                </Grid>
+
+            </StackPanel>
+        </ScrollViewer>
+
+
         <!--  system info  -->
         <Border Grid.Row="2"
                 Background="{StaticResource ResourceKey=BackgroundActiveBrush}"

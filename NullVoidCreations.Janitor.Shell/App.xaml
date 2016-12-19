@@ -14,7 +14,7 @@
 
         <!--  brushes  -->
         <SolidColorBrush x:Key="GoodBrush" Color="#5DAE2D" />
-        <SolidColorBrush x:Key="BadBrush" Color="#CC0000" />
+        <SolidColorBrush x:Key="BadBrush" Color="#F44336" />
         <SolidColorBrush x:Key="TextBrush" Color="#44525F" />
         <SolidColorBrush x:Key="TextAlternateBrush" Color="#3D99E4" />
         <SolidColorBrush x:Key="BackgroundActiveBrush" Color="#EDF0F5" />
@@ -54,6 +54,49 @@
             <Setter Property="Margin" Value="20 20 20 0" />
         </Style>
 
+        <Style x:Key="ScanButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="0 0 16 16" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bdrOuter"
+                                BorderBrush="Transparent"
+                                BorderThickness="1"
+                                CornerRadius="2"
+                                Padding="4">
+                            <ContentPresenter ContentSource="Content" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bdrOuter" Property="Border.BorderBrush" Value="{StaticResource ResourceKey=BorderBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ScanIconStyle" TargetType="Image">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Width" Value="24" />
+            <Setter Property="Height" Value="24" />
+        </Style>
+
+        <Style x:Key="ScanNameStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextAlternateBrush}" />
+            <Setter Property="Margin" Value="8 0 0 0" />
+        </Style>
+
+        <Style x:Key="ScanDescriptionStyle"
+               BasedOn="{StaticResource ResourceKey=ScanNameStyle}"
+               TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+        </Style>
+
         <Style x:Key="BlackButtonStyle" TargetType="Button">
             <Setter Property="Template">
                 <Setter.Value>
@@ -81,6 +124,44 @@
                                         <DropShadowEffect Opacity="1"
                                                           ShadowDepth="0"
                                                           Color="#4A4B4D" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="BlueButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="{StaticResource ResourceKey=BackgroundBrush}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Rectangle x:Name="bdrOuter"
+                                       Margin="2 2 -2 -2"
+                                       Fill="#9CC2E9" />
+                            <Border MinWidth="120"
+                                    Panel.ZIndex="1"
+                                    Background="#4AA5D1"
+                                    BorderBrush="#4AA5D1"
+                                    BorderThickness="1"
+                                    Padding="0 4">
+                                <ContentPresenter Margin="4"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  ContentSource="Content" />
+                            </Border>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bdrOuter" Property="Border.Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Opacity="1"
+                                                          ShadowDepth="0"
+                                                          Color="#4AA5D1" />
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -317,6 +398,34 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="AllowDrop" Value="True" />
+            <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Name="Border"
+                                Background="{StaticResource ResourceKey=BackgroundBrush}"
+                                BorderBrush="{StaticResource ResourceKey=BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="1">
+                            <ScrollViewer Name="PART_ContentHost" Margin="4" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource ResourceKey=BackgroundActiveBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
         </Style>
 
         <Style TargetType="FrameworkElement">

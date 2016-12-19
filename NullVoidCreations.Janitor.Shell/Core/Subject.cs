@@ -10,7 +10,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
         PluginsLoaded,
         PluginsUnloaded,
         SystemInformationLoaded,
-        LicenseChanged
+        LicenseChanged,
+        ProblemsAppeared
     }
 
     class Subject

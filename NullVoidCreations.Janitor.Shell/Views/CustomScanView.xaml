@@ -8,7 +8,7 @@
                 Height="460"
                 Background="{StaticResource ResourceKey=BackgroundBrush}"
                 IsMinimizeAllowed="False"
-                ShowInTaskbar="False"
+                ShowInTaskbar="True"
                 Style="{StaticResource ResourceKey=ChildWindowStyle}">
     <c:CustomWindow.DataContext>
         <vm:CustomScanViewModel />

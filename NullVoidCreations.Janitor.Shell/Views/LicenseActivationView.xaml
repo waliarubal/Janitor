@@ -38,6 +38,21 @@
                    Style="{StaticResource ResourceKey=HeaderTitleStyle}"
                    Text="I have a license already" />
         <TextBlock Grid.Row="1" Text="Enter your license key below." />
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox BorderBrush="{StaticResource ResourceKey=BorderBrush}"
+                     BorderThickness="1"
+                     Padding="2 4" />
+            <Image Grid.Column="1"
+                   Width="18"
+                   Height="18"
+                   Margin="4 0 0 0"
+                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Paste.png" />
+        </Grid>
+
 
         <TextBlock Grid.Column="2"
                    HorizontalAlignment="Left"

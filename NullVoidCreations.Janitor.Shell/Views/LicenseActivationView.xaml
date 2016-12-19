@@ -7,7 +7,7 @@
                 Height="310"
                 Background="{StaticResource ResourceKey=BackgroundBrush}"
                 IsMinimizeAllowed="False"
-                ShowInTaskbar="False"
+                ShowInTaskbar="True"
                 Style="{StaticResource ResourceKey=ChildWindowStyle}">
     <Grid Margin="20">
         <Grid.Resources>

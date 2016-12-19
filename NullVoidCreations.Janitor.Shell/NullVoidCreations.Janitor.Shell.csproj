@@ -88,6 +88,9 @@
     <Compile Include="Views\CustomScanView.xaml.cs">
       <DependentUpon>CustomScanView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LicenseActivationView.xaml.cs">
+      <DependentUpon>LicenseActivationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UpdateView.xaml.cs">
       <DependentUpon>UpdateView.xaml</DependentUpon>
     </Compile>
@@ -104,6 +107,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LicenseActivationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

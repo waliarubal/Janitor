@@ -3,12 +3,13 @@ using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Models;
+using NullVoidCreations.Janitor.Shell.Views;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class HomeViewModel: ViewModelBase, IObserver
     {
-        readonly CommandBase _getSystemInformation;
+        readonly CommandBase _load, _activate;
         string _computerName, _operatingSyetem, _processor, _model;
         decimal _memory;
         bool _isLicensed;
@@ -22,7 +23,10 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
             _license = new LicenseModel();
             _computerName = _operatingSyetem = _processor = _model = "Analysing...";
-            _getSystemInformation = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, null);
+
+            _load = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, null);
+            _activate = new DelegateCommand(this, ExecuteActivate);
+            _activate.IsEnabled = true;
         }
 
         ~HomeViewModel()
@@ -129,12 +133,23 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #region commands
 
-        public CommandBase GetSystemInformation
+        public CommandBase LoadData
         {
-            get { return _getSystemInformation; }
+            get { return _load; }
+        }
+
+        public CommandBase Activate
+        {
+            get { return _activate; }
         }
 
         #endregion
+
+        void ExecuteActivate(object parameter)
+        {
+            var activation = new LicenseActivationView();
+            activation.ShowDialog();
+        }
 
         object ExecuteGetSystemInformation(object parameter)
         {

@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="LastScanType" Type="System.Byte" Scope="User">
-      <Value Profile="(Default)">255</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="LastScanTime" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)" />

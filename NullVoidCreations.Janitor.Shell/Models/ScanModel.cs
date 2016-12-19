@@ -10,6 +10,7 @@ namespace NullVoidCreations.Janitor.Core.Models
 {
     public enum ScanType: byte
     {
+        Unknown,
         SmartScan,
         CustomScan
     }

@@ -23,7 +23,7 @@ namespace NullVoidCreations.Janitor.Shell.Views
             if (viewModel == null)
                 return;
 
-            viewModel.GetSystemInformation.Execute(null);
+            viewModel.LoadData.Execute(null);
         }
     }
 }

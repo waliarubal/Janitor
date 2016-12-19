@@ -1,0 +1,50 @@
+﻿<c:CustomWindow x:Class="NullVoidCreations.Janitor.Shell.Views.LicenseActivationView"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
+                Title="PC MECHANIC PRO™"
+                Width="580"
+                Height="460"
+                Background="{StaticResource ResourceKey=BackgroundBrush}"
+                IsMinimizeAllowed="False"
+                ShowInTaskbar="False"
+                Style="{StaticResource ResourceKey=ChildWindowStyle}">
+    <Grid Margin="20">
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="Margin" Value="0 8" />
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Separator Grid.RowSpan="4"
+                   Grid.Column="1"
+                   Margin="20 0"
+                   VerticalAlignment="Stretch"
+                   Style="{StaticResource ResourceKey=VerticalSeparatorStyle}" />
+
+        <TextBlock HorizontalAlignment="Left"
+                   Style="{StaticResource ResourceKey=HeaderTitleStyle}"
+                   Text="I have a license already" />
+        <TextBlock Grid.Row="1" Text="Enter your license key below." />
+
+        <TextBlock Grid.Column="2"
+                   HorizontalAlignment="Left"
+                   Style="{StaticResource ResourceKey=HeaderTitleStyle}"
+                   Text="I want to purchase a new license" />
+        <TextBlock Grid.Row="1"
+                   Grid.Column="2"
+                   Text="An activated product fixes even the newest issues with improved speed." />
+    </Grid>
+</c:CustomWindow>

@@ -41,11 +41,32 @@
                         Margin="0 12 0 0"
                         Orientation="Horizontal">
                 <TextBlock Text="License Valid Until: " />
-                <TextBlock FontWeight="Bold" Text="1/12/2016" />
+                <TextBlock FontWeight="Bold"
+                           Text="{Binding Path=ExpiryDate,
+                                          Mode=OneWay,
+                                          StringFormat='{}{0:MM/dd/yyyy}'}"
+                           Visibility="{Binding Path=IsTrial,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                <TextBlock FontWeight="Bold"
+                           Text="License not Activated"
+                           Visibility="{Binding Path=IsTrial,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
             </StackPanel>
             <StackPanel Grid.Row="3" Orientation="Horizontal">
-                <TextBlock Text="License Type: " />
-                <TextBlock FontWeight="Bold" Text="Not for Resale Single PC License" />
+                <TextBlock Text="Registered To: " />
+                <TextBlock FontWeight="Bold"
+                           Text="{Binding Path=RegisteredTo,
+                                          Mode=OneWay}"
+                           Visibility="{Binding Path=IsTrial,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                <TextBlock FontWeight="Bold"
+                           Text="License not Activated"
+                           Visibility="{Binding Path=IsTrial,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
             </StackPanel>
             <TextBlock Grid.Row="4"
                        Margin="0 12 0 2"

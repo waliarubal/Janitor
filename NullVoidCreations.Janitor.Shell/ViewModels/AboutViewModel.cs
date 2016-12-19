@@ -9,9 +9,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class AboutViewModel: ViewModelBase, IObserver
     {
-        string _operatingSyetem, _processor;
+        string _operatingSyetem, _processor, _registeredTo;
         decimal _memory;
+        bool _isTrial;
         List<ScanTargetBase> _targets;
+        DateTime _expiryDate;
 
         #region constructor / destructor
 
@@ -81,6 +83,45 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
+        public string RegisteredTo
+        {
+            get { return _registeredTo; }
+            private set
+            {
+                if (value == _registeredTo)
+                    return;
+
+                _registeredTo = value;
+                RaisePropertyChanged("RegisteredTo");
+            }
+        }
+
+        public DateTime ExpiryDate
+        {
+            get { return _expiryDate; }
+            private set
+            {
+                if (value == _expiryDate)
+                    return;
+
+                _expiryDate = value;
+                RaisePropertyChanged("ExpiryDate");
+            }
+        }
+
+        public bool IsTrial
+        {
+            get { return _isTrial; }
+            private set
+            {
+                if (value == _isTrial)
+                    return;
+
+                _isTrial = value;
+                RaisePropertyChanged("IsTrial");
+            }
+        }
+
         #endregion
 
         #region commands
@@ -109,6 +150,12 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 case MessageCode.PluginsUnloaded:
                     Targets = null;
+                    break;
+
+                case MessageCode.LicenseChanged:
+                    RegisteredTo = LicenseManager.Instance.License.RegisteredEmail;
+                    ExpiryDate = LicenseManager.Instance.License.ExpirationDate;
+                    IsTrial = LicenseManager.Instance.License.IsTrial;
                     break;
             }
         }

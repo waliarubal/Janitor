@@ -93,6 +93,8 @@
                             Style="{StaticResource ResourceKey=BlackButtonStyle}" />
                     <Button MinWidth="120"
                             Margin="4 0 0 0"
+                            Command="{Binding Path=Activate,
+                                              Mode=OneTime}"
                             Content="Activate Product"
                             FontSize="12"
                             Foreground="{StaticResource ResourceKey=TextBrush}" />

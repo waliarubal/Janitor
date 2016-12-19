@@ -47,12 +47,20 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #endregion
 
+        /// <summary>
+        /// This method loads and validates license key saved in settings.
+        /// </summary>
         public void LoadLicense()
         {
             _license.Validate(SettingsManager.Instance.LicenseKey);
             Subject.Instance.NotifyAllObservers(this, MessageCode.LicenseChanged);
         }
 
+        /// <summary>
+        /// This method validates license key entered by user using UI.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public bool ValidateLicense(string key)
         {
             var result = _license.Validate(key);

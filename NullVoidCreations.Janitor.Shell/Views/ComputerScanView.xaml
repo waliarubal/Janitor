@@ -350,11 +350,29 @@
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
                                Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
-                               Text="Action: Smart Scan" />
+                               Text="No previous scan record found."
+                               Visibility="{Binding Path=IsScannedInPast,
+                                                    Mode=OneWay,
+                                                    Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
+                               Text="{Binding Path=LastScanName,
+                                              Mode=OneWay,
+                                              StringFormat='Action: {0}',
+                                              FallbackValue='No previous scan record found.'}"
+                               Visibility="{Binding Path=IsScannedInPast,
+                                                    Mode=OneWay,
+                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                     <TextBlock Grid.Row="2"
                                Grid.Column="1"
                                Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
-                               Text="Last Record: 12/07/2016 03:03:00" />
+                               Text="{Binding Path=LastScanTime,
+                                              Mode=OneWay,
+                                              StringFormat='Last Record: {0:MM/dd/yyyy HH:mm:ss}'}"
+                               Visibility="{Binding Path=IsScannedInPast,
+                                                    Mode=OneWay,
+                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                 </Grid>
             </Button>
         </Grid>

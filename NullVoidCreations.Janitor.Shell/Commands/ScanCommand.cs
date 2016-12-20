@@ -8,6 +8,7 @@ using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Models;
 using NullVoidCreations.Janitor.Shell.ViewModels;
 using NullVoidCreations.Janitor.Shell.Views;
+using System;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
@@ -190,6 +191,8 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             RaiseProgessChanged(null, null, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
             activeScan.Issues = issues;
 
+            SettingsManager.Instance.LastScan = activeScan.Type;
+            SettingsManager.Instance.LastScanTime = DateTime.Now;
             Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStopped, issues.Count);
 
             e.Result = activeScan;

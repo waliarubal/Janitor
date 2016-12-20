@@ -2,6 +2,7 @@
 using System.IO;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Properties;
+using NullVoidCreations.Janitor.Core.Models;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -41,6 +42,18 @@ namespace NullVoidCreations.Janitor.Shell.Core
         public string PluginsSearchFilter
         {
             get { return _pluginsSearchFilter; }
+        }
+
+        public ScanType LastScan
+        {
+            get { return (ScanType)Settings.Default.LastScanType; }
+            set { Settings.Default.LastScanType = (byte) value; }
+        }
+
+        public DateTime LastScanTime
+        {
+            get { return Settings.Default.LastScanTime; }
+            set { Settings.Default.LastScanTime = value; }
         }
 
         public static SettingsManager Instance

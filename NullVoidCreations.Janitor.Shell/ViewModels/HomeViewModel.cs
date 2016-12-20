@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Windows;
+using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
+using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Models;
 using NullVoidCreations.Janitor.Shell.Views;
@@ -9,7 +12,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class HomeViewModel: ViewModelBase, IObserver
     {
-        readonly CommandBase _load, _activate;
+        readonly CommandBase _load, _activate, _purchaseLicense, _doScan;
         string _computerName, _operatingSyetem, _processor, _model;
         decimal _memory;
         int _issueCount;
@@ -26,8 +29,10 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _computerName = _operatingSyetem = _processor = _model = "Analysing...";
 
             _load = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, null);
+            _purchaseLicense = new PurchaseLicenseCommand(this);
+            _doScan = new DelegateCommand(this, ExecuteDoScan);
             _activate = new DelegateCommand(this, ExecuteActivate);
-            _activate.IsEnabled = true;
+            _activate.IsEnabled = _doScan.IsEnabled = true;
         }
 
         ~HomeViewModel()
@@ -196,12 +201,34 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             get { return _activate; }
         }
 
+        public CommandBase PurchaseLicense
+        {
+            get { return _purchaseLicense; }
+        }
+
+        public CommandBase DoScan
+        {
+            get { return _doScan; }
+        }
+
         #endregion
+
+        void ExecuteDoScan(object scanType)
+        {
+            var type = ScanType.Unknown;
+            if ("Smart".Equals(scanType))
+                type = ScanType.SmartScan;
+            else if ("Custom".Equals(scanType))
+                type = ScanType.CustomScan;
+            
+            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanTrigerred, type);
+        }
 
         void ExecuteActivate(object parameter)
         {
-            var activation = new LicenseActivationView();
-            activation.ShowDialog();
+            var activationView = new LicenseActivationView();
+            activationView.Owner = Application.Current.MainWindow;
+            activationView.ShowDialog();
         }
 
         void WeHaveProblems()

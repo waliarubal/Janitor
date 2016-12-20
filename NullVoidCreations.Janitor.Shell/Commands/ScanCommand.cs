@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text;
 using System.Threading;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Base;
@@ -8,7 +10,7 @@ using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Models;
 using NullVoidCreations.Janitor.Shell.ViewModels;
 using NullVoidCreations.Janitor.Shell.Views;
-using System;
+using System.Windows;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
@@ -62,13 +64,16 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
                     _viewModel.Scan = new ScanModel(ScanType.CustomScan);
 
-                    var scanParameters = new CustomScanView(_viewModel.Scan.Targets);
-                    var result = scanParameters.ShowDialog();
+                    var scanParametersView = new CustomScanView(_viewModel.Scan.Targets);
+                    scanParametersView.Owner = Application.Current.MainWindow;
+                    var result = scanParametersView.ShowDialog();
                     if (result.HasValue && result.Value == true)
                         StartScan(_viewModel.Scan);
                     break;
 
                 case "Repeat":
+                    _viewModel.Scan = GetSavedScanDetails();
+                    StartScan(_viewModel.Scan);
                     break;
 
                 case "Cancel":
@@ -183,7 +188,6 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                             Thread.Sleep(2);
                         }
                     }
-
                 }
             }
 
@@ -191,8 +195,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             RaiseProgessChanged(null, null, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
             activeScan.Issues = issues;
 
-            SettingsManager.Instance.LastScan = activeScan.Type;
-            SettingsManager.Instance.LastScanTime = DateTime.Now;
+            SaveScanDetails(activeScan);
             Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStopped, issues.Count);
 
             e.Result = activeScan;
@@ -202,6 +205,64 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         {
             _viewModel.Scan = e.Result as ScanModel;
             _viewModel.IsExecuting = IsExecuting = false;
+        }
+
+        ScanModel GetSavedScanDetails()
+        {
+            var scan = new ScanModel(SettingsManager.Instance.LastScan);
+            if (scan.Type == ScanType.CustomScan)
+            {
+                var selectedAreaKeys = new HashSet<string>(SettingsManager.Instance.LastScanSelectedAreas.Split(new char[] { 'Ӫ' }, StringSplitOptions.RemoveEmptyEntries));
+                if (selectedAreaKeys.Count > 0)
+                {
+                    for (var index = scan.Targets.Count - 1; index >= 0; index--)
+                    {
+                        var target = scan.Targets[index];
+                        var hasSelectedArea = false;
+                        foreach (var area in target.Areas)
+                        {
+                            if (selectedAreaKeys.Contains(string.Format("{0}{2}{1}", target.Name, area.Name, 'ӝ')))
+                            {
+                                area.IsSelected = true;
+                                hasSelectedArea = true;
+                            }
+                        }
+
+                        if (!hasSelectedArea)
+                            scan.Targets.RemoveAt(index);
+                    }
+                }
+            }
+
+            return scan;
+        }
+
+        void SaveScanDetails(ScanModel scan)
+        {
+            if (scan == null)
+                return;
+
+            if (scan.Type == ScanType.CustomScan)
+            {
+                var selectedAreaKeys = new StringBuilder();
+                foreach (var target in scan.Targets)
+                {
+                    foreach (var area in target.Areas)
+                    {
+                        if (area.IsSelected)
+                        {
+                            selectedAreaKeys.AppendFormat("{0}{2}{1}{3}", target.Name, area.Name, 'ӝ', 'Ӫ');
+                        }
+                    }
+                }
+
+                SettingsManager.Instance.LastScanSelectedAreas = selectedAreaKeys.ToString();
+            }
+            else
+                SettingsManager.Instance.LastScanSelectedAreas = string.Empty;
+            
+            SettingsManager.Instance.LastScan = scan.Type;
+            SettingsManager.Instance.LastScanTime = DateTime.Now;
         }
 
         void CancelScan()

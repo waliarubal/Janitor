@@ -57,17 +57,20 @@ namespace NullVoidCreations.Janitor.Shell.Core
         }
 
         /// <summary>
-        /// This method validates license key entered by user using UI.
+        /// This method validates license key entered by user using UI and returns any error that occured.
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public bool ValidateLicense(string key)
+        public string ValidateLicense(string key)
         {
-            var result = _license.Validate(key);
-            SettingsManager.Instance.LicenseKey = key;
-            Subject.Instance.NotifyAllObservers(this, MessageCode.LicenseChanged);
+            var errorMessage = "License key not entered.";
+            if (!string.IsNullOrEmpty(key))
+                errorMessage = _license.Validate(key);
 
-            return result;
+            SettingsManager.Instance.LicenseKey = key;
+            Subject.Instance.NotifyAllObservers(this, MessageCode.LicenseChanged, errorMessage);
+
+            return errorMessage;
         }
 
         public void Update(IObserver sender, MessageCode code, params object[] data)

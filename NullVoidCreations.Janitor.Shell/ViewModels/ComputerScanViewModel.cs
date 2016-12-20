@@ -109,13 +109,26 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public void Update(IObserver sender, MessageCode code, params object[] data)
         {
-            switch(code)
+            switch (code)
             {
                 case MessageCode.Initialized:
                 case MessageCode.ScanStopped:
                     IsScannedInPast = SettingsManager.Instance.LastScan != ScanType.Unknown;
                     LastScanName = SettingsManager.Instance.LastScan == ScanType.SmartScan ? "Smart Scan" : "Custom Scan";
                     LastScanTime = SettingsManager.Instance.LastScanTime;
+                    break;
+
+                case MessageCode.ScanTrigerred:
+                    switch ((ScanType)data[0])
+                    {
+                        case ScanType.SmartScan:
+                            DoScan.Execute("Smart");
+                            break;
+
+                        case ScanType.CustomScan:
+                            DoScan.Execute("Custom");
+                            break;
+                    }
                     break;
             }
         }

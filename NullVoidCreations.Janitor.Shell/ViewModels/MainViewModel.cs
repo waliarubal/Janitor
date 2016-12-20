@@ -8,6 +8,16 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     {
         bool _isScanning, _isUpdating, _isOk, _isHavingIssues;
         byte _problemsCount;
+        int _selectedViewIndex, _issueCount;
+
+        enum SelectedView: int
+        {
+            Home,
+            ComputerScan,
+            Update,
+            Settings,
+            About
+        }
 
         #region constructor / destructor
 
@@ -26,6 +36,21 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         #endregion
 
         #region properties
+
+        public int SelectedViewIndex
+        {
+            get { return _selectedViewIndex; }
+            set
+            {
+                if (value == _selectedViewIndex)
+                    return;
+                if (value < (int)SelectedView.Home || value > (int)SelectedView.About)
+                    return;
+
+                _selectedViewIndex = value;
+                RaisePropertyChanged("SelectedViewIndex");
+            }
+        }
 
         public bool IsScanning
         {
@@ -93,6 +118,19 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
+        public int IssueCount
+        {
+            get { return _issueCount; }
+            private set
+            {
+                if (value == _issueCount)
+                    return;
+
+                _issueCount = value;
+                RaisePropertyChanged("IssueCount");
+            }
+        }
+
         #endregion
 
         public void Update(IObserver sender, MessageCode code, params object[] data)
@@ -101,17 +139,23 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             {
                 case MessageCode.ScanStarted:
                     IsScanning = true;
-                    IsHavingIssues = (bool)data[0];
+                    IssueCount = 0;
+                    IsHavingIssues = false;
                     break;
 
                 case MessageCode.ScanStopped:
                     IsScanning = false;
-                    IsHavingIssues = (int)data[0] > 0;
+                    IssueCount = (int)data[0];
+                    IsHavingIssues = IssueCount > 0;
                     break;
 
                 case MessageCode.ProblemsAppeared:
                     ProblemsCount = (byte)data[0];
                     IsOk = ProblemsCount == 0;
+                    break;
+
+                case MessageCode.ScanTrigerred:
+                    SelectedViewIndex = (int)SelectedView.ComputerScan;
                     break;
             }
 

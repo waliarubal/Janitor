@@ -8,6 +8,9 @@
     <Setting Name="LastScanTime" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="LastScanSelectedAreas" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="LicenseKey" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

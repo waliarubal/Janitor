@@ -95,9 +95,10 @@ namespace NullVoidCreations.Janitor.Shell.Models
             return LicenseKey;
         }
 
-        internal bool Validate(string key)
+        internal string Validate(string key)
         {
             LicenseKey = key;
+            string errorMessage = null;
             try
             {
                 var decryptedKey = StringCipher.Instance.Decrypt(LicenseKey, LicenseManager.EncryptionKey);
@@ -105,13 +106,17 @@ namespace NullVoidCreations.Janitor.Shell.Models
                 ExpirationDate = ExtractDate(decryptedKey, 8);
                 RegisteredEmail = key.Substring(16, decryptedKey.Length - 16);
                 IsTrial = IsExpired(this);
+
+                if (IsTrial)
+                    errorMessage = "License key expired.";
             }
             catch
             {
+                errorMessage = "Invalid license key.";
                 Rest();
             }
 
-            return IsTrial;
+            return errorMessage;
         }
 
         bool IsExpired(LicenseModel license)

@@ -62,6 +62,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\PurchaseLicenseCommand.cs" />
     <Compile Include="Commands\ScanCommand.cs" />
     <Compile Include="Controls\CustomWindow.cs" />
     <Compile Include="Converters\InverseBoolToVisibilityConverter.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="ViewModels\ComputerScanViewModel.cs" />
     <Compile Include="ViewModels\CustomScanViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\LicenseActivationViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
@@ -238,6 +240,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Cart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Logo32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

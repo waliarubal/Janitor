@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
+using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Properties;
-using NullVoidCreations.Janitor.Core.Models;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -54,6 +54,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
         {
             get { return Settings.Default.LastScanTime; }
             set { Settings.Default.LastScanTime = value; }
+        }
+
+        public string LastScanSelectedAreas
+        {
+            get { return Settings.Default.LastScanSelectedAreas; }
+            set { Settings.Default.LastScanSelectedAreas = value; }
         }
 
         public static SettingsManager Instance

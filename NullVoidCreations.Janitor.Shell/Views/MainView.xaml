@@ -8,6 +8,7 @@
                 Width="780"
                 Height="580"
                 Background="{StaticResource ResourceKey=BackgroundBrush}"
+                Icon="/NullVoidCreations.Janitor.Shell;component/Resources/Logo32.png"
                 ResizeMode="CanMinimize"
                 WindowStartupLocation="CenterScreen">
     <c:CustomWindow.DataContext>
@@ -31,49 +32,11 @@
                                         Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
         </Grid>
     </c:CustomWindow.HeaderContent>
-    <!--
-        <Border Height="40"
-        BorderBrush="{StaticResource ResourceKey=HeaderBorderBrush}"
-        Background="{StaticResource ResourceKey=HeaderBackgroundBrush}"
-        BorderThickness="0 0 0 1">
-        <Grid>
-        <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="Auto" />
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="Auto" />
-        <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Image Margin="8 0 8 0"
-        Width="28"
-        Height="28"
-        SnapsToDevicePixels="True"
-        RenderOptions.BitmapScalingMode="HighQuality"
-        RenderOptions.EdgeMode="Aliased"
-        Source="/NullVoidCreations.Janitor.Shell;component/Resources/Logo.png" />
-        <TextBlock Text="PC MECHANIC PRO"
-        Grid.Column="1"
-        Foreground="{StaticResource ResourceKey=BackgroundBrush}"
-        VerticalAlignment="Center"
-        FontFamily="Arial"
-        FontWeight="Normal"
-        FontSize="18"/>
-        <Image Grid.Column="2"
-        Width="32"
-        Height="32"
-        Margin="0 0 8 0"
-        Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png"
-        Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}"/>
-        <Image Grid.Column="3"
-        Width="32"
-        Height="32"
-        Margin="0 0 8 0"
-        Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png"
-        Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"/>
-        </Grid>
-        </Border>
-    -->
 
-    <TabControl Grid.Row="1" TabStripPlacement="Left">
+    <TabControl Grid.Row="1"
+                SelectedIndex="{Binding Path=SelectedViewIndex,
+                                        Mode=TwoWay}"
+                TabStripPlacement="Left">
         <TabControl.Resources>
             <!--  left side navigation panel style  -->
             <Style TargetType="TabControl">
@@ -88,19 +51,39 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TabPanel Grid.Column="0"
                                           Margin="0 40 0 0"
                                           Panel.ZIndex="1"
                                           IsItemsHost="True" />
-                                <TextBlock Grid.Row="1"
+                                <StackPanel Grid.Row="1"
+                                            MaxWidth="140"
+                                            Margin="0 0 0 -15"
+                                            HorizontalAlignment="Center"
+                                            Visibility="{Binding Path=IsHavingIssues,
+                                                                 Mode=OneWay,
+                                                                 Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+                                    <StackPanel.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center" />
+                                            <Setter Property="FontSize" Value="18" />
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                            <Setter Property="Foreground" Value="{StaticResource ResourceKey=BadBrush}" />
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <TextBlock Text="{Binding Path=IssueCount, Mode=OneWay}" />
+                                    <TextBlock Text="Issues Found" />
+                                </StackPanel>
+
+                                <TextBlock Grid.Row="2"
                                            Margin="0 18"
                                            HorizontalAlignment="Center"
                                            FontSize="9"
                                            FontWeight="Bold"
                                            Foreground="{StaticResource ResourceKey=TextBrush}"
                                            Text="CLEANING AT YOUR FINGERTIPS" />
-                                <Border Grid.RowSpan="2"
+                                <Border Grid.RowSpan="3"
                                         Grid.Column="1"
                                         Background="{StaticResource ResourceKey=BackgroundBrush}"
                                         BorderBrush="{StaticResource ResourceKey=BorderBrush}"
@@ -178,6 +161,7 @@
                 <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
                 <Setter Property="RenderOptions.EdgeMode" Value="Aliased" />
             </Style>
+
             <Style x:Key="NavigationTextStyle" TargetType="TextBlock">
                 <Setter Property="Margin" Value="8 0 0 0" />
                 <Setter Property="VerticalAlignment" Value="Center" />

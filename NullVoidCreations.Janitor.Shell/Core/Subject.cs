@@ -12,7 +12,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
         SystemInformationLoaded,
         LicenseChanged,
         ProblemsAppeared,
-        Initialized
+        Initialized,
+        ScanTrigerred,
     }
 
     class Subject

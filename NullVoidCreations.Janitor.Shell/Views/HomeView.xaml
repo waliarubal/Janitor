@@ -87,6 +87,8 @@
                                                  Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}">
                     <Button MinWidth="120"
                             Margin="0 0 4 0"
+                            Command="{Binding Path=PurchaseLicense,
+                                              Mode=OneTime}"
                             Content="Buy Now"
                             FontSize="12"
                             Foreground="{StaticResource ResourceKey=BackgroundBrush}"
@@ -164,6 +166,9 @@
                     <Button Grid.Row="0"
                             Grid.Column="1"
                             Margin="0 0 0 8"
+                            Command="{Binding Path=DoScan,
+                                              Mode=OneTime}"
+                            CommandParameter="Smart"
                             Style="{StaticResource ResourceKey=ScanButtonStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -189,6 +194,9 @@
                     <Button Grid.Row="1"
                             Grid.Column="1"
                             Margin="0 0 0 8"
+                            Command="{Binding Path=DoScan,
+                                              Mode=OneTime}"
+                            CommandParameter="Custom"
                             Style="{StaticResource ResourceKey=ScanButtonStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -214,6 +222,8 @@
                     <Button Grid.Row="2"
                             Grid.Column="2"
                             Margin="0 0 0 8"
+                            Command="{Binding Path=PurchaseLicense,
+                                              Mode=OneTime}"
                             Style="{StaticResource ResourceKey=ScanButtonStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -240,7 +250,6 @@
 
             </StackPanel>
         </ScrollViewer>
-
 
         <!--  system info  -->
         <Border Grid.Row="2"

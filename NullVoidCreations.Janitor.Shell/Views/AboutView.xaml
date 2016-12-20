@@ -49,6 +49,7 @@
                                                 Mode=OneWay,
                                                 Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
                 <TextBlock FontWeight="Bold"
+                           Foreground="{StaticResource ResourceKey=BadBrush}"
                            Text="License not Activated"
                            Visibility="{Binding Path=IsTrial,
                                                 Mode=OneWay,
@@ -63,6 +64,7 @@
                                                 Mode=OneWay,
                                                 Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
                 <TextBlock FontWeight="Bold"
+                           Foreground="{StaticResource ResourceKey=BadBrush}"
                            Text="License not Activated"
                            Visibility="{Binding Path=IsTrial,
                                                 Mode=OneWay,

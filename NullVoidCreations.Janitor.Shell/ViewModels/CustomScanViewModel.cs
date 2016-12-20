@@ -9,6 +9,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     {
         readonly CommandBase _scan;
         ObservableCollection<ScanTargetBase> _targets;
+        string _errorMessage;
 
         public CustomScanViewModel()
         {
@@ -32,6 +33,19 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            private set
+            {
+                if (value == _errorMessage)
+                    return;
+
+                _errorMessage = value;
+                RaisePropertyChanged("ErrorMessage");
+            }
+        }
+
         #endregion
 
         #region commands
@@ -48,6 +62,12 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             var window = parameter as CustomWindow;
             if (window == null)
                 return;
+
+            if (!AreScanAreasSelected())
+            {
+                ErrorMessage = "No scan area selected.";
+                return;
+            }
 
             // remove unselected scan targets
             for (var index = Targets.Count - 1; index >= 0; index--)
@@ -66,8 +86,18 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     Targets.RemoveAt(index);
             }
 
-                window.DialogResult = true;
+            window.DialogResult = true;
             window.Close();
+        }
+
+        bool AreScanAreasSelected()
+        {
+            foreach (var target in Targets)
+                foreach (var area in target.Areas)
+                    if (area.IsSelected)
+                        return true;
+
+            return false;
         }
     }
 }

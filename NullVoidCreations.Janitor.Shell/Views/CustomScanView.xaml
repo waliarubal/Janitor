@@ -3,13 +3,15 @@
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
                 xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
-                Title="PC MECHANIC PRO™"
-                Width="420"
+                Title="PC MECHANIC PRO™ - Custom Scan"
+                Width="380"
                 Height="460"
                 Background="{StaticResource ResourceKey=BackgroundBrush}"
+                Icon="/NullVoidCreations.Janitor.Shell;component/Resources/Logo32.png"
                 IsMinimizeAllowed="False"
                 ShowInTaskbar="True"
-                Style="{StaticResource ResourceKey=ChildWindowStyle}">
+                Style="{StaticResource ResourceKey=ChildWindowStyle}"
+                WindowStartupLocation="CenterOwner">
     <c:CustomWindow.DataContext>
         <vm:CustomScanViewModel />
     </c:CustomWindow.DataContext>
@@ -109,6 +111,15 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Border>
+
+        <TextBlock Grid.Row="3"
+                   Grid.ColumnSpan="2"
+                   Margin="20 0 20 12"
+                   VerticalAlignment="Center"
+                   FontWeight="Bold"
+                   Foreground="{StaticResource ResourceKey=BadBrush}"
+                   Text="{Binding Path=ErrorMessage,
+                                  Mode=OneWay}" />
 
         <StackPanel Grid.Row="3"
                     Grid.ColumnSpan="2"

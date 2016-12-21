@@ -8,7 +8,7 @@ namespace NullVoidCreations.Janitor.Shared.Models
     {
         string _name;
         ScanTargetBase _target;
-        readonly List<Issue> _issues;
+        readonly List<Issue> _issues, _issuesFixed;
         bool _isSelected;
 
         #region constructor / destructor
@@ -23,6 +23,7 @@ namespace NullVoidCreations.Janitor.Shared.Models
             _name = name;
             _target = target;
             _issues = new List<Issue>();
+            _issuesFixed = new List<Issue>();
         }
 
         ~ScanAreaBase()
@@ -54,6 +55,11 @@ namespace NullVoidCreations.Janitor.Shared.Models
         public List<Issue> Issues
         {
             get { return _issues; }
+        }
+
+        public List<Issue> IssuesFixed
+        {
+            get { return _issuesFixed; }
         }
 
         public bool IsSelected

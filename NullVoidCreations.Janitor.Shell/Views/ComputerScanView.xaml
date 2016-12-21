@@ -89,12 +89,24 @@
                             Grid.Column="1"
                             Margin="0 20 0 0"
                             Orientation="Horizontal">
-                    <TextBlock Text="Issues Found: " />
+                    <TextBlock Text="Issues Found: " Visibility="{Binding Path=ScanStatus.IsFixing, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
                     <TextBlock FontWeight="Bold"
                                Foreground="{StaticResource ResourceKey=BadBrush}"
                                Text="{Binding Path=ScanStatus.IssueCount,
                                               Mode=OneWay,
-                                              FallbackValue=0}" />
+                                              FallbackValue=0}"
+                               Visibility="{Binding Path=ScanStatus.IsFixing,
+                                                    Mode=OneWay,
+                                                    Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                    <TextBlock Text="Issues Fixed: " Visibility="{Binding Path=ScanStatus.IsFixing, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                    <TextBlock FontWeight="Bold"
+                               Foreground="{StaticResource ResourceKey=GoodBrush}"
+                               Text="{Binding Path=ScanStatus.IssueCount,
+                                              Mode=OneWay,
+                                              FallbackValue=0}"
+                               Visibility="{Binding Path=ScanStatus.IsFixing,
+                                                    Mode=OneWay,
+                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                 </StackPanel>
 
                 <StackPanel Grid.Row="2"
@@ -115,8 +127,22 @@
                             Grid.Column="1"
                             Grid.ColumnSpan="3"
                             Orientation="Horizontal">
-                    <TextBlock Text="Scanning: " />
-                    <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}" Text="{Binding Path=ScanStatus.Target.Name, Mode=OneWay, FallbackValue='Not Scanning'}" />
+                    <TextBlock Text="Scanning: " Visibility="{Binding Path=ScanStatus.IsFixing, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                    <TextBlock Text="Fixing: " Visibility="{Binding Path=ScanStatus.IsFixing, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                    <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                               Text="{Binding Path=ScanStatus.Target.Name,
+                                              Mode=OneWay,
+                                              FallbackValue='Not Scanning'}"
+                               Visibility="{Binding Path=ScanStatus.IsFixing,
+                                                    Mode=OneWay,
+                                                    Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                    <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                               Text="{Binding Path=ScanStatus.Target.Name,
+                                              Mode=OneWay,
+                                              FallbackValue='Nothing to Fix'}"
+                               Visibility="{Binding Path=ScanStatus.IsFixing,
+                                                    Mode=OneWay,
+                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                     <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}" Text="{Binding Path=ScanStatus.Area.Name, Mode=OneWay, FallbackValue='', StringFormat=' ({0})...'}" />
                 </StackPanel>
 
@@ -180,7 +206,7 @@
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
                                Foreground="{StaticResource ResourceKey=TextBrush}"
-                               Text="No issue found."
+                               Text="Nothing to fix."
                                Visibility="{Binding Path=ScanStatus.IsHavingIssues,
                                                     Mode=OneWay,
                                                     Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
@@ -202,7 +228,16 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Foreground="{StaticResource ResourceKey=TextBrush}"
                                Text="The following list contains issues found during computer scan and must be cleaned to ensure system performance. Click on fix issues button to resolve them."
-                               TextWrapping="Wrap" />
+                               TextWrapping="Wrap"
+                               Visibility="{Binding Path=ScanStatus.IsHavingIssues,
+                                                    Mode=OneWay,
+                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                    <TextBlock Foreground="{StaticResource ResourceKey=TextBrush}"
+                               Text="The following list contains issues that program was unable to fix."
+                               TextWrapping="Wrap"
+                               Visibility="{Binding Path=ScanStatus.IsHavingIssues,
+                                                    Mode=OneWay,
+                                                    Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
                     <Button Grid.Row="8"
                             Grid.Column="1"
                             Grid.ColumnSpan="3"
@@ -210,7 +245,10 @@
                             HorizontalAlignment="Right"
                             Command="{Binding Path=DoScan,
                                               Mode=OneTime}"
-                            CommandParameter="Fix">
+                            CommandParameter="Fix"
+                            IsEnabled="{Binding Path=DoScan.IsExecuting,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=InverseBoolConverter}}">
                         Fix Issues
                     </Button>
                 </Grid>
@@ -278,6 +316,9 @@
             <Button Command="{Binding Path=DoScan,
                                       Mode=OneTime}"
                     CommandParameter="Smart"
+                    IsEnabled="{Binding Path=DoScan.IsExecuting,
+                                        Mode=OneWay,
+                                        Converter={StaticResource ResourceKey=InverseBoolConverter}}"
                     Style="{StaticResource ResourceKey=ScanButtonStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -304,6 +345,9 @@
                     Command="{Binding Path=DoScan,
                                       Mode=OneTime}"
                     CommandParameter="Custom"
+                    IsEnabled="{Binding Path=DoScan.IsExecuting,
+                                        Mode=OneWay,
+                                        Converter={StaticResource ResourceKey=InverseBoolConverter}}"
                     Style="{StaticResource ResourceKey=ScanButtonStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -330,6 +374,9 @@
                     Command="{Binding Path=DoScan,
                                       Mode=OneTime}"
                     CommandParameter="Repeat"
+                    IsEnabled="{Binding Path=DoScan.IsExecuting,
+                                        Mode=OneWay,
+                                        Converter={StaticResource ResourceKey=InverseBoolConverter}}"
                     Style="{StaticResource ResourceKey=ScanButtonStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>

@@ -33,7 +33,18 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Firefox
 
         public override List<Issue> Fix()
         {
-            return null;
+            IssuesFixed.Clear();
+            for (var index = Issues.Count - 1; index >= 0; index--)
+            {
+                if (FileSystemHelper.Instance.DeleteFile(Issues[index].Details))
+                {
+                    var issue = Issues[index];
+                    Issues.RemoveAt(index);
+                    IssuesFixed.Add(issue);
+                }
+            }
+
+            return IssuesFixed;
         }
     }
 }

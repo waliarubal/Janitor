@@ -11,6 +11,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <c:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
         <c:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+        <c:InverseBoolConverter x:Key="InverseBoolConverter" />
 
         <!--  brushes  -->
         <SolidColorBrush x:Key="GoodBrush" Color="#5DAE2D" />

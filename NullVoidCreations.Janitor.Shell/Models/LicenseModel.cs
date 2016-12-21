@@ -1,5 +1,5 @@
-﻿using NullVoidCreations.Janitor.Shared.Base;
-using System;
+﻿using System;
+using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Shell.Models

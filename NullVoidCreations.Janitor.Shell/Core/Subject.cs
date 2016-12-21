@@ -5,15 +5,17 @@ namespace NullVoidCreations.Janitor.Shell.Core
     public enum MessageCode : byte
     {
         ScanStatusChanged,
+        ScanTrigerred,
         ScanStarted,
         ScanStopped,
+        FixingStarted,
+        FixingStopped,
         PluginsLoaded,
         PluginsUnloaded,
         SystemInformationLoaded,
         LicenseChanged,
         ProblemsAppeared,
-        Initialized,
-        ScanTrigerred,
+        Initialized
     }
 
     class Subject

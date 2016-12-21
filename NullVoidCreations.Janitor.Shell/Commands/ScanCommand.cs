@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Threading;
+using System.Windows;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Models;
@@ -10,17 +11,16 @@ using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Models;
 using NullVoidCreations.Janitor.Shell.ViewModels;
 using NullVoidCreations.Janitor.Shell.Views;
-using System.Windows;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
-    public class ScanCommand: CommandBase, IObserver
+    public class ScanCommand : CommandBase, IObserver
     {
         ComputerScanViewModel _viewModel;
         BackgroundWorker _worker;
 
         #region constructor / destructor
-       
+
         public ScanCommand(ComputerScanViewModel viewModel)
             : base(viewModel)
         {
@@ -48,7 +48,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         public override void Execute(object parameter)
         {
             IsEnabled = true;
-            switch(parameter as string)
+            switch (parameter as string)
             {
                 case "Smart":
                     if (_viewModel.IsExecuting)
@@ -72,6 +72,9 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                     break;
 
                 case "Repeat":
+                    if (_viewModel.IsExecuting)
+                        return;
+
                     _viewModel.Scan = GetSavedScanDetails();
                     StartScan(_viewModel.Scan);
                     break;
@@ -81,14 +84,17 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                     break;
 
                 case "Fix":
-                    // TODO: add cleaner starting code
+                    if (_viewModel.IsExecuting)
+                        return;
+
+                    StartFix(_viewModel.Scan);
                     break;
             }
         }
 
         public void Update(IObserver sender, MessageCode code, params object[] data)
         {
-            switch(code)
+            switch (code)
             {
                 case MessageCode.ScanStatusChanged:
                     if (_worker.IsBusy)
@@ -108,13 +114,28 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _worker.ProgressChanged += new ProgressChangedEventHandler(Worker_ProgressChanged);
             _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
 
-            _worker.RunWorkerAsync(_viewModel.Scan);
+            _worker.RunWorkerAsync(new object[] { true, _viewModel.Scan });
+        }
+
+        void StartFix(ScanModel scan)
+        {
+            _viewModel.IsExecuting = IsExecuting = true;
+
+            _worker = new BackgroundWorker();
+            _worker.WorkerSupportsCancellation = true;
+            _worker.WorkerReportsProgress = true;
+            _worker.DoWork += new DoWorkEventHandler(Worker_DoWork);
+            _worker.ProgressChanged += new ProgressChangedEventHandler(Worker_ProgressChanged);
+            _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
+
+            _worker.RunWorkerAsync(new object[] { false, _viewModel.Scan });
         }
 
         void RaiseProgessChanged(
             ScanTargetBase target,
             ScanAreaBase area,
             bool isRunning,
+            bool isFixing,
             int targetsScanned,
             int areasScanned,
             long issueCount,
@@ -122,7 +143,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             int progressMin,
             int progressCurrent)
         {
-            var status = new ScanStatusModel(target, area, isRunning);
+            var status = new ScanStatusModel(target, area, isRunning, isFixing);
             status.TargetScanned = targetsScanned;
             status.AreaScanned = areasScanned;
             status.IssueCount = issueCount;
@@ -130,6 +151,125 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             status.ProgressMin = progressMin;
             status.ProgressCurrent = progressCurrent;
             Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStatusChanged, status);
+        }
+
+        ScanModel Analyse(ScanModel scan)
+        {
+            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStarted, false);
+
+            var issues = new List<Issue>();
+            var targets = 0;
+            var areas = 0;
+
+            var progressCurrent = 0;
+            var progressMax = 0;
+            foreach (var target in scan.Targets)
+                foreach (var area in target.Areas)
+                    if (area.IsSelected)
+                        progressMax++;
+
+            if (_worker.CancellationPending)
+                goto EXIT_SCAN;
+
+            RaiseProgessChanged(null, null, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+            foreach (var target in scan.Targets)
+            {
+                if (_worker.CancellationPending)
+                    goto EXIT_SCAN;
+
+                targets++;
+                RaiseProgessChanged(target, null, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                foreach (var area in target.Areas)
+                {
+                    if (area.IsSelected)
+                    {
+                        if (_worker.CancellationPending)
+                            goto EXIT_SCAN;
+
+                        progressCurrent++;
+                        areas++;
+                        RaiseProgessChanged(target, area, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                        foreach (var issue in area.Analyse())
+                        {
+                            if (_worker.CancellationPending)
+                                goto EXIT_SCAN;
+
+                            RaiseProgessChanged(target, area, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                            issues.Add(issue);
+                            Thread.Sleep(2);
+                        }
+                    }
+                }
+            }
+
+        EXIT_SCAN:
+            RaiseProgessChanged(null, null, false, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+            scan.Issues = issues;
+
+            SaveScanDetails(scan);
+            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStopped, issues.Count);
+
+            return scan;
+        }
+
+        ScanModel Fix(ScanModel scan)
+        {
+            Subject.Instance.NotifyAllObservers(this, MessageCode.FixingStarted);
+
+            var issues = new List<Issue>();
+            var targets = 0;
+            var areas = 0;
+
+            var progressCurrent = 0;
+            var progressMax = 0;
+            foreach (var target in scan.Targets)
+                foreach (var area in target.Areas)
+                    if (area.IsSelected)
+                        progressMax++;
+
+
+            if (_worker.CancellationPending)
+                goto EXIT_SCAN;
+
+            RaiseProgessChanged(null, null, true, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+            foreach (var target in scan.Targets)
+            {
+                if (_worker.CancellationPending)
+                    goto EXIT_SCAN;
+
+                targets++;
+                RaiseProgessChanged(target, null, true, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                foreach (var area in target.Areas)
+                {
+                    if (area.IsSelected)
+                    {
+                        if (_worker.CancellationPending)
+                            goto EXIT_SCAN;
+
+                        progressCurrent++;
+                        areas++;
+                        RaiseProgessChanged(target, area, true, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                        foreach (var issue in area.Fix())
+                        {
+                            if (_worker.CancellationPending)
+                                goto EXIT_SCAN;
+
+                            RaiseProgessChanged(target, area, true, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                            issues.Add(issue);
+                            Thread.Sleep(2);
+                        }
+                    }
+                }
+            }
+
+        EXIT_SCAN:
+            RaiseProgessChanged(null, null, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+            scan.FixedIssues = issues;
+
+            SaveScanDetails(scan);
+            Subject.Instance.NotifyAllObservers(this, MessageCode.FixingStopped, issues.Count);
+
+            return scan;
         }
 
         void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -142,67 +282,21 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             Thread.CurrentThread.IsBackground = true;
             Thread.CurrentThread.Priority = ThreadPriority.Lowest;
 
-            var activeScan = e.Argument as ScanModel;
+            var parameters = e.Argument as object[];
+            var isScanOperation = (bool)parameters[0];
+            var activeScan = parameters[1] as ScanModel;
 
-            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStarted, false);
-
-            var issues = new List<Issue>();
-            var targets = 0;
-            var areas = 0;
-
-            var progressCurrent = 0;
-            var progressMax = 0;
-            foreach (var target in activeScan.Targets)
-                foreach (var area in target.Areas)
-                    if (area.IsSelected)
-                        progressMax++;
-
-            if (_worker.CancellationPending)
-                goto EXIT_SCAN;
-
-            RaiseProgessChanged(null, null, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
-            foreach (var target in activeScan.Targets)
-            {
-                if (_worker.CancellationPending)
-                    goto EXIT_SCAN;
-
-                targets++;
-                RaiseProgessChanged(target, null, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
-                foreach (var area in target.Areas)
-                {
-                    if (area.IsSelected)
-                    {
-                        if (_worker.CancellationPending)
-                            goto EXIT_SCAN;
-
-                        progressCurrent++;
-                        areas++;
-                        RaiseProgessChanged(target, area, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
-                        foreach (var issue in area.Analyse())
-                        {
-                            if (_worker.CancellationPending)
-                                goto EXIT_SCAN;
-
-                            RaiseProgessChanged(target, area, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
-                            issues.Add(issue);
-                            Thread.Sleep(2);
-                        }
-                    }
-                }
-            }
-
-            EXIT_SCAN:
-            RaiseProgessChanged(null, null, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
-            activeScan.Issues = issues;
-
-            SaveScanDetails(activeScan);
-            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStopped, issues.Count);
-
-            e.Result = activeScan;
+            e.Result = isScanOperation ? Analyse(activeScan) : Fix(activeScan);
         }
 
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            _worker.DoWork -= new DoWorkEventHandler(Worker_DoWork);
+            _worker.ProgressChanged -= new ProgressChangedEventHandler(Worker_ProgressChanged);
+            _worker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
+            _worker.Dispose();
+            _worker = null;
+
             _viewModel.Scan = e.Result as ScanModel;
             _viewModel.IsExecuting = IsExecuting = false;
         }
@@ -260,7 +354,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             }
             else
                 SettingsManager.Instance.LastScanSelectedAreas = string.Empty;
-            
+
             SettingsManager.Instance.LastScan = scan.Type;
             SettingsManager.Instance.LastScanTime = DateTime.Now;
         }

@@ -18,7 +18,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public ComputerScanViewModel()
         {
-            _progress = new ScanStatusModel(null, null, false);
+            _progress = new ScanStatusModel(null, null, false, false);
             _doScan = new ScanCommand(this);
 
             Subject.Instance.AddObserver(this);

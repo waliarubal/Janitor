@@ -11,15 +11,16 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     {
         volatile ScanModel _scan;
         volatile ScanStatusModel _progress;
-        CommandBase _doScan;
+        CommandBase _doScan, _activate;
         bool _isScannedInPast;
         DateTime _lastScanTime;
         string _lastScanName;
 
         public ComputerScanViewModel()
         {
-            _progress = new ScanStatusModel(null, null, false, false);
+            _progress = new ScanStatusModel(null, null, true, false);
             _doScan = new ScanCommand(this);
+            _activate = new ActivateLicenseCommand(this);
 
             Subject.Instance.AddObserver(this);
         }
@@ -105,6 +106,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             get { return _doScan; }
         }
 
+        public CommandBase Activate
+        {
+            get { return _activate; }
+        }
+
         #endregion
 
         public void Update(IObserver sender, MessageCode code, params object[] data)
@@ -112,7 +118,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             switch (code)
             {
                 case MessageCode.Initialized:
-                case MessageCode.ScanStopped:
+                case MessageCode.AnalysisStopped:
                     IsScannedInPast = SettingsManager.Instance.LastScan != ScanType.Unknown;
                     LastScanName = SettingsManager.Instance.LastScan == ScanType.SmartScan ? "Smart Scan" : "Custom Scan";
                     LastScanTime = SettingsManager.Instance.LastScanTime;

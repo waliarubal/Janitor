@@ -6,8 +6,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
     {
         ScanStatusChanged,
         ScanTrigerred,
-        ScanStarted,
-        ScanStopped,
+        AnalysisStarted,
+        AnalysisStopped,
         FixingStarted,
         FixingStopped,
         PluginsLoaded,

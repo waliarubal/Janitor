@@ -89,15 +89,15 @@
                             Grid.Column="1"
                             Margin="0 20 0 0"
                             Orientation="Horizontal">
-                    <TextBlock Text="Issues Found: " Visibility="{Binding Path=ScanStatus.IsFixing, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                    <TextBlock Text="Issues Found: " Visibility="{Binding Path=ScanStatus.IsAnalysing, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                     <TextBlock FontWeight="Bold"
                                Foreground="{StaticResource ResourceKey=BadBrush}"
                                Text="{Binding Path=ScanStatus.IssueCount,
                                               Mode=OneWay,
                                               FallbackValue=0}"
-                               Visibility="{Binding Path=ScanStatus.IsFixing,
+                               Visibility="{Binding Path=ScanStatus.IsAnalysing,
                                                     Mode=OneWay,
-                                                    Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                     <TextBlock Text="Issues Fixed: " Visibility="{Binding Path=ScanStatus.IsFixing, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                     <TextBlock FontWeight="Bold"
                                Foreground="{StaticResource ResourceKey=GoodBrush}"
@@ -127,15 +127,15 @@
                             Grid.Column="1"
                             Grid.ColumnSpan="3"
                             Orientation="Horizontal">
-                    <TextBlock Text="Scanning: " Visibility="{Binding Path=ScanStatus.IsFixing, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                    <TextBlock Text="Scanning: " Visibility="{Binding Path=ScanStatus.IsAnalysing, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                     <TextBlock Text="Fixing: " Visibility="{Binding Path=ScanStatus.IsFixing, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                     <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
                                Text="{Binding Path=ScanStatus.Target.Name,
                                               Mode=OneWay,
                                               FallbackValue='Not Scanning'}"
-                               Visibility="{Binding Path=ScanStatus.IsFixing,
+                               Visibility="{Binding Path=ScanStatus.IsAnalysing,
                                                     Mode=OneWay,
-                                                    Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                     <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
                                Text="{Binding Path=ScanStatus.Target.Name,
                                               Mode=OneWay,
@@ -166,14 +166,6 @@
                            Visibility="{Binding Path=ScanStatus.IsHavingIssues,
                                                 Mode=OneWay,
                                                 Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
-                    <Image Grid.RowSpan="2"
-                           Margin="0 0 8 0"
-                           HorizontalAlignment="Center"
-                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png"
-                           Visibility="{Binding Path=ScanStatus.IsHavingIssues,
-                                                Mode=OneWay,
-                                                Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
-
                     <TextBlock Grid.Row="0"
                                Grid.Column="1"
                                HorizontalAlignment="Left"
@@ -183,16 +175,6 @@
                                Visibility="{Binding Path=ScanStatus.IsHavingIssues,
                                                     Mode=OneWay,
                                                     Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
-                    <TextBlock Grid.Row="0"
-                               Grid.Column="1"
-                               HorizontalAlignment="Left"
-                               Foreground="{StaticResource ResourceKey=GoodBrush}"
-                               Style="{StaticResource ResourceKey=HeaderTitleStyle}"
-                               Text="Maximum Performance"
-                               Visibility="{Binding Path=ScanStatus.IsHavingIssues,
-                                                    Mode=OneWay,
-                                                    Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
-
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
                                Foreground="{StaticResource ResourceKey=TextBrush}"
@@ -203,13 +185,34 @@
                                Visibility="{Binding Path=ScanStatus.IsHavingIssues,
                                                     Mode=OneWay,
                                                     Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+
+                    <Image Grid.RowSpan="2"
+                           Margin="0 0 8 0"
+                           HorizontalAlignment="Center"
+                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png"
+                           Visibility="{Binding Path=ScanStatus.IsFixing,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="1"
+                               HorizontalAlignment="Left"
+                               Foreground="{StaticResource ResourceKey=GoodBrush}"
+                               Style="{StaticResource ResourceKey=HeaderTitleStyle}"
+                               Text="Maximum Performance"
+                               Visibility="{Binding Path=ScanStatus.IsFixing,
+                                                    Mode=OneWay,
+                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+
+
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
                                Foreground="{StaticResource ResourceKey=TextBrush}"
-                               Text="Nothing to fix."
-                               Visibility="{Binding Path=ScanStatus.IsHavingIssues,
+                               Text="{Binding Path=ScanStatus.IssueCount,
+                                              Mode=OneWay,
+                                              StringFormat='{}{0} issues fixed.'}"
+                               Visibility="{Binding Path=ScanStatus.IsFixing,
                                                     Mode=OneWay,
-                                                    Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                 </Grid>
 
                 <Separator Grid.Row="5"
@@ -229,15 +232,15 @@
                     <TextBlock Foreground="{StaticResource ResourceKey=TextBrush}"
                                Text="The following list contains issues found during computer scan and must be cleaned to ensure system performance. Click on fix issues button to resolve them."
                                TextWrapping="Wrap"
-                               Visibility="{Binding Path=ScanStatus.IsHavingIssues,
+                               Visibility="{Binding Path=ScanStatus.IsAnalysing,
                                                     Mode=OneWay,
                                                     Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                     <TextBlock Foreground="{StaticResource ResourceKey=TextBrush}"
-                               Text="The following list contains issues that program was unable to fix."
+                               Text="The following list contains issues that were fixed."
                                TextWrapping="Wrap"
-                               Visibility="{Binding Path=ScanStatus.IsHavingIssues,
+                               Visibility="{Binding Path=ScanStatus.IsFixing,
                                                     Mode=OneWay,
-                                                    Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                     <Button Grid.Row="8"
                             Grid.Column="1"
                             Grid.ColumnSpan="3"

@@ -57,25 +57,42 @@
                                           Margin="0 40 0 0"
                                           Panel.ZIndex="1"
                                           IsItemsHost="True" />
+
+                                <!--  navigation footer  -->
                                 <StackPanel Grid.Row="1"
                                             MaxWidth="140"
                                             Margin="0 0 0 -15"
-                                            HorizontalAlignment="Center"
-                                            Visibility="{Binding Path=IsHavingIssues,
-                                                                 Mode=OneWay,
-                                                                 Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+                                            HorizontalAlignment="Center">
                                     <StackPanel.Resources>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="TextAlignment" Value="Center" />
                                             <Setter Property="FontSize" Value="18" />
                                             <Setter Property="FontWeight" Value="Bold" />
-                                            <Setter Property="Foreground" Value="{StaticResource ResourceKey=BadBrush}" />
                                         </Style>
                                     </StackPanel.Resources>
-                                    <TextBlock Text="{Binding Path=IssueCount, Mode=OneWay}" />
-                                    <TextBlock Text="Issues Found" />
+                                    <TextBlock Foreground="{StaticResource ResourceKey=BadBrush}"
+                                               Text="{Binding Path=IssueCount,
+                                                              Mode=OneWay}"
+                                               Visibility="{Binding Path=IsAnalysing,
+                                                                    Mode=OneWay,
+                                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                                    <TextBlock Foreground="{StaticResource ResourceKey=BadBrush}"
+                                               Text="Issues Found"
+                                               Visibility="{Binding Path=IsAnalysing,
+                                                                    Mode=OneWay,
+                                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                                    <TextBlock Foreground="{StaticResource ResourceKey=GoodBrush}"
+                                               Text="{Binding Path=IssueCount,
+                                                              Mode=OneWay}"
+                                               Visibility="{Binding Path=IsFixing,
+                                                                    Mode=OneWay,
+                                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                                    <TextBlock Foreground="{StaticResource ResourceKey=GoodBrush}"
+                                               Text="Issues Fixed"
+                                               Visibility="{Binding Path=IsFixing,
+                                                                    Mode=OneWay,
+                                                                    Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                                 </StackPanel>
-
                                 <TextBlock Grid.Row="2"
                                            Margin="0 18"
                                            HorizontalAlignment="Center"
@@ -83,6 +100,7 @@
                                            FontWeight="Bold"
                                            Foreground="{StaticResource ResourceKey=TextBrush}"
                                            Text="CLEANING AT YOUR FINGERTIPS" />
+
                                 <Border Grid.RowSpan="3"
                                         Grid.Column="1"
                                         Background="{StaticResource ResourceKey=BackgroundBrush}"
@@ -215,7 +233,7 @@
                            Margin="0 0 4 0"
                            Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png"
                            Style="{StaticResource ResourceKey=Spinner}"
-                           Visibility="{Binding Path=IsScanning,
+                           Visibility="{Binding Path=IsWorking,
                                                 Mode=OneWay,
                                                 Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                     <Image Grid.Column="3"

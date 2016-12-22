@@ -18,6 +18,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
     {
         ComputerScanViewModel _viewModel;
         BackgroundWorker _worker;
+        LicenseModel _license;
 
         #region constructor / destructor
 
@@ -52,7 +53,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             {
                 case "Smart":
                     if (_viewModel.IsExecuting)
-                        return;
+                        break;
 
                     _viewModel.Scan = new ScanModel(ScanType.SmartScan);
                     StartScan(_viewModel.Scan);
@@ -60,7 +61,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
                 case "Custom":
                     if (_viewModel.IsExecuting)
-                        return;
+                        break;
 
                     _viewModel.Scan = new ScanModel(ScanType.CustomScan);
 
@@ -73,7 +74,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
                 case "Repeat":
                     if (_viewModel.IsExecuting)
-                        return;
+                        break;
 
                     _viewModel.Scan = GetSavedScanDetails();
                     StartScan(_viewModel.Scan);
@@ -85,7 +86,13 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
                 case "Fix":
                     if (_viewModel.IsExecuting)
-                        return;
+                        break;
+
+                    if (_license.IsTrial)
+                    {
+                        _viewModel.Activate.Execute(null);
+                        break;
+                    }
 
                     StartFix(_viewModel.Scan);
                     break;
@@ -99,6 +106,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                 case MessageCode.ScanStatusChanged:
                     if (_worker.IsBusy)
                         _worker.ReportProgress(-1, data[0]);
+                    break;
+
+                case MessageCode.LicenseChanged:
+                    _license = NullVoidCreations.Janitor.Shell.Core.LicenseManager.Instance.License;
                     break;
             }
         }
@@ -134,7 +145,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         void RaiseProgessChanged(
             ScanTargetBase target,
             ScanAreaBase area,
-            bool isRunning,
+            bool isScanning,
             bool isFixing,
             int targetsScanned,
             int areasScanned,
@@ -143,7 +154,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             int progressMin,
             int progressCurrent)
         {
-            var status = new ScanStatusModel(target, area, isRunning, isFixing);
+            var status = new ScanStatusModel(target, area, isScanning, isFixing);
             status.TargetScanned = targetsScanned;
             status.AreaScanned = areasScanned;
             status.IssueCount = issueCount;
@@ -155,7 +166,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         ScanModel Analyse(ScanModel scan)
         {
-            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStarted, false);
+            Subject.Instance.NotifyAllObservers(this, MessageCode.AnalysisStarted, false);
 
             var issues = new List<Issue>();
             var targets = 0;
@@ -203,11 +214,11 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             }
 
         EXIT_SCAN:
-            RaiseProgessChanged(null, null, false, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+            RaiseProgessChanged(null, null, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
             scan.Issues = issues;
 
             SaveScanDetails(scan);
-            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStopped, issues.Count);
+            Subject.Instance.NotifyAllObservers(this, MessageCode.AnalysisStopped, issues.Count);
 
             return scan;
         }
@@ -231,14 +242,14 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (_worker.CancellationPending)
                 goto EXIT_SCAN;
 
-            RaiseProgessChanged(null, null, true, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+            RaiseProgessChanged(null, null, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
             foreach (var target in scan.Targets)
             {
                 if (_worker.CancellationPending)
                     goto EXIT_SCAN;
 
                 targets++;
-                RaiseProgessChanged(target, null, true, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                RaiseProgessChanged(target, null, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
                 foreach (var area in target.Areas)
                 {
                     if (area.IsSelected)
@@ -248,13 +259,13 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
                         progressCurrent++;
                         areas++;
-                        RaiseProgessChanged(target, area, true, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                        RaiseProgessChanged(target, area, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
                         foreach (var issue in area.Fix())
                         {
                             if (_worker.CancellationPending)
                                 goto EXIT_SCAN;
 
-                            RaiseProgessChanged(target, area, true, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                            RaiseProgessChanged(target, area, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
                             issues.Add(issue);
                             Thread.Sleep(2);
                         }
@@ -264,7 +275,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         EXIT_SCAN:
             RaiseProgessChanged(null, null, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
-            scan.FixedIssues = issues;
+            scan.Issues = issues;
 
             SaveScanDetails(scan);
             Subject.Instance.NotifyAllObservers(this, MessageCode.FixingStopped, issues.Count);

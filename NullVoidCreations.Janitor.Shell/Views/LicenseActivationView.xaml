@@ -47,7 +47,7 @@
         <TextBlock HorizontalAlignment="Left"
                    Style="{StaticResource ResourceKey=HeaderTitleStyle}"
                    Text="I have a license already" />
-        <TextBlock Grid.Row="1" Text="Enter your license key below." />
+        <TextBlock Grid.Row="1" Text="Enter your license key below. Activating the product will allow you to fix issues." />
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -97,7 +97,7 @@
                    Text="I want to purchase a new license" />
         <TextBlock Grid.Row="1"
                    Grid.Column="2"
-                   Text="An activated product finds and fixes even the newest issues with improved speed." />
+                   Text="An activated product finds even the newest issues with improved speed." />
         <Button Grid.Row="2"
                 Grid.RowSpan="2"
                 Grid.Column="2"

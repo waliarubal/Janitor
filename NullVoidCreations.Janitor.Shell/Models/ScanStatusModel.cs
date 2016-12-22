@@ -5,18 +5,18 @@ namespace NullVoidCreations.Janitor.Shell.Models
 {
     public class ScanStatusModel: NotificationBase
     {
-        public ScanStatusModel(ScanTargetBase target, ScanAreaBase area, bool isRunning, bool isFixing)
+        public ScanStatusModel(ScanTargetBase target, ScanAreaBase area, bool isAnalysing, bool isFixing)
         {
             Target = target;
             Area = area;
-            IsRunning = isRunning;
+            IsAnalysing = isAnalysing;
             IsFixing = isFixing;
             ProgressMax = 1;
         }
 
         #region properties
 
-        public bool IsRunning
+        public bool IsAnalysing
         {
             get;
             private set;
@@ -26,11 +26,6 @@ namespace NullVoidCreations.Janitor.Shell.Models
         {
             get;
             private set;
-        }
-
-        public bool IsHavingIssues
-        {
-            get { return IssueCount > 0; }
         }
 
         public int TargetScanned
@@ -49,6 +44,11 @@ namespace NullVoidCreations.Janitor.Shell.Models
         {
             get;
             set;
+        }
+
+        public bool IsHavingIssues
+        {
+            get { return IssueCount > 0; }
         }
 
         public int ProgressMax

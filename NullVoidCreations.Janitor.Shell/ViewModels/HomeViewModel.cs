@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Windows;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Models;
-using NullVoidCreations.Janitor.Shell.Views;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -31,7 +29,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _load = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, null);
             _purchaseLicense = new PurchaseLicenseCommand(this);
             _doScan = new DelegateCommand(this, ExecuteDoScan);
-            _activate = new DelegateCommand(this, ExecuteActivate);
+            _activate = new ActivateLicenseCommand(this);
             _activate.IsEnabled = _doScan.IsEnabled = true;
         }
 
@@ -224,13 +222,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             Subject.Instance.NotifyAllObservers(this, MessageCode.ScanTrigerred, type);
         }
 
-        void ExecuteActivate(object parameter)
-        {
-            var activationView = new LicenseActivationView();
-            activationView.Owner = Application.Current.MainWindow;
-            activationView.ShowDialog();
-        }
-
         void WeHaveProblems()
         {
             byte problems = 0;
@@ -283,13 +274,15 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     WeHaveProblems();
                     break;
 
-                case MessageCode.ScanStarted:
+                case MessageCode.FixingStarted:
+                case MessageCode.AnalysisStarted:
                     IssueCount = 0;
                     IsHavingIssues = false;
                     WeHaveProblems();
                     break;
 
-                case MessageCode.ScanStopped:
+                case MessageCode.FixingStopped:
+                case MessageCode.AnalysisStopped:
                     IssueCount = (int)data[0];
                     IsHavingIssues = IssueCount > 0;
                     WeHaveProblems();

@@ -62,6 +62,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\ActivateLicenseCommand.cs" />
     <Compile Include="Commands\PurchaseLicenseCommand.cs" />
     <Compile Include="Commands\ScanCommand.cs" />
     <Compile Include="Controls\CustomWindow.cs" />

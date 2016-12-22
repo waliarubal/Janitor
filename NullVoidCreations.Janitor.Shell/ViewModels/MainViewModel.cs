@@ -6,7 +6,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class MainViewModel: ViewModelBase, IObserver
     {
-        bool _isScanning, _isUpdating, _isOk, _isHavingIssues;
+        bool _isWorking, _isUpdating, _isOk, _isHavingIssues, _isAnalysing, _isFixing;
         byte _problemsCount;
         int _selectedViewIndex, _issueCount;
 
@@ -52,16 +52,16 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
-        public bool IsScanning
+        public bool IsWorking
         {
-            get { return _isScanning; }
+            get { return _isWorking; }
             private set
             {
-                if (value == _isScanning)
+                if (value == _isWorking)
                     return;
 
-                _isScanning = value;
-                RaisePropertyChanged("IsScanning");
+                _isWorking = value;
+                RaisePropertyChanged("IsWorking");
             }
         }
 
@@ -118,6 +118,32 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
+        public bool IsAnalysing
+        {
+            get { return _isAnalysing; }
+            private set
+            {
+                if (value == _isAnalysing)
+                    return;
+
+                _isAnalysing = value;
+                RaisePropertyChanged("IsAnalysing");
+            }
+        }
+
+        public bool IsFixing
+        {
+            get { return _isFixing; }
+            private set
+            {
+                if (value == _isFixing)
+                    return;
+
+                _isFixing = value;
+                RaisePropertyChanged("IsFixing");
+            }
+        }
+
         public int IssueCount
         {
             get { return _issueCount; }
@@ -137,16 +163,22 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         {
             switch(code)
             {
-                case MessageCode.ScanStarted:
-                    IsScanning = true;
+                case MessageCode.FixingStarted:
+                case MessageCode.AnalysisStarted:
+                    IsWorking = true;
                     IssueCount = 0;
                     IsHavingIssues = false;
+                    IsAnalysing = false;
+                    IsFixing = false;
                     break;
 
-                case MessageCode.ScanStopped:
-                    IsScanning = false;
+                case MessageCode.FixingStopped:
+                case MessageCode.AnalysisStopped:
+                    IsWorking = false;
                     IssueCount = (int)data[0];
-                    IsHavingIssues = IssueCount > 0;
+                    IsHavingIssues = IsAnalysing && IssueCount > 0;
+                    IsAnalysing = code == MessageCode.AnalysisStopped;
+                    IsFixing = code == MessageCode.FixingStopped;
                     break;
 
                 case MessageCode.ProblemsAppeared:

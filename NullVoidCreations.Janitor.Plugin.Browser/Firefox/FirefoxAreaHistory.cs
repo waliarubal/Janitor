@@ -13,7 +13,7 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Firefox
 
         }
 
-        public override List<Issue> Analyse()
+        public override List<IssueBase> Analyse()
         {
             var profiles = (Target as FirefoxTarget).Profiles;
 
@@ -26,25 +26,9 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Firefox
             Issues.Clear();
             foreach (var directory in paths)
                 foreach (var file in new DirectoryWalker(directory))
-                    Issues.Add(new Issue(Target, this, file));
+                    Issues.Add(new FileIssue(Target, this, file));
 
             return Issues;
-        }
-
-        public override List<Issue> Fix()
-        {
-            IssuesFixed.Clear();
-            for (var index = Issues.Count - 1; index >= 0; index--)
-            {
-                if (FileSystemHelper.Instance.DeleteFile(Issues[index].Details))
-                {
-                    var issue = Issues[index];
-                    Issues.RemoveAt(index);
-                    IssuesFixed.Add(issue);
-                }
-            }
-
-            return IssuesFixed;
         }
     }
 }

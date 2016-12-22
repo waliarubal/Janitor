@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using NullVoidCreations.Janitor.Shared.Models;
+using System.Reflection;
+using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -104,12 +106,26 @@ namespace NullVoidCreations.Janitor.Shell.Core
             setupInfo.ApplicationBase = SettingsManager.Instance.PluginsDirectory;
 
             _container = AppDomain.CreateDomain("ScanTargets", evidence, setupInfo);
+            //_container.AssemblyResolve += new ResolveEventHandler(Container_AssemblyResolve);
+        }
+
+        Assembly Container_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var fileNamme = string.Format(new AssemblyName(args.Name).Name, ".dll");
+            var path = Path.Combine(SettingsManager.Instance.PluginsDirectory, fileNamme);
+            if (File.Exists(path))
+                return Assembly.LoadFrom(fileNamme);
+
+            return null;
         }
 
         void DestroyContainer()
         {
             if (_container != null)
+            {
+                //_container.AssemblyResolve -= new ResolveEventHandler(Container_AssemblyResolve);
                 AppDomain.Unload(_container);
+            }
 
             _container = null;
         }

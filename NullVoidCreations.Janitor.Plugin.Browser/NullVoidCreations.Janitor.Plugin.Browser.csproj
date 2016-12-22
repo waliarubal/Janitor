@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\ProgramData\Janitor\</OutputPath>
+    <OutputPath>..\NullVoidCreations.Janitor.Shell\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -53,6 +53,7 @@
     <ProjectReference Include="..\NullVoidCreations.Janitor.Shared\NullVoidCreations.Janitor.Shared.csproj">
       <Project>{828E8A68-B06C-4750-97D4-4E6B25B8523D}</Project>
       <Name>NullVoidCreations.Janitor.Shared</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

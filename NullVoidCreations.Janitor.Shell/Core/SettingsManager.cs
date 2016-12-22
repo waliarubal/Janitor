@@ -9,12 +9,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
     class SettingsManager
     {
         static volatile SettingsManager _instance;
-        string _codeName, _appDirectory, _pluginsDirectory, _pluginsSearchFilter;
+        string _codeName, _pluginsDirectory, _pluginsSearchFilter;
 
         private SettingsManager()
         {
             _codeName = "Janitor";
-            _appDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), CodeName);
             _pluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
             _pluginsSearchFilter = "NullVoidCreations.Janitor.Plugin.*.dll";
 

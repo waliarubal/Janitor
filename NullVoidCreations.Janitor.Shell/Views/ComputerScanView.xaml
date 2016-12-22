@@ -65,7 +65,7 @@
                              Minimum="{Binding Path=ScanStatus.ProgressMin,
                                                Mode=OneWay,
                                                FallbackValue=0}"
-                             Visibility="{Binding Path=ScanStatus.IsRunning,
+                             Visibility="{Binding Path=ScanStatus.IsExecuting,
                                                   Mode=OneWay,
                                                   Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"
                              Value="{Binding Path=ScanStatus.ProgressCurrent,
@@ -79,7 +79,7 @@
                         CommandParameter="Cancel"
                         Style="{StaticResource ResourceKey=ImageButtonStyle}"
                         ToolTip="Stop Scan"
-                        Visibility="{Binding Path=ScanStatus.IsRunning,
+                        Visibility="{Binding Path=ScanStatus.IsExecuting,
                                              Mode=OneWay,
                                              Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
                     <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Stop.png" />

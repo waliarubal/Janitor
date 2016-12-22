@@ -20,7 +20,7 @@ namespace NullVoidCreations.Janitor.Core.Models
         ScanType _type;
         string _name;
         readonly ObservableCollection<ScanTargetBase> _targets;
-        List<Issue> _issues;
+        List<IssueBase> _issues;
 
         #region constructor / destructor
 
@@ -29,7 +29,7 @@ namespace NullVoidCreations.Janitor.Core.Models
             _type = type;
             _name = _type == ScanType.SmartScan ? "Smart Scan" : "Custom Scan";
             _targets = new ObservableCollection<ScanTargetBase>();
-            _issues = new List<Issue>();
+            _issues = new List<IssueBase>();
 
             foreach (var target in PluginManager.Instance.Targets)
             {
@@ -70,7 +70,7 @@ namespace NullVoidCreations.Janitor.Core.Models
             get { return _targets; }
         }
 
-        public List<Issue> Issues
+        public List<IssueBase> Issues
         {
             get { return _issues; }
             internal set

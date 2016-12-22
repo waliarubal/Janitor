@@ -3,21 +3,22 @@ using NullVoidCreations.Janitor.Shared.Base;
 
 namespace NullVoidCreations.Janitor.Shared.Models
 {
-    public class Issue: NotificationBase
+    public abstract class IssueBase: NotificationBase
     {
         string _details;
+        bool _isFixed;
         ScanTargetBase _target;
         ScanAreaBase _area;
 
         #region constructor / destructor
 
-        public Issue(ScanTargetBase target, ScanAreaBase area)
+        public IssueBase(ScanTargetBase target, ScanAreaBase area)
             : this(target, area, null)
         {
 
         }
 
-        public Issue(ScanTargetBase target, ScanAreaBase area, string details)
+        public IssueBase(ScanTargetBase target, ScanAreaBase area, string details)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
@@ -29,7 +30,7 @@ namespace NullVoidCreations.Janitor.Shared.Models
             _details = details;
         }
 
-        ~Issue()
+        ~IssueBase()
         {
             _target = null;
             _area = null;
@@ -52,7 +53,7 @@ namespace NullVoidCreations.Janitor.Shared.Models
         public string Details
         {
             get { return _details; }
-            set
+            protected set
             {
                 if (value == _details)
                     return;
@@ -62,6 +63,21 @@ namespace NullVoidCreations.Janitor.Shared.Models
             }
         }
 
+        public bool IsFixed
+        {
+            get { return _isFixed; }
+            protected set
+            {
+                if (value == _isFixed)
+                    return;
+
+                _isFixed = value;
+                RaisePropertyChanged("IsFixed");
+            }
+        }
+
         #endregion
+
+        public abstract bool Fix();
     }
 }

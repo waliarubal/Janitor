@@ -152,9 +152,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             long issueCount,
             int progressMax,
             int progressMin,
-            int progressCurrent)
+            int progressCurrent,
+            bool isExecuting)
         {
-            var status = new ScanStatusModel(target, area, isScanning, isFixing);
+            var status = new ScanStatusModel(target, area, isScanning, isFixing, isExecuting);
             status.TargetScanned = targetsScanned;
             status.AreaScanned = areasScanned;
             status.IssueCount = issueCount;
@@ -168,7 +169,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         {
             Subject.Instance.NotifyAllObservers(this, MessageCode.AnalysisStarted, false);
 
-            var issues = new List<Issue>();
+            var issues = new List<IssueBase>();
             var targets = 0;
             var areas = 0;
 
@@ -182,14 +183,14 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (_worker.CancellationPending)
                 goto EXIT_SCAN;
 
-            RaiseProgessChanged(null, null, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+            RaiseProgessChanged(null, null, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent, true);
             foreach (var target in scan.Targets)
             {
                 if (_worker.CancellationPending)
                     goto EXIT_SCAN;
 
                 targets++;
-                RaiseProgessChanged(target, null, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                RaiseProgessChanged(target, null, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent, true);
                 foreach (var area in target.Areas)
                 {
                     if (area.IsSelected)
@@ -199,13 +200,13 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
                         progressCurrent++;
                         areas++;
-                        RaiseProgessChanged(target, area, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                        RaiseProgessChanged(target, area, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent, true);
                         foreach (var issue in area.Analyse())
                         {
                             if (_worker.CancellationPending)
                                 goto EXIT_SCAN;
 
-                            RaiseProgessChanged(target, area, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                            RaiseProgessChanged(target, area, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent, true);
                             issues.Add(issue);
                             Thread.Sleep(2);
                         }
@@ -214,7 +215,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             }
 
         EXIT_SCAN:
-            RaiseProgessChanged(null, null, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+            RaiseProgessChanged(null, null, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent, false);
             scan.Issues = issues;
 
             SaveScanDetails(scan);
@@ -227,7 +228,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         {
             Subject.Instance.NotifyAllObservers(this, MessageCode.FixingStarted);
 
-            var issues = new List<Issue>();
+            var issues = new List<IssueBase>();
             var targets = 0;
             var areas = 0;
 
@@ -242,14 +243,14 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (_worker.CancellationPending)
                 goto EXIT_SCAN;
 
-            RaiseProgessChanged(null, null, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+            RaiseProgessChanged(null, null, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent, true);
             foreach (var target in scan.Targets)
             {
                 if (_worker.CancellationPending)
                     goto EXIT_SCAN;
 
                 targets++;
-                RaiseProgessChanged(target, null, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                RaiseProgessChanged(target, null, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent, true);
                 foreach (var area in target.Areas)
                 {
                     if (area.IsSelected)
@@ -259,13 +260,13 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
                         progressCurrent++;
                         areas++;
-                        RaiseProgessChanged(target, area, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                        RaiseProgessChanged(target, area, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent, true);
                         foreach (var issue in area.Fix())
                         {
                             if (_worker.CancellationPending)
                                 goto EXIT_SCAN;
 
-                            RaiseProgessChanged(target, area, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+                            RaiseProgessChanged(target, area, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent, true);
                             issues.Add(issue);
                             Thread.Sleep(2);
                         }
@@ -274,7 +275,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             }
 
         EXIT_SCAN:
-            RaiseProgessChanged(null, null, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent);
+            RaiseProgessChanged(null, null, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent, false);
             scan.Issues = issues;
 
             SaveScanDetails(scan);

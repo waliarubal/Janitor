@@ -2,7 +2,7 @@
 
 namespace NullVoidCreations.Janitor.Shared.Base
 {
-    public abstract class NotificationBase: INotifyPropertyChanged
+    public abstract class NotificationBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

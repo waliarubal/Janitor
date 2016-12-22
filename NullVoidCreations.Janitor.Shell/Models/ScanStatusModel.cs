@@ -5,16 +5,23 @@ namespace NullVoidCreations.Janitor.Shell.Models
 {
     public class ScanStatusModel: NotificationBase
     {
-        public ScanStatusModel(ScanTargetBase target, ScanAreaBase area, bool isAnalysing, bool isFixing)
+        public ScanStatusModel(ScanTargetBase target, ScanAreaBase area, bool isAnalysing, bool isFixing, bool isExecuting)
         {
             Target = target;
             Area = area;
             IsAnalysing = isAnalysing;
             IsFixing = isFixing;
+            IsExecuting = isExecuting;
             ProgressMax = 1;
         }
 
         #region properties
+
+        public bool IsExecuting
+        {
+            get;
+            private set;
+        }
 
         public bool IsAnalysing
         {

@@ -18,7 +18,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public ComputerScanViewModel()
         {
-            _progress = new ScanStatusModel(null, null, true, false);
+            _progress = new ScanStatusModel(null, null, true, false, false);
             _doScan = new ScanCommand(this);
             _activate = new ActivateLicenseCommand(this);
 

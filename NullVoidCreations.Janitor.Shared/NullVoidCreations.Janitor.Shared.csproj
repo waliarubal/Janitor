@@ -54,7 +54,8 @@
     <Compile Include="Helpers\FileSystemHelper.cs" />
     <Compile Include="Helpers\KnownPaths.cs" />
     <Compile Include="Helpers\SysInformation.cs" />
-    <Compile Include="Models\Issue.cs" />
+    <Compile Include="Models\FileIssue.cs" />
+    <Compile Include="Models\IssueBase.cs" />
     <Compile Include="Models\ScanAreaBase.cs" />
     <Compile Include="Models\ScanTargetBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

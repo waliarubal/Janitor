@@ -8,7 +8,7 @@ namespace NullVoidCreations.Janitor.Shared.Models
     {
         string _name;
         ScanTargetBase _target;
-        readonly List<Issue> _issues, _issuesFixed;
+        readonly List<IssueBase> _issues, _issuesFixed;
         bool _isSelected;
 
         #region constructor / destructor
@@ -22,8 +22,8 @@ namespace NullVoidCreations.Janitor.Shared.Models
 
             _name = name;
             _target = target;
-            _issues = new List<Issue>();
-            _issuesFixed = new List<Issue>();
+            _issues = new List<IssueBase>();
+            _issuesFixed = new List<IssueBase>();
         }
 
         ~ScanAreaBase()
@@ -52,12 +52,12 @@ namespace NullVoidCreations.Janitor.Shared.Models
             get { return _target; }
         }
 
-        public List<Issue> Issues
+        public List<IssueBase> Issues
         {
             get { return _issues; }
         }
 
-        public List<Issue> IssuesFixed
+        public List<IssueBase> IssuesFixed
         {
             get { return _issuesFixed; }
         }
@@ -77,9 +77,23 @@ namespace NullVoidCreations.Janitor.Shared.Models
 
         #endregion
 
-        public abstract List<Issue> Analyse();
+        public abstract List<IssueBase> Analyse();
 
-        public abstract List<Issue> Fix();
+        public List<IssueBase> Fix()
+        {
+            IssuesFixed.Clear();
+            for (var index = Issues.Count - 1; index >= 0; index--)
+            {
+                var issue = Issues[index];
+                if (issue.Fix())
+                {
+                    Issues.RemoveAt(index);
+                    IssuesFixed.Add(issue);
+                }
+            }
+
+            return IssuesFixed;
+        }
 
         public override int GetHashCode()
         {

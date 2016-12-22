@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Converters"
              xmlns:local="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
-             xmlns:wpf="http://schemas.microsoft.com/wpf/2008/toolkit"
-             StartupUri="/NullVoidCreations.Janitor.Shell;component/Views/MainView.xaml">
+             xmlns:wpf="http://schemas.microsoft.com/wpf/2008/toolkit">
     <Application.Resources>
 
         <!--  converters  -->

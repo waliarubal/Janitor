@@ -3,6 +3,7 @@ using System.IO;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Properties;
+using System.Collections.Generic;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -10,6 +11,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
     {
         static volatile SettingsManager _instance;
         string _codeName, _pluginsDirectory, _pluginsSearchFilter;
+        Dictionary<string, string> _arguments;
 
         private SettingsManager()
         {
@@ -27,6 +29,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
         }
 
         #region properties
+
+        internal Dictionary<string, string> CommandLineArguments
+        {
+            get;
+            private set;
+        }
 
         public string CodeName
         {
@@ -85,5 +93,31 @@ namespace NullVoidCreations.Janitor.Shell.Core
         }
 
         #endregion
+
+        internal void LoadArguments(string[] arguments)
+        {
+            CommandLineArguments = new Dictionary<string, string>();
+            foreach (var argument in arguments)
+            {
+                if (string.IsNullOrEmpty(argument))
+                    continue;
+                if (!argument.StartsWith("/"))
+                    continue;
+
+                var parts = argument.Split(new char[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length > 0)
+                {
+                    var argName = parts[0].Remove(0, 1);
+                    var argValue = string.Empty;
+                    if (parts.Length > 1)
+                        argValue = parts[1];
+
+                    if (CommandLineArguments.ContainsKey(argName))
+                        CommandLineArguments[argName] = argValue;
+                    else
+                        CommandLineArguments.Add(argName, argValue);
+                }
+            }
+        }
     }
 }

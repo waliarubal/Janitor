@@ -14,18 +14,22 @@ namespace NullVoidCreations.Janitor.Plugin.System.System
 
         }
 
-        public override List<IssueBase> Analyse()
+        public override IEnumerable<IssueBase> Analyse()
         {
             var paths = new List<string>();
             foreach (var drive in Environment.GetLogicalDrives())
                 paths.Add(Path.Combine(drive, "$Recycle.Bin"));
 
             Issues.Clear();
-            foreach(var path in paths)
-                foreach (var file in new DirectoryWalker(path))
-                    Issues.Add(new FileIssue(Target, this, file));
-
-            return Issues;
+            foreach (var directory in paths)
+            {
+                foreach (var file in new DirectoryWalker(directory))
+                {
+                    var issue = new FileIssue(Target, this, file);
+                    Issues.Add(issue);
+                    yield return issue;
+                }
+            }
         }
     }
 }

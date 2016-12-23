@@ -77,9 +77,9 @@ namespace NullVoidCreations.Janitor.Shared.Models
 
         #endregion
 
-        public abstract List<IssueBase> Analyse();
+        public abstract IEnumerable<IssueBase> Analyse();
 
-        public List<IssueBase> Fix()
+        public IEnumerable<IssueBase> Fix()
         {
             IssuesFixed.Clear();
             for (var index = Issues.Count - 1; index >= 0; index--)
@@ -89,10 +89,10 @@ namespace NullVoidCreations.Janitor.Shared.Models
                 {
                     Issues.RemoveAt(index);
                     IssuesFixed.Add(issue);
+
+                    yield return issue;
                 }
             }
-
-            return IssuesFixed;
         }
 
         public override int GetHashCode()

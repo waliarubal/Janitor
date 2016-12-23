@@ -13,15 +13,17 @@ namespace NullVoidCreations.Janitor.Plugin.System.WindowsExplorer
 
         }
 
-        public override List<IssueBase> Analyse()
+        public override IEnumerable<IssueBase> Analyse()
         {
             var path = Path.Combine(KnownPaths.Instance.AppDataLocal, @"Microsoft\Windows\Explorer");
 
             Issues.Clear();
             foreach (var file in new DirectoryWalker(path, IncludeFile))
-                Issues.Add(new FileIssue(Target, this, file));
-
-            return Issues;
+            {
+                var issue = new FileIssue(Target, this, file);
+                Issues.Add(issue);
+                yield return issue;
+            }
         }
 
         bool IncludeFile(string path)

@@ -13,7 +13,7 @@ namespace NullVoidCreations.Janitor.Plugin.System.System
 
         }
 
-        public override List<IssueBase> Analyse()
+        public override IEnumerable<IssueBase> Analyse()
         {
             object[][] paths = new object[][]
             {
@@ -27,10 +27,14 @@ namespace NullVoidCreations.Janitor.Plugin.System.System
 
             Issues.Clear();
             foreach (var path in paths)
+            {
                 foreach (var file in new DirectoryWalker(path[0] as string, IncludeFile, (bool)path[1]))
-                    Issues.Add(new FileIssue(Target, this, file));
-
-            return Issues;
+                {
+                    var issue = new FileIssue(Target, this, file);
+                    Issues.Add(issue);
+                    yield return issue;
+                }
+            }
         }
 
         bool IncludeFile(string path)

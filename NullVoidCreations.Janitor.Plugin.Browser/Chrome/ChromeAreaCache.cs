@@ -14,7 +14,7 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Chrome
 
         }
 
-        public override List<IssueBase> Analyse()
+        public override IEnumerable<IssueBase> Analyse()
         {
             var paths = new string[]
             {
@@ -26,14 +26,22 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Chrome
 
             Issues.Clear();
             foreach (var directory in paths)
+            {
                 foreach (var file in new DirectoryWalker(directory))
-                    Issues.Add(new FileIssue(Target, this, file));
+                {
+                    var issue = new FileIssue(Target, this, file);
+                    Issues.Add(issue);
+                    yield return issue;
+                }
+            }
 
             var path = Path.Combine(KnownPaths.Instance.AppDataLocal, @"Google\Chrome\User Data\Default");
-            foreach (var file in new DirectoryWalker(path, IncludeFile))
-                Issues.Add(new FileIssue(Target, this, file));
-
-            return Issues;
+            foreach (var file in new DirectoryWalker(path, IncludeFile, false))
+            {
+                var issue = new FileIssue(Target, this, file);
+                Issues.Add(issue);
+                yield return issue;
+            }
         }
 
         bool IncludeFile(string path)

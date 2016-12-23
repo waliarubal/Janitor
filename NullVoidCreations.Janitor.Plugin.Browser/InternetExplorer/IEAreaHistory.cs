@@ -13,7 +13,7 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.InternetExplorer
 
         }
 
-        public override List<IssueBase> Analyse()
+        public override IEnumerable<IssueBase> Analyse()
         {
             var paths = new string[]
             {
@@ -26,10 +26,14 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.InternetExplorer
 
             Issues.Clear();
             foreach (var directory in paths)
+            {
                 foreach (var file in new DirectoryWalker(directory))
-                    Issues.Add(new FileIssue(Target, this, file));
-
-            return Issues;
+                {
+                    var issue = new FileIssue(Target, this, file);
+                    Issues.Add(issue);
+                    yield return issue;
+                }
+            }
         }
     }
 }

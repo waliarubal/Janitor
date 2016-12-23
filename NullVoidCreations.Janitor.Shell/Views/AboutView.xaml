@@ -138,7 +138,7 @@
             </StackPanel>
             <TextBlock Grid.Row="8"
                        Margin="0 12 0 0"
-                       Text="Warning: This program is protected by copyright and international treaties. Copying or distributing without express permission from NullVoid Creations by any means, in part or ful, is strictly prohibited and will result in prosecution to the full extent that the law will allow internationally."
+                       Text="Warning: This program is protected by copyright and international treaties. Copying or distributing without express permission from NullVoid Creations by any means, in part or full, is strictly prohibited and will result in prosecution to the full extent that the law will allow internationally."
                        TextWrapping="Wrap" />
         </Grid>
     </Grid>

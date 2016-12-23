@@ -94,6 +94,14 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                         break;
                     }
 
+                    // start scan if it wasen't done earlier
+                    if (_viewModel.Scan == null)
+                    {
+                        _viewModel.Scan = new ScanModel(ScanType.SmartScan);
+                        StartScan(_viewModel.Scan);
+                        break;
+                    }
+
                     StartFix(_viewModel.Scan);
                     break;
             }

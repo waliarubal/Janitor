@@ -9,18 +9,19 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
     {
         string _rootDirectory;
         Func<string, bool> _directoryFilter, _fileFilter;
+        bool _recursive;
 
-        public DirectoryWalker(string rootDirectory): this(rootDirectory, null, null)
+        public DirectoryWalker(string rootDirectory, bool recursive = true): this(rootDirectory, null, null, recursive)
         {
 
         }
 
-        public DirectoryWalker(string rootDirectory, Func<string, bool> fileFilter): this(rootDirectory, null, fileFilter)
+        public DirectoryWalker(string rootDirectory, Func<string, bool> fileFilter, bool recursive = true): this(rootDirectory, null, fileFilter, recursive)
         {
 
         }
 
-        public DirectoryWalker(string rootDirectory, Func<string, bool> directoryFilter, Func<string, bool> fileFilter)
+        public DirectoryWalker(string rootDirectory, Func<string, bool> directoryFilter, Func<string, bool> fileFilter, bool recursive)
         {
             if (string.IsNullOrEmpty(rootDirectory))
                 throw new ArgumentNullException("rootDirectory");
@@ -28,6 +29,7 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             _rootDirectory = rootDirectory;
             _directoryFilter = directoryFilter;
             _fileFilter = fileFilter;
+            _recursive = recursive;
         }
 
         public IEnumerator<string> GetEnumerator()
@@ -45,22 +47,25 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
                 {
                     var directory = directories.Dequeue();
 
-                    string[] subDirectories = null;
-                    try
+                    if (_recursive)
                     {
-                        subDirectories = Directory.GetDirectories(directory);
-                    }
-                    catch
-                    {
-
-                    }
-
-                    if (subDirectories != null)
-                    {
-                        foreach (var path in subDirectories)
+                        string[] subDirectories = null;
+                        try
                         {
-                            if (_directoryFilter == null || _directoryFilter(path))
-                                directories.Enqueue(path);
+                            subDirectories = Directory.GetDirectories(directory);
+                        }
+                        catch
+                        {
+
+                        }
+
+                        if (subDirectories != null)
+                        {
+                            foreach (var path in subDirectories)
+                            {
+                                if (_directoryFilter == null || _directoryFilter(path))
+                                    directories.Enqueue(path);
+                            }
                         }
                     }
 

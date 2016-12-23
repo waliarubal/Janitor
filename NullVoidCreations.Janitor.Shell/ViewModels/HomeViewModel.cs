@@ -239,11 +239,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         object ExecuteGetSystemInformation(object parameter)
         {
-            // load plugins
-            PluginManager.Instance.LoadPlugins();
-
             // load license
             LicenseManager.Instance.LoadLicense();
+
+            // load plugins
+            PluginManager.Instance.LoadPlugins();
 
             // load system information
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.ComputerSystem);

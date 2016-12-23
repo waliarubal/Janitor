@@ -15,6 +15,8 @@ namespace NullVoidCreations.Janitor.Plugin.System.System
             {
                 new SystemAreaRecycleBin(this),
                 new SystemAreaTemporaryFiles(this),
+                new SystemAreaMemoryDump(this),
+                new SystemAreaWindowsLogs(this),
                 new SystemAreaErrorReporting(this)
             };
             Areas = areas;

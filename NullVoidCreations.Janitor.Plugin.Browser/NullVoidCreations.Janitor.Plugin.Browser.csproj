@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chrome\ChromeAreaCache.cs" />
+    <Compile Include="Chrome\ChromeTarget.cs" />
     <Compile Include="Firefox\FirefoxAreaCache.cs" />
     <Compile Include="Firefox\FirefoxAreaHistory.cs" />
     <Compile Include="Firefox\FirefoxAreaSession.cs" />
@@ -59,6 +61,9 @@
   <ItemGroup>
     <Resource Include="Resources\Firefox.png" />
     <Resource Include="Resources\InternetExplorer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Chrome.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

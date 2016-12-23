@@ -69,5 +69,101 @@ namespace NullVoidCreations.Janitor.Shell.Properties {
                 this["LicenseKey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RunAtBoot {
+            get {
+                return ((bool)(this["RunAtBoot"]));
+            }
+            set {
+                this["RunAtBoot"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RunScanAtLaunch {
+            get {
+                return ((bool)(this["RunScanAtLaunch"]));
+            }
+            set {
+                this["RunScanAtLaunch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RunPluginUpdateAtLaunch {
+            get {
+                return ((bool)(this["RunPluginUpdateAtLaunch"]));
+            }
+            set {
+                this["RunPluginUpdateAtLaunch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RunProgramUpdateAtLaunch {
+            get {
+                return ((bool)(this["RunProgramUpdateAtLaunch"]));
+            }
+            set {
+                this["RunProgramUpdateAtLaunch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SkipUac {
+            get {
+                return ((bool)(this["SkipUac"]));
+            }
+            set {
+                this["SkipUac"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ExitOnClose {
+            get {
+                return ((bool)(this["ExitOnClose"]));
+            }
+            set {
+                this["ExitOnClose"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CloseAfterFixing {
+            get {
+                return ((bool)(this["CloseAfterFixing"]));
+            }
+            set {
+                this["CloseAfterFixing"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShutdownAfterFixing {
+            get {
+                return ((bool)(this["ShutdownAfterFixing"]));
+            }
+            set {
+                this["ShutdownAfterFixing"] = value;
+            }
+        }
     }
 }

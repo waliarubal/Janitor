@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Properties;
-using System.Collections.Generic;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -11,7 +11,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
     {
         static volatile SettingsManager _instance;
         string _codeName, _pluginsDirectory, _pluginsSearchFilter;
-        Dictionary<string, string> _arguments;
 
         private SettingsManager()
         {

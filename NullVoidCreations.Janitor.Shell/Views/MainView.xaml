@@ -284,6 +284,7 @@
                                Text="Settings" />
                 </Grid>
             </TabItem.Header>
+            <v:SettingsView />
         </TabItem>
         <TabItem Name="About">
             <TabItem.Header>

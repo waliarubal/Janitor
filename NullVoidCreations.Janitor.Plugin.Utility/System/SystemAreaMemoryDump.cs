@@ -34,7 +34,18 @@ namespace NullVoidCreations.Janitor.Plugin.System.System
 
         bool IncludeFile(string path)
         {
-            return new FileInfo(path).Extension.Equals(".dmp");
+            var result = true;
+            try
+            {
+                return new FileInfo(path).Extension.Equals(".dmp");
+            }
+            catch
+            {
+                result = false;
+                // TODO: handle path too long exception
+            }
+
+            return result;
         }
     }
 }

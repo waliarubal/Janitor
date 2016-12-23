@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Models;
+using System;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -46,6 +47,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
         }
 
         #endregion
+
+        public string GenerateLicenseKey(string email, int days)
+        {
+            return new LicenseModel().Generate(DateTime.Now, DateTime.Now.AddDays(days), email);
+        }
 
         /// <summary>
         /// This method loads and validates license key saved in settings.

@@ -104,7 +104,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
                 var decryptedKey = StringCipher.Instance.Decrypt(LicenseKey, LicenseManager.EncryptionKey);
                 IssueDate = ExtractDate(decryptedKey, 0);
                 ExpirationDate = ExtractDate(decryptedKey, 8);
-                RegisteredEmail = key.Substring(16, decryptedKey.Length - 16);
+                RegisteredEmail = decryptedKey.Substring(16, decryptedKey.Length - 16);
                 IsTrial = IsExpired(this);
 
                 if (IsTrial)

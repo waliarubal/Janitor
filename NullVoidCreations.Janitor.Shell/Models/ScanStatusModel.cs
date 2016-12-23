@@ -55,7 +55,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
 
         public bool IsHavingIssues
         {
-            get { return IssueCount > 0; }
+            get { return IsAnalysing && IssueCount > 0; }
         }
 
         public int ProgressMax

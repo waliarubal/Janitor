@@ -256,6 +256,29 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
+                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Tasks.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=NavigationTextStyle}"
+                               Text="Startup" />
+                    <Image Grid.Column="2"
+                           Margin="0 0 4 0"
+                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png"
+                           Style="{StaticResource ResourceKey=Spinner}"
+                           Visibility="{Binding Path=IsWorking,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                </Grid>
+            </TabItem.Header>
+            <v:StartupView />
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
                     <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Update.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=NavigationTextStyle}"

@@ -251,8 +251,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.Processor);
             Subject.Instance.NotifyAllObservers(this, MessageCode.SystemInformationLoaded);
 
-            Subject.Instance.NotifyAllObservers(this, MessageCode.Initialized);
-
             return null;
         }
 

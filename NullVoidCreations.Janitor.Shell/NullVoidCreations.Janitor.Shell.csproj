@@ -105,6 +105,9 @@
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\StartupView.xaml.cs">
+      <DependentUpon>StartupView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UpdateView.xaml.cs">
       <DependentUpon>UpdateView.xaml</DependentUpon>
     </Compile>
@@ -151,6 +154,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StartupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -274,6 +281,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="LogoBig.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Tasks.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

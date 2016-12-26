@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Management;
+using System.Diagnostics;
+using NullVoidCreations.Janitor.Shared.Models;
 
 namespace NullVoidCreations.Janitor.Shared.Helpers
 {
@@ -485,6 +487,40 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
         public void Clear()
         {
             _infoCache.Clear();
+        }
+
+        public IEnumerable<StartupEntryModel> GetAllStartupEntries()
+        {
+            var entries = new List<StartupEntryModel>();
+            using (var managementClass = new ManagementClass(ManagementClassNames.StartupCommand))
+            {
+                var properties = managementClass.Properties;
+                using (var managementObjects = managementClass.GetInstances())
+                {
+                    foreach (var managementObject in managementObjects)
+                    {
+                        try
+                        {
+                            var entry = new StartupEntryModel(
+                            managementObject.Properties["Caption"].Value as string,
+                            managementObject.Properties["Command"].Value as string,
+                            managementObject.Properties["Description"].Value as string,
+                            managementObject.Properties["Location"].Value as string,
+                            managementObject.Properties["Name"].Value as string,
+                            managementObject.Properties["SettingID"].Value as string,
+                            managementObject.Properties["User"].Value as string,
+                            managementObject.Properties["UserSID"].Value as string);
+                            entries.Add(entry);
+                        }
+                        catch
+                        {
+                            // do nothing
+                        }
+                    }
+                }
+            }
+
+            return entries;
         }
 
         public void Fill(string className, bool reload = false)

@@ -58,6 +58,7 @@
     <Compile Include="Models\IssueBase.cs" />
     <Compile Include="Models\ScanAreaBase.cs" />
     <Compile Include="Models\ScanTargetBase.cs" />
+    <Compile Include="Models\StartupEntryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

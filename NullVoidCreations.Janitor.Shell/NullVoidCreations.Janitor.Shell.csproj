@@ -92,6 +92,7 @@
     <Compile Include="ViewModels\LicenseActivationViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\StartupViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
@@ -284,6 +285,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Tasks.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Delete.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

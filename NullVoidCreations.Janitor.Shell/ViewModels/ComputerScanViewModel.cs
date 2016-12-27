@@ -23,6 +23,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _activate = new ActivateLicenseCommand(this);
 
             Subject.Instance.AddObserver(this);
+            GetLastScan();
         }
 
         ~ComputerScanViewModel()
@@ -113,15 +114,23 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #endregion
 
+        void GetLastScan()
+        {
+            IsScannedInPast = SettingsManager.Instance.LastScan != ScanType.Unknown;
+            if (IsScannedInPast)
+            {
+                LastScanName = SettingsManager.Instance.LastScan == ScanType.SmartScan ? "Smart Scan" : "Custom Scan";
+                LastScanTime = SettingsManager.Instance.LastScanTime;
+            }
+        }
+
         public void Update(IObserver sender, MessageCode code, params object[] data)
         {
             switch (code)
             {
                 case MessageCode.Initialized:
                 case MessageCode.AnalysisStopped:
-                    IsScannedInPast = SettingsManager.Instance.LastScan != ScanType.Unknown;
-                    LastScanName = SettingsManager.Instance.LastScan == ScanType.SmartScan ? "Smart Scan" : "Custom Scan";
-                    LastScanTime = SettingsManager.Instance.LastScanTime;
+                    GetLastScan();
                     break;
 
                 case MessageCode.ScanTrigerred:

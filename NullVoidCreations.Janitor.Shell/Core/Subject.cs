@@ -15,6 +15,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
         SystemInformationLoaded,
         LicenseChanged,
         ProblemsAppeared,
+        StartupEntriesLoadStarted,
+        StartupEntriesLoadStopped,
         Initialized
     }
 

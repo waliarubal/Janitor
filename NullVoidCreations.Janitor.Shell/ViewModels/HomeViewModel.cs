@@ -26,7 +26,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _license = new LicenseModel();
             _computerName = _operatingSyetem = _processor = _model = "Analysing...";
 
-            _load = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, null);
+            _load = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, GetSystemInformationComplete);
             _purchaseLicense = new PurchaseLicenseCommand(this);
             _doScan = new DelegateCommand(this, ExecuteDoScan);
             _activate = new ActivateLicenseCommand(this);
@@ -254,6 +254,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             return null;
         }
 
+        void GetSystemInformationComplete(object parameter)
+        {
+            Subject.Instance.NotifyAllObservers(this, MessageCode.Initialized);
+        }
+
         public void Update(IObserver sender, MessageCode code, params object[] data)
         {
             switch(code)
@@ -279,10 +284,15 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     WeHaveProblems();
                     break;
 
-                case MessageCode.FixingStopped:
                 case MessageCode.AnalysisStopped:
                     IssueCount = (int)data[0];
                     IsHavingIssues = IssueCount > 0;
+                    WeHaveProblems();
+                    break;
+
+                case MessageCode.FixingStopped:
+                    IssueCount = (int)data[0];
+                    IsHavingIssues = false;
                     WeHaveProblems();
                     break;
             }

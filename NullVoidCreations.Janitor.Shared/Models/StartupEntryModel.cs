@@ -69,5 +69,24 @@ namespace NullVoidCreations.Janitor.Shared.Models
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return string.IsNullOrEmpty(Name) ? -1 : Name.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var compareTo = obj as StartupEntryModel;
+            if (compareTo == null)
+                return false;
+
+            return GetHashCode() == compareTo.GetHashCode();
+        }
     }
 }

@@ -3,10 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
              xmlns:wpf="http://schemas.microsoft.com/wpf/2008/toolkit"
              d:DesignHeight="480"
              d:DesignWidth="640"
              mc:Ignorable="d">
+    <UserControl.DataContext>
+        <vm:StartupViewModel />
+    </UserControl.DataContext>
     <Grid>
         <Grid.Resources>
             <Style TargetType="TextBlock">
@@ -39,7 +43,36 @@
 
         <!--  header  -->
         <Border Grid.ColumnSpan="2" Style="{StaticResource ResourceKey=HeaderStyle}">
-            <TextBlock Style="{StaticResource ResourceKey=HeaderTitleStyle}" Text="Startup" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                        <Setter Property="Height" Value="24" />
+                        <Setter Property="MinWidth" Value="52" />
+                        <Setter Property="Padding" Value="0" />
+                    </Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Width" Value="18" />
+                        <Setter Property="Height" Value="18" />
+                    </Style>
+                </Grid.Resources>
+                <TextBlock Grid.ColumnSpan="3"
+                           Style="{StaticResource ResourceKey=HeaderTitleStyle}"
+                           Text="Startup" />
+                <Button Grid.Column="1"
+                        Margin="0 0 4 0"
+                        Command="{Binding Path=Refresh,
+                                          Mode=OneTime}">
+                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Refresh.png" />
+                </Button>
+                <Button Grid.Column="2" Margin="0 0 12 0">
+                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Delete.png" />
+                </Button>
+            </Grid>
         </Border>
 
         <TextBlock Grid.Row="1"
@@ -52,46 +85,13 @@
                       Grid.ColumnSpan="2"
                       Margin="20 20 20 0"
                       Foreground="{StaticResource ResourceKey=TextBrush}"
-                      ItemsSource="{x:Null}">
+                      ItemsSource="{Binding Path=Entries,
+                                            Mode=OneWay}">
             <wpf:DataGrid.Columns>
-                <wpf:DataGridTemplateColumn Width="360" Header="Details">
-                    <wpf:DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid Margin="6 0 2 0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Image Grid.Column="0"
-                                       Width="16"
-                                       Height="16"
-                                       Margin="0 0 2 0"
-                                       Source="{Binding Path=Target.IconSource,
-                                                        Mode=OneWay}"
-                                       ToolTip="{Binding Path=Target.Name,
-                                                         Mode=OneWay}" />
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding Path=Details,
-                                                          Mode=OneWay}"
-                                           TextTrimming="CharacterEllipsis"
-                                           ToolTip="{Binding Path=Details,
-                                                             Mode=OneWay}" />
-                            </Grid>
-                        </DataTemplate>
-                    </wpf:DataGridTemplateColumn.CellTemplate>
-                </wpf:DataGridTemplateColumn>
-                <wpf:DataGridTemplateColumn Width="100" Header="Area">
-                    <wpf:DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Padding="6 0 2 0"
-                                       Text="{Binding Path=Area.Name,
-                                                      Mode=OneWay}"
-                                       TextTrimming="CharacterEllipsis"
-                                       ToolTip="{Binding Path=Area.Name,
-                                                         Mode=OneWay}" />
-                        </DataTemplate>
-                    </wpf:DataGridTemplateColumn.CellTemplate>
-                </wpf:DataGridTemplateColumn>
+                <wpf:DataGridTextColumn Binding="{Binding Path=Caption, Mode=OneWay}" Header="Name" />
+                <wpf:DataGridTextColumn Binding="{Binding Path=Description, Mode=OneWay}" Header="Description" />
+                <wpf:DataGridTextColumn Binding="{Binding Path=Location, Mode=OneWay}" Header="Location" />
+                <wpf:DataGridTextColumn Binding="{Binding Path=Command, Mode=OneWay}" Header="Command" />
             </wpf:DataGrid.Columns>
         </wpf:DataGrid>
 

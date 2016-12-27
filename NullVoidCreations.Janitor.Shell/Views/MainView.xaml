@@ -264,7 +264,7 @@
                            Margin="0 0 4 0"
                            Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png"
                            Style="{StaticResource ResourceKey=Spinner}"
-                           Visibility="{Binding Path=IsWorking,
+                           Visibility="{Binding Path=IsLoadingStartupEntries,
                                                 Mode=OneWay,
                                                 Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                 </Grid>

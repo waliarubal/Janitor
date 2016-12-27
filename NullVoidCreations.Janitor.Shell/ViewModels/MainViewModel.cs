@@ -6,7 +6,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class MainViewModel: ViewModelBase, IObserver
     {
-        bool _isWorking, _isUpdating, _isOk, _isHavingIssues, _isAnalysing, _isFixing;
+        bool _isWorking, _isUpdating, _isOk, _isHavingIssues, _isAnalysing, _isFixing, _isLoadingStartupEntries;
         byte _problemsCount;
         int _selectedViewIndex, _issueCount;
 
@@ -14,6 +14,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         {
             Home,
             ComputerScan,
+            Startup,
             Update,
             Settings,
             About
@@ -62,6 +63,19 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 _isWorking = value;
                 RaisePropertyChanged("IsWorking");
+            }
+        }
+
+        public bool IsLoadingStartupEntries
+        {
+            get { return _isLoadingStartupEntries; }
+            private set
+            {
+                if (value == _isLoadingStartupEntries)
+                    return;
+
+                _isLoadingStartupEntries = value;
+                RaisePropertyChanged("IsLoadingStartupEntries");
             }
         }
 
@@ -189,6 +203,15 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 case MessageCode.ScanTrigerred:
                     SelectedViewIndex = (int)SelectedView.ComputerScan;
                     break;
+
+                case MessageCode.StartupEntriesLoadStarted:
+                    IsLoadingStartupEntries = true;
+                    break;
+
+                case MessageCode.StartupEntriesLoadStopped:
+                    IsLoadingStartupEntries = false;
+                    break;
+
             }
 
             

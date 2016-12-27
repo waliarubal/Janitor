@@ -491,7 +491,6 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
 
         public IEnumerable<StartupEntryModel> GetAllStartupEntries()
         {
-            var entries = new List<StartupEntryModel>();
             using (var managementClass = new ManagementClass(ManagementClassNames.StartupCommand))
             {
                 var properties = managementClass.Properties;
@@ -499,9 +498,10 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
                 {
                     foreach (var managementObject in managementObjects)
                     {
+                        StartupEntryModel entry = null;
                         try
                         {
-                            var entry = new StartupEntryModel(
+                            entry = new StartupEntryModel(
                             managementObject.Properties["Caption"].Value as string,
                             managementObject.Properties["Command"].Value as string,
                             managementObject.Properties["Description"].Value as string,
@@ -510,17 +510,17 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
                             managementObject.Properties["SettingID"].Value as string,
                             managementObject.Properties["User"].Value as string,
                             managementObject.Properties["UserSID"].Value as string);
-                            entries.Add(entry);
+                            
                         }
                         catch
                         {
-                            // do nothing
+                            continue;
                         }
+
+                        yield return entry;
                     }
                 }
             }
-
-            return entries;
         }
 
         public void Fill(string className, bool reload = false)

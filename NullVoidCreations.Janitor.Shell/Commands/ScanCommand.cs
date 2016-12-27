@@ -124,6 +124,9 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         void StartScan(ScanModel scan)
         {
+            if (scan.Type == ScanType.Unknown)
+                return;
+
             _viewModel.IsExecuting = IsExecuting = true;
 
             _worker = new BackgroundWorker();

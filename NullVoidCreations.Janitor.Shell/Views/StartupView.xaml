@@ -76,6 +76,10 @@
                 </Button>
                 <Button Grid.Column="2"
                         Margin="0 0 12 0"
+                        Command="{Binding Path=Delete,
+                                          Mode=OneTime}"
+                        CommandParameter="{Binding Path=SelectedEntry,
+                                                   Mode=OneWay}"
                         Style="{StaticResource ResourceKey=HeaderButtonStyle}"
                         ToolTip="Remove Selected Program">
                     <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Delete.png" />

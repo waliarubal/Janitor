@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Management;
-using Microsoft.Win32;
-using NullVoidCreations.Janitor.Shared.Models;
-using System;
 
 namespace NullVoidCreations.Janitor.Shared.Helpers
 {
@@ -488,84 +485,6 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
         public void Clear()
         {
             _infoCache.Clear();
-        }
-
-        bool IncludeFile(string path)
-        {
-            return !path.EndsWith("desktop.ini", StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        public IEnumerable<StartupEntryModel> GetAllStartupEntries()
-        {
-            RegistryKey key;
-
-            // load startup entries from registry
-            var subKeyNames = new string[] 
-            {
-                @"Software\Microsoft\Windows\CurrentVersion\RunOnce",
-                @"Software\Microsoft\Windows\CurrentVersion\Run",
-                @"Software\Microsoft\Windows\CurrentVersion\RunOnceEx"
-            };
-            foreach (var subKeyName in subKeyNames)
-            {
-                key = Registry.LocalMachine.OpenSubKey(subKeyName, false);
-                if (key != null)
-                {
-                    foreach (var name in key.GetValueNames())
-                        yield return new StartupEntryModel(
-                            key.GetValue(name, string.Empty) as string,
-                            StartupEntryModel.StartupArea.Registry) { Name = name };
-
-                    key.Close();
-                }
-                
-                key = Registry.CurrentUser.OpenSubKey(subKeyName, false);
-                if (key != null)
-                {
-                    foreach (var name in key.GetValueNames())
-                        yield return new StartupEntryModel(
-                            key.GetValue(name, string.Empty) as string,
-                            StartupEntryModel.StartupArea.RegistryUser) { Name = name };
-                    
-                    key.Close();
-                }
-            }
-
-            // load startup entries from startup directory
-            const string ShellFoldersKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders";
-            key = Registry.LocalMachine.OpenSubKey(ShellFoldersKey, false);
-            if (key != null)
-            {
-                var startupDirectory = key.GetValue("Common Startup") as string;
-                key.Close();
-
-                if (!string.IsNullOrEmpty(startupDirectory))
-                {
-                    foreach (var file in new DirectoryWalker(startupDirectory, IncludeFile))
-                    {
-                        yield return new StartupEntryModel(
-                            file,
-                            StartupEntryModel.StartupArea.StartupDirectory);
-                    }
-                }
-            }
-
-            key = Registry.CurrentUser.OpenSubKey(ShellFoldersKey, false);
-            if (key != null)
-            {
-                var startupDirectory = key.GetValue("Startup") as string;
-                key.Close();
-
-                if (!string.IsNullOrEmpty(startupDirectory))
-                {
-                    foreach (var file in new DirectoryWalker(startupDirectory, IncludeFile))
-                    {
-                        yield return new StartupEntryModel(
-                            file,
-                            StartupEntryModel.StartupArea.StartupDirectoryUser);
-                    }
-                }
-            }
         }
 
         public void Fill(string className, bool reload = false)

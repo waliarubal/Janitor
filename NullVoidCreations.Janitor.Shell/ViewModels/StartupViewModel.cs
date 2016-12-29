@@ -1,21 +1,21 @@
 ﻿using System.Collections.ObjectModel;
 using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shared.Helpers;
-using NullVoidCreations.Janitor.Shared.Models;
 using NullVoidCreations.Janitor.Shell.Core;
+using NullVoidCreations.Janitor.Shell.Models;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
-    public class StartupViewModel: ViewModelBase, IObserver
+    public class StartupViewModel : ViewModelBase, IObserver
     {
-        ObservableCollection<StartupEntryModel> _entries;
-        readonly CommandBase _refresh;
+        readonly CommandBase _refresh, _delete;
         StartupEntryModel _selectedEntry;
+        ObservableCollection<StartupEntryModel> _entries;
 
         public StartupViewModel()
         {
             _refresh = new AsyncDelegateCommand(this, null, ExecuteRefresh, RefreshCompleted);
-            _refresh.IsEnabled = true;
+            _delete = new AsyncDelegateCommand(this, null, ExecuteDelete, DeleteComplete);
+            _refresh.IsEnabled = _delete.IsEnabled = true;
 
             Subject.Instance.AddObserver(this);
         }
@@ -62,14 +62,39 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             get { return _refresh; }
         }
 
+        public CommandBase Delete
+        {
+            get { return _delete; }
+        }
+
         #endregion
+
+        void DeleteComplete(object result)
+        {
+            if ((bool)result)
+            {
+                Entries.Remove(SelectedEntry);
+                SelectedEntry = null;
+            }
+        }
+
+        object ExecuteDelete(object parameter)
+        {
+            var entry = parameter as StartupEntryModel;
+            if (entry == null)
+                return false;
+
+            return entry.RemoveFromStartup();
+        }
 
         object ExecuteRefresh(object parameter)
         {
             Subject.Instance.NotifyAllObservers(this, MessageCode.StartupEntriesLoadStarted);
+
             var entries = new ObservableCollection<StartupEntryModel>();
-            foreach (var entry in SysInformation.Instance.GetAllStartupEntries())
+            foreach (var entry in StartupEntryModel.GetStartupEntries())
                 entries.Add(entry);
+
             Subject.Instance.NotifyAllObservers(this, MessageCode.StartupEntriesLoadStopped);
 
             return entries;
@@ -82,7 +107,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public void Update(IObserver sender, MessageCode code, params object[] data)
         {
-            switch(code)
+            switch (code)
             {
                 case MessageCode.Initialized:
                     Refresh.Execute(Entries);

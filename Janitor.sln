@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullVoidCreations.Janitor.P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullVoidCreations.Janitor.Plugin.System", "NullVoidCreations.Janitor.Plugin.Utility\NullVoidCreations.Janitor.Plugin.System.csproj", "{AEE51337-2D6F-4DE6-987A-F1C37A152A91}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "NullVoidCreations.Janitor.Setup", "NullVoidCreations.Janitor.Setup\NullVoidCreations.Janitor.Setup.vdproj", "{7673A38E-774D-43A2-B537-388057377EC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,12 @@ Global
 		{AEE51337-2D6F-4DE6-987A-F1C37A152A91}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AEE51337-2D6F-4DE6-987A-F1C37A152A91}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AEE51337-2D6F-4DE6-987A-F1C37A152A91}.Release|x86.ActiveCfg = Release|Any CPU
+		{7673A38E-774D-43A2-B537-388057377EC1}.Debug|Any CPU.ActiveCfg = Debug
+		{7673A38E-774D-43A2-B537-388057377EC1}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{7673A38E-774D-43A2-B537-388057377EC1}.Debug|x86.ActiveCfg = Debug
+		{7673A38E-774D-43A2-B537-388057377EC1}.Release|Any CPU.ActiveCfg = Release
+		{7673A38E-774D-43A2-B537-388057377EC1}.Release|Mixed Platforms.ActiveCfg = Release
+		{7673A38E-774D-43A2-B537-388057377EC1}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

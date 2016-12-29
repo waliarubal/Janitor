@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Windows;
-using NullVoidCreations.Janitor.Shell.Views;
-using System.Collections.Generic;
-using NullVoidCreations.Janitor.Shell.Core;
 using System.IO;
+using System.Windows;
 using NullVoidCreations.Janitor.Shared.Helpers;
+using NullVoidCreations.Janitor.Shell.Core;
+using NullVoidCreations.Janitor.Shell.Views;
 
 namespace NullVoidCreations.Janitor.Shell
 {

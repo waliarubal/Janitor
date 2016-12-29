@@ -138,7 +138,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 if (value == GetSetting<string>("LicenseKey"))
                     return;
 
-                this["LastScanSelectedAreas"] = value; 
+                this["LicenseKey"] = value; 
             }
         }
 
@@ -173,7 +173,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             {
                 setting = (T)Convert.ChangeType(_settings[key], typeof(T));
             }
-            catch
+            catch(Exception ex)
             {
 
             }

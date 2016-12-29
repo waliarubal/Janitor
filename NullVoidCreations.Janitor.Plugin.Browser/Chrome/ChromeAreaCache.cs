@@ -36,13 +36,21 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Chrome
                 }
             }
 
-            var path = Path.Combine(KnownPaths.Instance.AppDataLocal, @"Google\Chrome\User Data\Default");
-            foreach (var file in new DirectoryWalker(path, IncludeFile, false))
+            paths = new string[]
             {
-                var issue = new FileIssueModel(Target, this, file);
-                Issues.Add(issue);
-                yield return issue;
+                Path.Combine(KnownPaths.Instance.AppDataLocal, @"Google\Chrome\User Data\Default"),
+                Path.Combine(KnownPaths.Instance.AppDataLocal, @"Google\Chrome\User Data\Default\Local Storage")
+            };
+            foreach (var directory in paths)
+            {
+                foreach (var file in new DirectoryWalker(directory, IncludeFile, false))
+                {
+                    var issue = new FileIssueModel(Target, this, file);
+                    Issues.Add(issue);
+                    yield return issue;
+                }
             }
+            
         }
 
         bool IncludeFile(string path)

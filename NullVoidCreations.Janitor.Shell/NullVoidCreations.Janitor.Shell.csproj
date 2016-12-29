@@ -85,6 +85,7 @@
     <Compile Include="Models\ScanModel.cs" />
     <Compile Include="Models\ScanStatusModel.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Models\StartupEntryModel.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\ComputerScanViewModel.cs" />
     <Compile Include="ViewModels\CustomScanViewModel.cs" />

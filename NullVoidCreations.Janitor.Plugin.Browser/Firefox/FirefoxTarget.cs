@@ -11,7 +11,7 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Firefox
         readonly List<string> _profiles;
 
         public FirefoxTarget()
-            : base("Mozilla Firefox", new Version("1.0.0.0"), DateTime.Now)
+            : base("Mozilla Firefox", new Version("1.0.0.0"), new DateTime(2016, 12, 31))
         {
             IconSource = "/NullVoidCreations.Janitor.Plugin.Browser;component/Resources/Firefox.png";
             _profiles = new List<string>();

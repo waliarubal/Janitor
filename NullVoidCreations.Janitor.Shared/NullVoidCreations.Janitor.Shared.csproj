@@ -54,10 +54,10 @@
     <Compile Include="Helpers\FileSystemHelper.cs" />
     <Compile Include="Helpers\KnownPaths.cs" />
     <Compile Include="Helpers\SysInformation.cs" />
-    <Compile Include="Models\FileIssue.cs" />
-    <Compile Include="Models\IssueBase.cs" />
-    <Compile Include="Models\ScanAreaBase.cs" />
-    <Compile Include="Models\ScanTargetBase.cs" />
+    <Compile Include="Models\FileIssueModel.cs" />
+    <Compile Include="Base\IssueBase.cs" />
+    <Compile Include="Base\ScanAreaBase.cs" />
+    <Compile Include="Base\ScanTargetBase.cs" />
     <Compile Include="Models\StartupEntryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

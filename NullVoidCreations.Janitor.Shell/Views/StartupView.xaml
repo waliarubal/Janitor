@@ -23,13 +23,19 @@
                 <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
                 <Setter Property="Margin" Value="20 4 20 0" />
             </Style>
+            <Style x:Key="DetailsStyle" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+                <Setter Property="Margin" Value="0 4 20 0" />
+                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                <Setter Property="TextWrapping" Value="NoWrap" />
+                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Text}" />
+            </Style>
         </Grid.Resources>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -50,26 +56,28 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.Resources>
-                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
-                        <Setter Property="Height" Value="24" />
-                        <Setter Property="MinWidth" Value="52" />
-                        <Setter Property="Padding" Value="0" />
-                    </Style>
+
                     <Style TargetType="Image">
                         <Setter Property="Width" Value="18" />
                         <Setter Property="Height" Value="18" />
                     </Style>
                 </Grid.Resources>
+
                 <TextBlock Grid.ColumnSpan="3"
                            Style="{StaticResource ResourceKey=HeaderTitleStyle}"
                            Text="Startup" />
                 <Button Grid.Column="1"
                         Margin="0 0 4 0"
                         Command="{Binding Path=Refresh,
-                                          Mode=OneTime}">
+                                          Mode=OneTime}"
+                        Style="{StaticResource ResourceKey=HeaderButtonStyle}"
+                        ToolTip="Refresh">
                     <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Refresh.png" />
                 </Button>
-                <Button Grid.Column="2" Margin="0 0 12 0">
+                <Button Grid.Column="2"
+                        Margin="0 0 12 0"
+                        Style="{StaticResource ResourceKey=HeaderButtonStyle}"
+                        ToolTip="Remove Selected Program">
                     <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Delete.png" />
                 </Button>
             </Grid>
@@ -86,34 +94,85 @@
                       Margin="20 20 20 0"
                       Foreground="{StaticResource ResourceKey=TextBrush}"
                       ItemsSource="{Binding Path=Entries,
-                                            Mode=OneWay}">
+                                            Mode=OneWay}"
+                      SelectedItem="{Binding Path=SelectedEntry,
+                                             Mode=TwoWay}">
             <wpf:DataGrid.Columns>
-                <wpf:DataGridTextColumn Binding="{Binding Path=Caption, Mode=OneWay}" Header="Name" />
-                <wpf:DataGridTextColumn Binding="{Binding Path=Description, Mode=OneWay}" Header="Description" />
-                <wpf:DataGridTextColumn Binding="{Binding Path=Location, Mode=OneWay}" Header="Location" />
-                <wpf:DataGridTextColumn Binding="{Binding Path=Command, Mode=OneWay}" Header="Command" />
+                <wpf:DataGridTemplateColumn Width="140" Header="Name">
+                    <wpf:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Padding="6 0 2 0"
+                                       Text="{Binding Path=Name,
+                                                      Mode=OneWay}"
+                                       TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding Path=Program.Name,
+                                                         Mode=OneWay}" />
+                        </DataTemplate>
+                    </wpf:DataGridTemplateColumn.CellTemplate>
+                </wpf:DataGridTemplateColumn>
+
+                <wpf:DataGridTemplateColumn Width="370" Header="Command">
+                    <wpf:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Padding="6 0 2 0"
+                                       Text="{Binding Path=Command,
+                                                      Mode=OneWay}"
+                                       TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding Path=Command,
+                                                         Mode=OneWay}" />
+                        </DataTemplate>
+                    </wpf:DataGridTemplateColumn.CellTemplate>
+                </wpf:DataGridTemplateColumn>
             </wpf:DataGrid.Columns>
         </wpf:DataGrid>
 
+        <!--  file details  -->
         <TextBlock Grid.Row="3"
                    Margin="20 20 20 0"
                    Style="{StaticResource ResourceKey=LabelStyle}"
                    Text="File:" />
+        <TextBlock Grid.Row="3"
+                   Grid.Column="1"
+                   Margin="0 20 20 0"
+                   Style="{StaticResource ResourceKey=DetailsStyle}"
+                   Text="{Binding Path=SelectedEntry.Program.FullName,
+                                  Mode=OneWay}" />
         <TextBlock Grid.Row="4"
                    Style="{StaticResource ResourceKey=LabelStyle}"
-                   Text="File Size:" />
+                   Text="Location:" />
+        <TextBlock Grid.Row="4"
+                   Grid.Column="1"
+                   Style="{StaticResource ResourceKey=DetailsStyle}"
+                   Text="{Binding Path=SelectedEntry.Program.DirectoryName,
+                                  Mode=OneWay}" />
         <TextBlock Grid.Row="5"
                    Style="{StaticResource ResourceKey=LabelStyle}"
-                   Text="File Description:" />
+                   Text="Size:" />
+        <TextBlock Grid.Row="5"
+                   Grid.Column="1"
+                   Style="{StaticResource ResourceKey=DetailsStyle}"
+                   Text="{Binding Path=SelectedEntry.Size,
+                                  Mode=OneWay,
+                                  StringFormat='{}{0:N2} kB'}" />
         <TextBlock Grid.Row="6"
                    Style="{StaticResource ResourceKey=LabelStyle}"
-                   Text="Company Name:" />
+                   Text="Created:" />
+        <TextBlock Grid.Row="6"
+                   Grid.Column="1"
+                   Style="{StaticResource ResourceKey=DetailsStyle}"
+                   Text="{Binding Path=SelectedEntry.Program.CreationTime,
+                                  Mode=OneWay,
+                                  StringFormat='{}{0:MM/dd/yyyy HH:mm:ss}'}" />
         <TextBlock Grid.Row="7"
-                   Style="{StaticResource ResourceKey=LabelStyle}"
-                   Text="File Version:" />
-        <TextBlock Grid.Row="8"
                    Margin="20 4 20 20"
                    Style="{StaticResource ResourceKey=LabelStyle}"
-                   Text="Product Name:" />
+                   Text="Modified:" />
+        <TextBlock Grid.Row="7"
+                   Grid.Column="1"
+                   Margin="0 4 20 20"
+                   Style="{StaticResource ResourceKey=DetailsStyle}"
+                   Text="{Binding Path=SelectedEntry.Program.LastWriteTime,
+                                  Mode=OneWay,
+                                  StringFormat='{}{0:MM/dd/yyyy HH:mm:ss}'}" />
     </Grid>
 </UserControl>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shared.Models;
 
@@ -30,7 +31,7 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Firefox
             {
                 foreach (var file in new DirectoryWalker(directory))
                 {
-                    var issue = new FileIssue(Target, this, file);
+                    var issue = new FileIssueModel(Target, this, file);
                     Issues.Add(issue);
                     yield return issue;
                 }
@@ -40,7 +41,7 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Firefox
             {
                 foreach (var file in new DirectoryWalker(Path.Combine(KnownPaths.Instance.AppDataLocal, string.Format(@"Mozilla\Firefox\Profiles", profile)), IncludeFile))
                 {
-                    var issue = new FileIssue(Target, this, file);
+                    var issue = new FileIssueModel(Target, this, file);
                     Issues.Add(issue);
                     yield return issue;
                 }

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using NullVoidCreations.Janitor.Shared.Models;
 using System.Reflection;
-using NullVoidCreations.Janitor.Shared.Helpers;
+using NullVoidCreations.Janitor.Shared.Base;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {

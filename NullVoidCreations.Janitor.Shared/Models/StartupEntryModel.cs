@@ -1,83 +1,91 @@
-﻿using NullVoidCreations.Janitor.Shared.Base;
+﻿using System.IO;
+using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shared.Models
 {
     public sealed class StartupEntryModel
     {
-        readonly string _caption, _command, _description, _location, _name, _settingId, _user, _userSid;
-
-        internal StartupEntryModel(
-            string caption, 
-            string command, 
-            string description, 
-            string location, 
-            string name, 
-            string settingID, 
-            string user, 
-            string userSID)
+        public enum StartupArea: byte
         {
-            _caption = caption;
-            _command = command;
-            _description = description;
-            _location = location;
-            _name = name;
-            _settingId = settingID;
-            _user = user;
-            _userSid = userSID;
+            Registry,
+            RegistryUser,
+            StartupDirectory,
+            StartupDirectoryUser
+        }
+
+        internal StartupEntryModel(string command, StartupArea area)
+        {
+            Command = command;
+            Area = area;
+
+            string path = null;
+            switch(area)
+            {
+                case StartupArea.RegistryUser:
+                case StartupArea.Registry:
+                    var startIndex = command.IndexOf('"', 0);
+                    var endIndex = command.IndexOf('"', startIndex + 1);
+                    if (endIndex > startIndex)
+                        path = command.Substring(startIndex + 1, endIndex - startIndex - 1);
+                    Program = new FileInfo(path);
+                    break;
+
+                case StartupArea.StartupDirectoryUser:
+                case StartupArea.StartupDirectory:
+                    path = command;
+                    Program = new FileInfo(path);
+                    Name = Program.Name.Substring(0, Program.Name.Length - Program.Extension.Length);
+                    break;
+
+                default:
+                    return;
+            }
+
+            Size = Program.Length / 1024;
         }
 
         #region properties
 
-        public string Caption
-        {
-            get { return _caption; }
-        }
-
         public string Command
         {
-            get { return _command; }
+            get;
+            private set;
         }
 
-        public string Description
+        public StartupArea Area
         {
-            get { return _description; }
+            get;
+            private set;
         }
 
-        public string Location
+        public FileInfo Program
         {
-            get { return _location; }
+            get;
+            private set;
         }
 
         public string Name
         {
-            get { return _name; }
+            get;
+            internal set;
         }
 
-        public string SettingId
+        public decimal Size
         {
-            get { return _settingId; }
-        }
-
-        public string User
-        {
-            get { return _user; }
-        }
-
-        public string UserSid
-        {
-            get { return _userSid; }
+            get;
+            internal set;
         }
 
         #endregion
 
         public override string ToString()
         {
-            return Name;
+            return Program == null ? string.Empty : Program.Name;
         }
 
         public override int GetHashCode()
         {
-            return string.IsNullOrEmpty(Name) ? -1 : Name.GetHashCode();
+            return Program == null ? -1 : Program.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -87,6 +95,20 @@ namespace NullVoidCreations.Janitor.Shared.Models
                 return false;
 
             return GetHashCode() == compareTo.GetHashCode();
+        }
+
+        public void RemoveFromStartup()
+        {
+            switch(Area)
+            {
+                case StartupArea.Registry:
+                    break;
+
+                case StartupArea.StartupDirectory:
+                case StartupArea.StartupDirectoryUser:
+                    FileSystemHelper.Instance.DeleteFile(Program.FullName);
+                    break;
+            }
         }
     }
 }

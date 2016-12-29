@@ -1,10 +1,11 @@
-﻿using NullVoidCreations.Janitor.Shared.Helpers;
+﻿using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shared.Models
 {
-    public class FileIssue: IssueBase
+    public class FileIssueModel: IssueBase
     {
-        public FileIssue(ScanTargetBase target, ScanAreaBase area, string path)
+        public FileIssueModel(ScanTargetBase target, ScanAreaBase area, string path)
             : base(target, area, path)
         {
 

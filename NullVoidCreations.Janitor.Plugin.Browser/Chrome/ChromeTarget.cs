@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NullVoidCreations.Janitor.Shared.Models;
+using NullVoidCreations.Janitor.Shared.Base;
 
 namespace NullVoidCreations.Janitor.Plugin.Browser.Chrome
 {

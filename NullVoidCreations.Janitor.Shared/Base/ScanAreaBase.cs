@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using NullVoidCreations.Janitor.Shared.Base;
 
-namespace NullVoidCreations.Janitor.Shared.Models
+namespace NullVoidCreations.Janitor.Shared.Base
 {
     public abstract class ScanAreaBase : NotificationBase
     {

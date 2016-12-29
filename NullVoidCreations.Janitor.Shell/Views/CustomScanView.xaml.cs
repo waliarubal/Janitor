@@ -1,7 +1,7 @@
-﻿using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
+using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.ViewModels;
-using NullVoidCreations.Janitor.Shared.Models;
-using System.Collections.ObjectModel;
 
 namespace NullVoidCreations.Janitor.Shell.Views
 {

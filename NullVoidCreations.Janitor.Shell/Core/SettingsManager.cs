@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Helpers;
-using NullVoidCreations.Janitor.Shell.Properties;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -11,6 +11,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
     {
         static volatile SettingsManager _instance;
         string _codeName, _pluginsDirectory, _pluginsSearchFilter;
+        readonly string _settingsFile;
+        readonly Dictionary<string, object> _settings;
+
+        const char Separator1 = '♪';
+        const char Separator2 = '♫';
 
         private SettingsManager()
         {
@@ -18,16 +23,31 @@ namespace NullVoidCreations.Janitor.Shell.Core
             _pluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
             _pluginsSearchFilter = "NullVoidCreations.Janitor.Plugin.*.dll";
 
+            _settings = new Dictionary<string, object>();
+            _settingsFile = Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Settings.dat");
+            Load();
+
             if (!Directory.Exists(PluginsDirectory))
                 Directory.CreateDirectory(PluginsDirectory);
         }
 
         ~SettingsManager()
         {
-            Settings.Default.Save();
+            Save();
         }
 
         #region properties
+
+        public static SettingsManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new SettingsManager();
+
+                return _instance;
+            }
+        }
 
         internal Dictionary<string, string> CommandLineArguments
         {
@@ -50,48 +70,147 @@ namespace NullVoidCreations.Janitor.Shell.Core
             get { return _pluginsSearchFilter; }
         }
 
-        public ScanType LastScan
-        {
-            get { return (ScanType)Settings.Default.LastScanType; }
-            set { Settings.Default.LastScanType = (byte) value; }
-        }
-
-        public DateTime LastScanTime
-        {
-            get { return Settings.Default.LastScanTime; }
-            set { Settings.Default.LastScanTime = value; }
-        }
-
-        public string LastScanSelectedAreas
-        {
-            get { return Settings.Default.LastScanSelectedAreas; }
-            set { Settings.Default.LastScanSelectedAreas = value; }
-        }
-
-        public static SettingsManager Instance
+        public object this[string key]
         {
             get
             {
-                if (_instance == null)
-                    _instance = new SettingsManager();
-
-                return _instance;
+                return _settings.ContainsKey(key) ? _settings[key] : null;
             }
+            set
+            {
+                _settings[key] = value;
+            }
+        }
+
+        public bool RunAtBoot
+        {
+            get { return GetSetting<bool>("RunAtBoot"); }
+            set { this["RunAtBoot"] = value; }
+        }
+
+        public bool RunScanAtLaunch
+        {
+            get { return GetSetting<bool>("RunScanAtLaunch"); }
+            set { this["RunScanAtLaunch"] = value; }
+        }
+
+        public bool RunPluginUpdateAtLaunch
+        {
+            get { return GetSetting<bool>("RunPluginUpdateAtLaunch"); }
+            set { this["RunPluginUpdateAtLaunch"] = value; }
+        }
+
+        public bool RunProgramUpdateAtLaunch
+        {
+            get { return GetSetting<bool>("RunProgramUpdateAtLaunch"); }
+            set { this["RunProgramUpdateAtLaunch"] = value; }
+        }
+
+        public bool SkipUac
+        {
+            get { return GetSetting<bool>("SkipUac"); }
+            set { this["SkipUac"] = value; }
+        }
+
+        public bool ExitOnClose
+        {
+            get { return GetSetting<bool>("ExitOnClose"); }
+            set { this["ExitOnClose"] = value; }
+        }
+
+        public bool CloseAfterFixing
+        {
+            get { return GetSetting<bool>("CloseAfterFixing"); }
+            set { this["CloseAfterFixing"] = value; }
+        }
+
+        public bool ShutdownAfterFixing
+        {
+            get { return GetSetting<bool>("ShutdownAfterFixing"); }
+            set { this["ShutdownAfterFixing"] = value; }
         }
 
         public string LicenseKey
         {
-            get { return Settings.Default.LicenseKey; }
-            set
+            get { return GetSetting<string>("LicenseKey"); }
+            set 
             {
-                if (value == Settings.Default.LicenseKey)
+                if (value == GetSetting<string>("LicenseKey"))
                     return;
 
-                Settings.Default.LicenseKey = value;
+                this["LastScanSelectedAreas"] = value; 
             }
         }
 
+        public ScanType LastScan
+        {
+            get { return (ScanType)GetSetting<byte>("LastScan"); }
+            set { this["LastScan"] = (byte)value; }
+        }
+
+        public DateTime LastScanTime
+        {
+            get { return GetSetting<DateTime>("LastScanTime"); }
+            set { this["LastScanTime"] = value; }
+        }
+
+        public string LastScanSelectedAreas
+        {
+            get { return GetSetting<string>("LastScanSelectedAreas"); }
+            set { this["LastScanSelectedAreas"] = value; }
+        }
+
         #endregion
+
+        T GetSetting<T>(string key)
+        {
+            T setting = default(T);
+
+            if (string.IsNullOrEmpty(key))
+                return setting;
+
+            try
+            {
+                setting = (T)Convert.ChangeType(_settings[key], typeof(T));
+            }
+            catch
+            {
+
+            }
+            
+            return setting;
+        }
+
+        void Load()
+        {
+            if (!File.Exists(_settingsFile))
+                return;
+
+            var settings = File.ReadAllText(_settingsFile).Split(new char[] {Separator2});
+            foreach (var setting in settings)
+            {
+                var settingEntry = setting.Split(new char[] { Separator1 });
+                if (settingEntry.Length == 0)
+                    continue;
+
+                var key = settingEntry[0];
+                var value = settingEntry.Length > 1 ? settingEntry[1] : null;
+
+                if (_settings.ContainsKey(key))
+                    _settings[key] = value;
+                else
+                    _settings.Add(key, value);
+            }
+        }
+
+        void Save()
+        {
+            var data = new StringBuilder();
+            foreach (var key in _settings.Keys)
+                data.AppendFormat("{2}{1}{3}{0}", Separator2, Separator1, key, _settings[key]);
+
+            File.WriteAllText(_settingsFile, data.ToString());
+        }
 
         internal void LoadArguments(string[] arguments)
         {

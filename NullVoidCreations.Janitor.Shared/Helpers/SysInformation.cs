@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Management;
-using System.Diagnostics;
+using Microsoft.Win32;
 using NullVoidCreations.Janitor.Shared.Models;
+using System;
 
 namespace NullVoidCreations.Janitor.Shared.Helpers
 {
@@ -489,35 +490,79 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             _infoCache.Clear();
         }
 
+        bool IncludeFile(string path)
+        {
+            return !path.EndsWith("desktop.ini", StringComparison.InvariantCultureIgnoreCase);
+        }
+
         public IEnumerable<StartupEntryModel> GetAllStartupEntries()
         {
-            using (var managementClass = new ManagementClass(ManagementClassNames.StartupCommand))
-            {
-                var properties = managementClass.Properties;
-                using (var managementObjects = managementClass.GetInstances())
-                {
-                    foreach (var managementObject in managementObjects)
-                    {
-                        StartupEntryModel entry = null;
-                        try
-                        {
-                            entry = new StartupEntryModel(
-                            managementObject.Properties["Caption"].Value as string,
-                            managementObject.Properties["Command"].Value as string,
-                            managementObject.Properties["Description"].Value as string,
-                            managementObject.Properties["Location"].Value as string,
-                            managementObject.Properties["Name"].Value as string,
-                            managementObject.Properties["SettingID"].Value as string,
-                            managementObject.Properties["User"].Value as string,
-                            managementObject.Properties["UserSID"].Value as string);
-                            
-                        }
-                        catch
-                        {
-                            continue;
-                        }
+            RegistryKey key;
 
-                        yield return entry;
+            // load startup entries from registry
+            var subKeyNames = new string[] 
+            {
+                @"Software\Microsoft\Windows\CurrentVersion\RunOnce",
+                @"Software\Microsoft\Windows\CurrentVersion\Run",
+                @"Software\Microsoft\Windows\CurrentVersion\RunOnceEx"
+            };
+            foreach (var subKeyName in subKeyNames)
+            {
+                key = Registry.LocalMachine.OpenSubKey(subKeyName, false);
+                if (key != null)
+                {
+                    foreach (var name in key.GetValueNames())
+                        yield return new StartupEntryModel(
+                            key.GetValue(name, string.Empty) as string,
+                            StartupEntryModel.StartupArea.Registry) { Name = name };
+
+                    key.Close();
+                }
+                
+                key = Registry.CurrentUser.OpenSubKey(subKeyName, false);
+                if (key != null)
+                {
+                    foreach (var name in key.GetValueNames())
+                        yield return new StartupEntryModel(
+                            key.GetValue(name, string.Empty) as string,
+                            StartupEntryModel.StartupArea.RegistryUser) { Name = name };
+                    
+                    key.Close();
+                }
+            }
+
+            // load startup entries from startup directory
+            const string ShellFoldersKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders";
+            key = Registry.LocalMachine.OpenSubKey(ShellFoldersKey, false);
+            if (key != null)
+            {
+                var startupDirectory = key.GetValue("Common Startup") as string;
+                key.Close();
+
+                if (!string.IsNullOrEmpty(startupDirectory))
+                {
+                    foreach (var file in new DirectoryWalker(startupDirectory, IncludeFile))
+                    {
+                        yield return new StartupEntryModel(
+                            file,
+                            StartupEntryModel.StartupArea.StartupDirectory);
+                    }
+                }
+            }
+
+            key = Registry.CurrentUser.OpenSubKey(ShellFoldersKey, false);
+            if (key != null)
+            {
+                var startupDirectory = key.GetValue("Startup") as string;
+                key.Close();
+
+                if (!string.IsNullOrEmpty(startupDirectory))
+                {
+                    foreach (var file in new DirectoryWalker(startupDirectory, IncludeFile))
+                    {
+                        yield return new StartupEntryModel(
+                            file,
+                            StartupEntryModel.StartupArea.StartupDirectoryUser);
                     }
                 }
             }

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shared.Models;
-using System;
 
 namespace NullVoidCreations.Janitor.Plugin.Browser.Chrome
 {
@@ -29,7 +30,7 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Chrome
             {
                 foreach (var file in new DirectoryWalker(directory))
                 {
-                    var issue = new FileIssue(Target, this, file);
+                    var issue = new FileIssueModel(Target, this, file);
                     Issues.Add(issue);
                     yield return issue;
                 }
@@ -38,7 +39,7 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Chrome
             var path = Path.Combine(KnownPaths.Instance.AppDataLocal, @"Google\Chrome\User Data\Default");
             foreach (var file in new DirectoryWalker(path, IncludeFile, false))
             {
-                var issue = new FileIssue(Target, this, file);
+                var issue = new FileIssueModel(Target, this, file);
                 Issues.Add(issue);
                 yield return issue;
             }

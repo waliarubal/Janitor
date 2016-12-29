@@ -33,7 +33,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock FontWeight="Bold" Text="PC Mechanic Pro" />
+                <TextBlock FontWeight="Bold" Text="{StaticResource ResourceKey=ProductName}" />
                 <TextBlock Text=", Version 1.0.0.0" />
             </StackPanel>
             <TextBlock Grid.Row="1" Text="Copyright © 2016-2017 NullVoid Creations. All rights reserved." />

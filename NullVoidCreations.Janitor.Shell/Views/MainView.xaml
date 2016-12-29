@@ -4,7 +4,7 @@
                 xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
                 xmlns:v="clr-namespace:NullVoidCreations.Janitor.Shell.Views"
                 xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
-                Title="PC MECHANIC PRO™"
+                Title="{StaticResource ResourceKey=ProductName}"
                 Width="780"
                 Height="580"
                 Background="{StaticResource ResourceKey=BackgroundBrush}"

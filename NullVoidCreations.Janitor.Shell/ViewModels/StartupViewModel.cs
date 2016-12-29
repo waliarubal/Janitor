@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shared.Models;
 using NullVoidCreations.Janitor.Shell.Core;
-using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -10,6 +10,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     {
         ObservableCollection<StartupEntryModel> _entries;
         readonly CommandBase _refresh;
+        StartupEntryModel _selectedEntry;
 
         public StartupViewModel()
         {
@@ -37,7 +38,19 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 _entries = value;
                 RaisePropertyChanged("Entries");
             }
+        }
 
+        public StartupEntryModel SelectedEntry
+        {
+            get { return _selectedEntry; }
+            set
+            {
+                if (value == _selectedEntry)
+                    return;
+
+                _selectedEntry = value;
+                RaisePropertyChanged("SelectedEntry");
+            }
         }
 
         #endregion

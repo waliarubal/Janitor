@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shared.Models;
 
@@ -20,7 +21,7 @@ namespace NullVoidCreations.Janitor.Plugin.System.WindowsExplorer
             Issues.Clear();
             foreach (var file in new DirectoryWalker(path, IncludeFile))
             {
-                var issue = new FileIssue(Target, this, file);
+                var issue = new FileIssueModel(Target, this, file);
                 Issues.Add(issue);
                 yield return issue;
             }

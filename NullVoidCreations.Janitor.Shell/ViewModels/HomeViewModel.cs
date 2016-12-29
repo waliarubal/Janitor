@@ -257,6 +257,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         void GetSystemInformationComplete(object parameter)
         {
             Subject.Instance.NotifyAllObservers(this, MessageCode.Initialized);
+
+            if (SettingsManager.Instance.RunScanAtLaunch)
+                DoScan.Execute("Smart");
         }
 
         public void Update(IObserver sender, MessageCode code, params object[] data)

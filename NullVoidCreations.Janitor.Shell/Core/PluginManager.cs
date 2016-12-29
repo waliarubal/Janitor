@@ -11,14 +11,22 @@ namespace NullVoidCreations.Janitor.Shell.Core
         AppDomain _container;
         readonly Dictionary<string, ScanTargetBase> _targets;
         static PluginManager _instance;
+        Version _version;
+        readonly string _versionFile;
 
         #region constructor/destructor
 
         private PluginManager()
         {
+            _version = new Version();
             _targets = new Dictionary<string, ScanTargetBase>();
 
             Subject.Instance.AddObserver(this);
+
+            // create plugins directory if missing
+            if (!Directory.Exists(SettingsManager.Instance.PluginsDirectory))
+                Directory.CreateDirectory(SettingsManager.Instance.PluginsDirectory);
+
             LoadPlugins();
         }
 
@@ -42,6 +50,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
             }
         }
 
+        public Version Version
+        {
+            get { return _version; }
+        }
+
         public ScanTargetBase this[string name]
         {
             get
@@ -63,6 +76,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
         public void LoadPlugins()
         {
             UnloadPlugins();
+
+            
 
             var scanTargetType = typeof(ScanTargetBase);
             var proxyType = typeof(Proxy);
@@ -105,7 +120,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
             setupInfo.ApplicationBase = SettingsManager.Instance.PluginsDirectory;
 
             _container = AppDomain.CreateDomain("ScanTargets", evidence, setupInfo);
-            //_container.AssemblyResolve += new ResolveEventHandler(Container_AssemblyResolve);
         }
 
         Assembly Container_AssemblyResolve(object sender, ResolveEventArgs args)
@@ -121,10 +135,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         void DestroyContainer()
         {
             if (_container != null)
-            {
-                //_container.AssemblyResolve -= new ResolveEventHandler(Container_AssemblyResolve);
                 AppDomain.Unload(_container);
-            }
 
             _container = null;
         }

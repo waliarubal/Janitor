@@ -78,6 +78,19 @@
                            Visibility="{Binding Path=IsLicensed,
                                                 Mode=OneWay,
                                                 Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           Margin="12 4 0 0"
+                           FontSize="12"
+                           Foreground="{StaticResource ResourceKey=TextBrush}"
+                           Text="{Binding Path=License.RegisteredEmail,
+                                          Mode=OneWay,
+                                          StringFormat='Product is activated and is registered to {0}.'}"
+                           TextWrapping="Wrap"
+                           Visibility="{Binding Path=IsLicensed,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+
                 <StackPanel Grid.Row="2"
                             Grid.Column="1"
                             Margin="12 4 0 12"

@@ -3,9 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
              d:DesignHeight="480"
              d:DesignWidth="640"
              mc:Ignorable="d">
+    <UserControl.DataContext>
+        <vm:SettingsViewModel />
+    </UserControl.DataContext>
     <Grid>
         <Grid.Resources>
             <Style TargetType="TextBlock">
@@ -69,17 +73,26 @@
             <TextBlock Grid.Row="3"
                        Grid.Column="1"
                        Text="Automatically run Smart Scan on launch." />
-            <CheckBox Grid.Row="3" Grid.Column="2" />
+            <CheckBox Grid.Row="3"
+                      Grid.Column="2"
+                      IsChecked="{Binding Path=RunScanAtLaunch,
+                                          Mode=TwoWay}" />
 
             <TextBlock Grid.Row="4"
                        Grid.Column="1"
                        Text="Automatically check for scan target plugins update on launch." />
-            <CheckBox Grid.Row="4" Grid.Column="2" />
+            <CheckBox Grid.Row="4"
+                      Grid.Column="2"
+                      IsChecked="{Binding Path=RunPluginUpdateAtLaunch,
+                                          Mode=TwoWay}" />
 
             <TextBlock Grid.Row="5"
                        Grid.Column="1"
                        Text="Automatically check for program update on launch." />
-            <CheckBox Grid.Row="5" Grid.Column="2" />
+            <CheckBox Grid.Row="5"
+                      Grid.Column="2"
+                      IsChecked="{Binding Path=RunProgramUpdateAtLaunch,
+                                          Mode=TwoWay}" />
         </Grid>
 
         <Separator Grid.Row="2" Margin="20 0" />
@@ -108,12 +121,18 @@
             <TextBlock Grid.Row="1"
                        Grid.Column="1"
                        Text="Exit program on close." />
-            <CheckBox Grid.Row="1" Grid.Column="2" />
+            <CheckBox Grid.Row="1"
+                      Grid.Column="2"
+                      IsChecked="{Binding Path=ExitOnClose,
+                                          Mode=TwoWay}" />
 
             <TextBlock Grid.Row="2"
                        Grid.Column="1"
                        Text="Close program after fixing issues." />
-            <CheckBox Grid.Row="2" Grid.Column="2" />
+            <CheckBox Grid.Row="2"
+                      Grid.Column="2"
+                      IsChecked="{Binding Path=CloseAfterFixing,
+                                          Mode=TwoWay}" />
 
             <TextBlock Grid.Row="3"
                        Grid.Column="1"

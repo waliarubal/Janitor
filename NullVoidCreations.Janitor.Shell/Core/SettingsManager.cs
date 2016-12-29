@@ -26,9 +26,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
             _settings = new Dictionary<string, object>();
             _settingsFile = Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Settings.dat");
             Load();
-
-            if (!Directory.Exists(PluginsDirectory))
-                Directory.CreateDirectory(PluginsDirectory);
         }
 
         ~SettingsManager()
@@ -78,7 +75,10 @@ namespace NullVoidCreations.Janitor.Shell.Core
             }
             set
             {
-                _settings[key] = value;
+                if (_settings.ContainsKey(key))
+                    _settings[key] = value;
+                else
+                    _settings.Add(key, value);
             }
         }
 
@@ -175,7 +175,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             }
             catch(Exception ex)
             {
-
+                
             }
             
             return setting;

@@ -7,18 +7,21 @@ using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
-    class SettingsManager
+    class SettingsManager : IObserver
     {
         static volatile SettingsManager _instance;
         string _codeName, _pluginsDirectory, _pluginsSearchFilter;
         readonly string _settingsFile;
         readonly Dictionary<string, object> _settings;
+        volatile bool _isLoaded;
 
         const char Separator1 = '♪';
         const char Separator2 = '♫';
 
         private SettingsManager()
         {
+            Subject.Instance.AddObserver(this);
+
             _codeName = "Janitor";
             _pluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
             _pluginsSearchFilter = "NullVoidCreations.Janitor.Plugin.*.dll";
@@ -26,11 +29,14 @@ namespace NullVoidCreations.Janitor.Shell.Core
             _settings = new Dictionary<string, object>();
             _settingsFile = Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Settings.dat");
             Load();
+
         }
 
         ~SettingsManager()
         {
             Save();
+            _isLoaded = false;
+            Subject.Instance.RemoveObserver(this);
         }
 
         #region properties
@@ -80,6 +86,19 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 else
                     _settings.Add(key, value);
             }
+        }
+
+        public Version PluginsVersion
+        {
+            get
+            {
+                var versionString = GetSetting<string>("PluginsVersion");
+                if (versionString == null)
+                    versionString = "0.0.0.0";
+
+                return new Version(versionString);
+            }
+            set { this["PluginsVersion"] = value.ToString(); }
         }
 
         public bool RunAtBoot
@@ -133,12 +152,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
         public string LicenseKey
         {
             get { return GetSetting<string>("LicenseKey"); }
-            set 
+            set
             {
                 if (value == GetSetting<string>("LicenseKey"))
                     return;
 
-                this["LicenseKey"] = value; 
+                this["LicenseKey"] = value;
             }
         }
 
@@ -162,10 +181,26 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #endregion
 
+        /// <summary>
+        /// This method takes care of first time initialization.
+        /// </summary>
+        void FirstTimeInitialization()
+        {
+            if (GetSetting<bool>("IsInitializedInPast"))
+                return;
+
+            this["IsInitializedInPast"] = true;
+
+            RunPluginUpdateAtLaunch = true;
+            RunScanAtLaunch = true;
+        }
+
         T GetSetting<T>(string key)
         {
             T setting = default(T);
 
+            if (!_isLoaded)
+                return setting;
             if (string.IsNullOrEmpty(key))
                 return setting;
 
@@ -173,20 +208,20 @@ namespace NullVoidCreations.Janitor.Shell.Core
             {
                 setting = (T)Convert.ChangeType(_settings[key], typeof(T));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                
+
             }
-            
+
             return setting;
         }
 
         void Load()
         {
             if (!File.Exists(_settingsFile))
-                return;
+                goto LOADED;
 
-            var settings = File.ReadAllText(_settingsFile).Split(new char[] {Separator2});
+            var settings = File.ReadAllText(_settingsFile).Split(new char[] { Separator2 });
             foreach (var setting in settings)
             {
                 var settingEntry = setting.Split(new char[] { Separator1 });
@@ -201,6 +236,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 else
                     _settings.Add(key, value);
             }
+
+        LOADED:
+            _isLoaded = true;
+            FirstTimeInitialization();
+            Subject.Instance.NotifyAllObservers(this, MessageCode.SettingsLoaded);
         }
 
         void Save()
@@ -210,6 +250,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 data.AppendFormat("{2}{1}{3}{0}", Separator2, Separator1, key, _settings[key]);
 
             File.WriteAllText(_settingsFile, data.ToString());
+            Subject.Instance.NotifyAllObservers(this, MessageCode.SettingsSaved);
         }
 
         internal void LoadArguments(string[] arguments)
@@ -236,6 +277,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
                         CommandLineArguments.Add(argName, argValue);
                 }
             }
+        }
+
+        public void Update(IObserver sender, MessageCode code, params object[] data)
+        {
+
         }
     }
 }

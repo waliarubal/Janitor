@@ -34,6 +34,10 @@
         </LinearGradientBrush>
 
         <!--  default styles  -->
+        <Style TargetType="FrameworkElement">
+            <Setter Property="Margin" Value="2" />
+        </Style>
+
         <Style TargetType="Separator">
             <Setter Property="Background" Value="{StaticResource ResourceKey=BorderBrush}" />
             <Setter Property="Margin" Value="0,2,0,2" />
@@ -77,10 +81,6 @@
                 </Setter.Value>
             </Setter>
 
-        </Style>
-
-        <Style TargetType="FrameworkElement">
-            <Setter Property="Margin" Value="2" />
         </Style>
 
         <Style TargetType="{x:Type CheckBox}">
@@ -152,6 +152,7 @@
             <Setter Property="Background" Value="{StaticResource ResourceKey=BackgroundBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource ResourceKey=BorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="SelectionMode" Value="Single" />
             <Setter Property="AutoGenerateColumns" Value="False" />
             <Setter Property="GridLinesVisibility" Value="None" />
             <Setter Property="HeadersVisibility" Value="Column" />

@@ -5,17 +5,19 @@ using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Models;
+using System.Collections.Generic;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class HomeViewModel: ViewModelBase, IObserver
     {
-        readonly CommandBase _load, _activate, _purchaseLicense, _doScan;
+        readonly CommandBase _load, _activate, _purchaseLicense, _doScan, _pluginUpdate;
         string _computerName, _operatingSyetem, _processor, _model;
         decimal _memory;
         int _issueCount;
         bool _isLicensed, _isHavingIssues, _isHavingPluginUpdatesAvailable, _isHavingUpdatesAvailable;
         LicenseModel _license;
+        readonly Queue<CommandBase> _startupActions;
 
         #region constructor / destructor
 
@@ -23,12 +25,14 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         {
             Subject.Instance.AddObserver(this);
 
+            _startupActions = new Queue<CommandBase>();
             _license = new LicenseModel();
             _computerName = _operatingSyetem = _processor = _model = "Analysing...";
 
             _load = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, GetSystemInformationComplete);
             _purchaseLicense = new PurchaseLicenseCommand(this);
             _doScan = new DelegateCommand(this, ExecuteDoScan);
+            _pluginUpdate = new UpdateCommand(this, UpdateCommand.UpdateType.Plugin);
             _activate = new ActivateLicenseCommand(this);
             _activate.IsEnabled = _doScan.IsEnabled = true;
         }
@@ -258,8 +262,14 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         {
             Subject.Instance.NotifyAllObservers(this, MessageCode.Initialized);
 
+            if (SettingsManager.Instance.RunPluginUpdateAtLaunch)
+                _startupActions.Enqueue(_pluginUpdate);
             if (SettingsManager.Instance.RunScanAtLaunch)
-                DoScan.Execute("Smart");
+                _startupActions.Enqueue(_doScan);
+            //if (SettingsManager.Instance.RunPluginUpdateAtLaunch)
+            //    _pluginUpdate.Execute(null);
+            //if (SettingsManager.Instance.RunScanAtLaunch)
+            //    DoScan.Execute("Smart");
         }
 
         public void Update(IObserver sender, MessageCode code, params object[] data)

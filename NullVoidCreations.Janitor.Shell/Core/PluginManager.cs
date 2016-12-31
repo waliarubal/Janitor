@@ -11,13 +11,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
         AppDomain _container;
         readonly Dictionary<string, ScanTargetBase> _targets;
         static PluginManager _instance;
-        Version _version;
 
         #region constructor/destructor
 
         private PluginManager()
         {
-            _version = new Version();
             _targets = new Dictionary<string, ScanTargetBase>();
 
             Subject.Instance.AddObserver(this);
@@ -51,7 +49,14 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         public Version Version
         {
-            get { return _version; }
+            get { return SettingsManager.Instance.PluginsVersion; }
+            private set
+            {
+                if (value == SettingsManager.Instance.PluginsVersion)
+                    return;
+
+                SettingsManager.Instance.PluginsVersion = value;
+            }
         }
 
         public ScanTargetBase this[string name]
@@ -72,13 +77,16 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #endregion
 
-        public bool UpdatePlugins(string archiveFile)
+        public bool UpdatePlugins(Version availableVersion, string archiveFile)
         {
             if (string.IsNullOrEmpty(archiveFile))
                 return false;
             if (!File.Exists(archiveFile))
                 return false;
+            if (availableVersion <= Version)
+                return true;
 
+            var isUpdated = true;
             UnloadPlugins();
             using (var zip = ZipFile.Read(archiveFile))
             {
@@ -91,13 +99,14 @@ namespace NullVoidCreations.Janitor.Shell.Core
                     }
                     catch (Exception ex)
                     {
-                        
+                        isUpdated = false;
                     }
                 }
             }
             LoadPlugins();
+            Version = availableVersion;
 
-            return true;
+            return isUpdated;
         }
 
         public void LoadPlugins()

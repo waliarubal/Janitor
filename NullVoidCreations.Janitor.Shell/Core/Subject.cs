@@ -17,6 +17,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
         ProblemsAppeared,
         StartupEntriesLoadStarted,
         StartupEntriesLoadStopped,
+        SettingsLoaded,
+        SettingsSaved,
         Initialized
     }
 

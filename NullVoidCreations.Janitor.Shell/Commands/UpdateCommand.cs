@@ -8,7 +8,7 @@ using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
-    public class UpdateCommand : CommandBase
+    public class UpdateCommand : CommandBase, IObserver
     {
         public enum UpdateType : byte
         {
@@ -16,10 +16,16 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             Program
         }
 
+        const string Name = "Check for Updates";
+        const string CencelMessage = "Update cancelled by user.";
+        const string DownloadErrorMessage = "An error occured while downloading update. Please try again later.";
+        const string UpdatingMessage = "Updating from version {0} to version {1}.";
+        const string UpToDateMessage = "Installed version {0} is up to date.";
+        const char Separator = '|';
+        readonly Uri  MetadataUrl = new Uri(@"https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Update.txt");
+
         readonly UpdateType _type;
-        readonly char _separator;
-        readonly Uri _metadataUrl;
-        readonly string _title, _cencelMessage, _downloadErrorMessage, _updatingMessage, _upToDateMessage, _updateFilePath;
+        readonly string _updateFilePath;
         bool _isDownloading;
         WebClient _client;
         string _message;
@@ -31,19 +37,12 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         public UpdateCommand(ViewModelBase viewModel, UpdateType type)
             : base(viewModel)
         {
-            // constants
-            _title = "Check for Updates";
-            _cencelMessage = "Update cancelled by user.";
-            _downloadErrorMessage = "An error occured while downloading update. Please try again later.";
-            _updatingMessage = "Updating from version {0} to version {1}.";
-            _upToDateMessage = "Installed version {0} is up to date.";
-            _separator = '|';
-            _metadataUrl = new Uri(@"https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Update.txt");
+            Subject.Instance.AddObserver(this);
+
             _updateFilePath = Path.Combine(SettingsManager.Instance.PluginsDirectory, "Update.zip");
-            
+
             _type = type;
-            Title = _title;
-            Message = string.Format(_upToDateMessage, new Version());
+            Title = Name;
             IsRecallAllowed = true;
 
             _client = new WebClient();
@@ -56,6 +55,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         ~UpdateCommand()
         {
             _client.Dispose();
+            Subject.Instance.RemoveObserver(this);
         }
 
         #endregion
@@ -121,42 +121,48 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             IsDownloading = false;
             if (e.Cancelled)
             {
-                Title = _title;
-                Message = _cencelMessage;
+                Title = Name;
+                Message = CencelMessage;
                 return;
             }
             if (e.Error != null)
             {
-                Title = _title;
-                Message = _downloadErrorMessage;
+                Title = Name;
+                Message = DownloadErrorMessage;
                 return;
             }
 
             var metaData = e.Result.Split(new char[]{'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
             if (metaData.Length != 2)
-                return;
+                goto EXIT;
 
-            Version availableVersion;
             if (_type == UpdateType.Program)
             {
-                var programMetaData = metaData[1].Split(new char[] { _separator }, StringSplitOptions.RemoveEmptyEntries);
+                var programMetaData = metaData[1].Split(new char[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
                 if (programMetaData.Length != 3)
-                    return;
+                    goto EXIT;
 
-                availableVersion = new Version(programMetaData[1]);
-                _updateUrl = new Uri(programMetaData[2]);
+                var availableVersion = new Version(programMetaData[1]);
+                UpdateUrl = new Uri(programMetaData[2]);
             }
             else
             {
-                var pluginsMetaData = metaData[0].Split(new char[] { _separator }, StringSplitOptions.RemoveEmptyEntries);
+                var pluginsMetaData = metaData[0].Split(new char[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
                 if (pluginsMetaData.Length != 3)
                     return;
 
-                availableVersion = new Version(pluginsMetaData[1]);
-                Message = string.Format(_updatingMessage, new Version(), availableVersion);
-                _updateUrl = new Uri(pluginsMetaData[2]);
-                _client.DownloadFileAsync(_updateUrl, _updateFilePath);
+                var availableVersion = new Version(pluginsMetaData[1]);
+                if (availableVersion <= PluginManager.Instance.Version)
+                    goto EXIT;
+
+                Message = string.Format(UpdatingMessage, PluginManager.Instance.Version, availableVersion);
+                UpdateUrl = new Uri(pluginsMetaData[2]);
+                _client.DownloadFileAsync(_updateUrl, _updateFilePath, availableVersion);
             }
+
+        EXIT:
+            Title = Name;
+            Message = string.Format(UpToDateMessage, PluginManager.Instance.Version);
         }
 
         void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
@@ -164,14 +170,14 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             IsDownloading = false;
             if (e.Cancelled)
             {
-                Title = _title;
-                Message = _cencelMessage;
+                Title = Name;
+                Message = CencelMessage;
                 return;
             }
             if (e.Error != null)
             {
-                Title = _title;
-                Message = _downloadErrorMessage;
+                Title = Name;
+                Message = DownloadErrorMessage;
                 return;
             }
 
@@ -181,12 +187,12 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             }
             else
             {
-                PluginManager.Instance.UpdatePlugins(_updateFilePath);
+                PluginManager.Instance.UpdatePlugins(e.UserState as Version, _updateFilePath);
                 FileSystemHelper.Instance.DeleteFile(_updateFilePath);
             }
 
-            Title = _title;
-            Message = string.Format(_upToDateMessage, new Version());
+            Title = Name;
+            Message = string.Format(UpToDateMessage, PluginManager.Instance.Version);
         }
 
         void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -200,7 +206,15 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             IsDownloading = true;
             Progress = 0;
 
-            _client.DownloadStringAsync(_metadataUrl);
+            _client.DownloadStringAsync(MetadataUrl);
+        }
+
+        public void Update(IObserver sender, MessageCode code, params object[] data)
+        {
+            if (code != MessageCode.Initialized)
+                return;
+
+            Message = string.Format(UpToDateMessage, PluginManager.Instance.Version);
         }
     }
 }

@@ -31,8 +31,10 @@ namespace NullVoidCreations.Janitor.Shell.Models
                     var startIndex = command.IndexOf('"', 0);
                     var endIndex = command.IndexOf('"', startIndex + 1);
                     if (endIndex > startIndex)
+                    {
                         path = command.Substring(startIndex + 1, endIndex - startIndex - 1);
-                    Program = new FileInfo(path);
+                        Program = new FileInfo(path);
+                    }
                     break;
 
                 case StartupArea.StartupDirectoryUser:
@@ -46,7 +48,8 @@ namespace NullVoidCreations.Janitor.Shell.Models
                     return;
             }
 
-            Size = Program.Length / 1024;
+            if (Program != null)
+                Size = Program.Length / 1024;
         }
 
         #region properties

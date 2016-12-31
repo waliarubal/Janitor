@@ -28,4 +28,10 @@
 		</TaggedOutputs> -->
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2015Limited\InstallShield.targets"/>
+	<ItemGroup>
+		<ProjectReference Include="..\NullVoidCreations.Janitor.Shell\NullVoidCreations.Janitor.Shell.csproj">
+			<Name>NullVoidCreations.Janitor.Shell</Name>
+			<Project>{C8FC9723-C563-4877-81FC-C837B25DC600}</Project>
+		</ProjectReference>
+	</ItemGroup>
 </Project>

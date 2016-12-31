@@ -53,7 +53,7 @@
 		<codepage>1252</codepage>
 		<title>Installation Database</title>
 		<subject></subject>
-		<author>InstallShield</author>
+		<author>##ID_STRING8##</author>
 		<keywords>Installer,MSI,Database</keywords>
 		<comments>Contact:  Your local administrator</comments>
 		<template>Intel;1033</template>
@@ -339,11 +339,8 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
-		<row><td>DotNetZip.dll</td><td>{68977BA5-898E-47B8-B408-CD5D01FBA7D9}</td><td>INSTALLDIR</td><td>2</td><td/><td>dotnetzip.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{0359EF5F-3640-4648-A848-ABEE3D57CA50}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>NullVoidCreations.Janitor.Shared.dll</td><td>{4087691F-8C32-4666-8784-905F2FECB12E}</td><td>INSTALLDIR</td><td>2</td><td/><td>nullvoidcreations.janitor.sh</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>NullVoidCreations.Janitor.Shell.exe</td><td>{5C05862D-5D50-4665-B650-6D50F23D0323}</td><td>INSTALLDIR</td><td>2</td><td/><td>nullvoidcreations.janitor.sh1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>WPFToolkit.dll</td><td>{7CAD1180-3B25-4904-B013-2AE842FED1EB}</td><td>INSTALLDIR</td><td>2</td><td/><td>wpftoolkit.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>NullVoidCreations.Janitor.Shell.Primary_output</td><td>{A16CD0AA-28EC-4B8C-8054-58193B6AD914}</td><td>INSTALLDIR</td><td>2</td><td/><td>nullvoidcreations.janitor.sh</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1052,11 +1049,8 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
-		<row><td>INSTALLDIR</td><td>DotNetZip.dll</td></row>
 		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT</td></row>
-		<row><td>INSTALLDIR</td><td>NullVoidCreations.Janitor.Shared.dll</td></row>
-		<row><td>INSTALLDIR</td><td>NullVoidCreations.Janitor.Shell.exe</td></row>
-		<row><td>INSTALLDIR</td><td>WPFToolkit.dll</td></row>
+		<row><td>INSTALLDIR</td><td>NullVoidCreations.Janitor.Shell.Primary_output</td></row>
 	</table>
 
 	<table name="CustomAction">
@@ -1146,7 +1140,7 @@
 		<row><td>FavoritesFolder</td><td>TARGETDIR</td><td>.:FAVORI~1|Favorites</td><td/><td>0</td><td/></row>
 		<row><td>FontsFolder</td><td>TARGETDIR</td><td>.:Fonts</td><td/><td>0</td><td/></row>
 		<row><td>GlobalAssemblyCache</td><td>TARGETDIR</td><td>.:Global~1|GlobalAssemblyCache</td><td/><td>0</td><td/></row>
-		<row><td>INSTALLDIR</td><td>_PRODUCTNAME_</td><td>.</td><td/><td>0</td><td/></row>
+		<row><td>INSTALLDIR</td><td>PC_MECHANIC_PRO</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>ISCommonFilesFolder</td><td>CommonFilesFolder</td><td>Instal~1|InstallShield</td><td/><td>0</td><td/></row>
 		<row><td>ISMyCompanyDir</td><td>ProgramFilesFolder</td><td>MYCOMP~1|My Company Name</td><td/><td>0</td><td/></row>
 		<row><td>ISMyProductDir</td><td>ISMyCompanyDir</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
@@ -1154,6 +1148,7 @@
 		<row><td>LocalAppDataFolder</td><td>TARGETDIR</td><td>.:LocalA~1|LocalAppData</td><td/><td>0</td><td/></row>
 		<row><td>MyPicturesFolder</td><td>TARGETDIR</td><td>.:MyPict~1|MyPictures</td><td/><td>0</td><td/></row>
 		<row><td>NetHoodFolder</td><td>TARGETDIR</td><td>.:NetHood</td><td/><td>0</td><td/></row>
+		<row><td>PC_MECHANIC_PRO</td><td>CommonAppDataFolder</td><td>PCMECH~1|PC Mechanic Pro</td><td/><td>0</td><td/></row>
 		<row><td>PersonalFolder</td><td>TARGETDIR</td><td>.:Personal</td><td/><td>0</td><td/></row>
 		<row><td>PrimaryVolumePath</td><td>TARGETDIR</td><td>.:Primar~1|PrimaryVolumePath</td><td/><td>0</td><td/></row>
 		<row><td>PrintHoodFolder</td><td>TARGETDIR</td><td>.:PRINTH~1|PrintHood</td><td/><td>0</td><td/></row>
@@ -1174,6 +1169,7 @@
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
 		<row><td>WindowsVolume</td><td>TARGETDIR</td><td>.:WinRoot</td><td/><td>0</td><td/></row>
 		<row><td>_PRODUCTNAME_</td><td>CommonAppDataFolder</td><td>_PRODU~1|[ProductName]</td><td/><td>0</td><td/></row>
+		<row><td>pcmech_1_pc_mechanic_pro</td><td>ProgramMenuFolder</td><td>PCMECH~1|PC Mechanic Pro</td><td/><td>1</td><td/></row>
 	</table>
 
 	<table name="DrLocator">
@@ -1865,11 +1861,8 @@
 	<table name="FeatureComponents">
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
-		<row><td>AlwaysInstall</td><td>DotNetZip.dll</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
-		<row><td>AlwaysInstall</td><td>NullVoidCreations.Janitor.Shared.dll</td></row>
-		<row><td>AlwaysInstall</td><td>NullVoidCreations.Janitor.Shell.exe</td></row>
-		<row><td>AlwaysInstall</td><td>WPFToolkit.dll</td></row>
+		<row><td>AlwaysInstall</td><td>NullVoidCreations.Janitor.Shell.Primary_output</td></row>
 	</table>
 
 	<table name="File">
@@ -1884,11 +1877,7 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
-		<row><td>dotnetzip.dll</td><td>DotNetZip.dll</td><td>DOTNET~1.DLL|DotNetZip.dll</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Projects\Janitor\NullVoidCreations.Janitor.Shell\bin\Debug\DotNetZip.dll</td><td>1</td><td/></row>
-		<row><td>nullvoidcreations.janitor.sh</td><td>NullVoidCreations.Janitor.Shared.dll</td><td>NULLVO~1.DLL|NullVoidCreations.Janitor.Shared.dll</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Projects\Janitor\NullVoidCreations.Janitor.Shell\bin\Debug\NullVoidCreations.Janitor.Shared.dll</td><td>1</td><td/></row>
-		<row><td>nullvoidcreations.janitor.sh1</td><td>NullVoidCreations.Janitor.Shell.exe</td><td>NULLVO~1.EXE|NullVoidCreations.Janitor.Shell.exe</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Projects\Janitor\NullVoidCreations.Janitor.Shell\bin\Debug\NullVoidCreations.Janitor.Shell.exe</td><td>1</td><td/></row>
-		<row><td>nullvoidcreations.janitor.sh2</td><td>ISX_DEFAULTCOMPONENT</td><td>NULLVO~1.CON|NullVoidCreations.Janitor.Shell.exe.config</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Projects\Janitor\NullVoidCreations.Janitor.Shell\bin\Debug\NullVoidCreations.Janitor.Shell.exe.config</td><td>1</td><td/></row>
-		<row><td>wpftoolkit.dll</td><td>WPFToolkit.dll</td><td>WPFTOO~1.DLL|WPFToolkit.dll</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Projects\Janitor\NullVoidCreations.Janitor.Shell\bin\Debug\WPFToolkit.dll</td><td>1</td><td/></row>
+		<row><td>nullvoidcreations.janitor.sh</td><td>NullVoidCreations.Janitor.Shell.Primary_output</td><td>NullVoidCreations.Janitor.Shell.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;NullVoidCreations.Janitor.Shell&gt;|Built</td><td>3</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -2030,11 +2019,8 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
-		<row><td>DotNetZip.dll</td><td/><td/><td>_5C6BEA03_A52F_4B38_B539_C9C25BA90DA5_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_33FD3350_91D1_4FD8_A7BB_FD894991DDC8_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>NullVoidCreations.Janitor.Shared.dll</td><td/><td/><td>_EE4AFAD3_2105_4F33_8F80_8B07BC591A22_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>NullVoidCreations.Janitor.Shell.exe</td><td/><td/><td>_A45844EC_00B0_4120_A46A_B3AA21B78CF0_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>WPFToolkit.dll</td><td/><td/><td>_D3913730_9EC6_4BC3_9334_EFA8B184BCB5_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>NullVoidCreations.Janitor.Shell.Primary_output</td><td/><td/><td>_5E9376E5_45C7_4098_8827_5CBDB10B3A9A_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -2317,6 +2303,7 @@
 		<row><td>ISProductFolder</td><td/><td/><td>1</td></row>
 		<row><td>ISProjectDataFolder</td><td/><td/><td>1</td></row>
 		<row><td>ISProjectFolder</td><td/><td/><td>1</td></row>
+		<row><td>NullVoidCreations.Janitor.Shell</td><td>NullVoidCreations.Janitor.Shell\NullVoidCreations.Janitor.Shell.csproj</td><td/><td>2</td></row>
 		<row><td>ProgramFilesFolder</td><td/><td/><td>1</td></row>
 		<row><td>SystemFolder</td><td/><td/><td>1</td></row>
 		<row><td>WindowsFolder</td><td/><td/><td>1</td></row>
@@ -2377,9 +2364,9 @@
 		<row><td>Custom</td><td>Express</td><td>&lt;ISProjectDataFolder&gt;</td><td>Default</td><td>2</td><td>1033</td><td>0</td><td>2</td><td>Intel</td><td/><td>1033</td><td>0</td><td>100</td><td>0</td><td>1024</td><td/><td>0</td><td/><td>MediaLocation</td><td/><td>http://</td><td/><td/><td/><td/><td>75805</td><td/><td/><td/><td>3</td></row>
 		<row><td>DVD-10</td><td>Express</td><td>&lt;ISProjectDataFolder&gt;</td><td>Default</td><td>3</td><td>1033</td><td>0</td><td>2</td><td>Intel</td><td/><td>1033</td><td>0</td><td>8.75</td><td>1</td><td>2048</td><td/><td>0</td><td/><td>MediaLocation</td><td/><td>http://</td><td/><td/><td/><td/><td>75805</td><td/><td/><td/><td>3</td></row>
 		<row><td>DVD-18</td><td>Express</td><td>&lt;ISProjectDataFolder&gt;</td><td>Default</td><td>3</td><td>1033</td><td>0</td><td>2</td><td>Intel</td><td/><td>1033</td><td>0</td><td>15.83</td><td>1</td><td>2048</td><td/><td>0</td><td/><td>MediaLocation</td><td/><td>http://</td><td/><td/><td/><td/><td>75805</td><td/><td/><td/><td>3</td></row>
-		<row><td>DVD-5</td><td>Express</td><td>&lt;ISProjectDataFolder&gt;</td><td>Default</td><td>3</td><td>1033</td><td>0</td><td>1</td><td>Intel</td><td/><td>1033</td><td>0</td><td>4.38</td><td>1</td><td>2048</td><td/><td>0</td><td/><td>MediaLocation</td><td/><td>http://</td><td/><td/><td/><td/><td>75805</td><td/><td/><td/><td>3</td></row>
+		<row><td>DVD-5</td><td>Express</td><td>&lt;ISProjectDataFolder&gt;</td><td>Default</td><td>3</td><td>1033</td><td>0</td><td>1</td><td>Intel</td><td/><td>1033</td><td>0</td><td>4.38</td><td>1</td><td>2048</td><td/><td>0</td><td/><td>MediaLocation</td><td/><td>http://</td><td/><td/><td/><td/><td>75805</td><td/><td/><td/><td>1</td></row>
 		<row><td>DVD-9</td><td>Express</td><td>&lt;ISProjectDataFolder&gt;</td><td>Default</td><td>3</td><td>1033</td><td>0</td><td>2</td><td>Intel</td><td/><td>1033</td><td>0</td><td>7.95</td><td>1</td><td>2048</td><td/><td>0</td><td/><td>MediaLocation</td><td/><td>http://</td><td/><td/><td/><td/><td>75805</td><td/><td/><td/><td>3</td></row>
-		<row><td>SingleImage</td><td>Express</td><td>&lt;ISProjectDataFolder&gt;</td><td>PackageName</td><td>1</td><td>1033</td><td>0</td><td>1</td><td>Intel</td><td/><td>1033</td><td>0</td><td>0</td><td>0</td><td>0</td><td/><td>0</td><td/><td>MediaLocation</td><td/><td>http://</td><td/><td/><td/><td/><td>108573</td><td/><td/><td/><td>3</td></row>
+		<row><td>SingleImage</td><td>Express</td><td>&lt;ISProjectDataFolder&gt;</td><td>PackageName</td><td>1</td><td>1033</td><td>0</td><td>1</td><td>Intel</td><td/><td>1033</td><td>0</td><td>0</td><td>0</td><td>0</td><td/><td>0</td><td/><td>MediaLocation</td><td/><td>http://</td><td/><td/><td/><td/><td>108573</td><td/><td/><td/><td>1</td></row>
 		<row><td>WebDeployment</td><td>Express</td><td>&lt;ISProjectDataFolder&gt;</td><td>PackageName</td><td>4</td><td>1033</td><td>2</td><td>1</td><td>Intel</td><td/><td>1033</td><td>0</td><td>0</td><td>0</td><td>0</td><td/><td>0</td><td/><td>MediaLocation</td><td/><td>http://</td><td/><td/><td/><td/><td>124941</td><td/><td/><td/><td>3</td></row>
 	</table>
 
@@ -2425,9 +2412,9 @@
 		<row><td>Custom</td><td>Express</td><td>0</td><td>http://</td><td>0</td><td>install</td><td>install</td><td>[LocalAppDataFolder]Downloaded Installations</td><td>0</td><td>http://www.installengine.com/Msiengine20</td><td>http://www.installengine.com/Msiengine20</td><td>0</td><td>http://www.installengine.com/cert05/isengine</td><td>0</td><td/><td/><td/><td>3</td><td>http://www.installengine.com/cert05/dotnetfx</td><td>0</td><td>1033</td><td/><td/><td/><td/><td/><td>3</td><td/><td>http://www.installengine.com/Msiengine30</td><td/></row>
 		<row><td>DVD-10</td><td>Express</td><td>0</td><td>http://</td><td>0</td><td>install</td><td>install</td><td>[LocalAppDataFolder]Downloaded Installations</td><td>0</td><td>http://www.installengine.com/Msiengine20</td><td>http://www.installengine.com/Msiengine20</td><td>0</td><td>http://www.installengine.com/cert05/isengine</td><td>0</td><td/><td/><td/><td>3</td><td>http://www.installengine.com/cert05/dotnetfx</td><td>0</td><td>1033</td><td/><td/><td/><td/><td/><td>3</td><td/><td>http://www.installengine.com/Msiengine30</td><td/></row>
 		<row><td>DVD-18</td><td>Express</td><td>0</td><td>http://</td><td>0</td><td>install</td><td>install</td><td>[LocalAppDataFolder]Downloaded Installations</td><td>0</td><td>http://www.installengine.com/Msiengine20</td><td>http://www.installengine.com/Msiengine20</td><td>0</td><td>http://www.installengine.com/cert05/isengine</td><td>0</td><td/><td/><td/><td>3</td><td>http://www.installengine.com/cert05/dotnetfx</td><td>0</td><td>1033</td><td/><td/><td/><td/><td/><td>3</td><td/><td>http://www.installengine.com/Msiengine30</td><td/></row>
-		<row><td>DVD-5</td><td>Express</td><td>0</td><td>http://</td><td>0</td><td>install</td><td>install</td><td>[LocalAppDataFolder]Downloaded Installations</td><td>1</td><td>http://www.installengine.com/Msiengine20</td><td>http://www.installengine.com/Msiengine20</td><td>0</td><td>http://www.installengine.com/cert05/isengine</td><td>0</td><td/><td/><td/><td>3</td><td>http://www.installengine.com/cert05/dotnetfx</td><td>0</td><td>1033</td><td/><td/><td/><td/><td/><td>3</td><td/><td>http://www.installengine.com/Msiengine30</td><td/></row>
+		<row><td>DVD-5</td><td>Express</td><td>0</td><td>http://</td><td>0</td><td>install</td><td>install</td><td>[LocalAppDataFolder]Downloaded Installations</td><td>1</td><td>http://www.installengine.com/Msiengine20</td><td>http://www.installengine.com/Msiengine20</td><td>0</td><td>http://www.installengine.com/cert05/isengine</td><td>0</td><td/><td/><td/><td>3</td><td>http://www.installengine.com/cert05/dotnetfx</td><td>0</td><td>1033</td><td/><td/><td/><td/><td>1024</td><td>3</td><td/><td>http://www.installengine.com/Msiengine30</td><td/></row>
 		<row><td>DVD-9</td><td>Express</td><td>0</td><td>http://</td><td>0</td><td>install</td><td>install</td><td>[LocalAppDataFolder]Downloaded Installations</td><td>0</td><td>http://www.installengine.com/Msiengine20</td><td>http://www.installengine.com/Msiengine20</td><td>0</td><td>http://www.installengine.com/cert05/isengine</td><td>0</td><td/><td/><td/><td>3</td><td>http://www.installengine.com/cert05/dotnetfx</td><td>0</td><td>1033</td><td/><td/><td/><td/><td/><td>3</td><td/><td>http://www.installengine.com/Msiengine30</td><td/></row>
-		<row><td>SingleImage</td><td>Express</td><td>0</td><td>http://</td><td>0</td><td>install</td><td>install</td><td>[LocalAppDataFolder]Downloaded Installations</td><td>1</td><td>http://www.installengine.com/Msiengine20</td><td>http://www.installengine.com/Msiengine20</td><td>0</td><td>http://www.installengine.com/cert05/isengine</td><td>0</td><td/><td/><td/><td>3</td><td>http://www.installengine.com/cert05/dotnetfx</td><td>0</td><td>1033</td><td/><td/><td/><td/><td/><td>3</td><td/><td>http://www.installengine.com/Msiengine30</td><td/></row>
+		<row><td>SingleImage</td><td>Express</td><td>0</td><td>http://</td><td>0</td><td>install</td><td>install</td><td>[LocalAppDataFolder]Downloaded Installations</td><td>1</td><td>http://www.installengine.com/Msiengine20</td><td>http://www.installengine.com/Msiengine20</td><td>0</td><td>http://www.installengine.com/cert05/isengine</td><td>0</td><td/><td/><td/><td>3</td><td>http://www.installengine.com/cert05/dotnetfx</td><td>0</td><td>1033</td><td/><td/><td/><td/><td>1024</td><td>3</td><td/><td>http://www.installengine.com/Msiengine30</td><td/></row>
 		<row><td>WebDeployment</td><td>Express</td><td>0</td><td>http://</td><td>0</td><td>setup</td><td>Default</td><td>[LocalAppDataFolder]Downloaded Installations</td><td>2</td><td>http://www.Installengine.com/Msiengine20</td><td>http://www.Installengine.com/Msiengine20</td><td>0</td><td>http://www.installengine.com/cert05/isengine</td><td>0</td><td/><td/><td/><td>3</td><td>http://www.installengine.com/cert05/dotnetfx</td><td>0</td><td>1033</td><td/><td/><td/><td/><td/><td>3</td><td/><td>http://www.installengine.com/Msiengine30</td><td/></row>
 	</table>
 
@@ -2623,9 +2610,10 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>NullVoid Creations</td><td>0</td><td/><td>-31149075</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>NullVoid Creations</td><td>0</td><td/><td>-31174097</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-31134963</td></row>
+		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION35</td><td>1033</td><td>Microsoft .NET Framework 3.5 needs to be installed for this installation to continue.</td><td>0</td><td/><td>-31163857</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_OS</td><td>1033</td><td>The operating system is not adequate for running [ProductName].</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_PROCESSOR</td><td>1033</td><td>The processor is not adequate for running [ProductName].</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>-31134963</td></row>
@@ -3435,6 +3423,7 @@
 		<row><td>IDS_PROGMSG_XML_UPDATE_FILE</td><td>1033</td><td>Updating XML file %s...</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDS_SETUPEXE_EXPIRE_MSG</td><td>1033</td><td>This setup works until %s. The setup will now exit.</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDS_SETUPEXE_LAUNCH_COND_E</td><td>1033</td><td>This setup was built with an evaluation version of InstallShield and can only be launched from setup.exe.</td><td>0</td><td/><td>-31134963</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME1</td><td>1033</td><td>PCMECH~1|PC Mechanic Pro</td><td>0</td><td/><td>-31151281</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO</td><td>1033</td><td>From the list of servers below, select the database server you would like to target.</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>1033</td><td>From the list of catalog names below, select the database catalog you would like to target.</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>1033</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>-31134963</td></row>
@@ -3724,12 +3713,16 @@
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>ID_STRING1</td><td>1033</td><td/><td>0</td><td/><td>-31194323</td></row>
-		<row><td>ID_STRING2</td><td>1033</td><td>www.pcmechanicpro.com</td><td>0</td><td/><td>-31190003</td></row>
+		<row><td>ID_STRING10</td><td>1033</td><td>http://www.pcmechanicpro.com/support</td><td>0</td><td/><td>-31171825</td></row>
+		<row><td>ID_STRING11</td><td>1033</td><td>http://www.pcmechanicpro.com/download</td><td>0</td><td/><td>-31157489</td></row>
+		<row><td>ID_STRING2</td><td>1033</td><td>http://www.pcmechanicpro.com</td><td>0</td><td/><td>-31188209</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>Cleaning ay your fingertips.</td><td>0</td><td/><td>-31167475</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>PCMECH~1|PC Mechanic Pro</td><td>0</td><td/><td>-31142771</td></row>
 		<row><td>ID_STRING5</td><td>1033</td><td>Cleaning at your fingertips.</td><td>0</td><td/><td>-31181651</td></row>
 		<row><td>ID_STRING6</td><td>1033</td><td>PCMECH~1|PC Mechanic Pro</td><td>0</td><td/><td>-31146835</td></row>
 		<row><td>ID_STRING7</td><td>1033</td><td>Cleaning at your fingertips.</td><td>0</td><td/><td>-31187763</td></row>
+		<row><td>ID_STRING8</td><td>1033</td><td>NullVoid Creations</td><td>0</td><td/><td>-31174097</td></row>
+		<row><td>ID_STRING9</td><td>1033</td><td>Launch |Built</td><td>0</td><td/><td>-31163825</td></row>
 		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>1033</td><td>This feature will remain uninstalled.</td><td>0</td><td/><td>-31134963</td></row>
 	</table>
 
@@ -3843,7 +3836,7 @@
 		<col def="V0">Data</col>
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
-		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;VSSolutionFolder&gt;\NullVoidCreations.Janitor.Shell\bin\Debug\NullVoidCreations.Janitor.Shell.exe</td><td>0</td></row>
+		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;VSSolutionFolder&gt;\NullVoidCreations.Janitor.Shell\LogoBig.ico</td><td>0</td></row>
 		<row><td>NewShortcut1_E460D90650F84030985CA44565707890.exe</td><td/><td>D:\Projects\Janitor\NullVoidCreations.Janitor.Shell\bin\Debug\NullVoidCreations.Janitor.Shell.exe</td><td>0</td></row>
 		<row><td>NewShortcut2_9AE6C6F0824246D48B0DB2BB1D2436C8.exe</td><td/><td>D:\Projects\Janitor\NullVoidCreations.Janitor.Shell\bin\Debug\NullVoidCreations.Janitor.Shell.exe</td><td>0</td></row>
 	</table>
@@ -3978,7 +3971,7 @@ RABWAEQALQA1AAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{FD007B6A-F3E5-41C8-80EA-5A13ACEBDD1C}</td></row>
 		<row><td>ISUSSignature</td><td>{4D43AD00-11DF-4629-8DA0-08F3F0B989E1}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewProject,viewUpgradePaths,viewAppFiles,viewObjects,viewShortcuts,viewRegistry,viewIniFiles,viewFileExtensions,viewEnvironmentVariables,viewVRoots,viewServices,viewUI,viewTextMessages,viewSystemSearch,viewCustomActions,viewRelease</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewProject,viewUpgradePaths,viewAppFiles,viewObjects,viewShortcuts,viewRegistry,viewIniFiles,viewFileExtensions,viewEnvironmentVariables,viewVRoots,viewServices,viewUI,viewTextMessages,viewSystemSearch,viewCustomActions,viewRelease,viewUpdateService,viewISToday</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4284,10 +4277,12 @@ RABWAEQALQA1AAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<row><td>ALLUSERS</td><td>1</td><td/></row>
 		<row><td>ARPCOMMENTS</td><td>##ID_STRING3##</td><td/></row>
+		<row><td>ARPHELPLINK</td><td>##ID_STRING10##</td><td/></row>
 		<row><td>ARPINSTALLLOCATION</td><td/><td/></row>
 		<row><td>ARPPRODUCTICON</td><td>ARPPRODUCTICON.exe</td><td/></row>
 		<row><td>ARPSIZE</td><td/><td/></row>
 		<row><td>ARPURLINFOABOUT</td><td>##ID_STRING2##</td><td/></row>
+		<row><td>ARPURLUPDATEINFO</td><td>##ID_STRING11##</td><td/></row>
 		<row><td>AgreeToLicense</td><td>No</td><td/></row>
 		<row><td>ApplicationUsers</td><td>AllUsers</td><td/></row>
 		<row><td>DWUSINTERVAL</td><td>30</td><td/></row>
@@ -4428,6 +4423,9 @@ RABWAEQALQA1AAEARQB4AHAAcgBlAHMAcwA=
 		<col def="L255">FileName</col>
 		<col def="s72">DirProperty</col>
 		<col def="i2">InstallMode</col>
+		<row><td>FileKey1</td><td>NullVoidCreations.Janitor.Shell.Primary_output</td><td/><td>nullvo_1_nullvoid_creations</td><td>2</td></row>
+		<row><td>FileKey2</td><td>NullVoidCreations.Janitor.Shell.Primary_output</td><td/><td>pcmech_1_pc_mechanic_pro</td><td>2</td></row>
+		<row><td>_Built</td><td>NullVoidCreations.Janitor.Shell.Primary_output</td><td/><td>pcmech_1_pc_mechanic_pro</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4513,8 +4511,8 @@ RABWAEQALQA1AAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>NewShortcut1</td><td>StartupFolder</td><td>##ID_STRING4##</td><td>NullVoidCreations.Janitor.Shell.exe</td><td>[INSTALLDIR]NullVoidCreations.Janitor.Shell.exe</td><td/><td>##ID_STRING5##</td><td/><td>NewShortcut1_E460D90650F84030985CA44565707890.exe</td><td>1</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>NewShortcut2</td><td>DesktopFolder</td><td>##ID_STRING6##</td><td>NullVoidCreations.Janitor.Shell.exe</td><td>[INSTALLDIR]NullVoidCreations.Janitor.Shell.exe</td><td/><td>##ID_STRING7##</td><td/><td>NewShortcut2_9AE6C6F0824246D48B0DB2BB1D2436C8.exe</td><td>1</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>_Built</td><td>pcmech_1_pc_mechanic_pro</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>NullVoidCreations.Janitor.Shell.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>_Built1</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>NullVoidCreations.Janitor.Shell.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">

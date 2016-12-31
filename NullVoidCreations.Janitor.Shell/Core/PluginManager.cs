@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
+using Ionic.Zip;
 using NullVoidCreations.Janitor.Shared.Base;
 
 namespace NullVoidCreations.Janitor.Shell.Core
@@ -12,7 +12,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
         readonly Dictionary<string, ScanTargetBase> _targets;
         static PluginManager _instance;
         Version _version;
-        readonly string _versionFile;
 
         #region constructor/destructor
 
@@ -73,11 +72,37 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #endregion
 
+        public bool UpdatePlugins(string archiveFile)
+        {
+            if (string.IsNullOrEmpty(archiveFile))
+                return false;
+            if (!File.Exists(archiveFile))
+                return false;
+
+            UnloadPlugins();
+            using (var zip = ZipFile.Read(archiveFile))
+            {
+                var path = SettingsManager.Instance.PluginsDirectory;
+                foreach (var entry in zip)
+                {
+                    try
+                    {
+                        entry.Extract(path, ExtractExistingFileAction.OverwriteSilently);
+                    }
+                    catch (Exception ex)
+                    {
+                        
+                    }
+                }
+            }
+            LoadPlugins();
+
+            return true;
+        }
+
         public void LoadPlugins()
         {
             UnloadPlugins();
-
-            
 
             var scanTargetType = typeof(ScanTargetBase);
             var proxyType = typeof(Proxy);
@@ -120,16 +145,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
             setupInfo.ApplicationBase = SettingsManager.Instance.PluginsDirectory;
 
             _container = AppDomain.CreateDomain("ScanTargets", evidence, setupInfo);
-        }
-
-        Assembly Container_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            var fileNamme = string.Format(new AssemblyName(args.Name).Name, ".dll");
-            var path = Path.Combine(SettingsManager.Instance.PluginsDirectory, fileNamme);
-            if (File.Exists(path))
-                return Assembly.LoadFrom(fileNamme);
-
-            return null;
         }
 
         void DestroyContainer()

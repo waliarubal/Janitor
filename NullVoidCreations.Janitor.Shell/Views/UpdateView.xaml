@@ -3,9 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
              d:DesignHeight="480"
              d:DesignWidth="640"
              mc:Ignorable="d">
+    <UserControl.DataContext>
+        <vm:UpdateViewModel />
+    </UserControl.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -19,7 +23,7 @@
             <TextBlock Style="{StaticResource ResourceKey=HeaderTitleStyle}" Text="Update" />
         </Border>
 
-        <!--  target database update  -->
+        <!--  target plugins update  -->
         <Grid Grid.Row="1" Margin="20">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
@@ -51,20 +55,27 @@
             <TextBlock Grid.Row="1"
                        Grid.Column="1"
                        Grid.ColumnSpan="2"
-                       Text="Updating from version 1.0.0 to version 1.0.11." />
+                       Text="{Binding Path=PluginUpdate.Message,
+                                      Mode=OneWay}" />
             <StackPanel Grid.Row="2"
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
-                        Orientation="Horizontal">
+                        Orientation="Horizontal"
+                        Visibility="{Binding Path=PluginUpdate.IsDownloading,
+                                             Mode=OneWay,
+                                             Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
                 <TextBlock Text="Update Progress: " />
-                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}" Text="5100 kB / 29000 kB" />
+                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}" Text="{Binding Path=PluginUpdate.Progress, Mode=OneWay, StringFormat='{}{0}% downloaded'}" />
             </StackPanel>
             <StackPanel Grid.Row="3"
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
-                        Orientation="Horizontal">
+                        Orientation="Horizontal"
+                        Visibility="{Binding Path=PluginUpdate.IsDownloading,
+                                             Mode=OneWay,
+                                             Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
                 <TextBlock Text="File Name: " />
-                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}" Text="update file name comes here" />
+                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}" Text="{Binding Path=PluginUpdate.UpdateUrl, Mode=OneWay}" />
             </StackPanel>
             <Button Grid.Row="4"
                     Grid.Column="1"
@@ -72,8 +83,18 @@
                     MinWidth="120"
                     Margin="0 12"
                     HorizontalAlignment="Left"
-                    Content="Cancel Update" />
-            <ProgressBar Grid.Column="2" />
+                    Command="{Binding Path=PluginUpdate,
+                                      Mode=OneTime}"
+                    Content="{Binding Path=PluginUpdate.Title,
+                                      Mode=OneWay}" />
+            <ProgressBar Grid.Column="2"
+                         Maximum="100"
+                         Minimum="0"
+                         Visibility="{Binding Path=PluginUpdate.IsDownloading,
+                                              Mode=OneWay,
+                                              Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"
+                         Value="{Binding Path=PluginUpdate.Progress,
+                                         Mode=OneWay}" />
         </Grid>
 
         <Separator Grid.Row="2" Margin="20 0" />

@@ -1,0 +1,31 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Converters"
+                    xmlns:clr="clr-namespace:System;assembly=mscorlib">
+    <clr:String x:Key="ProductName">PC MECHANIC PRO™</clr:String>
+    <clr:String x:Key="ProductVersion">1.0.0.0</clr:String>
+
+    <!--  converters  -->
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <c:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    <c:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+    <c:InverseBoolConverter x:Key="InverseBoolConverter" />
+
+    <!--  brushes  -->
+    <SolidColorBrush x:Key="GoodBrush" Color="#5DAE2D" />
+    <SolidColorBrush x:Key="BadBrush" Color="#F44336" />
+    <SolidColorBrush x:Key="TextBrush" Color="#44525F" />
+    <SolidColorBrush x:Key="TextAlternateBrush" Color="#3D99E4" />
+    <SolidColorBrush x:Key="BackgroundActiveBrush" Color="#EDF0F5" />
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="BorderBrush" Color="#C8CBD2" />
+    <SolidColorBrush x:Key="HeaderBorderBrush" Color="#44525F" />
+    <LinearGradientBrush x:Key="HeaderBackgroundBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Offset="0" Color="#768290" />
+        <GradientStop Offset="1" Color="#65778B" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ButtonBackgroundBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Offset="0" Color="#FDFDFD" />
+        <GradientStop Offset="1" Color="#CACDD4" />
+    </LinearGradientBrush>
+</ResourceDictionary>

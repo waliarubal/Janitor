@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using NullVoidCreations.Janitor.Shared.Base;
@@ -8,7 +9,7 @@ using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
-    public class UpdateCommand : CommandBase, IObserver
+    public class UpdateCommand : DelegateCommand, ISignalObserver
     {
         public enum UpdateType : byte
         {
@@ -16,64 +17,55 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             Program
         }
 
-        const string Name = "Check for Updates";
         const string CencelMessage = "Update cancelled by user.";
         const string DownloadErrorMessage = "An error occured while downloading update. Please try again later.";
+        const string UpdateErrorMessage = "An error occured while installing the update.";
         const string UpdatingMessage = "Updating from version {0} to version {1}.";
         const string UpToDateMessage = "Installed version {0} is up to date.";
         const char Separator = '|';
         readonly Uri  MetadataUrl = new Uri(@"https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Update.txt");
 
         readonly UpdateType _type;
-        readonly string _updateFilePath;
-        bool _isDownloading;
-        WebClient _client;
-        string _message;
-        int _progress;
+        volatile int _progress;
         Uri _updateUrl;
+        WebClient _client;
         
         #region constructor/destructor
 
         public UpdateCommand(ViewModelBase viewModel, UpdateType type)
             : base(viewModel)
         {
-            Subject.Instance.AddObserver(this);
+            SignalHost.Instance.AddObserver(this);
 
-            _updateFilePath = Path.Combine(SettingsManager.Instance.PluginsDirectory, "Update.zip");
-
+            Title = "Check for Updates";
             _type = type;
-            Title = Name;
+            if (_type == UpdateType.Program)
+                Description = string.Format(UpToDateMessage, App.Current.Resources["ProductVersion"]);
+            else
+                Description = string.Format(UpToDateMessage, string.Empty);
+
+            UpdateUrl = MetadataUrl;
+            IsEnabled = true;
             IsRecallAllowed = true;
 
             _client = new WebClient();
             _client.Proxy = null;
             _client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(Client_DownloadProgressChanged);
-            _client.DownloadFileCompleted += new System.ComponentModel.AsyncCompletedEventHandler(Client_DownloadFileCompleted);
-            _client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(Client_DownloadStringCompleted);
+            _client.DownloadFileCompleted += new AsyncCompletedEventHandler(Client_DownloadFileCompleted);
         }
 
         ~UpdateCommand()
         {
+            _client.DownloadProgressChanged -= new DownloadProgressChangedEventHandler(Client_DownloadProgressChanged);
+            _client.DownloadFileCompleted -= new AsyncCompletedEventHandler(Client_DownloadFileCompleted);
             _client.Dispose();
-            Subject.Instance.RemoveObserver(this);
+
+            SignalHost.Instance.RemoveObserver(this);
         }
 
         #endregion
 
         #region properties
-
-        public bool IsDownloading
-        {
-            get { return _isDownloading; }
-            private set
-            {
-                if (value == _isDownloading)
-                    return;
-
-                _isDownloading = value;
-                RaisePropertyChanged("IsDownloading");
-            }
-        }
 
         public int Progress
         {
@@ -85,19 +77,6 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
                 _progress = value;
                 RaisePropertyChanged("Progress");
-            }
-        }
-
-        public string Message
-        {
-            get { return _message; }
-            private set
-            {
-                if (value == _message)
-                    return;
-
-                _message = value;
-                RaisePropertyChanged("Message");
             }
         }
 
@@ -116,105 +95,135 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         #endregion
 
-        void Client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        protected override void ExecuteOverride(object parameter)
         {
-            IsDownloading = false;
-            if (e.Cancelled)
+            SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStarted, _type);
+            Progress = 0;
+            Title = "Updating...";
+
+            string[] metaData;
+
+            // fetch metadata
+            try
             {
-                Title = Name;
-                Message = CencelMessage;
-                return;
+                metaData = _client.DownloadString(MetadataUrl).Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
             }
-            if (e.Error != null)
+            catch
             {
-                Title = Name;
-                Message = DownloadErrorMessage;
+                Description = DownloadErrorMessage;
+                SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStopped, _type, true);
                 return;
             }
 
-            var metaData = e.Result.Split(new char[]{'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
             if (metaData.Length != 2)
-                goto EXIT;
-
-            if (_type == UpdateType.Program)
             {
-                var programMetaData = metaData[1].Split(new char[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
-                if (programMetaData.Length != 3)
-                    goto EXIT;
-
-                var availableVersion = new Version(programMetaData[1]);
-                UpdateUrl = new Uri(programMetaData[2]);
-            }
-            else
-            {
-                var pluginsMetaData = metaData[0].Split(new char[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
-                if (pluginsMetaData.Length != 3)
-                    return;
-
-                var availableVersion = new Version(pluginsMetaData[1]);
-                if (availableVersion <= PluginManager.Instance.Version)
-                    goto EXIT;
-
-                Message = string.Format(UpdatingMessage, PluginManager.Instance.Version, availableVersion);
-                UpdateUrl = new Uri(pluginsMetaData[2]);
-                _client.DownloadFileAsync(_updateUrl, _updateFilePath, availableVersion);
+                Description = DownloadErrorMessage;
+                SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStopped, _type, true);
+                return;
             }
 
-        EXIT:
-            Title = Name;
-            Message = string.Format(UpToDateMessage, PluginManager.Instance.Version);
+            // validate meta data
+            metaData = _type == UpdateType.Program ?
+                metaData[1].Split(new char[] { Separator }, StringSplitOptions.RemoveEmptyEntries) :
+                metaData[0].Split(new char[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
+            if (metaData.Length != 3)
+            {
+                Description = DownloadErrorMessage;
+                return;
+            }
+  
+            // validate version
+            var availableVersion = new Version(metaData[1]);
+            var currentVersion = _type == UpdateType.Program ?
+                new Version(App.Current.Resources["ProductVersion"] as string) : 
+                PluginManager.Instance.Version;
+            if (availableVersion <= currentVersion)
+            {
+                Title = "Check for Updates";
+                Description = string.Format(UpToDateMessage, currentVersion);
+                SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStopped, _type, true);
+                return;
+            }
+
+            // download update
+            Description = string.Format(UpdatingMessage, currentVersion, availableVersion);
+            UpdateUrl = new Uri(metaData[2]);
+            var updateFile = _type == UpdateType.Program ?
+                Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Setup.exe") :
+                Path.Combine(SettingsManager.Instance.PluginsDirectory, "Update.zip");
+            FileSystemHelper.Instance.DeleteFile(updateFile);
+            try
+            {
+                _client.DownloadFileAsync(UpdateUrl, updateFile, updateFile);
+            }
+            catch
+            {
+                Description = DownloadErrorMessage;
+                SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStopped, _type, false);
+                return;
+            }
+
+            return;
         }
 
         void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            IsDownloading = false;
-            if (e.Cancelled)
+            var updateFile = e.UserState as string;
+
+            // update failed
+            if (string.IsNullOrEmpty(updateFile) || !File.Exists(updateFile))
             {
-                Title = Name;
-                Message = CencelMessage;
-                return;
-            }
-            if (e.Error != null)
-            {
-                Title = Name;
-                Message = DownloadErrorMessage;
+                SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStopped, _type, false);
+                ViewModel.IsExecuting = IsExecuting = false;
                 return;
             }
 
+            // intall update
+            var isUpdateInstalled = true;
+            var message = string.Empty;
             if (_type == UpdateType.Program)
             {
+                var startInfo = new ProcessStartInfo(updateFile);
+                startInfo.UseShellExecute = true;
+                startInfo.WorkingDirectory = KnownPaths.Instance.ApplicationDirectory;
+                Process.Start(startInfo);
 
+                App.Current.Shutdown(0);
             }
             else
             {
-                PluginManager.Instance.UpdatePlugins(e.UserState as Version, _updateFilePath);
-                FileSystemHelper.Instance.DeleteFile(_updateFilePath);
+                if (!PluginManager.Instance.UpdatePlugins(updateFile))
+                {
+                    message = UpdateErrorMessage;
+                    isUpdateInstalled = false;
+                }
+                else
+                    message = string.Format(UpToDateMessage, PluginManager.Instance.Version);
+
+                FileSystemHelper.Instance.DeleteFile(updateFile);
             }
 
-            Title = Name;
-            Message = string.Format(UpToDateMessage, PluginManager.Instance.Version);
+            Description = message;
+            Title = "Check for Updates";
+            ViewModel.IsExecuting = IsExecuting = false;
+            SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStopped, _type, isUpdateInstalled);
         }
 
         void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
+            // set execution status as its disabled by command's base
+            if (!IsExecuting)
+                ViewModel.IsExecuting = IsExecuting = true;
+
             Progress = e.ProgressPercentage;
         }
 
-        public override void Execute(object parameter)
+        public void Update(ISignalObserver sender, Signal code, params object[] data)
         {
-            Title = "Cancel Update";
-            IsDownloading = true;
-            Progress = 0;
-
-            _client.DownloadStringAsync(MetadataUrl);
-        }
-
-        public void Update(IObserver sender, MessageCode code, params object[] data)
-        {
-            if (code != MessageCode.Initialized)
+            if (code != Signal.Initialized || _type != UpdateType.Plugin)
                 return;
 
-            Message = string.Format(UpToDateMessage, PluginManager.Instance.Version);
+            Description = string.Format(UpToDateMessage, PluginManager.Instance.Version);
         }
     }
 }

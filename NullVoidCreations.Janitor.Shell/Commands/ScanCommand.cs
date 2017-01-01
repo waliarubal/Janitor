@@ -14,7 +14,7 @@ using NullVoidCreations.Janitor.Shell.Views;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
-    public class ScanCommand : CommandBase, IObserver
+    public class ScanCommand : CommandBase, ISignalObserver
     {
         ComputerScanViewModel _viewModel;
         BackgroundWorker _worker;
@@ -28,12 +28,12 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _viewModel = ViewModel as ComputerScanViewModel;
             IsRecallAllowed = true;
 
-            Subject.Instance.AddObserver(this);
+            SignalHost.Instance.AddObserver(this);
         }
 
         ~ScanCommand()
         {
-            Subject.Instance.RemoveObserver(this);
+            SignalHost.Instance.RemoveObserver(this);
 
             if (_worker == null)
                 return;
@@ -107,16 +107,16 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             }
         }
 
-        public void Update(IObserver sender, MessageCode code, params object[] data)
+        public void Update(ISignalObserver sender, Signal code, params object[] data)
         {
             switch (code)
             {
-                case MessageCode.ScanStatusChanged:
+                case Signal.ScanStatusChanged:
                     if (_worker.IsBusy)
                         _worker.ReportProgress(-1, data[0]);
                     break;
 
-                case MessageCode.LicenseChanged:
+                case Signal.LicenseChanged:
                     _license = NullVoidCreations.Janitor.Shell.Core.LicenseManager.Instance.License;
                     break;
             }
@@ -173,12 +173,12 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             status.ProgressMax = progressMax;
             status.ProgressMin = progressMin;
             status.ProgressCurrent = progressCurrent;
-            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanStatusChanged, status);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.ScanStatusChanged, status);
         }
 
         ScanModel Analyse(ScanModel scan)
         {
-            Subject.Instance.NotifyAllObservers(this, MessageCode.AnalysisStarted, false);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.AnalysisStarted, false);
 
             var issues = new List<IssueBase>();
             var targets = 0;
@@ -230,14 +230,14 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             scan.Issues = issues;
 
             SaveScanDetails(scan);
-            Subject.Instance.NotifyAllObservers(this, MessageCode.AnalysisStopped, issues.Count);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.AnalysisStopped, issues.Count);
 
             return scan;
         }
 
         ScanModel Fix(ScanModel scan)
         {
-            Subject.Instance.NotifyAllObservers(this, MessageCode.FixingStarted);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.FixingStarted);
 
             var issues = new List<IssueBase>();
             var targets = 0;
@@ -290,7 +290,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             scan.Issues = issues;
 
             SaveScanDetails(scan);
-            Subject.Instance.NotifyAllObservers(this, MessageCode.FixingStopped, issues.Count);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.FixingStopped, issues.Count);
 
             return scan;
         }

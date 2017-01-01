@@ -7,7 +7,7 @@ using System;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
-    public class AboutViewModel: ViewModelBase, IObserver
+    public class AboutViewModel: ViewModelBase, ISignalObserver
     {
         string _operatingSyetem, _processor, _registeredTo;
         decimal _memory;
@@ -19,12 +19,12 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public AboutViewModel()
         {
-            Subject.Instance.AddObserver(this);
+            SignalHost.Instance.AddObserver(this);
         }
 
         ~AboutViewModel()
         {
-            Subject.Instance.RemoveObserver(this);
+            SignalHost.Instance.RemoveObserver(this);
         }
 
         #endregion
@@ -130,17 +130,17 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #endregion
 
-        public void Update(IObserver sender, MessageCode code, params object[] data)
+        public void Update(ISignalObserver sender, Signal code, params object[] data)
         {
             switch(code)
             {
-                case MessageCode.SystemInformationLoaded:
+                case Signal.SystemInformationLoaded:
                     Memory = Convert.ToDecimal(SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "TotalPhysicalMemory"]) / 1024 / 1024 / 1024;
                     OperatingSystem = string.Format("{0} ({1})", SysInformation.Instance[SysInformation.ManagementClassNames.OperatingSystem, "Caption"], SysInformation.Instance[SysInformation.ManagementClassNames.OperatingSystem, "OSArchitecture"]);
                     Processor = SysInformation.Instance[SysInformation.ManagementClassNames.Processor, "Name"] as string;
                     break;
 
-                case MessageCode.PluginsLoaded:
+                case Signal.PluginsLoaded:
                     var plugins = new List<ScanTargetBase>();
                     foreach (var plugin in data[0] as IEnumerable<ScanTargetBase>)
                         plugins.Add(plugin);
@@ -148,11 +148,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     Targets = plugins;
                     break;
 
-                case MessageCode.PluginsUnloaded:
+                case Signal.PluginsUnloaded:
                     Targets = null;
                     break;
 
-                case MessageCode.LicenseChanged:
+                case Signal.LicenseChanged:
                     RegisteredTo = LicenseManager.Instance.License.RegisteredEmail;
                     ExpiryDate = LicenseManager.Instance.License.ExpirationDate;
                     IsTrial = LicenseManager.Instance.License.IsTrial;

@@ -5,8 +5,8 @@ namespace NullVoidCreations.Janitor.Shared.Base
 {
     public abstract class CommandBase: NotificationBase, ICommand
     {
-        bool _isExecuting, _isEnabled, _isRecallAllowed;
-        string _title, _description;
+        volatile bool _isExecuting, _isEnabled, _isRecallAllowed;
+        volatile string _title, _description;
         Func<object, bool> _canExecute;
         ViewModelBase _viewModel;
 

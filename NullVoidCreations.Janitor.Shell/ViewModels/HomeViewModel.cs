@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Models;
-using System.Collections.Generic;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
-    public class HomeViewModel: ViewModelBase, IObserver
+    public class HomeViewModel: ViewModelBase, ISignalObserver
     {
         readonly CommandBase _load, _activate, _purchaseLicense, _doScan, _pluginUpdate;
         string _computerName, _operatingSyetem, _processor, _model;
@@ -23,7 +23,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public HomeViewModel()
         {
-            Subject.Instance.AddObserver(this);
+            SignalHost.Instance.AddObserver(this);
 
             _startupActions = new Queue<CommandBase>();
             _license = new LicenseModel();
@@ -39,7 +39,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         ~HomeViewModel()
         {
-            Subject.Instance.RemoveObserver(this);
+            SignalHost.Instance.RemoveObserver(this);
         }
 
         #endregion
@@ -223,7 +223,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             else if ("Custom".Equals(scanType))
                 type = ScanType.CustomScan;
             
-            Subject.Instance.NotifyAllObservers(this, MessageCode.ScanTrigerred, type);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.ScanTrigerred, type);
         }
 
         void WeHaveProblems()
@@ -238,7 +238,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             if (IsHavingUpdatesAvailable)
                 problems++;
 
-            Subject.Instance.NotifyAllObservers(this, MessageCode.ProblemsAppeared, problems);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.ProblemsAppeared, problems);
         }
 
         object ExecuteGetSystemInformation(object parameter)
@@ -253,15 +253,16 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.ComputerSystem);
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.OperatingSystem);
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.Processor);
-            Subject.Instance.NotifyAllObservers(this, MessageCode.SystemInformationLoaded);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.SystemInformationLoaded);
 
             return null;
         }
 
         void GetSystemInformationComplete(object parameter)
         {
-            Subject.Instance.NotifyAllObservers(this, MessageCode.Initialized);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.Initialized);
 
+            // TODO: work here
             if (SettingsManager.Instance.RunPluginUpdateAtLaunch)
                 _startupActions.Enqueue(_pluginUpdate);
             if (SettingsManager.Instance.RunScanAtLaunch)
@@ -272,11 +273,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             //    DoScan.Execute("Smart");
         }
 
-        public void Update(IObserver sender, MessageCode code, params object[] data)
+        public void Update(ISignalObserver sender, Signal code, params object[] data)
         {
-            switch(code)
+            switch (code)
             {
-                case MessageCode.SystemInformationLoaded:
+                case Signal.SystemInformationLoaded:
                     ComputerName = SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "Name"] as string;
                     Model = SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "Model"] as string;
                     Memory = Convert.ToDecimal(SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "TotalPhysicalMemory"]) / 1024 / 1024 / 1024;
@@ -284,28 +285,57 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     Processor = SysInformation.Instance[SysInformation.ManagementClassNames.Processor, "Name"] as string;
                     break;
 
-                case MessageCode.LicenseChanged:
+                case Signal.LicenseChanged:
                     License = LicenseManager.Instance.License;
                     IsLicensed = License != null && !License.IsTrial;
                     WeHaveProblems();
                     break;
 
-                case MessageCode.FixingStarted:
-                case MessageCode.AnalysisStarted:
+                case Signal.FixingStarted:
+                case Signal.AnalysisStarted:
                     IssueCount = 0;
                     IsHavingIssues = false;
                     WeHaveProblems();
                     break;
 
-                case MessageCode.AnalysisStopped:
+                case Signal.AnalysisStopped:
                     IssueCount = (int)data[0];
                     IsHavingIssues = IssueCount > 0;
                     WeHaveProblems();
                     break;
 
-                case MessageCode.FixingStopped:
+                case Signal.FixingStopped:
                     IssueCount = (int)data[0];
                     IsHavingIssues = false;
+                    WeHaveProblems();
+                    break;
+
+                case Signal.UpdateStarted:
+                    switch ((UpdateCommand.UpdateType)data[0])
+                    {
+                        case UpdateCommand.UpdateType.Plugin:
+                            IsHavingPluginUpdatesAvailable = true;
+                            break;
+
+                        case UpdateCommand.UpdateType.Program:
+                            IsHavingUpdatesAvailable = true;
+                            break;
+                    }
+                    WeHaveProblems();
+                    break;
+
+                case Signal.UpdateStopped:
+                    var wasUpdateSuccessful = (bool)data[1];
+                    switch ((UpdateCommand.UpdateType)data[0])
+                    {
+                        case UpdateCommand.UpdateType.Plugin:
+                            IsHavingPluginUpdatesAvailable = !wasUpdateSuccessful;
+                            break;
+
+                        case UpdateCommand.UpdateType.Program:
+                            IsHavingUpdatesAvailable = !wasUpdateSuccessful;
+                            break;
+                    }
                     WeHaveProblems();
                     break;
             }

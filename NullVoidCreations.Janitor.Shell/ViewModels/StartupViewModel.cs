@@ -5,7 +5,7 @@ using NullVoidCreations.Janitor.Shell.Models;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
-    public class StartupViewModel : ViewModelBase, IObserver
+    public class StartupViewModel : ViewModelBase, ISignalObserver
     {
         readonly CommandBase _refresh, _delete;
         StartupEntryModel _selectedEntry;
@@ -17,12 +17,12 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _delete = new AsyncDelegateCommand(this, null, ExecuteDelete, DeleteComplete);
             _refresh.IsEnabled = _delete.IsEnabled = true;
 
-            Subject.Instance.AddObserver(this);
+            SignalHost.Instance.AddObserver(this);
         }
 
         ~StartupViewModel()
         {
-            Subject.Instance.RemoveObserver(this);
+            SignalHost.Instance.RemoveObserver(this);
         }
 
         #region properties
@@ -89,13 +89,13 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         object ExecuteRefresh(object parameter)
         {
-            Subject.Instance.NotifyAllObservers(this, MessageCode.StartupEntriesLoadStarted);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.StartupEntriesLoadStarted);
 
             var entries = new ObservableCollection<StartupEntryModel>();
             foreach (var entry in StartupEntryModel.GetStartupEntries())
                 entries.Add(entry);
 
-            Subject.Instance.NotifyAllObservers(this, MessageCode.StartupEntriesLoadStopped);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.StartupEntriesLoadStopped);
 
             return entries;
         }
@@ -105,11 +105,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             Entries = startupEntries as ObservableCollection<StartupEntryModel>;
         }
 
-        public void Update(IObserver sender, MessageCode code, params object[] data)
+        public void Update(ISignalObserver sender, Signal code, params object[] data)
         {
             switch (code)
             {
-                case MessageCode.Initialized:
+                case Signal.Initialized:
                     Refresh.Execute(Entries);
                     break;
             }

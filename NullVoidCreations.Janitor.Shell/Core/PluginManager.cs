@@ -6,7 +6,7 @@ using NullVoidCreations.Janitor.Shared.Base;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
-    sealed class PluginManager: IObserver
+    sealed class PluginManager: ISignalObserver
     {
         AppDomain _container;
         readonly Dictionary<string, ScanTargetBase> _targets;
@@ -18,7 +18,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         {
             _targets = new Dictionary<string, ScanTargetBase>();
 
-            Subject.Instance.AddObserver(this);
+            SignalHost.Instance.AddObserver(this);
 
             // create plugins directory if missing
             if (!Directory.Exists(SettingsManager.Instance.PluginsDirectory))
@@ -29,7 +29,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         ~PluginManager()
         {
-            Subject.Instance.RemoveObserver(this);
+            SignalHost.Instance.RemoveObserver(this);
         }
 
         #endregion
@@ -77,14 +77,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #endregion
 
-        public bool UpdatePlugins(Version availableVersion, string archiveFile)
+        public bool UpdatePlugins(string archiveFile)
         {
             if (string.IsNullOrEmpty(archiveFile))
                 return false;
             if (!File.Exists(archiveFile))
                 return false;
-            if (availableVersion <= Version)
-                return true;
 
             var isUpdated = true;
             UnloadPlugins();
@@ -104,7 +102,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 }
             }
             LoadPlugins();
-            Version = availableVersion;
 
             return isUpdated;
         }
@@ -134,7 +131,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 }
             }
 
-            Subject.Instance.NotifyAllObservers(this, MessageCode.PluginsLoaded, Targets);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.PluginsLoaded, Targets);
         }
 
         public void UnloadPlugins()
@@ -143,7 +140,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             DestroyContainer();
             CreateContainer();
 
-            Subject.Instance.NotifyAllObservers(this, MessageCode.PluginsUnloaded);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.PluginsUnloaded);
         }
 
         void CreateContainer()
@@ -165,7 +162,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         }
 
 
-        public void Update(IObserver sender, MessageCode code, params object[] data)
+        public void Update(ISignalObserver sender, Signal code, params object[] data)
         {
             
         }

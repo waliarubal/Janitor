@@ -55,27 +55,42 @@
             <TextBlock Grid.Row="1"
                        Grid.Column="1"
                        Grid.ColumnSpan="2"
-                       Text="{Binding Path=PluginUpdate.Message,
+                       Text="{Binding Path=PluginUpdate.Description,
                                       Mode=OneWay}" />
             <StackPanel Grid.Row="2"
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
-                        Orientation="Horizontal"
-                        Visibility="{Binding Path=PluginUpdate.IsDownloading,
-                                             Mode=OneWay,
-                                             Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+                        Orientation="Horizontal">
                 <TextBlock Text="Update Progress: " />
-                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}" Text="{Binding Path=PluginUpdate.Progress, Mode=OneWay, StringFormat='{}{0}% downloaded'}" />
+                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                           Text="Not Updating"
+                           Visibility="{Binding Path=PluginUpdate.IsExecuting,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                           Text="{Binding Path=PluginUpdate.Progress,
+                                          Mode=OneWay,
+                                          StringFormat='{}{0}% downloaded'}"
+                           Visibility="{Binding Path=PluginUpdate.IsExecuting,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
             </StackPanel>
             <StackPanel Grid.Row="3"
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
-                        Orientation="Horizontal"
-                        Visibility="{Binding Path=PluginUpdate.IsDownloading,
-                                             Mode=OneWay,
-                                             Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+                        Orientation="Horizontal">
                 <TextBlock Text="File Name: " />
-                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}" Text="{Binding Path=PluginUpdate.UpdateUrl, Mode=OneWay}" />
+                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                           Text="Not Updating"
+                           Visibility="{Binding Path=PluginUpdate.IsExecuting,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                           Text="{Binding Path=PluginUpdate.UpdateUrl,
+                                          Mode=OneWay}"
+                           Visibility="{Binding Path=PluginUpdate.IsExecuting,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
             </StackPanel>
             <Button Grid.Row="4"
                     Grid.Column="1"
@@ -86,11 +101,14 @@
                     Command="{Binding Path=PluginUpdate,
                                       Mode=OneTime}"
                     Content="{Binding Path=PluginUpdate.Title,
-                                      Mode=OneWay}" />
+                                      Mode=OneWay}"
+                    IsEnabled="{Binding Path=IsExecuting,
+                                        Mode=OneWay,
+                                        Converter={StaticResource ResourceKey=InverseBoolConverter}}" />
             <ProgressBar Grid.Column="2"
                          Maximum="100"
                          Minimum="0"
-                         Visibility="{Binding Path=PluginUpdate.IsDownloading,
+                         Visibility="{Binding Path=PluginUpdate.IsExecuting,
                                               Mode=OneWay,
                                               Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"
                          Value="{Binding Path=PluginUpdate.Progress,
@@ -131,20 +149,42 @@
             <TextBlock Grid.Row="1"
                        Grid.Column="1"
                        Grid.ColumnSpan="2"
-                       Text="Installed version 1.0.20 is up to date." />
+                       Text="{Binding Path=ProgramUpdate.Description,
+                                      Mode=OneWay}" />
             <StackPanel Grid.Row="2"
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Orientation="Horizontal">
                 <TextBlock Text="Update Progress: " />
-                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}" Text="5100 kB / 29000 kB" />
+                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                           Text="Not Updating"
+                           Visibility="{Binding Path=ProgramUpdate.IsExecuting,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                           Text="{Binding Path=ProgramUpdate.Progress,
+                                          Mode=OneWay,
+                                          StringFormat='{}{0}% downloaded'}"
+                           Visibility="{Binding Path=ProgramUpdate.IsExecuting,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
             </StackPanel>
             <StackPanel Grid.Row="3"
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Orientation="Horizontal">
                 <TextBlock Text="File Name: " />
-                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}" Text="update file name comes here" />
+                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                           Text="Not Updating"
+                           Visibility="{Binding Path=ProgramUpdate.IsExecuting,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                <TextBlock Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                           Text="{Binding Path=ProgramUpdate.UpdateUrl,
+                                          Mode=OneWay}"
+                           Visibility="{Binding Path=ProgramUpdate.IsExecuting,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
             </StackPanel>
             <Button Grid.Row="4"
                     Grid.Column="1"
@@ -152,8 +192,21 @@
                     MinWidth="120"
                     Margin="0 12"
                     HorizontalAlignment="Left"
-                    Content="Check for Updates" />
-            <ProgressBar Grid.Column="2" />
+                    Command="{Binding Path=ProgramUpdate,
+                                      Mode=OneTime}"
+                    Content="{Binding Path=ProgramUpdate.Title,
+                                      Mode=OneWay}"
+                    IsEnabled="{Binding Path=IsExecuting,
+                                        Mode=OneWay,
+                                        Converter={StaticResource ResourceKey=InverseBoolConverter}}" />
+            <ProgressBar Grid.Column="2"
+                         Maximum="100"
+                         Minimum="0"
+                         Visibility="{Binding Path=ProgramUpdate.IsExecuting,
+                                              Mode=OneWay,
+                                              Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}"
+                         Value="{Binding Path=ProgramUpdate.Progress,
+                                         Mode=OneWay}" />
         </Grid>
     </Grid>
 </UserControl>

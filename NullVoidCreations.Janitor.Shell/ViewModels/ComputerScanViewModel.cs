@@ -7,7 +7,7 @@ using NullVoidCreations.Janitor.Shell.Models;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
-    public class ComputerScanViewModel: ViewModelBase, IObserver
+    public class ComputerScanViewModel: ViewModelBase, ISignalObserver
     {
         volatile ScanModel _scan;
         volatile ScanStatusModel _progress;
@@ -22,13 +22,13 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _doScan = new ScanCommand(this);
             _activate = new ActivateLicenseCommand(this);
 
-            Subject.Instance.AddObserver(this);
+            SignalHost.Instance.AddObserver(this);
             GetLastScan();
         }
 
         ~ComputerScanViewModel()
         {
-            Subject.Instance.RemoveObserver(this);
+            SignalHost.Instance.RemoveObserver(this);
         }
 
         #region properties
@@ -124,16 +124,16 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
-        public void Update(IObserver sender, MessageCode code, params object[] data)
+        public void Update(ISignalObserver sender, Signal code, params object[] data)
         {
             switch (code)
             {
-                case MessageCode.Initialized:
-                case MessageCode.AnalysisStopped:
+                case Signal.Initialized:
+                case Signal.AnalysisStopped:
                     GetLastScan();
                     break;
 
-                case MessageCode.ScanTrigerred:
+                case Signal.ScanTrigerred:
                     switch ((ScanType)data[0])
                     {
                         case ScanType.SmartScan:

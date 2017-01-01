@@ -79,13 +79,13 @@
     <Compile Include="Controls\CustomWindow.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\InverseBoolToVisibilityConverter.cs" />
-    <Compile Include="Core\IObserver.cs" />
+    <Compile Include="Core\ISignalObserver.cs" />
     <Compile Include="Core\LicenseManager.cs" />
     <Compile Include="Core\PluginManager.cs" />
     <Compile Include="Core\Proxy.cs" />
     <Compile Include="Core\SettingsManager.cs" />
     <Compile Include="Core\StringCipher.cs" />
-    <Compile Include="Core\Subject.cs" />
+    <Compile Include="Core\SignalHost.cs" />
     <Compile Include="Models\LicenseModel.cs" />
     <Compile Include="Models\ScanModel.cs" />
     <Compile Include="Models\ScanStatusModel.cs" />
@@ -118,9 +118,17 @@
     <Compile Include="Views\UpdateView.xaml.cs">
       <DependentUpon>UpdateView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Themes\DefaultStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\SharedResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AboutView.xaml">
       <SubType>Designer</SubType>

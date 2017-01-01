@@ -7,7 +7,7 @@ using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
-    class SettingsManager : IObserver
+    class SettingsManager : ISignalObserver
     {
         static volatile SettingsManager _instance;
         string _codeName, _pluginsDirectory, _pluginsSearchFilter;
@@ -20,7 +20,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         private SettingsManager()
         {
-            Subject.Instance.AddObserver(this);
+            SignalHost.Instance.AddObserver(this);
 
             _codeName = "Janitor";
             _pluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
@@ -36,7 +36,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         {
             Save();
             _isLoaded = false;
-            Subject.Instance.RemoveObserver(this);
+            SignalHost.Instance.RemoveObserver(this);
         }
 
         #region properties
@@ -240,7 +240,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         LOADED:
             _isLoaded = true;
             FirstTimeInitialization();
-            Subject.Instance.NotifyAllObservers(this, MessageCode.SettingsLoaded);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.SettingsLoaded);
         }
 
         void Save()
@@ -250,7 +250,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 data.AppendFormat("{2}{1}{3}{0}", Separator2, Separator1, key, _settings[key]);
 
             File.WriteAllText(_settingsFile, data.ToString());
-            Subject.Instance.NotifyAllObservers(this, MessageCode.SettingsSaved);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.SettingsSaved);
         }
 
         internal void LoadArguments(string[] arguments)
@@ -279,7 +279,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             }
         }
 
-        public void Update(IObserver sender, MessageCode code, params object[] data)
+        public void Update(ISignalObserver sender, Signal code, params object[] data)
         {
 
         }

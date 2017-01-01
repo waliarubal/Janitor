@@ -29,6 +29,12 @@ namespace NullVoidCreations.Janitor.Shared.Base
             _callback = callback;
         }
 
+        public AsyncDelegateCommand(ViewModelBase viewModel) : this(viewModel, null)
+        {
+            _method = ExecuteOverride;
+            _callback = ExecuteSuccessOverride;
+        }
+
         ~AsyncDelegateCommand()
         {
             if (_worker.IsBusy)
@@ -37,6 +43,16 @@ namespace NullVoidCreations.Janitor.Shared.Base
             _worker.DoWork += new DoWorkEventHandler(DoWork);
             _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(WorkCompleted);
             _worker.Dispose();
+        }
+
+        protected virtual object ExecuteOverride(object parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void ExecuteSuccessOverride(object result)
+        {
+            throw new NotImplementedException();
         }
 
         void DoWork(object sender, DoWorkEventArgs target)

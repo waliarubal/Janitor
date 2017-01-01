@@ -2,7 +2,7 @@
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
-    public enum MessageCode : byte
+    public enum Signal : byte
     {
         ScanStatusChanged,
         ScanTrigerred,
@@ -19,22 +19,24 @@ namespace NullVoidCreations.Janitor.Shell.Core
         StartupEntriesLoadStopped,
         SettingsLoaded,
         SettingsSaved,
+        UpdateStarted,
+        UpdateStopped,
         Initialized
     }
 
-    class Subject
+    class SignalHost
     {
-        List<IObserver> _observers;
-        volatile static Subject _instance;
+        List<ISignalObserver> _observers;
+        volatile static SignalHost _instance;
 
         #region constructor / destructor
 
-        private Subject()
+        private SignalHost()
         {
-            _observers = new List<IObserver>();
+            _observers = new List<ISignalObserver>();
         }
 
-        ~Subject()
+        ~SignalHost()
         {
             _observers.Clear();
         }
@@ -43,12 +45,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #region properties
 
-        public static Subject Instance
+        public static SignalHost Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new Subject();
+                    _instance = new SignalHost();
 
                 return _instance;
             }
@@ -56,17 +58,17 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #endregion
 
-        public void AddObserver(IObserver observer)
+        public void AddObserver(ISignalObserver observer)
         {
             _observers.Add(observer);
         }
 
-        public bool RemoveObserver(IObserver observer)
+        public bool RemoveObserver(ISignalObserver observer)
         {
             return _observers.Remove(observer);
         }
 
-        public void NotifyAllObservers(IObserver sender, MessageCode code, params object[] data)
+        public void NotifyAllObservers(ISignalObserver sender, Signal code, params object[] data)
         {
             foreach (var observer in _observers)
                 observer.Update(sender, code, data);

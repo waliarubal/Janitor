@@ -2,11 +2,17 @@
 
 namespace NullVoidCreations.Janitor.Shared.Base
 {
-    public sealed class DelegateCommand : CommandBase
+    public class DelegateCommand : CommandBase
     {
         Action<object> _method;
 
         #region constructor / destructor
+
+        public DelegateCommand(ViewModelBase viewModel)
+            : this(viewModel, null)
+        {
+            _method = ExecuteOverride;
+        }
 
         public DelegateCommand(ViewModelBase viewModel, Action<object> method)
             : this(viewModel, null, method)
@@ -21,6 +27,11 @@ namespace NullVoidCreations.Janitor.Shared.Base
         }
 
         #endregion
+
+        protected virtual void ExecuteOverride(object parameter)
+        {
+            throw new NotImplementedException();
+        }
 
         public override void Execute(object parameter)
         {

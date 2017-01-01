@@ -5,7 +5,7 @@ using System;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
-    class LicenseManager: IObserver
+    class LicenseManager: ISignalObserver
     {
         internal const string EncryptionKey = "QFByb3Blcl9QYXRvbGEhMjAxNQ==";
 
@@ -18,12 +18,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
         {
             _license = new LicenseModel();
 
-            Subject.Instance.AddObserver(this);
+            SignalHost.Instance.AddObserver(this);
         }
 
         ~LicenseManager()
         {
-            Subject.Instance.RemoveObserver(this);
+            SignalHost.Instance.RemoveObserver(this);
         }
 
         #endregion
@@ -59,7 +59,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         public void LoadLicense()
         {
             _license.Validate(SettingsManager.Instance.LicenseKey);
-            Subject.Instance.NotifyAllObservers(this, MessageCode.LicenseChanged);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.LicenseChanged);
         }
 
         /// <summary>
@@ -74,12 +74,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 errorMessage = _license.Validate(key);
 
             SettingsManager.Instance.LicenseKey = key;
-            Subject.Instance.NotifyAllObservers(this, MessageCode.LicenseChanged, errorMessage);
+            SignalHost.Instance.NotifyAllObservers(this, Signal.LicenseChanged, errorMessage);
 
             return errorMessage;
         }
 
-        public void Update(IObserver sender, MessageCode code, params object[] data)
+        public void Update(ISignalObserver sender, Signal code, params object[] data)
         {
             
         }

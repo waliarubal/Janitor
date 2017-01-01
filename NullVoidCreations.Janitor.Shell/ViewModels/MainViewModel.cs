@@ -4,7 +4,7 @@ using System;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
-    public class MainViewModel: ViewModelBase, IObserver
+    public class MainViewModel: ViewModelBase, ISignalObserver
     {
         bool _isWorking, _isUpdating, _isOk, _isHavingIssues, _isAnalysing, _isFixing, _isLoadingStartupEntries;
         byte _problemsCount;
@@ -26,12 +26,12 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         {
             _isOk = true;
 
-            Subject.Instance.AddObserver(this);
+            SignalHost.Instance.AddObserver(this);
         }
 
         ~MainViewModel()
         {
-            Subject.Instance.RemoveObserver(this);
+            SignalHost.Instance.RemoveObserver(this);
         }
 
         #endregion
@@ -173,12 +173,12 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #endregion
 
-        public void Update(IObserver sender, MessageCode code, params object[] data)
+        public void Update(ISignalObserver sender, Signal code, params object[] data)
         {
             switch(code)
             {
-                case MessageCode.FixingStarted:
-                case MessageCode.AnalysisStarted:
+                case Signal.FixingStarted:
+                case Signal.AnalysisStarted:
                     IsWorking = true;
                     IssueCount = 0;
                     IsHavingIssues = false;
@@ -186,32 +186,39 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     IsFixing = false;
                     break;
 
-                case MessageCode.FixingStopped:
-                case MessageCode.AnalysisStopped:
+                case Signal.FixingStopped:
+                case Signal.AnalysisStopped:
                     IsWorking = false;
                     IssueCount = (int)data[0];
                     IsHavingIssues = IsAnalysing && IssueCount > 0;
-                    IsAnalysing = code == MessageCode.AnalysisStopped;
-                    IsFixing = code == MessageCode.FixingStopped;
+                    IsAnalysing = code == Signal.AnalysisStopped;
+                    IsFixing = code == Signal.FixingStopped;
                     break;
 
-                case MessageCode.ProblemsAppeared:
+                case Signal.ProblemsAppeared:
                     ProblemsCount = (byte)data[0];
                     IsOk = ProblemsCount == 0;
                     break;
 
-                case MessageCode.ScanTrigerred:
+                case Signal.ScanTrigerred:
                     SelectedViewIndex = (int)SelectedView.ComputerScan;
                     break;
 
-                case MessageCode.StartupEntriesLoadStarted:
+                case Signal.StartupEntriesLoadStarted:
                     IsLoadingStartupEntries = true;
                     break;
 
-                case MessageCode.StartupEntriesLoadStopped:
+                case Signal.StartupEntriesLoadStopped:
                     IsLoadingStartupEntries = false;
                     break;
 
+                case Signal.UpdateStarted:
+                    IsUpdating = true;
+                    break;
+
+                case Signal.UpdateStopped:
+                    IsUpdating = false;
+                    break;
             }
 
             

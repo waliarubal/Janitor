@@ -22,34 +22,6 @@ namespace NullVoidCreations.Janitor.Shell.Models
         {
             Command = command;
             Area = area;
-
-            string path = null;
-            switch(area)
-            {
-                case StartupArea.RegistryUser:
-                case StartupArea.Registry:
-                    var startIndex = command.IndexOf('"', 0);
-                    var endIndex = command.IndexOf('"', startIndex + 1);
-                    if (endIndex > startIndex)
-                    {
-                        path = command.Substring(startIndex + 1, endIndex - startIndex - 1);
-                        Program = new FileInfo(path);
-                    }
-                    break;
-
-                case StartupArea.StartupDirectoryUser:
-                case StartupArea.StartupDirectory:
-                    path = command;
-                    Program = new FileInfo(path);
-                    Name = Program.Name.Substring(0, Program.Name.Length - Program.Extension.Length);
-                    break;
-
-                default:
-                    return;
-            }
-
-            if (Program != null)
-                Size = Program.Length / 1024;
         }
 
         #region properties
@@ -66,34 +38,22 @@ namespace NullVoidCreations.Janitor.Shell.Models
             private set;
         }
 
-        public FileInfo Program
-        {
-            get;
-            private set;
-        }
-
         public string Name
         {
             get;
-            internal set;
-        }
-
-        public decimal Size
-        {
-            get;
-            internal set;
+            private set;
         }
 
         #endregion
 
         public override string ToString()
         {
-            return Program == null ? string.Empty : Program.Name;
+            return Name == null ? string.Empty : Name;
         }
 
         public override int GetHashCode()
         {
-            return Program == null ? -1 : Program.GetHashCode();
+            return Name == null ? -1 : Name.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -146,7 +106,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
 
                 case StartupArea.StartupDirectory:
                 case StartupArea.StartupDirectoryUser:
-                    removed = FileSystemHelper.Instance.DeleteFile(Program.FullName);
+                    removed = FileSystemHelper.Instance.DeleteFile(Command);
                     break;
             }
 
@@ -171,7 +131,10 @@ namespace NullVoidCreations.Janitor.Shell.Models
                 {
                     foreach (var name in key.GetValueNames())
                     {
-                        var entry = new StartupEntryModel(key.GetValue(name, string.Empty) as string, StartupEntryModel.StartupArea.Registry);
+                        if (string.IsNullOrEmpty(name))
+                            continue;
+
+                        var entry = new StartupEntryModel(key.GetValue(name, string.Empty, RegistryValueOptions.None) as string, StartupEntryModel.StartupArea.Registry);
                         entry.Name = name;
                         entry._registryKey = subKeyName;
                         yield return entry;
@@ -185,7 +148,10 @@ namespace NullVoidCreations.Janitor.Shell.Models
                 {
                     foreach (var name in key.GetValueNames())
                     {
-                        var entry = new StartupEntryModel(key.GetValue(name, string.Empty) as string, StartupEntryModel.StartupArea.RegistryUser);
+                        if (string.IsNullOrEmpty(name))
+                            continue;
+
+                        var entry = new StartupEntryModel(key.GetValue(name, string.Empty, RegistryValueOptions.None) as string, StartupEntryModel.StartupArea.RegistryUser);
                         entry.Name = name;
                         entry._registryKey = subKeyName;
                         yield return entry;
@@ -205,14 +171,16 @@ namespace NullVoidCreations.Janitor.Shell.Models
             key = Registry.LocalMachine.OpenSubKey(ShellFoldersKey, false);
             if (key != null)
             {
-                var startupDirectory = key.GetValue("Common Startup") as string;
+                var startupDirectory = key.GetValue("Common Startup", string.Empty, RegistryValueOptions.None) as string;
                 key.Close();
 
                 if (!string.IsNullOrEmpty(startupDirectory))
                 {
                     foreach (var file in new DirectoryWalker(startupDirectory, fileInclusionFilter))
                     {
+                        var program = new FileInfo(file);
                         var entry = new StartupEntryModel(file, StartupEntryModel.StartupArea.StartupDirectory);
+                        entry.Name = program.Name.Substring(0, program.Name.Length - program.Extension.Length);
                         yield return entry;
                     }
                 }
@@ -221,14 +189,16 @@ namespace NullVoidCreations.Janitor.Shell.Models
             key = Registry.CurrentUser.OpenSubKey(ShellFoldersKey, false);
             if (key != null)
             {
-                var startupDirectory = key.GetValue("Startup") as string;
+                var startupDirectory = key.GetValue("Startup", string.Empty, RegistryValueOptions.None) as string;
                 key.Close();
 
                 if (!string.IsNullOrEmpty(startupDirectory))
                 {
                     foreach (var file in new DirectoryWalker(startupDirectory, fileInclusionFilter))
                     {
+                        var program = new FileInfo(file);
                         var entry = new StartupEntryModel(file, StartupEntryModel.StartupArea.StartupDirectoryUser);
+                        entry.Name = program.Name.Substring(0, program.Name.Length - program.Extension.Length);
                         yield return entry;
                     }
                 }

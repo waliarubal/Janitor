@@ -51,6 +51,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Controls.Input.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\System.Windows.Controls.Input.Toolkit.dll</HintPath>
       <Private>True</Private>
@@ -83,6 +84,7 @@
     <Compile Include="Controls\CustomWindow.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\InverseBoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\StartupAreaToImageConverter.cs" />
     <Compile Include="Core\ISignalObserver.cs" />
     <Compile Include="Core\LicenseManager.cs" />
     <Compile Include="Core\PluginManager.cs" />
@@ -303,6 +305,13 @@
   </ItemGroup>
   <ItemGroup>
     <SplashScreen Include="Resources\SplashScreeen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Logo16.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Directory16.png" />
+    <Resource Include="Resources\Registry16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

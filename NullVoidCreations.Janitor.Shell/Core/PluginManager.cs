@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Ionic.Zip;
 using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -102,6 +103,10 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 }
             }
             LoadPlugins();
+
+            // delete leftover temorary files
+            foreach (var file in new DirectoryWalker(SettingsManager.Instance.PluginsDirectory, (fileName) => fileName.EndsWith(".PendingOverwrite"), false))
+                FileSystemHelper.Instance.DeleteFile(file);
 
             return isUpdated;
         }

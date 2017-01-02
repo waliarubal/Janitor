@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace NullVoidCreations.Janitor.Shell.Views
 {

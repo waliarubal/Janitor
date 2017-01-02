@@ -2,6 +2,7 @@
                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
+                xmlns:tb="http://www.hardcodet.net/taskbar"
                 xmlns:v="clr-namespace:NullVoidCreations.Janitor.Shell.Views"
                 xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
                 Title="{StaticResource ResourceKey=ProductName}"
@@ -30,6 +31,11 @@
                    Visibility="{Binding Path=IsOk,
                                         Mode=OneWay,
                                         Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+            <tb:TaskbarIcon IconSource="/NullVoidCreations.Janitor.Shell;component/Resources/Logo16.ico" PopupActivation="LeftClick">
+                <tb:TaskbarIcon.TrayPopup>
+                    <Button Content="Hello World" />
+                </tb:TaskbarIcon.TrayPopup>
+            </tb:TaskbarIcon>
         </Grid>
     </c:CustomWindow.HeaderContent>
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text;
 using System.Windows.Threading;
 using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shared.Models;
 using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Core.Models
@@ -70,6 +70,12 @@ namespace NullVoidCreations.Janitor.Core.Models
             get { return _targets; }
         }
 
+        public bool IsFixed
+        {
+            get;
+            internal set;
+        }
+
         public List<IssueBase> Issues
         {
             get { return _issues; }
@@ -84,5 +90,63 @@ namespace NullVoidCreations.Janitor.Core.Models
         }
 
         #endregion
+
+        internal static ScanModel GetSavedScanDetails()
+        {
+            var scan = new ScanModel(SettingsManager.Instance.LastScan);
+            if (scan.Type == ScanType.CustomScan)
+            {
+                var selectedAreaKeys = new HashSet<string>(SettingsManager.Instance.LastScanSelectedAreas.Split(new char[] { 'Ӫ' }, StringSplitOptions.RemoveEmptyEntries));
+                if (selectedAreaKeys.Count > 0)
+                {
+                    for (var index = scan.Targets.Count - 1; index >= 0; index--)
+                    {
+                        var target = scan.Targets[index];
+                        var hasSelectedArea = false;
+                        foreach (var area in target.Areas)
+                        {
+                            if (selectedAreaKeys.Contains(string.Format("{0}{2}{1}", target.Name, area.Name, 'ӝ')))
+                            {
+                                area.IsSelected = true;
+                                hasSelectedArea = true;
+                            }
+                        }
+
+                        if (!hasSelectedArea)
+                            scan.Targets.RemoveAt(index);
+                    }
+                }
+            }
+
+            return scan;
+        }
+
+        internal static void SaveScanDetails(ScanModel scan)
+        {
+            if (scan == null)
+                return;
+
+            if (scan.Type == ScanType.CustomScan)
+            {
+                var selectedAreaKeys = new StringBuilder();
+                foreach (var target in scan.Targets)
+                {
+                    foreach (var area in target.Areas)
+                    {
+                        if (area.IsSelected)
+                        {
+                            selectedAreaKeys.AppendFormat("{0}{2}{1}{3}", target.Name, area.Name, 'ӝ', 'Ӫ');
+                        }
+                    }
+                }
+
+                SettingsManager.Instance.LastScanSelectedAreas = selectedAreaKeys.ToString();
+            }
+            else
+                SettingsManager.Instance.LastScanSelectedAreas = string.Empty;
+
+            SettingsManager.Instance.LastScan = scan.Type;
+            SettingsManager.Instance.LastScanTime = DateTime.Now;
+        }
     }
 }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shared.Models;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Models;
 using NullVoidCreations.Janitor.Shell.ViewModels;
@@ -19,6 +16,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         ComputerScanViewModel _viewModel;
         BackgroundWorker _worker;
         LicenseModel _license;
+        bool _isFixPending;
 
         #region constructor / destructor
 
@@ -76,7 +74,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                     if (_viewModel.IsExecuting)
                         break;
 
-                    _viewModel.Scan = GetSavedScanDetails();
+                    _viewModel.Scan = ScanModel.GetSavedScanDetails();
                     StartScan(_viewModel.Scan);
                     break;
 
@@ -94,9 +92,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                         break;
                     }
 
-                    // start scan if it wasen't done earlier
-                    if (_viewModel.Scan == null)
+                    // start scan if it wasen't done earlier or re-scan if issues are already fixed
+                    if (_viewModel.Scan == null || _viewModel.Scan.IsFixed)
                     {
+                        _isFixPending = true;
                         _viewModel.Scan = new ScanModel(ScanType.SmartScan);
                         StartScan(_viewModel.Scan);
                         break;
@@ -176,6 +175,11 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             SignalHost.Instance.NotifyAllObservers(this, Signal.ScanStatusChanged, status);
         }
 
+        /// <summary>
+        /// This method scans for issues.
+        /// </summary>
+        /// <param name="scan"></param>
+        /// <returns></returns>
         ScanModel Analyse(ScanModel scan)
         {
             SignalHost.Instance.NotifyAllObservers(this, Signal.AnalysisStarted, false);
@@ -229,12 +233,17 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             RaiseProgessChanged(null, null, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent, false);
             scan.Issues = issues;
 
-            SaveScanDetails(scan);
+            ScanModel.SaveScanDetails(scan);
             SignalHost.Instance.NotifyAllObservers(this, Signal.AnalysisStopped, issues.Count);
 
             return scan;
         }
 
+        /// <summary>
+        /// This method fixes issues found during scan.
+        /// </summary>
+        /// <param name="scan"></param>
+        /// <returns></returns>
         ScanModel Fix(ScanModel scan)
         {
             SignalHost.Instance.NotifyAllObservers(this, Signal.FixingStarted);
@@ -289,9 +298,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             RaiseProgessChanged(null, null, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent, false);
             scan.Issues = issues;
 
-            SaveScanDetails(scan);
+            ScanModel.SaveScanDetails(scan);
             SignalHost.Instance.NotifyAllObservers(this, Signal.FixingStopped, issues.Count);
 
+            scan.IsFixed = true;
             return scan;
         }
 
@@ -322,64 +332,12 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
             _viewModel.Scan = e.Result as ScanModel;
             _viewModel.IsExecuting = IsExecuting = false;
-        }
 
-        ScanModel GetSavedScanDetails()
-        {
-            var scan = new ScanModel(SettingsManager.Instance.LastScan);
-            if (scan.Type == ScanType.CustomScan)
+            if (_isFixPending)
             {
-                var selectedAreaKeys = new HashSet<string>(SettingsManager.Instance.LastScanSelectedAreas.Split(new char[] { 'Ӫ' }, StringSplitOptions.RemoveEmptyEntries));
-                if (selectedAreaKeys.Count > 0)
-                {
-                    for (var index = scan.Targets.Count - 1; index >= 0; index--)
-                    {
-                        var target = scan.Targets[index];
-                        var hasSelectedArea = false;
-                        foreach (var area in target.Areas)
-                        {
-                            if (selectedAreaKeys.Contains(string.Format("{0}{2}{1}", target.Name, area.Name, 'ӝ')))
-                            {
-                                area.IsSelected = true;
-                                hasSelectedArea = true;
-                            }
-                        }
-
-                        if (!hasSelectedArea)
-                            scan.Targets.RemoveAt(index);
-                    }
-                }
+                _isFixPending = false;
+                Execute("Fix");
             }
-
-            return scan;
-        }
-
-        void SaveScanDetails(ScanModel scan)
-        {
-            if (scan == null)
-                return;
-
-            if (scan.Type == ScanType.CustomScan)
-            {
-                var selectedAreaKeys = new StringBuilder();
-                foreach (var target in scan.Targets)
-                {
-                    foreach (var area in target.Areas)
-                    {
-                        if (area.IsSelected)
-                        {
-                            selectedAreaKeys.AppendFormat("{0}{2}{1}{3}", target.Name, area.Name, 'ӝ', 'Ӫ');
-                        }
-                    }
-                }
-
-                SettingsManager.Instance.LastScanSelectedAreas = selectedAreaKeys.ToString();
-            }
-            else
-                SettingsManager.Instance.LastScanSelectedAreas = string.Empty;
-
-            SettingsManager.Instance.LastScan = scan.Type;
-            SettingsManager.Instance.LastScanTime = DateTime.Now;
         }
 
         void CancelScan()

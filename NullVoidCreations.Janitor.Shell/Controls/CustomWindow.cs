@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using NullVoidCreations.Janitor.Shared.Base;
+using System.ComponentModel;
 
 namespace NullVoidCreations.Janitor.Shell.Controls
 {
@@ -12,13 +14,14 @@ namespace NullVoidCreations.Janitor.Shell.Controls
         Border _title;
         Button _minimize, _close;
 
-        public static readonly DependencyProperty HeaderContentProperty, IsMinimizeAllowedProperty, IsCloseAllowedProperty;
+        public static readonly DependencyProperty HeaderContentProperty, IsMinimizeAllowedProperty, IsCloseAllowedProperty, CloseCommandProperty;
 
         static CustomWindow()
         {
             HeaderContentProperty = DependencyProperty.Register("HeaderContent", typeof(FrameworkElement), typeof(CustomWindow));
             IsMinimizeAllowedProperty = DependencyProperty.Register("IsMinimizeAllowed", typeof(bool), typeof(CustomWindow));
             IsCloseAllowedProperty = DependencyProperty.Register("IsCloseAllowed", typeof(bool), typeof(CustomWindow));
+            CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(CommandBase), typeof(CustomWindow));
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CustomWindow), new FrameworkPropertyMetadata(typeof(CustomWindow)));
         }
 
@@ -49,6 +52,12 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             set { SetValue(IsCloseAllowedProperty, value); }
         }
 
+        public CommandBase CloseCommand
+        {
+            get { return (CommandBase)GetValue(CloseCommandProperty); }
+            set { SetValue(CloseCommandProperty, value); }
+        }
+
         #endregion
 
         public override void OnApplyTemplate()
@@ -64,7 +73,7 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             _close.Click += new RoutedEventHandler(Close_Click);
         }
 
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
             _title.MouseDown -= new MouseButtonEventHandler(Title_MouseDown);
             _minimize.Click -= new RoutedEventHandler(Minimize_Click);
@@ -87,7 +96,11 @@ namespace NullVoidCreations.Janitor.Shell.Controls
 
         void Close_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            if (CloseCommand != null && CloseCommand.IsEnabled)
+                CloseCommand.Execute(this);
+            else
+                Close();
+
             e.Handled = true;
         }
         

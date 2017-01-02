@@ -9,6 +9,8 @@
                 Width="780"
                 Height="580"
                 Background="{StaticResource ResourceKey=BackgroundBrush}"
+                CloseCommand="{Binding Path=Close,
+                                       Mode=OneTime}"
                 Icon="/NullVoidCreations.Janitor.Shell;component/Resources/Logo32.png"
                 ResizeMode="CanMinimize"
                 WindowStartupLocation="CenterScreen">

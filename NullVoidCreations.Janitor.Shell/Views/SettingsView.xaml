@@ -137,7 +137,10 @@
             <TextBlock Grid.Row="3"
                        Grid.Column="1"
                        Text="Shutdown computer after fixing issues." />
-            <CheckBox Grid.Row="3" Grid.Column="2" />
+            <CheckBox Grid.Row="3"
+                      Grid.Column="2"
+                      IsChecked="{Binding Path=ShutdownAfterFixing,
+                                          Mode=TwoWay}" />
         </Grid>
 
         <Separator Grid.Row="4" Margin="20 0" />

@@ -1,6 +1,7 @@
-﻿using NullVoidCreations.Janitor.Shared.Base;
+﻿using System.Windows;
+using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shell.Controls;
 using NullVoidCreations.Janitor.Shell.Core;
-using System;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -9,6 +10,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         bool _isWorking, _isUpdating, _isOk, _isHavingIssues, _isAnalysing, _isFixing, _isLoadingStartupEntries;
         byte _problemsCount;
         int _selectedViewIndex, _issueCount;
+        readonly CommandBase _close;
 
         enum SelectedView: int
         {
@@ -25,6 +27,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         public MainViewModel()
         {
             _isOk = true;
+            _close = new DelegateCommand(this, ExecuteClose);
 
             SignalHost.Instance.AddObserver(this);
         }
@@ -172,6 +175,24 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         }
 
         #endregion
+
+        #region commands
+
+        public CommandBase Close
+        {
+            get { return _close; }
+        }
+
+        #endregion
+
+        void ExecuteClose(object parameter)
+        {
+            var window = parameter as CustomWindow;
+            if (SettingsManager.Instance.ExitOnClose)
+                App.Current.Shutdown(0);
+            else
+                window.WindowState = WindowState.Minimized;
+        }
 
         public void Update(ISignalObserver sender, Signal code, params object[] data)
         {

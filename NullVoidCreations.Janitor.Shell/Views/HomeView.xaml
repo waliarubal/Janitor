@@ -16,6 +16,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
         <!--  header  -->
         <Border Background="{StaticResource ResourceKey=BackgroundActiveBrush}"
                 BorderBrush="{StaticResource ResourceKey=BorderBrush}"

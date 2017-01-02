@@ -27,7 +27,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         public MainViewModel()
         {
             _isOk = true;
+
             _close = new DelegateCommand(this, ExecuteClose);
+            _close.IsEnabled = true;
 
             SignalHost.Instance.AddObserver(this);
         }

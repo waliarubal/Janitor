@@ -1,8 +1,8 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using NullVoidCreations.Janitor.Shared.Base;
-using System.ComponentModel;
 
 namespace NullVoidCreations.Janitor.Shell.Controls
 {

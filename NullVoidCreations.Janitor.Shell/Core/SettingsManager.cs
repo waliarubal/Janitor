@@ -184,14 +184,16 @@ namespace NullVoidCreations.Janitor.Shell.Core
         /// <summary>
         /// This method takes care of first time initialization.
         /// </summary>
-        void FirstTimeInitialization()
+        void FirstTimeExecution()
         {
-            if (GetSetting<bool>("IsInitializedInPast"))
+            var firstExecutionDate = GetSetting<DateTime>("FirstExecutionDate");
+            if (default(DateTime) != firstExecutionDate)
                 return;
 
-            this["IsInitializedInPast"] = true;
+            this["FirstExecutionDate"] = DateTime.Now;
 
             RunPluginUpdateAtLaunch = true;
+            RunProgramUpdateAtLaunch = true;
             RunScanAtLaunch = true;
         }
 
@@ -239,7 +241,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         LOADED:
             _isLoaded = true;
-            FirstTimeInitialization();
+            FirstTimeExecution();
             SignalHost.Instance.NotifyAllObservers(this, Signal.SettingsLoaded);
         }
 

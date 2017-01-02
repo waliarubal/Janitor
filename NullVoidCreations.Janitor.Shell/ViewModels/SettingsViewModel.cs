@@ -71,6 +71,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 RaisePropertyChanged("SkipUac");
             }
         }
+
         public bool ExitOnClose
         {
             get { return SettingsManager.Instance.ExitOnClose; }
@@ -83,6 +84,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 RaisePropertyChanged("ExitOnClose");
             }
         }
+
         public bool CloseAfterFixing
         {
             get { return SettingsManager.Instance.CloseAfterFixing; }
@@ -95,6 +97,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 RaisePropertyChanged("CloseAfterFixing");
             }
         }
+
         public bool ShutdownAfterFixing
         {
             get { return SettingsManager.Instance.ShutdownAfterFixing; }

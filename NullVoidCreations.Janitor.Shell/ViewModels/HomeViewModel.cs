@@ -6,12 +6,13 @@ using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Models;
+using NullVoidCreations.Janitor.Shell.Views;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class HomeViewModel: ViewModelBase, ISignalObserver
     {
-        readonly CommandBase _load, _activate, _purchaseLicense, _doScan, _pluginUpdate;
+        readonly CommandBase _load, _activate, _purchaseLicense, _doScan, _pluginUpdate, _showPopup;
         string _computerName, _operatingSyetem, _processor, _model;
         decimal _memory;
         int _issueCount;
@@ -30,6 +31,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _computerName = _operatingSyetem = _processor = _model = "Analysing...";
 
             _load = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, GetSystemInformationComplete);
+            _showPopup = new ShowBaloonCommand(this);
             _purchaseLicense = new PurchaseLicenseCommand(this);
             _doScan = new DelegateCommand(this, ExecuteDoScan);
             _pluginUpdate = new UpdateCommand(this, UpdateCommand.UpdateType.Plugin);
@@ -267,6 +269,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 _startupActions.Enqueue(_pluginUpdate);
             if (SettingsManager.Instance.RunScanAtLaunch)
                 _startupActions.Enqueue(_doScan);
+
+            if (!IsLicensed)
+                _showPopup.Execute("https://www.google.com/");
             //if (SettingsManager.Instance.RunPluginUpdateAtLaunch)
             //    _pluginUpdate.Execute(null);
             //if (SettingsManager.Instance.RunScanAtLaunch)

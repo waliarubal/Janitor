@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="NullVoidCreations.Janitor.Shell.Views.BaloonView"
+﻿<UserControl x:Class="NullVoidCreations.Janitor.Shell.Views.BalloonView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,7 +12,7 @@
              BorderThickness="1"
              mc:Ignorable="d">
     <UserControl.DataContext>
-        <vm:BaloonViewModel />
+        <vm:BalloonViewModel />
     </UserControl.DataContext>
     <Grid>
         <htm:HtmlPanel ScrollViewer.HorizontalScrollBarVisibility="Auto"

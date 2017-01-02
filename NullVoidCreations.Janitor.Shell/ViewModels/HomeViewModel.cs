@@ -31,7 +31,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _computerName = _operatingSyetem = _processor = _model = "Analysing...";
 
             _load = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, GetSystemInformationComplete);
-            _showPopup = new ShowBaloonCommand(this);
+            _showPopup = new ShowBalloonCommand(this);
             _purchaseLicense = new PurchaseLicenseCommand(this);
             _doScan = new DelegateCommand(this, ExecuteDoScan);
             _pluginUpdate = new UpdateCommand(this, UpdateCommand.UpdateType.Plugin);

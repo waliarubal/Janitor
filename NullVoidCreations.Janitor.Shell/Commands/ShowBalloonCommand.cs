@@ -8,13 +8,13 @@ using NullVoidCreations.Janitor.Shell.Views;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
-    public class ShowBaloonCommand: DelegateCommand
+    public class ShowBalloonCommand: DelegateCommand
     {
         TaskbarIcon _notificationIcon;
         WebClient _client;
-        BaloonView _content;
+        BalloonView _content;
 
-        public ShowBaloonCommand(ViewModelBase viewModel)
+        public ShowBalloonCommand(ViewModelBase viewModel)
             : base(viewModel)
         {
             IsEnabled = true;
@@ -23,7 +23,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(Client_DownloadStringCompleted);
         }
 
-        ~ShowBaloonCommand()
+        ~ShowBalloonCommand()
         {
             _client.DownloadStringCompleted -= new DownloadStringCompletedEventHandler(Client_DownloadStringCompleted);
             _client.Dispose();
@@ -37,9 +37,9 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (_notificationIcon == null)
                 _notificationIcon = (TaskbarIcon)App.Current.Resources["NotificationIcon"];
             if (_content == null)
-                _content = new BaloonView();
+                _content = new BalloonView();
 
-            (_content.DataContext as BaloonViewModel).Html = e.Result;
+            (_content.DataContext as BalloonViewModel).Html = e.Result;
             _notificationIcon.ShowCustomBalloon(_content, PopupAnimation.Slide, 60000);
         }
 

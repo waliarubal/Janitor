@@ -3,14 +3,14 @@ using NullVoidCreations.Janitor.Shell.Commands;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
-    public class BaloonViewModel: ViewModelBase
+    public class BalloonViewModel: ViewModelBase
     {
         string _html;
         readonly CommandBase _hide;
 
-        public BaloonViewModel()
+        public BalloonViewModel()
         {
-            _hide = new HideBaloonCommand(this);
+            _hide = new HideBalloonCommand(this);
         }
 
         #region properties

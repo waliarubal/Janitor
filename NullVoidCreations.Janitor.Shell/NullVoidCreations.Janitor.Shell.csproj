@@ -87,8 +87,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\ActivateLicenseCommand.cs" />
-    <Compile Include="Commands\HideBaloonCommand.cs" />
-    <Compile Include="Commands\ShowBaloonCommand.cs" />
+    <Compile Include="Commands\HideBalloonCommand.cs" />
+    <Compile Include="Commands\ShowBalloonCommand.cs" />
     <Compile Include="Commands\UpdateCommand.cs" />
     <Compile Include="Commands\PurchaseLicenseCommand.cs" />
     <Compile Include="Commands\ScanCommand.cs" />
@@ -109,7 +109,7 @@
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Models\StartupEntryModel.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
-    <Compile Include="ViewModels\BaloonViewModel.cs" />
+    <Compile Include="ViewModels\BalloonViewModel.cs" />
     <Compile Include="ViewModels\ComputerScanViewModel.cs" />
     <Compile Include="ViewModels\CustomScanViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
@@ -121,8 +121,8 @@
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BaloonView.xaml.cs">
-      <DependentUpon>BaloonView.xaml</DependentUpon>
+    <Compile Include="Views\BalloonView.xaml.cs">
+      <DependentUpon>BalloonView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CustomScanView.xaml.cs">
       <DependentUpon>CustomScanView.xaml</DependentUpon>
@@ -155,7 +155,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BaloonView.xaml">
+    <Page Include="Views\BalloonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

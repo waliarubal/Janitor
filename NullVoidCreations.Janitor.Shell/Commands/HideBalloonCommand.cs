@@ -3,11 +3,11 @@ using NullVoidCreations.Janitor.Shared.Base;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
-    public class HideBaloonCommand: DelegateCommand
+    public class HideBalloonCommand: DelegateCommand
     {
         TaskbarIcon _notificationIcon;
 
-        public HideBaloonCommand(ViewModelBase viewModel)
+        public HideBalloonCommand(ViewModelBase viewModel)
             : base(viewModel)
         {
             IsEnabled = true;

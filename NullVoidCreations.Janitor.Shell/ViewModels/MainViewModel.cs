@@ -243,8 +243,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     IsUpdating = false;
                     break;
             }
-
-            
         }
     }
 }

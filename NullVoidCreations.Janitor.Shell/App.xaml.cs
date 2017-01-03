@@ -55,6 +55,9 @@ namespace NullVoidCreations.Janitor.Shell
             var mainWindow = new MainView();
             MainWindow = mainWindow;
             mainWindow.Show();
+
+            if (SettingsManager.Instance.CommandLineArguments.ContainsKey("Minimize"))
+                mainWindow.WindowState = WindowState.Minimized;
         }
 
         void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

@@ -16,6 +16,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
             StartupDirectoryUser
         }
 
+        internal const string ProgramStartupKey = "PC_Mechanic_Pro";
         string _registryKey;
 
         internal StartupEntryModel(string command, StartupArea area)
@@ -65,7 +66,41 @@ namespace NullVoidCreations.Janitor.Shell.Models
             return GetHashCode() == compareTo.GetHashCode();
         }
 
-        internal bool RemoveFromStartup()
+        internal static StartupEntryModel AddEntry(StartupArea area, string name, string command)
+        {
+            RegistryKey key;
+            var entry = new StartupEntryModel(command, area);
+            entry.Name = name;
+
+            switch(area)
+            {
+                case StartupArea.StartupDirectory:
+                case StartupArea.StartupDirectoryUser:
+                    throw new NotImplementedException();
+
+                case StartupArea.Registry:
+                    key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+                    if (key == null)
+                        break;
+
+                    key.SetValue(name, command, RegistryValueKind.String);
+                    key.Close();
+                    return entry;
+
+                case StartupArea.RegistryUser:
+                    key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+                    if (key == null)
+                        break;
+
+                    key.SetValue(name, command, RegistryValueKind.String);
+                    key.Close();
+                    return entry;
+            }
+
+            return null;
+        }
+
+        internal bool RemoveEntry()
         {
             var removed = false;
             switch(Area)
@@ -73,7 +108,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
                 case StartupArea.Registry:
                     try
                     {
-                        var key = Registry.LocalMachine.OpenSubKey(_registryKey);
+                        var key = Registry.LocalMachine.OpenSubKey(_registryKey, true);
                         if (key != null)
                         {
                             key.DeleteValue(Name, false);
@@ -90,7 +125,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
                 case StartupArea.RegistryUser:
                     try
                     {
-                        var key = Registry.LocalMachine.OpenSubKey(_registryKey);
+                        var key = Registry.LocalMachine.OpenSubKey(_registryKey, true);
                         if (key != null)
                         {
                             key.DeleteValue(Name, false);
@@ -131,7 +166,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
                 {
                     foreach (var name in key.GetValueNames())
                     {
-                        if (string.IsNullOrEmpty(name))
+                        if (string.IsNullOrEmpty(name) || ProgramStartupKey.Equals(name))
                             continue;
 
                         var entry = new StartupEntryModel(key.GetValue(name, string.Empty, RegistryValueOptions.None) as string, StartupEntryModel.StartupArea.Registry);
@@ -148,7 +183,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
                 {
                     foreach (var name in key.GetValueNames())
                     {
-                        if (string.IsNullOrEmpty(name))
+                        if (string.IsNullOrEmpty(name) || ProgramStartupKey.Equals(name))
                             continue;
 
                         var entry = new StartupEntryModel(key.GetValue(name, string.Empty, RegistryValueOptions.None) as string, StartupEntryModel.StartupArea.RegistryUser);

@@ -84,7 +84,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             if (entry == null)
                 return false;
 
-            return entry.RemoveFromStartup();
+            return entry.RemoveEntry();
         }
 
         object ExecuteRefresh(object parameter)

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Helpers;
+using NullVoidCreations.Janitor.Shell.Models;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -20,8 +22,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         private SettingsManager()
         {
-            SignalHost.Instance.AddObserver(this);
-
             _codeName = "Janitor";
             _pluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
             _pluginsSearchFilter = "NullVoidCreations.Janitor.Plugin.*.dll";
@@ -36,7 +36,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
         {
             Save();
             _isLoaded = false;
-            SignalHost.Instance.RemoveObserver(this);
         }
 
         #region properties
@@ -195,6 +194,9 @@ namespace NullVoidCreations.Janitor.Shell.Core
             RunPluginUpdateAtLaunch = true;
             RunProgramUpdateAtLaunch = true;
             RunScanAtLaunch = true;
+
+            RunAtBoot = true;
+            StartupEntryModel.AddEntry(StartupEntryModel.StartupArea.Registry, StartupEntryModel.ProgramStartupKey, string.Format("\"{0}\" /Minimize", Assembly.GetExecutingAssembly().Location));
         }
 
         T GetSetting<T>(string key)

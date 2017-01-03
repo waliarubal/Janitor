@@ -34,7 +34,7 @@
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock FontWeight="Bold" Text="{StaticResource ResourceKey=ProductName}" />
-                <TextBlock Text=", Version 1.0.0.0" />
+                <TextBlock Text="{Binding Source={StaticResource ResourceKey=ProductVersion}, BindsDirectlyToSource=True, StringFormat=', Version {0}'}" />
             </StackPanel>
             <TextBlock Grid.Row="1" Text="Copyright © 2016-2017 NullVoid Creations. All rights reserved." />
             <StackPanel Grid.Row="2"

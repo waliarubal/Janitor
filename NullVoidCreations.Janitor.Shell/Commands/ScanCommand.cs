@@ -333,7 +333,12 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _viewModel.Scan = e.Result as ScanModel;
             _viewModel.IsExecuting = IsExecuting = false;
 
-            if (_isFixPending)
+            if (_viewModel.Scan.IsFixed)
+            {
+                if (SettingsManager.Instance.CloseAfterFixing)
+                    SignalHost.Instance.NotifyAllObservers(this, Signal.CloseTriggered);
+            }
+            else if (_isFixPending)
             {
                 _isFixPending = false;
                 Execute("Fix");

@@ -1,8 +1,8 @@
-﻿using NullVoidCreations.Janitor.Shared.Base;
+﻿using System.Windows;
+using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Controls;
 using NullVoidCreations.Janitor.Shell.Core;
-using System.Windows;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {

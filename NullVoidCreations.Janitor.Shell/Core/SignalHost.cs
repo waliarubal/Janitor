@@ -21,7 +21,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
         SettingsSaved,
         UpdateStarted,
         UpdateStopped,
-        Initialized
+        Initialized,
+        CloseTriggered
     }
 
     class SignalHost

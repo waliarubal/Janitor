@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using Hardcodet.Wpf.TaskbarNotification;
 using NullVoidCreations.Janitor.Shared.Base;
@@ -8,13 +9,13 @@ using NullVoidCreations.Janitor.Shell.Views;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
-    public class ShowBalloonCommand: DelegateCommand
+    public class BalloonCommand: DelegateCommand
     {
         TaskbarIcon _notificationIcon;
         WebClient _client;
         BalloonView _content;
 
-        public ShowBalloonCommand(ViewModelBase viewModel)
+        public BalloonCommand(ViewModelBase viewModel)
             : base(viewModel)
         {
             IsEnabled = true;
@@ -23,7 +24,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(Client_DownloadStringCompleted);
         }
 
-        ~ShowBalloonCommand()
+        ~BalloonCommand()
         {
             _client.DownloadStringCompleted -= new DownloadStringCompletedEventHandler(Client_DownloadStringCompleted);
             _client.Dispose();
@@ -36,11 +37,14 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
             if (_notificationIcon == null)
                 _notificationIcon = (TaskbarIcon)App.Current.Resources["NotificationIcon"];
-            if (_content == null)
-                _content = new BalloonView();
 
-            (_content.DataContext as BalloonViewModel).Html = e.Result;
-            _notificationIcon.ShowCustomBalloon(_content, PopupAnimation.Slide, 60000);
+            Application.Current.Dispatcher.Invoke((Action)delegate
+            {
+                if (_content == null)
+                    _content = new BalloonView();
+                (_content.DataContext as BalloonViewModel).Html = e.Result;
+                _notificationIcon.ShowCustomBalloon(_content, PopupAnimation.Slide, 60000);
+            });
         }
 
         protected override void ExecuteOverride(object parameter)

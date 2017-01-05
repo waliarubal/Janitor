@@ -16,7 +16,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
             StartupDirectoryUser
         }
 
-        internal const string ProgramStartupKey = "PC_Mechanic_Pro";
+        internal const string ProgramStartupKey = "Janitor";
         string _registryKey;
 
         internal StartupEntryModel(string command, StartupArea area)

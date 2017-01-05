@@ -97,7 +97,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         protected override void ExecuteOverride(object parameter)
         {
-            SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStarted, _type);
+            SignalHost.Instance.RaiseSignal(this, Signal.UpdateStarted, _type);
             Progress = 0;
             Title = "Updating...";
 
@@ -111,14 +111,14 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             catch
             {
                 Description = DownloadErrorMessage;
-                SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStopped, _type, true);
+                SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, true);
                 return;
             }
 
             if (metaData.Length != 2)
             {
                 Description = DownloadErrorMessage;
-                SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStopped, _type, true);
+                SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, true);
                 return;
             }
 
@@ -141,7 +141,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             {
                 Title = "Check for Updates";
                 Description = string.Format(UpToDateMessage, currentVersion);
-                SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStopped, _type, true);
+                SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, true);
                 return;
             }
 
@@ -159,7 +159,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             catch
             {
                 Description = DownloadErrorMessage;
-                SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStopped, _type, false);
+                SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, false);
                 return;
             }
 
@@ -173,7 +173,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             // update failed
             if (string.IsNullOrEmpty(updateFile) || !File.Exists(updateFile))
             {
-                SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStopped, _type, false);
+                SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, false);
                 ViewModel.IsExecuting = IsExecuting = false;
                 return;
             }
@@ -206,7 +206,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             Description = message;
             Title = "Check for Updates";
             ViewModel.IsExecuting = IsExecuting = false;
-            SignalHost.Instance.NotifyAllObservers(this, Signal.UpdateStopped, _type, isUpdateInstalled);
+            SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, isUpdateInstalled);
         }
 
         void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -218,9 +218,9 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             Progress = e.ProgressPercentage;
         }
 
-        public void Update(ISignalObserver sender, Signal code, params object[] data)
+        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {
-            if (code != Signal.Initialized || _type != UpdateType.Plugin)
+            if (signal != Signal.Initialized || _type != UpdateType.Plugin)
                 return;
 
             Description = string.Format(UpToDateMessage, PluginManager.Instance.Version);

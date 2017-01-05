@@ -6,13 +6,12 @@ using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Models;
-using NullVoidCreations.Janitor.Shell.Views;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class HomeViewModel: ViewModelBase, ISignalObserver
     {
-        readonly CommandBase _load, _activate, _purchaseLicense, _doScan, _pluginUpdate, _showPopup;
+        readonly CommandBase _activate, _purchaseLicense, _doScan, _pluginUpdate, _showPopup;
         string _computerName, _operatingSyetem, _processor, _model;
         decimal _memory;
         int _issueCount;
@@ -30,8 +29,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _license = new LicenseModel();
             _computerName = _operatingSyetem = _processor = _model = "Analysing...";
 
-            _load = new AsyncDelegateCommand(this, null, ExecuteGetSystemInformation, GetSystemInformationComplete);
-            _showPopup = new ShowBalloonCommand(this);
+            _showPopup = new BalloonCommand(this);
             _purchaseLicense = new PurchaseLicenseCommand(this);
             _doScan = new DelegateCommand(this, ExecuteDoScan);
             _pluginUpdate = new UpdateCommand(this, UpdateCommand.UpdateType.Plugin);
@@ -195,11 +193,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #region commands
 
-        public CommandBase LoadData
-        {
-            get { return _load; }
-        }
-
         public CommandBase Activate
         {
             get { return _activate; }
@@ -225,7 +218,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             else if ("Custom".Equals(scanType))
                 type = ScanType.CustomScan;
             
-            SignalHost.Instance.NotifyAllObservers(this, Signal.ScanTrigerred, type);
+            SignalHost.Instance.RaiseSignal(this, Signal.ScanTrigerred, type);
         }
 
         void WeHaveProblems()
@@ -240,47 +233,17 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             if (IsHavingUpdatesAvailable)
                 problems++;
 
-            SignalHost.Instance.NotifyAllObservers(this, Signal.ProblemsAppeared, problems);
+            SignalHost.Instance.RaiseSignal(this, Signal.ProblemsAppeared, problems);
+
+            _showPopup.Execute("https://www.google.com/");
         }
 
-        object ExecuteGetSystemInformation(object parameter)
+        //if (!IsLicensed)
+        //        _showPopup.Execute("https://www.google.com/");
+
+        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {
-            // load license
-            LicenseManager.Instance.LoadLicense();
-
-            // load plugins
-            PluginManager.Instance.LoadPlugins();
-
-            // load system information
-            SysInformation.Instance.Fill(SysInformation.ManagementClassNames.ComputerSystem);
-            SysInformation.Instance.Fill(SysInformation.ManagementClassNames.OperatingSystem);
-            SysInformation.Instance.Fill(SysInformation.ManagementClassNames.Processor);
-            SignalHost.Instance.NotifyAllObservers(this, Signal.SystemInformationLoaded);
-
-            return null;
-        }
-
-        void GetSystemInformationComplete(object parameter)
-        {
-            SignalHost.Instance.NotifyAllObservers(this, Signal.Initialized);
-
-            // TODO: work here
-            if (SettingsManager.Instance.RunPluginUpdateAtLaunch)
-                _startupActions.Enqueue(_pluginUpdate);
-            if (SettingsManager.Instance.RunScanAtLaunch)
-                _startupActions.Enqueue(_doScan);
-
-            if (!IsLicensed)
-                _showPopup.Execute("https://www.google.com/");
-            //if (SettingsManager.Instance.RunPluginUpdateAtLaunch)
-            //    _pluginUpdate.Execute(null);
-            //if (SettingsManager.Instance.RunScanAtLaunch)
-            //    DoScan.Execute("Smart");
-        }
-
-        public void Update(ISignalObserver sender, Signal code, params object[] data)
-        {
-            switch (code)
+            switch (signal)
             {
                 case Signal.SystemInformationLoaded:
                     ComputerName = SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "Name"] as string;

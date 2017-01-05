@@ -19,8 +19,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
         {
             _targets = new Dictionary<string, ScanTargetBase>();
 
-            SignalHost.Instance.AddObserver(this);
-
             // create plugins directory if missing
             if (!Directory.Exists(SettingsManager.Instance.PluginsDirectory))
                 Directory.CreateDirectory(SettingsManager.Instance.PluginsDirectory);
@@ -30,7 +28,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         ~PluginManager()
         {
-            SignalHost.Instance.RemoveObserver(this);
+            
         }
 
         #endregion
@@ -136,7 +134,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 }
             }
 
-            SignalHost.Instance.NotifyAllObservers(this, Signal.PluginsLoaded, Targets);
+            SignalHost.Instance.RaiseSignal(this, Signal.PluginsLoaded, Targets);
         }
 
         public void UnloadPlugins()
@@ -145,7 +143,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             DestroyContainer();
             CreateContainer();
 
-            SignalHost.Instance.NotifyAllObservers(this, Signal.PluginsUnloaded);
+            SignalHost.Instance.RaiseSignal(this, Signal.PluginsUnloaded);
         }
 
         void CreateContainer()
@@ -167,7 +165,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         }
 
 
-        public void Update(ISignalObserver sender, Signal code, params object[] data)
+        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {
             
         }

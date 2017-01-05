@@ -31,7 +31,8 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             var isDeleted = true;
             try
             {
-                File.Delete(path);
+                if (File.Exists(path))
+                    File.Delete(path);
             }
             catch
             {

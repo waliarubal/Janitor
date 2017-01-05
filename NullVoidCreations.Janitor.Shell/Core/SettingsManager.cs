@@ -51,12 +51,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
             }
         }
 
-        internal Dictionary<string, string> CommandLineArguments
-        {
-            get;
-            private set;
-        }
-
         public string CodeName
         {
             get { return _codeName; }
@@ -244,7 +238,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         LOADED:
             _isLoaded = true;
             FirstTimeExecution();
-            SignalHost.Instance.NotifyAllObservers(this, Signal.SettingsLoaded);
+            SignalHost.Instance.RaiseSignal(this, Signal.SettingsLoaded);
         }
 
         void Save()
@@ -254,36 +248,10 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 data.AppendFormat("{2}{1}{3}{0}", Separator2, Separator1, key, _settings[key]);
 
             File.WriteAllText(_settingsFile, data.ToString());
-            SignalHost.Instance.NotifyAllObservers(this, Signal.SettingsSaved);
+            SignalHost.Instance.RaiseSignal(this, Signal.SettingsSaved);
         }
 
-        internal void LoadArguments(string[] arguments)
-        {
-            CommandLineArguments = new Dictionary<string, string>();
-            foreach (var argument in arguments)
-            {
-                if (string.IsNullOrEmpty(argument))
-                    continue;
-                if (!argument.StartsWith("/"))
-                    continue;
-
-                var parts = argument.Split(new char[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length > 0)
-                {
-                    var argName = parts[0].Remove(0, 1);
-                    var argValue = string.Empty;
-                    if (parts.Length > 1)
-                        argValue = parts[1];
-
-                    if (CommandLineArguments.ContainsKey(argName))
-                        CommandLineArguments[argName] = argValue;
-                    else
-                        CommandLineArguments.Add(argName, argValue);
-                }
-            }
-        }
-
-        public void Update(ISignalObserver sender, Signal code, params object[] data)
+        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {
 
         }

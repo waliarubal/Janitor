@@ -3,6 +3,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
 {
     public interface ISignalObserver
     {
-        void Update(ISignalObserver sender, Signal code, params object[] data);
+        void SignalReceived(ISignalObserver sender, Signal signal, params object[] data);
     }
 }

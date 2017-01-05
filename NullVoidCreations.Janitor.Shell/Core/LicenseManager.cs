@@ -17,13 +17,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
         private LicenseManager()
         {
             _license = new LicenseModel();
-
-            SignalHost.Instance.AddObserver(this);
         }
 
         ~LicenseManager()
         {
-            SignalHost.Instance.RemoveObserver(this);
+            
         }
 
         #endregion
@@ -59,7 +57,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         public void LoadLicense()
         {
             _license.Validate(SettingsManager.Instance.LicenseKey);
-            SignalHost.Instance.NotifyAllObservers(this, Signal.LicenseChanged);
+            SignalHost.Instance.RaiseSignal(this, Signal.LicenseChanged);
         }
 
         /// <summary>
@@ -74,12 +72,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 errorMessage = _license.Validate(key);
 
             SettingsManager.Instance.LicenseKey = key;
-            SignalHost.Instance.NotifyAllObservers(this, Signal.LicenseChanged, errorMessage);
+            SignalHost.Instance.RaiseSignal(this, Signal.LicenseChanged, errorMessage);
 
             return errorMessage;
         }
 
-        public void Update(ISignalObserver sender, Signal code, params object[] data)
+        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {
             
         }

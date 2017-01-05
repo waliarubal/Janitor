@@ -43,6 +43,12 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #region properties
 
+        internal CustomWindow View
+        {
+            get;
+            set;
+        }
+
         public int SelectedViewIndex
         {
             get { return _selectedViewIndex; }
@@ -189,17 +195,23 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         void ExecuteClose(object parameter)
         {
-            var window = parameter as CustomWindow;
             if (SettingsManager.Instance.ExitOnClose)
                 App.Current.Shutdown(0);
             else
-                window.WindowState = WindowState.Minimized;
+            {
+                View.ShowInTaskbar = false;
+                View.WindowState = WindowState.Minimized;
+            }
         }
 
-        public void Update(ISignalObserver sender, Signal code, params object[] data)
+        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {
-            switch(code)
+            switch (signal)
             {
+                case Signal.CloseToTray:
+                    ExecuteClose(null);
+                    break;
+
                 case Signal.FixingStarted:
                 case Signal.AnalysisStarted:
                     IsWorking = true;
@@ -214,8 +226,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     IsWorking = false;
                     IssueCount = (int)data[0];
                     IsHavingIssues = IsAnalysing && IssueCount > 0;
-                    IsAnalysing = code == Signal.AnalysisStopped;
-                    IsFixing = code == Signal.FixingStopped;
+                    IsAnalysing = signal == Signal.AnalysisStopped;
+                    IsFixing = signal == Signal.FixingStopped;
                     break;
 
                 case Signal.ProblemsAppeared:

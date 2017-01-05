@@ -106,9 +106,9 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             }
         }
 
-        public void Update(ISignalObserver sender, Signal code, params object[] data)
+        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {
-            switch (code)
+            switch (signal)
             {
                 case Signal.ScanStatusChanged:
                     if (_worker.IsBusy)
@@ -172,7 +172,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             status.ProgressMax = progressMax;
             status.ProgressMin = progressMin;
             status.ProgressCurrent = progressCurrent;
-            SignalHost.Instance.NotifyAllObservers(this, Signal.ScanStatusChanged, status);
+            SignalHost.Instance.RaiseSignal(this, Signal.ScanStatusChanged, status);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         /// <returns></returns>
         ScanModel Analyse(ScanModel scan)
         {
-            SignalHost.Instance.NotifyAllObservers(this, Signal.AnalysisStarted, false);
+            SignalHost.Instance.RaiseSignal(this, Signal.AnalysisStarted, false);
 
             var issues = new List<IssueBase>();
             var targets = 0;
@@ -234,7 +234,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             scan.Issues = issues;
 
             ScanModel.SaveScanDetails(scan);
-            SignalHost.Instance.NotifyAllObservers(this, Signal.AnalysisStopped, issues.Count);
+            SignalHost.Instance.RaiseSignal(this, Signal.AnalysisStopped, issues.Count);
 
             return scan;
         }
@@ -246,7 +246,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         /// <returns></returns>
         ScanModel Fix(ScanModel scan)
         {
-            SignalHost.Instance.NotifyAllObservers(this, Signal.FixingStarted);
+            SignalHost.Instance.RaiseSignal(this, Signal.FixingStarted);
 
             var issues = new List<IssueBase>();
             var targets = 0;
@@ -299,7 +299,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             scan.Issues = issues;
 
             ScanModel.SaveScanDetails(scan);
-            SignalHost.Instance.NotifyAllObservers(this, Signal.FixingStopped, issues.Count);
+            SignalHost.Instance.RaiseSignal(this, Signal.FixingStopped, issues.Count);
 
             scan.IsFixed = true;
             return scan;
@@ -336,7 +336,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (_viewModel.Scan.IsFixed)
             {
                 if (SettingsManager.Instance.CloseAfterFixing)
-                    SignalHost.Instance.NotifyAllObservers(this, Signal.CloseTriggered);
+                    SignalHost.Instance.RaiseSignal(this, Signal.CloseToTray);
             }
             else if (_isFixPending)
             {

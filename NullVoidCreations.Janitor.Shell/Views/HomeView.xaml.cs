@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
-using NullVoidCreations.Janitor.Shell.ViewModels;
+﻿using System.Windows.Controls;
 
 namespace NullVoidCreations.Janitor.Shell.Views
 {
@@ -12,18 +10,6 @@ namespace NullVoidCreations.Janitor.Shell.Views
         public HomeView()
         {
             InitializeComponent();
-            Loaded += new System.Windows.RoutedEventHandler(HomeView_Loaded);
-        }
-
-        void HomeView_Loaded(object sender, EventArgs e)
-        {
-            Loaded -= new System.Windows.RoutedEventHandler(HomeView_Loaded);
-
-            var viewModel = DataContext as HomeViewModel;
-            if (viewModel == null)
-                return;
-
-            viewModel.LoadData.Execute(null);
         }
     }
 }

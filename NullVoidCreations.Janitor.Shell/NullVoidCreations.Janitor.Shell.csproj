@@ -68,7 +68,6 @@
       <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\System.Windows.Controls.Layout.Toolkit.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -88,7 +87,8 @@
     </ApplicationDefinition>
     <Compile Include="Commands\ActivateLicenseCommand.cs" />
     <Compile Include="Commands\HideBalloonCommand.cs" />
-    <Compile Include="Commands\ShowBalloonCommand.cs" />
+    <Compile Include="Commands\InitializeAppCommand.cs" />
+    <Compile Include="Commands\BalloonCommand.cs" />
     <Compile Include="Commands\UpdateCommand.cs" />
     <Compile Include="Commands\PurchaseLicenseCommand.cs" />
     <Compile Include="Commands\ScanCommand.cs" />
@@ -96,6 +96,7 @@
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\StartupAreaToImageConverter.cs" />
+    <Compile Include="Core\CommandLineManager.cs" />
     <Compile Include="Core\ISignalObserver.cs" />
     <Compile Include="Core\LicenseManager.cs" />
     <Compile Include="Core\PluginManager.cs" />
@@ -210,15 +211,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="app.manifest">
       <SubType>Designer</SubType>

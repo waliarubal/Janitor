@@ -89,13 +89,13 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         object ExecuteRefresh(object parameter)
         {
-            SignalHost.Instance.NotifyAllObservers(this, Signal.StartupEntriesLoadStarted);
+            SignalHost.Instance.RaiseSignal(this, Signal.StartupEntriesLoadStarted);
 
             var entries = new ObservableCollection<StartupEntryModel>();
             foreach (var entry in StartupEntryModel.GetStartupEntries())
                 entries.Add(entry);
 
-            SignalHost.Instance.NotifyAllObservers(this, Signal.StartupEntriesLoadStopped);
+            SignalHost.Instance.RaiseSignal(this, Signal.StartupEntriesLoadStopped);
 
             return entries;
         }
@@ -105,9 +105,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             Entries = startupEntries as ObservableCollection<StartupEntryModel>;
         }
 
-        public void Update(ISignalObserver sender, Signal code, params object[] data)
+        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {
-            switch (code)
+            switch (signal)
             {
                 case Signal.Initialized:
                     Refresh.Execute(Entries);

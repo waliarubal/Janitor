@@ -124,9 +124,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
-        public void Update(ISignalObserver sender, Signal code, params object[] data)
+        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {
-            switch (code)
+            switch (signal)
             {
                 case Signal.Initialized:
                 case Signal.AnalysisStopped:

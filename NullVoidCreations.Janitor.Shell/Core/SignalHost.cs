@@ -22,7 +22,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
         UpdateStarted,
         UpdateStopped,
         Initialized,
-        CloseTriggered
+        CloseToTray,
+        ShowUi
     }
 
     class SignalHost
@@ -69,10 +70,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
             return _observers.Remove(observer);
         }
 
-        public void NotifyAllObservers(ISignalObserver sender, Signal code, params object[] data)
+        public void RaiseSignal(ISignalObserver sender, Signal signal, params object[] data)
         {
-            foreach (var observer in _observers)
-                observer.Update(sender, code, data);
+            for (var index = _observers.Count - 1; index >= 0; index--)
+            {
+                _observers[index].SignalReceived(sender, signal, data);
+            }
         }
     }
 }

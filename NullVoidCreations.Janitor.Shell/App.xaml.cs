@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Threading;
-using NullVoidCreations.Janitor.Shared.Helpers;
+using Hardcodet.Wpf.TaskbarNotification;
+using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Views;
 
@@ -11,58 +10,59 @@ namespace NullVoidCreations.Janitor.Shell
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : Application, ISignalObserver
     {
-        protected override void OnExit(ExitEventArgs e)
-        {
-            App.Current.DispatcherUnhandledException -= new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
-            base.OnExit(e);
-        }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-            App.Current.DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
-
-            SettingsManager.Instance.LoadArguments(e.Args);
-
-            // process command line arguments for key generation
-            if (SettingsManager.Instance.CommandLineArguments.ContainsKey("GenerateKey") &&
-                SettingsManager.Instance.CommandLineArguments.ContainsKey("Email") &&
-                SettingsManager.Instance.CommandLineArguments.ContainsKey("Days") &&
-                SettingsManager.Instance.CommandLineArguments.ContainsKey("Path"))
-            {
-                var email = SettingsManager.Instance.CommandLineArguments["Email"];
-                var path = SettingsManager.Instance.CommandLineArguments["Path"];
-                if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(path))
-                    goto CLOSE_APP;
-
-                int days;
-                if (!Int32.TryParse(SettingsManager.Instance.CommandLineArguments["Days"], out days))
-                    goto CLOSE_APP;
-
-                var licenseKey = LicenseManager.Instance.GenerateLicenseKey(email, days);
-                if (File.Exists(path) && !FileSystemHelper.Instance.DeleteFile(path))
-                    goto CLOSE_APP;
-
-                File.WriteAllText(path, licenseKey);
-
-            CLOSE_APP:
-                Shutdown(0);
-                return;
-            }
-            
-            var mainWindow = new MainView();
-            MainWindow = mainWindow;
-            mainWindow.Show();
-
-            if (SettingsManager.Instance.CommandLineArguments.ContainsKey("Minimize"))
-                mainWindow.WindowState = WindowState.Minimized;
-        }
+        bool _isSilent;
 
         void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             //TODO: add exception handeler
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            SignalHost.Instance.RemoveObserver(this);
+            App.Current.DispatcherUnhandledException -= new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
+            base.OnExit(e);
+        }
+        
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            SignalHost.Instance.AddObserver(this);
+            App.Current.DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
+            ((TaskbarIcon)App.Current.Resources["NotificationIcon"]).Visibility = Visibility.Visible;
+
+            CommandLineManager.Instance.LoadArguments(e.Args);
+            CommandLineManager.Instance.ProcessArguments();
+            new InitializeAppCommand().Execute(null);
+        }
+
+        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
+        {
+            switch (signal)
+            {
+                case Signal.LicenseChanged:
+                    if (LicenseManager.Instance.License.IsTrial)
+                        new BalloonCommand(null).Execute("Https://www.google.com");
+                    break;
+
+                case Signal.CloseToTray:
+                    _isSilent = true;
+                    break;
+
+                case Signal.ShowUi:
+                    if (!_isSilent)
+                    {
+                        MainWindow = new MainView();
+                        MainWindow.Show();
+                    }
+                    break;
+
+                case Signal.Initialized:
+                    break;
+            }
         }
     }
 }

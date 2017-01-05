@@ -68,7 +68,9 @@ namespace NullVoidCreations.Janitor.Shared.Base
             if (target.Error == null && _callback != null)
                 _callback.Invoke(target.Result);
 
-            ViewModel.IsExecuting = IsExecuting = false;
+            IsExecuting = false;
+            if (ViewModel != null)
+                ViewModel.IsExecuting = IsExecuting;
         }
 
         public override void Execute(object parameter)
@@ -76,7 +78,10 @@ namespace NullVoidCreations.Janitor.Shared.Base
             if (_worker.IsBusy)
                 return;
 
-            ViewModel.IsExecuting = IsExecuting = true;
+            IsExecuting = true;
+            if (ViewModel != null)
+                ViewModel.IsExecuting = IsExecuting;
+            
             _worker.RunWorkerAsync(parameter);
         }
     }

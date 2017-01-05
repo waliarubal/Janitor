@@ -38,9 +38,15 @@ namespace NullVoidCreations.Janitor.Shared.Base
             if (!CanExecute(parameter))
                 return;
 
-            ViewModel.IsExecuting = IsExecuting = true;
+            IsExecuting = true;
+            if (ViewModel != null)
+                ViewModel.IsExecuting = IsExecuting;
+            
             _method.Invoke(parameter);
-            ViewModel.IsExecuting = IsExecuting = false;
+
+            IsExecuting = false;
+            if (ViewModel != null)
+                ViewModel.IsExecuting = IsExecuting;
         }
         
     }

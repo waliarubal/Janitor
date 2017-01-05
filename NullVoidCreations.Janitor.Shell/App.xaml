@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
              xmlns:tb="http://www.hardcodet.net/taskbar"
-             xmlns:wpf="http://schemas.microsoft.com/wpf/2008/toolkit">
+             xmlns:wpf="http://schemas.microsoft.com/wpf/2008/toolkit"
+             ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

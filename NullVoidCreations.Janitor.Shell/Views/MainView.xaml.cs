@@ -9,7 +9,6 @@ namespace NullVoidCreations.Janitor.Shell.Views
     {
         public MainView()
         {
-
             InitializeComponent();
             (DataContext as MainViewModel).View = this;
         }

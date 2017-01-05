@@ -13,8 +13,6 @@ namespace NullVoidCreations.Janitor.Shell
     public partial class App : Application, ISignalObserver
     {
 
-        bool _isSilent;
-
         void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             //TODO: add exception handeler
@@ -32,7 +30,10 @@ namespace NullVoidCreations.Janitor.Shell
             base.OnStartup(e);
             SignalHost.Instance.AddObserver(this);
             App.Current.DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
+
             ((TaskbarIcon)App.Current.Resources["NotificationIcon"]).Visibility = Visibility.Visible;
+            MainWindow = new MainView();
+            MainWindow.Show();
 
             CommandLineManager.Instance.LoadArguments(e.Args);
             CommandLineManager.Instance.ProcessArguments();
@@ -49,15 +50,7 @@ namespace NullVoidCreations.Janitor.Shell
                     break;
 
                 case Signal.CloseToTray:
-                    _isSilent = true;
-                    break;
-
-                case Signal.ShowUi:
-                    if (!_isSilent)
-                    {
-                        MainWindow = new MainView();
-                        MainWindow.Show();
-                    }
+                    MainWindow.WindowState = WindowState.Minimized;
                     break;
 
                 case Signal.Initialized:

@@ -75,9 +75,12 @@ namespace NullVoidCreations.Janitor.Shell.Controls
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            _title.MouseDown -= new MouseButtonEventHandler(Title_MouseDown);
-            _minimize.Click -= new RoutedEventHandler(Minimize_Click);
-            _close.Click -= new RoutedEventHandler(Close_Click);
+            if (_title != null)
+                _title.MouseDown -= new MouseButtonEventHandler(Title_MouseDown);
+            if (_minimize != null)
+                _minimize.Click -= new RoutedEventHandler(Minimize_Click);
+            if (_close != null)
+                _close.Click -= new RoutedEventHandler(Close_Click);
 
             base.OnClosing(e);
         }

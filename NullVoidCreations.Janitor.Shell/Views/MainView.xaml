@@ -12,6 +12,7 @@
                                        Mode=OneTime}"
                 Icon="/NullVoidCreations.Janitor.Shell;component/Resources/Logo32.png"
                 ResizeMode="CanMinimize"
+                ShowActivated="True"
                 WindowStartupLocation="CenterScreen">
     <c:CustomWindow.DataContext>
         <vm:MainViewModel />

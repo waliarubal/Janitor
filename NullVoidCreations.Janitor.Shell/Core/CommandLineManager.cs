@@ -95,8 +95,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
                         break;
                 }
             }
-
-            SignalHost.Instance.RaiseSignal(this, Signal.ShowUi);
         }
 
         public void LoadArguments(string[] arguments)

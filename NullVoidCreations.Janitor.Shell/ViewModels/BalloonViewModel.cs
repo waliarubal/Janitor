@@ -10,7 +10,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public BalloonViewModel()
         {
-            _hide = new HideBalloonCommand(this);
+            _hide = new BalloonCommand(this);
         }
 
         #region properties

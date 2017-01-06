@@ -95,6 +95,7 @@
                                     <Button Name="PART_Minimize"
                                             Grid.Column="3"
                                             Style="{StaticResource ResourceKey=WindowButtonStyle}"
+                                            ToolTip="Minimize"
                                             Visibility="{Binding RelativeSource={RelativeSource TemplatedParent},
                                                                  Path=IsMinimizeAllowed,
                                                                  Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
@@ -118,6 +119,7 @@
                                             Grid.Column="4"
                                             Margin="4 0 8 0"
                                             Style="{StaticResource ResourceKey=WindowButtonStyle}"
+                                            ToolTip="Close"
                                             Visibility="{Binding RelativeSource={RelativeSource TemplatedParent},
                                                                  Path=IsCloseAllowed,
                                                                  Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">

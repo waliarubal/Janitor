@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 
 namespace NullVoidCreations.Janitor.Shell.Core
@@ -7,7 +8,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
     {
         public Assembly GetAssembly(string assemblyPath)
         {
-            return Assembly.LoadFile(assemblyPath);
+            var data = File.ReadAllBytes(assemblyPath);
+            return Assembly.Load(data);
         }
     }
 }

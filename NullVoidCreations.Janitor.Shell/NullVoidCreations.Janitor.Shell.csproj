@@ -40,11 +40,10 @@
   <PropertyGroup>
     <ApplicationIcon>LogoBig.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>NullVoidCreations.Janitor.Shell.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net35\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
       <Private>True</Private>
@@ -86,7 +85,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\ActivateLicenseCommand.cs" />
-    <Compile Include="Commands\HideBalloonCommand.cs" />
     <Compile Include="Commands\InitializeAppCommand.cs" />
     <Compile Include="Commands\BalloonCommand.cs" />
     <Compile Include="Commands\UpdateCommand.cs" />
@@ -104,6 +102,7 @@
     <Compile Include="Core\SettingsManager.cs" />
     <Compile Include="Core\StringCipher.cs" />
     <Compile Include="Core\SignalHost.cs" />
+    <Compile Include="Core\ZipStorer.cs" />
     <Compile Include="Models\LicenseModel.cs" />
     <Compile Include="Models\ScanModel.cs" />
     <Compile Include="Models\ScanStatusModel.cs" />
@@ -315,7 +314,7 @@
     <Resource Include="Resources\Delete.png" />
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="Resources\SplashScreeen.png" />
+    <Resource Include="Resources\SplashScreeen.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Logo16.ico" />

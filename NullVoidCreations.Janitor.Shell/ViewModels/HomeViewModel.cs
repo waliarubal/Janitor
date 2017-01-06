@@ -234,12 +234,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 problems++;
 
             SignalHost.Instance.RaiseSignal(this, Signal.ProblemsAppeared, problems);
-
-            _showPopup.Execute("https://www.google.com/");
         }
-
-        //if (!IsLicensed)
-        //        _showPopup.Execute("https://www.google.com/");
 
         public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {

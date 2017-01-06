@@ -176,6 +176,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         /// <summary>
         /// This method takes care of first time initialization.
+        /// TODO: move this code to app init command
         /// </summary>
         void FirstTimeExecution()
         {
@@ -190,7 +191,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             RunScanAtLaunch = true;
 
             RunAtBoot = true;
-            StartupEntryModel.AddEntry(StartupEntryModel.StartupArea.Registry, StartupEntryModel.ProgramStartupKey, string.Format("\"{0}\" /Minimize", Assembly.GetExecutingAssembly().Location));
+            StartupEntryModel.AddEntry(StartupEntryModel.StartupArea.Registry, StartupEntryModel.ProgramStartupKey, string.Format("\"{0}\" /silent", Assembly.GetExecutingAssembly().Location));
         }
 
         T GetSetting<T>(string key)

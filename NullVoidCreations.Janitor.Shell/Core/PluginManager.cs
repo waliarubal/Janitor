@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Ionic.Zip;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
+using System.IO.Compression;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -85,20 +85,13 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
             var isUpdated = true;
             UnloadPlugins();
-            using (var zip = ZipFile.Read(archiveFile))
+            var zip = ZipStorer.Open(archiveFile, FileAccess.Read);
+            var directory = zip.ReadCentralDir();
+            foreach (var entry in directory)
             {
-                var path = SettingsManager.Instance.PluginsDirectory;
-                foreach (var entry in zip)
-                {
-                    try
-                    {
-                        entry.Extract(path, ExtractExistingFileAction.OverwriteSilently);
-                    }
-                    catch (Exception ex)
-                    {
-                        isUpdated = false;
-                    }
-                }
+                var fileName = Path.GetFileName(entry.FilenameInZip);
+                var filePath = Path.Combine(SettingsManager.Instance.PluginsDirectory, fileName);
+                zip.ExtractFile(entry, filePath);
             }
             LoadPlugins();
 
@@ -125,6 +118,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 {
                     if (type.IsSubclassOf(scanTargetType))
                     {
+                        //TODO: use do callback here
                         var target = (ScanTargetBase) assembly.CreateInstance(type.FullName, false);
                         if (_targets.ContainsKey(target.Name))
                             continue;

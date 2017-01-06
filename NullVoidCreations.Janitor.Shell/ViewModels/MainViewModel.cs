@@ -2,6 +2,7 @@
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Controls;
 using NullVoidCreations.Janitor.Shell.Core;
+using NullVoidCreations.Janitor.Shell.Commands;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -199,8 +200,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 App.Current.Shutdown(0);
             else
             {
-                View.ShowInTaskbar = false;
                 View.WindowState = WindowState.Minimized;
+                View.ShowInTaskbar = true;
             }
         }
 
@@ -209,7 +210,13 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             switch (signal)
             {
                 case Signal.CloseToTray:
-                    ExecuteClose(null);
+                    View.WindowState = WindowState.Minimized;
+                    View.ShowInTaskbar = false;
+                    break;
+
+                case Signal.ShowUi:
+                    View.WindowState = WindowState.Normal;
+                    View.ShowInTaskbar = true;
                     break;
 
                 case Signal.FixingStarted:
@@ -253,6 +260,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 case Signal.UpdateStopped:
                     IsUpdating = false;
+                    break;
+
+                case Signal.LicenseChanged:
+                    if (LicenseManager.Instance.License.IsTrial)
+                        new BalloonCommand(null).Execute("Https://www.google.com");
                     break;
             }
         }

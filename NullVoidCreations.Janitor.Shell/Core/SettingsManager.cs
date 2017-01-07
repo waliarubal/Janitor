@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Text;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Helpers;
-using NullVoidCreations.Janitor.Shell.Models;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -13,7 +12,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
     {
         static volatile SettingsManager _instance;
         string _codeName, _pluginsDirectory, _pluginsSearchFilter;
-        readonly string _settingsFile;
+        readonly string _settingsFile, _assemblyPath;
         readonly Dictionary<string, object> _settings;
         volatile bool _isLoaded;
 
@@ -25,6 +24,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             _codeName = "Janitor";
             _pluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
             _pluginsSearchFilter = "NullVoidCreations.Janitor.Plugin.*.dll";
+            _assemblyPath = Assembly.GetExecutingAssembly().Location;
 
             _settings = new Dictionary<string, object>();
             _settingsFile = Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Settings.dat");
@@ -49,6 +49,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
                 return _instance;
             }
+        }
+
+        public string ExecutablePath
+        {
+            get { return _assemblyPath; }
         }
 
         public string CodeName
@@ -92,6 +97,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 return new Version(versionString);
             }
             set { this["PluginsVersion"] = value.ToString(); }
+        }
+
+        public DateTime FirstExecutionDate
+        {
+            get { return GetSetting<DateTime>("FirstExecutionDate"); }
+            set { this["FirstExecutionDate"] = value; }
         }
 
         public bool RunAtBoot
@@ -174,26 +185,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #endregion
 
-        /// <summary>
-        /// This method takes care of first time initialization.
-        /// TODO: move this code to app init command
-        /// </summary>
-        void FirstTimeExecution()
-        {
-            var firstExecutionDate = GetSetting<DateTime>("FirstExecutionDate");
-            if (default(DateTime) != firstExecutionDate)
-                return;
-
-            this["FirstExecutionDate"] = DateTime.Now;
-
-            RunPluginUpdateAtLaunch = true;
-            RunProgramUpdateAtLaunch = true;
-            RunScanAtLaunch = true;
-
-            RunAtBoot = true;
-            StartupEntryModel.AddEntry(StartupEntryModel.StartupArea.Registry, StartupEntryModel.ProgramStartupKey, string.Format("\"{0}\" /silent", Assembly.GetExecutingAssembly().Location));
-        }
-
         T GetSetting<T>(string key)
         {
             T setting = default(T);
@@ -238,7 +229,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         LOADED:
             _isLoaded = true;
-            FirstTimeExecution();
             SignalHost.Instance.RaiseSignal(this, Signal.SettingsLoaded);
         }
 

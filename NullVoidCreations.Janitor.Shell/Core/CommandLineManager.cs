@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using NullVoidCreations.Janitor.Shared.Helpers;
-using NullVoidCreations.Janitor.Shell.Commands;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {

@@ -65,6 +65,10 @@
                        Text="Run program when the computer starts." />
             <CheckBox Grid.Row="1"
                       Grid.Column="2"
+                      Command="{Binding Path=ScheduleSilentRun,
+                                        Mode=OneTime}"
+                      CommandParameter="{Binding Path=RunAtBoot,
+                                                 Mode=OneWay}"
                       IsChecked="{Binding Path=RunAtBoot,
                                           Mode=TwoWay}" />
 

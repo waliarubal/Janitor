@@ -5,6 +5,9 @@
     <clr:String x:Key="ProductName">PC MECHANIC PRO™</clr:String>
     <clr:String x:Key="ProductVersion">1.1.0.0</clr:String>
 
+    <clr:Boolean x:Key="True">True</clr:Boolean>
+    <clr:Boolean x:Key="False">False</clr:Boolean>
+
     <!--  converters  -->
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <c:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />

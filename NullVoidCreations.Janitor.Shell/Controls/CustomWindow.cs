@@ -93,7 +93,9 @@ namespace NullVoidCreations.Janitor.Shell.Controls
 
         void Minimize_Click(object sender, RoutedEventArgs e)
         {
+            ShowInTaskbar = true;
             WindowState = WindowState.Minimized;
+
             e.Handled = true;
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Win32;
 using NullVoidCreations.Janitor.Shared.Helpers;
+using NullVoidCreations.Janitor.Shell.Commands;
 
 namespace NullVoidCreations.Janitor.Shell.Models
 {
@@ -16,7 +17,6 @@ namespace NullVoidCreations.Janitor.Shell.Models
             StartupDirectoryUser
         }
 
-        internal const string ProgramStartupKey = "Janitor";
         string _registryKey;
 
         internal StartupEntryModel(string command, StartupArea area)
@@ -100,6 +100,17 @@ namespace NullVoidCreations.Janitor.Shell.Models
             return null;
         }
 
+        internal static bool RemoveEntry(StartupArea area, string name)
+        {
+            foreach (var entry in GetStartupEntries())
+            {
+                if (entry.Area == area && entry.Name == name)
+                    return entry.RemoveEntry();
+            }
+
+            return false;
+        }
+
         internal bool RemoveEntry()
         {
             var removed = false;
@@ -166,7 +177,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
                 {
                     foreach (var name in key.GetValueNames())
                     {
-                        if (string.IsNullOrEmpty(name) || ProgramStartupKey.Equals(name))
+                        if (string.IsNullOrEmpty(name) || ScheduleSilentRunCommand.SilentRunKey.Equals(name))
                             continue;
 
                         var entry = new StartupEntryModel(key.GetValue(name, string.Empty, RegistryValueOptions.None) as string, StartupEntryModel.StartupArea.Registry);
@@ -183,7 +194,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
                 {
                     foreach (var name in key.GetValueNames())
                     {
-                        if (string.IsNullOrEmpty(name) || ProgramStartupKey.Equals(name))
+                        if (string.IsNullOrEmpty(name) || ScheduleSilentRunCommand.SilentRunKey.Equals(name))
                             continue;
 
                         var entry = new StartupEntryModel(key.GetValue(name, string.Empty, RegistryValueOptions.None) as string, StartupEntryModel.StartupArea.RegistryUser);

@@ -87,6 +87,7 @@
     <Compile Include="Commands\ActivateLicenseCommand.cs" />
     <Compile Include="Commands\InitializeAppCommand.cs" />
     <Compile Include="Commands\BalloonCommand.cs" />
+    <Compile Include="Commands\ScheduleSilentRunCommand.cs" />
     <Compile Include="Commands\UpdateCommand.cs" />
     <Compile Include="Commands\PurchaseLicenseCommand.cs" />
     <Compile Include="Commands\ScanCommand.cs" />

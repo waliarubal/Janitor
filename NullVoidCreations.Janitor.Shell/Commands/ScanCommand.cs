@@ -336,7 +336,9 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (_viewModel.Scan.IsFixed)
             {
                 if (SettingsManager.Instance.CloseAfterFixing)
-                    SignalHost.Instance.RaiseSignal(this, Signal.CloseToTray);
+                    SignalHost.Instance.RaiseSignal(this, Signal.Close);
+                if (SettingsManager.Instance.ShutdownAfterFixing)
+                    SignalHost.Instance.RaiseSignal(this, Signal.Shutdown);
             }
             else if (_isFixPending)
             {

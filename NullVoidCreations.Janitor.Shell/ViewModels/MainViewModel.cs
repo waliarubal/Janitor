@@ -1,8 +1,9 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Controls;
 using NullVoidCreations.Janitor.Shell.Core;
-using NullVoidCreations.Janitor.Shell.Commands;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -196,27 +197,37 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         void ExecuteClose(object parameter)
         {
-            if (SettingsManager.Instance.ExitOnClose)
-                App.Current.Shutdown(0);
-            else
-            {
-                View.WindowState = WindowState.Minimized;
-                View.ShowInTaskbar = true;
-            }
+            SignalReceived(this, Signal.Close);
         }
 
         public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {
             switch (signal)
             {
+                case Signal.Shutdown:
+                    var shutdown = new ProcessStartInfo();
+                    shutdown.FileName = "shutdown";
+                    shutdown.Arguments = "/s /t 2";
+                    shutdown.UseShellExecute = false;
+                    shutdown.CreateNoWindow = true;
+                    Process.Start(shutdown);
+                    break;
+
+                case Signal.Close:
+                    if (SettingsManager.Instance.ExitOnClose)
+                        App.Current.Shutdown(0);
+                    else
+                        SignalReceived(sender, Signal.CloseToTray);
+                    break;
+
                 case Signal.CloseToTray:
-                    View.WindowState = WindowState.Minimized;
                     View.ShowInTaskbar = false;
+                    View.WindowState = WindowState.Minimized;
                     break;
 
                 case Signal.ShowUi:
-                    View.WindowState = WindowState.Normal;
                     View.ShowInTaskbar = true;
+                    View.WindowState = WindowState.Normal;
                     break;
 
                 case Signal.FixingStarted:
@@ -264,7 +275,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 case Signal.LicenseChanged:
                     if (LicenseManager.Instance.License.IsTrial)
-                        new BalloonCommand(null).Execute("Https://www.google.com");
+                        new BalloonCommand(null).Execute("https://www.google.com");
                     break;
             }
         }

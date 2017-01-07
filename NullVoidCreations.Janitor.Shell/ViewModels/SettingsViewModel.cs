@@ -1,10 +1,18 @@
 ﻿using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Core;
+using NullVoidCreations.Janitor.Shell.Commands;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class SettingsViewModel: ViewModelBase
     {
+        readonly CommandBase _scheduleSilentRun;
+
+        public SettingsViewModel()
+        {
+            _scheduleSilentRun = new ScheduleSilentRunCommand(this);
+        }
+
         #region properties
 
         public bool RunAtBoot
@@ -109,6 +117,15 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 SettingsManager.Instance.ShutdownAfterFixing = value;
                 RaisePropertyChanged("ShutdownAfterFixing");
             }
+        }
+
+        #endregion
+
+        #region commands
+
+        public CommandBase ScheduleSilentRun
+        {
+            get { return _scheduleSilentRun; }
         }
 
         #endregion

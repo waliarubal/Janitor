@@ -22,8 +22,10 @@ namespace NullVoidCreations.Janitor.Shell.Core
         UpdateStarted,
         UpdateStopped,
         Initialized,
+        Close,
         CloseToTray,
-        ShowUi
+        ShowUi,
+        Shutdown
     }
 
     class SignalHost

@@ -1,6 +1,7 @@
 ﻿using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Core;
+using System;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
@@ -17,6 +18,8 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         protected override object ExecuteOverride(object parameter)
         {
+            FirstTimeExecution();
+
             // load license
             LicenseManager.Instance.LoadLicense();
 
@@ -36,6 +39,26 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         {
             SignalHost.Instance.RaiseSignal(this, Signal.Initialized);
             IsEnabled = false;
+        }
+
+        /// <summary>
+        /// This method takes care of first time initialization.
+        /// TODO: move this code to app init command
+        /// </summary>
+        void FirstTimeExecution()
+        {
+            var firstExecutionDate = SettingsManager.Instance.FirstExecutionDate;
+            if (default(DateTime) != firstExecutionDate)
+                return;
+
+            SettingsManager.Instance.FirstExecutionDate = DateTime.Now;
+
+            SettingsManager.Instance.RunPluginUpdateAtLaunch = true;
+            SettingsManager.Instance.RunPluginUpdateAtLaunch = true;
+            SettingsManager.Instance.RunPluginUpdateAtLaunch = true;
+
+            SettingsManager.Instance.RunPluginUpdateAtLaunch = true;
+            //new RunAtStartupCommand(ViewModel).Execute(SettingsManager.Instance.RunPluginUpdateAtLaunch);
         }
 
         public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)

@@ -48,6 +48,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         {
             switch (signal)
             {
+                case Signal.Initialized:
+                    SignalReceived(sender, Signal.LicenseChanged, data);
+                    break;
+
                 case Signal.ScanStatusChanged:
                     if (_worker.IsBusy)
                         _worker.ReportProgress(-1, data[0]);

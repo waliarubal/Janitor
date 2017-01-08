@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shared.Models;
 using NullVoidCreations.Janitor.Shell.Controls;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels

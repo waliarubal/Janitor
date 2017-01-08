@@ -186,12 +186,12 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             var updateFile = e.UserState as string;
+            ViewModel.IsExecuting = IsExecuting = false;
 
             // update failed
             if (string.IsNullOrEmpty(updateFile) || !File.Exists(updateFile))
             {
                 SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, false);
-                ViewModel.IsExecuting = IsExecuting = false;
                 return;
             }
 
@@ -223,7 +223,6 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
             Description = message;
             Title = "Check for Updates";
-            ViewModel.IsExecuting = IsExecuting = false;
             SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, isUpdateInstalled);
         }
 

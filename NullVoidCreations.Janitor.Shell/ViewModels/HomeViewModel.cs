@@ -241,7 +241,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             switch (signal)
             {
                 case Signal.Initialized:
-                    WeHaveProblems();
+                    SignalReceived(sender, Signal.SystemInformationLoaded);
+                    SignalReceived(sender, Signal.LicenseChanged);
                     break;
 
                 case Signal.SystemInformationLoaded:

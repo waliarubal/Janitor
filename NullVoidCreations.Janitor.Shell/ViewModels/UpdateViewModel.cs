@@ -9,8 +9,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public UpdateViewModel()
         {
-            _pluginUpdate = new UpdateCommand(this, UpdateCommand.UpdateType.Plugin);
-            _programUpdate = new UpdateCommand(this, UpdateCommand.UpdateType.Program);
+            _pluginUpdate = new UpdateCommand(this, UpdateCommand.UpdateType.Plugin, false);
+            _programUpdate = new UpdateCommand(this, UpdateCommand.UpdateType.Program, false);
             _pluginUpdate.IsEnabled = _programUpdate.IsEnabled = true;
         }
 

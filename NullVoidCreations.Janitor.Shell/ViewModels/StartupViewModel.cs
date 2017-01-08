@@ -76,6 +76,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 Entries.Remove(SelectedEntry);
                 SelectedEntry = null;
             }
+            else
+                UiHelper.Instance.Error("An error occured while removing program {0} from startup.", SelectedEntry.Name);
         }
 
         object ExecuteDelete(object parameter)

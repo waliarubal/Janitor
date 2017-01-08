@@ -7,6 +7,7 @@ using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Views;
+using NullVoidCreations.Janitor.Core.Models;
 
 namespace NullVoidCreations.Janitor.Shell
 {
@@ -47,6 +48,7 @@ namespace NullVoidCreations.Janitor.Shell
 
             base.OnStartup(e);
 
+            // initialization
             _worker = new BackgroundWorker();
             _worker.DoWork += new DoWorkEventHandler(Worker_DoWork);
             _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
@@ -64,6 +66,9 @@ namespace NullVoidCreations.Janitor.Shell
             SignalHost.Instance.RaiseSignal(this, Signal.Initialized);
             SignalHost.Instance.RaiseSignal(this, Signal.SystemInformationLoaded);
 
+            if (SettingsManager.Instance.RunScanAtLaunch)
+                SignalHost.Instance.RaiseSignal(this, Signal.ScanTrigerred, ScanType.SmartScan);
+
             _worker.DoWork -= new DoWorkEventHandler(Worker_DoWork);
             _worker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
             _worker.Dispose();
@@ -76,6 +81,24 @@ namespace NullVoidCreations.Janitor.Shell
             Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
 
             FirstTimeExecution();
+
+            // configure to run at startup
+            if (SettingsManager.Instance.RunAtBoot)
+                new ScheduleSilentRunCommand(null).Execute(SettingsManager.Instance.RunAtBoot);
+
+            // program update
+            var update = new UpdateCommand(null, UpdateCommand.UpdateType.Program, true);
+            update.IsEnabled = true;
+            update.Execute(null);
+            while (update.IsExecuting)
+                Thread.Sleep(1000);
+
+            // plugins update
+            update = new UpdateCommand(null, UpdateCommand.UpdateType.Plugin, true);
+            update.IsEnabled = true;
+            update.Execute(null);
+            while (update.IsExecuting)
+                Thread.Sleep(1000);
 
             // load license
             LicenseExManager.Instance.LoadLicense();
@@ -105,7 +128,6 @@ namespace NullVoidCreations.Janitor.Shell
             SettingsManager.Instance.RunScanAtLaunch = true;
 
             SettingsManager.Instance.RunAtBoot = true;
-            new ScheduleSilentRunCommand(null).Execute(SettingsManager.Instance.RunAtBoot);
         }
 
         public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Commands;
@@ -239,8 +240,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.CloseAndStart:
-                    App.Current.Shutdown(0);
-                    Process.Start(SettingsManager.Instance.ExecutablePath);
+                    UiHelper.Instance.ExecuteOnUiThread(new Action(() =>
+                    {
+                        App.Current.Shutdown(0);
+                        Process.Start(SettingsManager.Instance.ExecutablePath);
+                    }));
                     break;
 
                 case Signal.ShowUi:

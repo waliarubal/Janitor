@@ -324,9 +324,6 @@
     <Resource Include="Resources\Delete.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\SplashScreeen.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Logo16.ico" />
   </ItemGroup>
   <ItemGroup>

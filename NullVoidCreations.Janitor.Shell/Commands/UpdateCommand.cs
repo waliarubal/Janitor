@@ -35,19 +35,21 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         readonly Uri  MetadataUrl = new Uri(@"https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Update.txt");
 
         readonly UpdateType _type;
+        readonly bool _isSilent;
         volatile int _progress;
         Uri _updateUrl;
         WebClient _client;
         
         #region constructor/destructor
 
-        public UpdateCommand(ViewModelBase viewModel, UpdateType type)
+        public UpdateCommand(ViewModelBase viewModel, UpdateType type, bool isSilent)
             : base(viewModel)
         {
             SignalHost.Instance.AddObserver(this);
 
             Title = "Check for Updates";
             _type = type;
+            _isSilent = isSilent;
             if (_type == UpdateType.Program)
                 Description = string.Format(UpToDateMessage, App.Current.Resources["ProductVersion"]);
             else
@@ -102,10 +104,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             }
         }
 
-        public Version AvailableVersion
+        Version AvailableVersion
         {
             get;
-            private set;
+            set;
 
         }
 
@@ -186,8 +188,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             var updateFile = e.UserState as string;
-            ViewModel.IsExecuting = IsExecuting = false;
-
+            IsExecuting = false;
+            if (ViewModel != null)
+                ViewModel.IsExecuting = IsExecuting;
+            
             // update failed
             if (string.IsNullOrEmpty(updateFile) || !File.Exists(updateFile))
             {
@@ -201,7 +205,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (_type == UpdateType.Program)
             {
                 message = RestartRequiredMessage;
-                if (UiHelper.Instance.Question(App.ProductName, RestartRequiredMessage))
+                if (_isSilent || UiHelper.Instance.Question(App.ProductName, RestartRequiredMessage))
                 {
                     var startInfo = new ProcessStartInfo(updateFile);
                     startInfo.UseShellExecute = true;
@@ -214,7 +218,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             else
             {
                 message = RestartRequiredMessage;
-                if (UiHelper.Instance.Question(App.ProductName, RestartRequiredMessage))
+                if (_isSilent || UiHelper.Instance.Question(App.ProductName, RestartRequiredMessage))
                 {
                     PluginManager.Instance.Version = AvailableVersion;
                     SignalHost.Instance.RaiseSignal(this, Signal.CloseAndStart);
@@ -230,7 +234,11 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         {
             // set execution status as its disabled by command's base
             if (!IsExecuting)
-                ViewModel.IsExecuting = IsExecuting = true;
+            {
+                IsExecuting = true;
+                if (ViewModel != null)
+                    ViewModel.IsExecuting = IsExecuting;
+            }
 
             Progress = e.ProgressPercentage;
         }

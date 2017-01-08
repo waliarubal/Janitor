@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-using System.Windows.Threading;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Core;
 
@@ -48,7 +47,7 @@ namespace NullVoidCreations.Janitor.Core.Models
             _issues.Clear();
 
             // TODO: this throws cross thread exception, investigate this
-            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => _targets.Clear()));
+            UiHelper.Instance.ExecuteOnUiThread(new Action(() => _targets.Clear()));
         }
 
         #endregion

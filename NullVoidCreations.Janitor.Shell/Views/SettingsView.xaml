@@ -87,7 +87,7 @@
 
             <TextBlock Grid.Row="4"
                        Grid.Column="1"
-                       Text="Automatically check for scan target plugins update on launch." />
+                       Text="Automatically download and install scan target plugins update on launch." />
             <CheckBox Grid.Row="4"
                       Grid.Column="2"
                       IsChecked="{Binding Path=RunPluginUpdateAtLaunch,
@@ -95,7 +95,7 @@
 
             <TextBlock Grid.Row="5"
                        Grid.Column="1"
-                       Text="Automatically check for program update on launch." />
+                       Text="Automatically download and install program update on launch." />
             <CheckBox Grid.Row="5"
                       Grid.Column="2"
                       IsChecked="{Binding Path=RunProgramUpdateAtLaunch,

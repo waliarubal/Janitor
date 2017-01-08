@@ -5,21 +5,21 @@ using System;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
-    class LicenseManager: ISignalObserver
+    class LicenseExManager: ISignalObserver
     {
         internal const string EncryptionKey = "QFByb3Blcl9QYXRvbGEhMjAxNQ==";
 
-        static volatile LicenseManager _instance;
+        static volatile LicenseExManager _instance;
         LicenseModel _license;
 
         #region constructor / destructor
 
-        private LicenseManager()
+        private LicenseExManager()
         {
             _license = new LicenseModel();
         }
 
-        ~LicenseManager()
+        ~LicenseExManager()
         {
             
         }
@@ -28,12 +28,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #region properties
 
-        public static LicenseManager Instance
+        public static LicenseExManager Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new LicenseManager();
+                    _instance = new LicenseExManager();
 
                 return _instance;
             }

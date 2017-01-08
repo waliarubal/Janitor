@@ -2,8 +2,8 @@
 using System.Windows;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Commands;
-using NullVoidCreations.Janitor.Shell.Controls;
 using NullVoidCreations.Janitor.Shell.Core;
+using NullVoidCreations.Janitor.Shell.Views;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -12,7 +12,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         bool _isWorking, _isUpdating, _isOk, _isHavingIssues, _isAnalysing, _isFixing, _isLoadingStartupEntries;
         byte _problemsCount;
         int _selectedViewIndex, _issueCount;
-        readonly CommandBase _close;
+        readonly CommandBase _close, _open;
+
+        BalloonView _taskbarBalloon;
 
         enum SelectedView: int
         {
@@ -31,7 +33,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _isOk = true;
 
             _close = new DelegateCommand(this, ExecuteClose);
-            _close.IsEnabled = true;
+            _open = new DelegateCommand(this, ExecuteOpen);
+            _close.IsEnabled = _open.IsEnabled = true;
 
             SignalHost.Instance.AddObserver(this);
         }
@@ -45,7 +48,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #region properties
 
-        internal CustomWindow View
+        internal MainView View
         {
             get;
             set;
@@ -193,11 +196,21 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             get { return _close; }
         }
 
+        public CommandBase Open
+        {
+            get { return _open; }
+        }
+
         #endregion
 
         void ExecuteClose(object parameter)
         {
             SignalReceived(this, Signal.Close);
+        }
+
+        void ExecuteOpen(object parameter)
+        {
+            SignalReceived(this, Signal.ShowUi);
         }
 
         public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
@@ -222,11 +235,17 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 case Signal.CloseToTray:
                     View.ShowInTaskbar = false;
-                    View.WindowState = WindowState.Minimized;
+                    View.Hide();
+                    break;
+
+                case Signal.CloseAndStart:
+                    App.Current.Shutdown(0);
+                    Process.Start(SettingsManager.Instance.ExecutablePath);
                     break;
 
                 case Signal.ShowUi:
                     View.ShowInTaskbar = true;
+                    View.Show();
                     View.WindowState = WindowState.Normal;
                     break;
 
@@ -273,9 +292,22 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     IsUpdating = false;
                     break;
 
-                case Signal.LicenseChanged:
-                    if (LicenseManager.Instance.License.IsTrial)
+                case Signal.Initialized:
+                    View.NotificationIcon.Visibility = Visibility.Visible;
+                    if (LicenseExManager.Instance.License.IsTrial)
                         new BalloonCommand(null).Execute("https://www.google.com");
+                    break;
+
+                case Signal.ShowBaloon:
+                    if (_taskbarBalloon == null)
+                        _taskbarBalloon = new BalloonView();
+                    
+                    (_taskbarBalloon.DataContext as BalloonViewModel).Html = data[0] as string;
+                    View.NotificationIcon.ShowCustomBalloon(_taskbarBalloon, System.Windows.Controls.Primitives.PopupAnimation.Slide, 20000);
+                    break;
+
+                case Signal.HideBaloon:
+                    View.NotificationIcon.CloseBalloon();
                     break;
             }
         }

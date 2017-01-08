@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shared.Models;
-using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shared.Helpers;
-using System;
+using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -134,6 +133,12 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         {
             switch (signal)
             {
+                case Signal.Initialized:
+                    SignalReceived(sender, Signal.PluginsLoaded, PluginManager.Instance.Targets);
+                    SignalReceived(sender, Signal.SystemInformationLoaded, data);
+                    SignalReceived(sender, Signal.LicenseChanged, data);
+                    break;
+
                 case Signal.SystemInformationLoaded:
                     Memory = Convert.ToDecimal(SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "TotalPhysicalMemory"]) / 1024 / 1024 / 1024;
                     OperatingSystem = string.Format("{0} ({1})", SysInformation.Instance[SysInformation.ManagementClassNames.OperatingSystem, "Caption"], SysInformation.Instance[SysInformation.ManagementClassNames.OperatingSystem, "OSArchitecture"]);
@@ -153,9 +158,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.LicenseChanged:
-                    RegisteredTo = LicenseManager.Instance.License.RegisteredEmail;
-                    ExpiryDate = LicenseManager.Instance.License.ExpirationDate;
-                    IsTrial = LicenseManager.Instance.License.IsTrial;
+                    RegisteredTo = LicenseExManager.Instance.License.RegisteredEmail;
+                    ExpiryDate = LicenseExManager.Instance.License.ExpirationDate;
+                    IsTrial = LicenseExManager.Instance.License.IsTrial;
                     break;
             }
         }

@@ -80,6 +80,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         object ExecuteDelete(object parameter)
         {
+            //TODO: add confirmation message
             var entry = parameter as StartupEntryModel;
             if (entry == null)
                 return false;

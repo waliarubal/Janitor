@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
-             xmlns:tb="http://www.hardcodet.net/taskbar"
              xmlns:wpf="http://schemas.microsoft.com/wpf/2008/toolkit"
              ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
@@ -11,8 +10,6 @@
                 <ResourceDictionary Source="/NullVoidCreations.Janitor.Shell;component/Themes/SharedResources.xaml" />
                 <ResourceDictionary Source="/NullVoidCreations.Janitor.Shell;component/Themes/DefaultStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <tb:TaskbarIcon x:Key="NotificationIcon" IconSource="/NullVoidCreations.Janitor.Shell;component/Resources/Logo16.ico" />
 
             <!--  named styles  -->
             <Style x:Key="HeaderStyle" TargetType="Border">

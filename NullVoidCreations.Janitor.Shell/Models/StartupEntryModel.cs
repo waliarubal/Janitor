@@ -177,7 +177,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
                 {
                     foreach (var name in key.GetValueNames())
                     {
-                        if (string.IsNullOrEmpty(name) || ScheduleSilentRunCommand.SilentRunKey.Equals(name))
+                        if (string.IsNullOrEmpty(name))
                             continue;
 
                         var entry = new StartupEntryModel(key.GetValue(name, string.Empty, RegistryValueOptions.None) as string, StartupEntryModel.StartupArea.Registry);
@@ -194,7 +194,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
                 {
                     foreach (var name in key.GetValueNames())
                     {
-                        if (string.IsNullOrEmpty(name) || ScheduleSilentRunCommand.SilentRunKey.Equals(name))
+                        if (string.IsNullOrEmpty(name))
                             continue;
 
                         var entry = new StartupEntryModel(key.GetValue(name, string.Empty, RegistryValueOptions.None) as string, StartupEntryModel.StartupArea.RegistryUser);

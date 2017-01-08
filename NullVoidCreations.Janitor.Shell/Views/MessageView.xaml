@@ -1,0 +1,62 @@
+﻿<c:CustomWindow x:Class="NullVoidCreations.Janitor.Shell.Views.MessageView"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
+                xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
+                Title="{Binding Path=Title,
+                                Mode=OneWay}"
+                Width="380"
+                Height="180"
+                Background="{StaticResource ResourceKey=BackgroundBrush}"
+                IsCloseAllowed="False"
+                IsMinimizeAllowed="False"
+                WindowStartupLocation="CenterOwner">
+    <c:CustomWindow.DataContext>
+        <vm:MessageViewModel />
+    </c:CustomWindow.DataContext>
+    <Grid Margin="8">
+        <Grid.Resources>
+            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                <Setter Property="Margin" Value="4" />
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="Margin" Value="8 0" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Image Width="48" Source="{Binding Path=Icon, Mode=OneWay}" />
+        <TextBlock Grid.Column="1" Text="{Binding Path=Message, Mode=OneWay}" />
+        <StackPanel Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button Command="{Binding Path=Ok,
+                                      Mode=OneTime}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                              AncestorType={x:Type c:CustomWindow}},
+                                               Mode=OneWay}"
+                    Content="{Binding Path=Button1Text,
+                                      Mode=OneWay}"
+                    IsDefault="True" />
+            <Button Command="{Binding Path=Cancel,
+                                      Mode=OneTime}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                              AncestorType={x:Type c:CustomWindow}},
+                                               Mode=OneWay}"
+                    Content="{Binding Path=Button2Text,
+                                      Mode=OneWay}"
+                    IsCancel="True" />
+        </StackPanel>
+    </Grid>
+</c:CustomWindow>

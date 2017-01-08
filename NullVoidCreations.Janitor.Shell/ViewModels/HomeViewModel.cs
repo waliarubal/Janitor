@@ -240,6 +240,10 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         {
             switch (signal)
             {
+                case Signal.Initialized:
+                    WeHaveProblems();
+                    break;
+
                 case Signal.SystemInformationLoaded:
                     ComputerName = SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "Name"] as string;
                     Model = SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "Model"] as string;
@@ -249,7 +253,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.LicenseChanged:
-                    License = LicenseManager.Instance.License;
+                    License = LicenseExManager.Instance.License;
                     IsLicensed = License != null && !License.IsTrial;
                     WeHaveProblems();
                     break;

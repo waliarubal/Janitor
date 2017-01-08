@@ -78,7 +78,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             return new object[]
             {
                 window,
-                LicenseManager.Instance.ValidateLicense(LicenseKey)
+                LicenseExManager.Instance.ValidateLicense(LicenseKey)
             };
         }
 

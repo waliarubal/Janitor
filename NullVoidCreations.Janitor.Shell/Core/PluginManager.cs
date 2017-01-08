@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
+using NullVoidCreations.Janitor.Shell.Commands;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -23,7 +24,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
             if (!Directory.Exists(SettingsManager.Instance.PluginsDirectory))
                 Directory.CreateDirectory(SettingsManager.Instance.PluginsDirectory);
 
-            LoadPlugins();
+            // install any pending plugins update
+            if (File.Exists(UpdateCommand.PluginsUpdateFile))
+                UpdatePlugins(UpdateCommand.PluginsUpdateFile);
+            else
+                LoadPlugins();
         }
 
         ~PluginManager()
@@ -49,7 +54,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         public Version Version
         {
             get { return SettingsManager.Instance.PluginsVersion; }
-            private set
+            internal set
             {
                 if (value == SettingsManager.Instance.PluginsVersion)
                     return;
@@ -76,7 +81,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #endregion
 
-        public bool UpdatePlugins(string archiveFile)
+        bool UpdatePlugins(string archiveFile)
         {
             if (string.IsNullOrEmpty(archiveFile))
                 return false;
@@ -95,9 +100,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             }
             LoadPlugins();
 
-            // delete leftover temorary files
-            foreach (var file in new DirectoryWalker(SettingsManager.Instance.PluginsDirectory, (fileName) => fileName.EndsWith(".PendingOverwrite"), false))
-                FileSystemHelper.Instance.DeleteFile(file);
+            FileSystemHelper.Instance.DeleteFile(archiveFile);
 
             return isUpdated;
         }

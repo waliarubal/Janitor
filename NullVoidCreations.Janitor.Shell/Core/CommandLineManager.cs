@@ -14,6 +14,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             public const string Email = "email";
             public const string NoOfDays = "days";
             public const string KeyFile = "key_file";
+            public const string SecondInstance = "secondary";
         }
 
         readonly Dictionary<string, string> _arguments;
@@ -68,7 +69,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             if (!int.TryParse(days, out noOfDays))
                 return false;
 
-            var key = LicenseManager.Instance.GenerateLicenseKey(email, noOfDays);
+            var key = LicenseExManager.Instance.GenerateLicenseKey(email, noOfDays);
             if (!FileSystemHelper.Instance.DeleteFile(keyFile))
                 return false;
 

@@ -18,7 +18,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         {
             if ((bool)parameter)
             {
-                var command = string.Format("\"{0}\" {1}", SettingsManager.Instance.ExecutablePath, CommandLineManager.CommandLineArgument.Silent);
+                var command = string.Format("\"{0}\" /{1}", SettingsManager.Instance.ExecutablePath, CommandLineManager.CommandLineArgument.Silent);
                 return StartupEntryModel.AddEntry(StartupEntryModel.StartupArea.Registry, SilentRunKey, command) != null;
             }
             else

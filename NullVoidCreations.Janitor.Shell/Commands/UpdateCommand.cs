@@ -11,6 +11,14 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 {
     public class UpdateCommand : DelegateCommand, ISignalObserver
     {
+        internal static readonly string PluginsUpdateFile, ApplicationUpdateFile;
+
+        static UpdateCommand()
+        {
+            ApplicationUpdateFile = Path.Combine(KnownPaths.Instance.ApplicationTempTirectory, "Setup.exe");
+            PluginsUpdateFile = Path.Combine(KnownPaths.Instance.ApplicationTempTirectory, "Update.zip");
+        }
+
         public enum UpdateType : byte
         {
             Plugin,
@@ -22,6 +30,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         const string UpdateErrorMessage = "An error occured while installing the update.";
         const string UpdatingMessage = "Updating from version {0} to version {1}.";
         const string UpToDateMessage = "Installed version {0} is up to date.";
+        const string RestartRequiredMessage = "Update has been downloaded. Please restart program to apply update.";
         const char Separator = '|';
         readonly Uri  MetadataUrl = new Uri(@"https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Update.txt");
 
@@ -93,6 +102,13 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             }
         }
 
+        public Version AvailableVersion
+        {
+            get;
+            private set;
+
+        }
+
         #endregion
 
         protected override void ExecuteOverride(object parameter)
@@ -133,11 +149,11 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             }
   
             // validate version
-            var availableVersion = new Version(metaData[1]);
+            AvailableVersion = new Version(metaData[1]);
             var currentVersion = _type == UpdateType.Program ?
                 new Version(App.Current.Resources["ProductVersion"] as string) : 
                 PluginManager.Instance.Version;
-            if (availableVersion <= currentVersion)
+            if (AvailableVersion <= currentVersion)
             {
                 Title = "Check for Updates";
                 Description = string.Format(UpToDateMessage, currentVersion);
@@ -145,12 +161,13 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                 return;
             }
 
+            if (!Directory.Exists(KnownPaths.Instance.ApplicationTempTirectory))
+                Directory.CreateDirectory(KnownPaths.Instance.ApplicationTempTirectory);
+
             // download update
-            Description = string.Format(UpdatingMessage, currentVersion, availableVersion);
+            Description = string.Format(UpdatingMessage, currentVersion, AvailableVersion);
             UpdateUrl = new Uri(metaData[2]);
-            var updateFile = _type == UpdateType.Program ?
-                Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Setup.exe") :
-                Path.Combine(SettingsManager.Instance.PluginsDirectory, "Update.zip");
+            var updateFile = _type == UpdateType.Program ? ApplicationUpdateFile : PluginsUpdateFile;
             FileSystemHelper.Instance.DeleteFile(updateFile);
             try
             {
@@ -183,24 +200,25 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             var message = string.Empty;
             if (_type == UpdateType.Program)
             {
-                var startInfo = new ProcessStartInfo(updateFile);
-                startInfo.UseShellExecute = true;
-                startInfo.WorkingDirectory = KnownPaths.Instance.ApplicationDirectory;
-                Process.Start(startInfo);
+                message = RestartRequiredMessage;
+                if (UiHelper.Instance.Question(App.ProductName, RestartRequiredMessage))
+                {
+                    var startInfo = new ProcessStartInfo(updateFile);
+                    startInfo.UseShellExecute = true;
+                    startInfo.WorkingDirectory = KnownPaths.Instance.ApplicationTempTirectory;
+                    Process.Start(startInfo);
 
-                App.Current.Shutdown(0);
+                    App.Current.Shutdown(0);
+                }
             }
             else
             {
-                if (!PluginManager.Instance.UpdatePlugins(updateFile))
+                message = RestartRequiredMessage;
+                if (UiHelper.Instance.Question(App.ProductName, RestartRequiredMessage))
                 {
-                    message = UpdateErrorMessage;
-                    isUpdateInstalled = false;
+                    PluginManager.Instance.Version = AvailableVersion;
+                    SignalHost.Instance.RaiseSignal(this, Signal.CloseAndStart);
                 }
-                else
-                    message = string.Format(UpToDateMessage, PluginManager.Instance.Version);
-
-                FileSystemHelper.Instance.DeleteFile(updateFile);
             }
 
             Description = message;

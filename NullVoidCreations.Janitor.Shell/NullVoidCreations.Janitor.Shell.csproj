@@ -85,7 +85,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\ActivateLicenseCommand.cs" />
-    <Compile Include="Commands\InitializeAppCommand.cs" />
     <Compile Include="Commands\BalloonCommand.cs" />
     <Compile Include="Commands\ScheduleSilentRunCommand.cs" />
     <Compile Include="Commands\UpdateCommand.cs" />
@@ -97,12 +96,14 @@
     <Compile Include="Converters\StartupAreaToImageConverter.cs" />
     <Compile Include="Core\CommandLineManager.cs" />
     <Compile Include="Core\ISignalObserver.cs" />
-    <Compile Include="Core\LicenseManager.cs" />
+    <Compile Include="Core\LicenseExManager.cs" />
+    <Compile Include="Core\NativeApiHelper.cs" />
     <Compile Include="Core\PluginManager.cs" />
     <Compile Include="Core\Proxy.cs" />
     <Compile Include="Core\SettingsManager.cs" />
     <Compile Include="Core\StringCipher.cs" />
     <Compile Include="Core\SignalHost.cs" />
+    <Compile Include="Core\UiHelper.cs" />
     <Compile Include="Core\ZipStorer.cs" />
     <Compile Include="Models\LicenseModel.cs" />
     <Compile Include="Models\ScanModel.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LicenseActivationViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\StartupViewModel.cs" />
     <Compile Include="ViewModels\UpdateViewModel.cs" />
@@ -130,6 +132,9 @@
     </Compile>
     <Compile Include="Views\LicenseActivationView.xaml.cs">
       <DependentUpon>LicenseActivationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MessageView.xaml.cs">
+      <DependentUpon>MessageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -191,6 +196,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\CustomScanView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -323,6 +332,11 @@
   <ItemGroup>
     <Resource Include="Resources\Directory16.png" />
     <Resource Include="Resources\Registry16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Error48.png" />
+    <Resource Include="Resources\Info48.png" />
+    <Resource Include="Resources\Question48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

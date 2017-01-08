@@ -44,6 +44,21 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         #endregion
 
+        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
+        {
+            switch (signal)
+            {
+                case Signal.ScanStatusChanged:
+                    if (_worker.IsBusy)
+                        _worker.ReportProgress(-1, data[0]);
+                    break;
+
+                case Signal.LicenseChanged:
+                    _license = NullVoidCreations.Janitor.Shell.Core.LicenseExManager.Instance.License;
+                    break;
+            }
+        }
+
         public override void Execute(object parameter)
         {
             IsEnabled = true;
@@ -83,7 +98,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                     break;
 
                 case "Fix":
-                    if (_viewModel.IsExecuting)
+                    if (_viewModel.IsExecuting || _license == null)
                         break;
 
                     if (_license.IsTrial)
@@ -102,21 +117,6 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                     }
 
                     StartFix(_viewModel.Scan);
-                    break;
-            }
-        }
-
-        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
-        {
-            switch (signal)
-            {
-                case Signal.ScanStatusChanged:
-                    if (_worker.IsBusy)
-                        _worker.ReportProgress(-1, data[0]);
-                    break;
-
-                case Signal.LicenseChanged:
-                    _license = NullVoidCreations.Janitor.Shell.Core.LicenseManager.Instance.License;
                     break;
             }
         }

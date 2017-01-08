@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Net;
-using System.Windows.Controls.Primitives;
-using Hardcodet.Wpf.TaskbarNotification;
 using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shell.ViewModels;
-using NullVoidCreations.Janitor.Shell.Views;
+using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
-    public class BalloonCommand: DelegateCommand
+    public class BalloonCommand: DelegateCommand, ISignalObserver
     {
-        TaskbarIcon _notificationIcon;
         WebClient _client;
-        BalloonView _content;
 
         public BalloonCommand(ViewModelBase viewModel)
             : base(viewModel)
@@ -20,6 +15,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             IsEnabled = true;
 
             _client = new WebClient();
+            _client.Proxy = null;
             _client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(Client_DownloadStringCompleted);
         }
 
@@ -34,24 +30,20 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (e.Error != null)
                 return;
 
-            App.Current.Dispatcher.BeginInvoke(new Action(delegate {
-                if (_content == null)
-                    _content = new BalloonView();
-
-                (_content.DataContext as BalloonViewModel).Html = e.Result;
-                _notificationIcon.ShowCustomBalloon(_content, PopupAnimation.Slide, 60000);
-            }));
+            SignalHost.Instance.RaiseSignal(this, Signal.ShowBaloon, e.Result);
         }
 
         protected override void ExecuteOverride(object parameter)
         {
-            if (_notificationIcon == null)
-                _notificationIcon = (TaskbarIcon)App.Current.Resources["NotificationIcon"];
-
             if (parameter == null)
-                _notificationIcon.CloseBalloon();
+                SignalHost.Instance.RaiseSignal(this, Signal.HideBaloon);
             else
                 _client.DownloadStringAsync(new Uri(parameter as string));
+        }
+
+        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
+        {
+            
         }
     }
 }

@@ -90,7 +90,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
                 ExpirationDate.Month,
                 ExpirationDate.Day,
                 RegisteredEmail);
-            LicenseKey = StringCipher.Instance.Encrypt(key, LicenseManager.EncryptionKey);
+            LicenseKey = StringCipher.Instance.Encrypt(key, LicenseExManager.EncryptionKey);
 
             return LicenseKey;
         }
@@ -101,7 +101,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
             string errorMessage = null;
             try
             {
-                var decryptedKey = StringCipher.Instance.Decrypt(LicenseKey, LicenseManager.EncryptionKey);
+                var decryptedKey = StringCipher.Instance.Decrypt(LicenseKey, LicenseExManager.EncryptionKey);
                 IssueDate = ExtractDate(decryptedKey, 0);
                 ExpirationDate = ExtractDate(decryptedKey, 8);
                 RegisteredEmail = decryptedKey.Substring(16, decryptedKey.Length - 16);

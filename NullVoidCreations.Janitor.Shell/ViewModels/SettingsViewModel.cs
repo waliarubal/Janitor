@@ -1,6 +1,6 @@
 ﻿using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Commands;
+using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -11,6 +11,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         public SettingsViewModel()
         {
             _scheduleSilentRun = new ScheduleSilentRunCommand(this);
+            _scheduleSilentRun.IsEnabled = true;
         }
 
         #region properties

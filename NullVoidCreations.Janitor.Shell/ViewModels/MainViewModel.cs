@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Windows;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Commands;
@@ -13,7 +12,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         bool _isWorking, _isUpdating, _isOk, _isHavingIssues, _isAnalysing, _isFixing, _isLoadingStartupEntries;
         byte _problemsCount;
         int _selectedViewIndex, _issueCount;
-        readonly CommandBase _close, _open;
+        readonly CommandBase _close, _open, _minimize;
 
         BalloonView _taskbarBalloon;
 
@@ -31,10 +30,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public MainViewModel()
         {
-            _isOk = true;
+            _isOk = false;
 
             _close = new DelegateCommand(this, ExecuteClose);
             _open = new DelegateCommand(this, ExecuteOpen);
+            _minimize = new DelegateCommand(this, ExecuteMinimize);
             _close.IsEnabled = _open.IsEnabled = true;
 
             SignalHost.Instance.AddObserver(this);
@@ -197,12 +197,22 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             get { return _close; }
         }
 
+        public CommandBase Minimize
+        {
+            get { return _minimize; }
+        }
+
         public CommandBase Open
         {
             get { return _open; }
         }
 
         #endregion
+
+        void ExecuteMinimize(object parameter)
+        {
+            SignalReceived(this, Signal.Minimize);
+        }
 
         void ExecuteClose(object parameter)
         {
@@ -227,6 +237,18 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     Process.Start(shutdown);
                     break;
 
+                case Signal.ShowHome:
+                    SelectedViewIndex = (int)SelectedView.Home;
+                    break;
+
+                case Signal.ShowUi:
+                    NativeApiHelper.Instance.Show(View.Handle);
+                    break;
+
+                case Signal.Minimize:
+                    NativeApiHelper.Instance.Minimize(View.Handle);
+                    break;
+
                 case Signal.Close:
                     if (SettingsManager.Instance.ExitOnClose)
                         App.Current.Shutdown(0);
@@ -235,22 +257,15 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.CloseToTray:
-                    View.ShowInTaskbar = false;
-                    View.Hide();
+                    NativeApiHelper.Instance.Hide(View.Handle);
                     break;
 
                 case Signal.CloseAndStart:
-                    UiHelper.Instance.ExecuteOnUiThread(new Action(() =>
+                    UiHelper.Instance.ExecuteOnUiThread(() =>
                     {
                         App.Current.Shutdown(0);
                         Process.Start(SettingsManager.Instance.ExecutablePath);
-                    }));
-                    break;
-
-                case Signal.ShowUi:
-                    View.ShowInTaskbar = true;
-                    View.Show();
-                    View.WindowState = WindowState.Normal;
+                    });
                     break;
 
                 case Signal.FixingStarted:
@@ -289,6 +304,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.UpdateStarted:
+                    SelectedViewIndex = (int)SelectedView.Update;
                     IsUpdating = true;
                     break;
 

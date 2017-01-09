@@ -16,6 +16,7 @@
                 <Setter Property="FontSize" Value="11" />
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+                <Setter Property="TextWrapping" Value="Wrap" />
             </Style>
             <Style x:Key="TitleStyle" TargetType="TextBlock">
                 <Setter Property="FontSize" Value="12" />
@@ -42,7 +43,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width=".5*" />
+                <ColumnDefinition Width=".25*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -75,7 +76,14 @@
             <TextBlock Grid.Row="2"
                        Grid.Column="1"
                        Text="Skip User Account Control (UAC) warning." />
-            <CheckBox Grid.Row="2" Grid.Column="2" />
+            <CheckBox Grid.Row="2"
+                      Grid.Column="2"
+                      Command="{Binding Path=SkipUserAccountControl,
+                                        Mode=OneTime}"
+                      CommandParameter="{Binding Path=SkipUac,
+                                                 Mode=OneWay}"
+                      IsChecked="{Binding Path=SkipUac,
+                                          Mode=TwoWay}" />
 
             <TextBlock Grid.Row="3"
                        Grid.Column="1"
@@ -109,7 +117,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width=".5*" />
+                <ColumnDefinition Width=".25*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

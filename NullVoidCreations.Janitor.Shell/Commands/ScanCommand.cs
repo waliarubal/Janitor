@@ -60,6 +60,18 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                 case Signal.LicenseChanged:
                     _license = NullVoidCreations.Janitor.Shell.Core.LicenseExManager.Instance.License;
                     break;
+
+                case Signal.ScanTrigerred:
+                    if (IsExecuting)
+                        break;
+
+                    switch ((ScanType)data[0])
+                    {
+                        case ScanType.SmartScan:
+                            Execute("Smart");
+                            break;
+                    }
+                    break;
             }
         }
 

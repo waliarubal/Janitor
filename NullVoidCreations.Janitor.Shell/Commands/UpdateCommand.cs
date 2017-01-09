@@ -35,21 +35,20 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         readonly Uri  MetadataUrl = new Uri(@"https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Update.txt");
 
         readonly UpdateType _type;
-        readonly bool _isSilent;
+        bool _isSilent;
         volatile int _progress;
         Uri _updateUrl;
         WebClient _client;
         
         #region constructor/destructor
 
-        public UpdateCommand(ViewModelBase viewModel, UpdateType type, bool isSilent)
+        public UpdateCommand(ViewModelBase viewModel, UpdateType type)
             : base(viewModel)
         {
             SignalHost.Instance.AddObserver(this);
 
             Title = "Check for Updates";
             _type = type;
-            _isSilent = isSilent;
             if (_type == UpdateType.Program)
                 Description = string.Format(UpToDateMessage, App.Current.Resources["ProductVersion"]);
             else
@@ -130,6 +129,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             {
                 Description = DownloadErrorMessage;
                 SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, true);
+                SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
                 return;
             }
 
@@ -137,6 +137,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             {
                 Description = DownloadErrorMessage;
                 SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, true);
+                SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
                 return;
             }
 
@@ -160,6 +161,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                 Title = "Check for Updates";
                 Description = string.Format(UpToDateMessage, currentVersion);
                 SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, true);
+                SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
                 return;
             }
 
@@ -179,6 +181,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             {
                 Description = DownloadErrorMessage;
                 SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, false);
+                SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
                 return;
             }
 
@@ -196,6 +199,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (string.IsNullOrEmpty(updateFile) || !File.Exists(updateFile))
             {
                 SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, false);
+                SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
                 return;
             }
 
@@ -227,7 +231,9 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
             Description = message;
             Title = "Check for Updates";
+            _isSilent = false;
             SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, isUpdateInstalled);
+            SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
         }
 
         void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -245,10 +251,24 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {
-            if (signal != Signal.Initialized || _type != UpdateType.Plugin)
-                return;
+            switch(signal)
+            {
+                case Signal.Initialized:
+                    if (_type == UpdateType.Plugin)
+                        Description = string.Format(UpToDateMessage, PluginManager.Instance.Version);
+                    break;
 
-            Description = string.Format(UpToDateMessage, PluginManager.Instance.Version);
+                case Signal.UpdateTriggered:
+                    if (IsExecuting)
+                        break;
+
+                    if (_type == (UpdateType)data[0])
+                    {
+                        _isSilent = true;
+                        Execute(null);
+                    }
+                    break;
+            }
         }
     }
 }

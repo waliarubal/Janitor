@@ -20,6 +20,12 @@
     </c:CustomWindow.DataContext>
     <c:CustomWindow.HeaderContent>
         <Grid>
+            <Grid.ToolTip>
+                <Grid>
+                    <TextBlock Text="{Binding Path=ProblemsCount, Mode=OneWay, StringFormat='{}{0} problem(s) require your attention.'}" Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                    <TextBlock Text="Your system is running at maximum efficiency." Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+                </Grid>
+            </Grid.ToolTip>
             <Image Width="32"
                    Height="32"
                    Margin="0 0 8 0"

@@ -6,12 +6,13 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class SettingsViewModel: ViewModelBase
     {
-        readonly CommandBase _scheduleSilentRun;
+        readonly CommandBase _scheduleSilentRun, _skipUac;
 
         public SettingsViewModel()
         {
             _scheduleSilentRun = new ScheduleSilentRunCommand(this);
-            _scheduleSilentRun.IsEnabled = true;
+            _skipUac = new SkipUacCommand(this);
+            _scheduleSilentRun.IsEnabled = _skipUac.IsEnabled = true;
         }
 
         #region properties
@@ -127,6 +128,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         public CommandBase ScheduleSilentRun
         {
             get { return _scheduleSilentRun; }
+        }
+
+        public CommandBase SkipUserAccountControl
+        {
+            get { return _skipUac; }
         }
 
         #endregion

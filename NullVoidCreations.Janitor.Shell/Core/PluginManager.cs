@@ -121,7 +121,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 {
                     if (type.IsSubclassOf(scanTargetType))
                     {
-                        //TODO: use do callback here
                         var target = (ScanTargetBase) assembly.CreateInstance(type.FullName, false);
                         if (_targets.ContainsKey(target.Name))
                             continue;

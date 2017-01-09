@@ -4286,6 +4286,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ARPCOMMENTS</td><td>##ID_STRING3##</td><td/></row>
 		<row><td>ARPHELPLINK</td><td>##ID_STRING10##</td><td/></row>
 		<row><td>ARPINSTALLLOCATION</td><td/><td/></row>
+		<row><td>ARPNOMODIFY</td><td>1</td><td/></row>
 		<row><td>ARPPRODUCTICON</td><td>ARPPRODUCTICON.exe</td><td/></row>
 		<row><td>ARPSIZE</td><td/><td/></row>
 		<row><td>ARPURLINFOABOUT</td><td>##ID_STRING2##</td><td/></row>
@@ -4356,9 +4357,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[INSTALLDIR]NullVoidCreations.Janitor.Shell.Primary output</td><td/></row>
-		<row><td>ProductCode</td><td>{D3B47C5A-FA6E-4E2A-87E4-F91973F1E383}</td><td/></row>
+		<row><td>ProductCode</td><td>{ED8BCB54-870F-4C56-9813-625D4FAC70B2}</td><td/></row>
 		<row><td>ProductName</td><td>PC Mechanic Pro</td><td/></row>
-		<row><td>ProductVersion</td><td>1.2.0000</td><td/></row>
+		<row><td>ProductVersion</td><td>1.3.0000</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4646,7 +4647,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s72">ActionProperty</col>
 		<col def="S72">ISDisplayName</col>
 		<row><td>{00000000-0000-0000-0000-000000000000}</td><td>***ALL_VERSIONS***</td><td></td><td></td><td>2</td><td/><td>ISFOUNDNEWERPRODUCTVERSION</td><td>ISPreventDowngrade</td></row>
-		<row><td>{233A8D8E-EA27-40EB-BCF1-E6C22F73F4C1}</td><td></td><td>1.2.0000</td><td></td><td>768</td><td/><td>ISACTIONPROP2</td><td>Upgrade</td></row>
+		<row><td>{233A8D8E-EA27-40EB-BCF1-E6C22F73F4C1}</td><td></td><td>1.3.0000</td><td></td><td>512</td><td/><td>ISACTIONPROP2</td><td>Upgrade</td></row>
 	</table>
 
 	<table name="Verb">

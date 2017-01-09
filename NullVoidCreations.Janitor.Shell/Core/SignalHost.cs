@@ -21,14 +21,19 @@ namespace NullVoidCreations.Janitor.Shell.Core
         SettingsSaved,
         UpdateStarted,
         UpdateStopped,
+        UpdateTriggered,
         Initialized,
         Close,
         CloseToTray,
+        Minimize,
         CloseAndStart,
         ShowUi,
+        ShowHome,
         Shutdown,
         ShowBaloon,
-        HideBaloon
+        HideBaloon,
+        StartWork,
+        StopWork
     }
 
     class SignalHost

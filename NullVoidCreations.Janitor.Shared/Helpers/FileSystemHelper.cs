@@ -1,5 +1,5 @@
-﻿
-using System.IO;
+﻿using System.IO;
+
 namespace NullVoidCreations.Janitor.Shared.Helpers
 {
     public class FileSystemHelper

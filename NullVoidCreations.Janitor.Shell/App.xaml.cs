@@ -7,7 +7,6 @@ using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Views;
-using NullVoidCreations.Janitor.Core.Models;
 
 namespace NullVoidCreations.Janitor.Shell
 {
@@ -61,20 +60,6 @@ namespace NullVoidCreations.Janitor.Shell
             CommandLineManager.Instance.ProcessArguments();
         }
 
-        void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            SignalHost.Instance.RaiseSignal(this, Signal.Initialized);
-            SignalHost.Instance.RaiseSignal(this, Signal.SystemInformationLoaded);
-
-            if (SettingsManager.Instance.RunScanAtLaunch)
-                SignalHost.Instance.RaiseSignal(this, Signal.ScanTrigerred, ScanType.SmartScan);
-
-            _worker.DoWork -= new DoWorkEventHandler(Worker_DoWork);
-            _worker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
-            _worker.Dispose();
-            _worker = null;
-        }
-
         void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             Thread.CurrentThread.IsBackground = true;
@@ -86,20 +71,6 @@ namespace NullVoidCreations.Janitor.Shell
             if (SettingsManager.Instance.RunAtBoot)
                 new ScheduleSilentRunCommand(null).Execute(SettingsManager.Instance.RunAtBoot);
 
-            // program update
-            var update = new UpdateCommand(null, UpdateCommand.UpdateType.Program, true);
-            update.IsEnabled = true;
-            update.Execute(null);
-            while (update.IsExecuting)
-                Thread.Sleep(1000);
-
-            // plugins update
-            update = new UpdateCommand(null, UpdateCommand.UpdateType.Plugin, true);
-            update.IsEnabled = true;
-            update.Execute(null);
-            while (update.IsExecuting)
-                Thread.Sleep(1000);
-
             // load license
             LicenseExManager.Instance.LoadLicense();
 
@@ -110,6 +81,28 @@ namespace NullVoidCreations.Janitor.Shell
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.ComputerSystem);
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.OperatingSystem);
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.Processor);
+        }
+
+        void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            SignalHost.Instance.RaiseSignal(this, Signal.Initialized);
+            SignalHost.Instance.RaiseSignal(this, Signal.SystemInformationLoaded);
+
+            // trigger work pipeline
+            if (SettingsManager.Instance.RunProgramUpdateAtLaunch)
+                WorkQueueManager.Instance.AddWork(WorkSignal.ProgramUpdate);
+            if (SettingsManager.Instance.RunPluginUpdateAtLaunch)
+                WorkQueueManager.Instance.AddWork(WorkSignal.PluginUpdate);
+            if (SettingsManager.Instance.RunScanAtLaunch)
+                WorkQueueManager.Instance.AddWork(WorkSignal.SmartScan);
+            else
+                WorkQueueManager.Instance.AddWork(WorkSignal.ShowHome);
+            WorkQueueManager.Instance.DoWork();
+
+            _worker.DoWork -= new DoWorkEventHandler(Worker_DoWork);
+            _worker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
+            _worker.Dispose();
+            _worker = null;
         }
 
         /// <summary>

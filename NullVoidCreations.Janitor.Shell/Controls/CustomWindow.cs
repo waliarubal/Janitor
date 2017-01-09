@@ -1,8 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Shell.Controls
 {
@@ -13,8 +15,9 @@ namespace NullVoidCreations.Janitor.Shell.Controls
     {
         Border _title;
         Button _minimize, _close;
+        IntPtr _handle;
 
-        public static readonly DependencyProperty HeaderContentProperty, IsMinimizeAllowedProperty, IsCloseAllowedProperty, CloseCommandProperty;
+        public static readonly DependencyProperty HeaderContentProperty, IsMinimizeAllowedProperty, IsCloseAllowedProperty, CloseCommandProperty, MinimizeCommandProperty;
 
         static CustomWindow()
         {
@@ -22,6 +25,7 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             IsMinimizeAllowedProperty = DependencyProperty.Register("IsMinimizeAllowed", typeof(bool), typeof(CustomWindow));
             IsCloseAllowedProperty = DependencyProperty.Register("IsCloseAllowed", typeof(bool), typeof(CustomWindow));
             CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(CommandBase), typeof(CustomWindow));
+            MinimizeCommandProperty = DependencyProperty.Register("MinimizeCommand", typeof(CommandBase), typeof(CustomWindow));
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CustomWindow), new FrameworkPropertyMetadata(typeof(CustomWindow)));
         }
 
@@ -30,9 +34,21 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             IsMinimizeAllowed = true;
             IsCloseAllowed = true;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            _handle = IntPtr.Zero;
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            _handle = NativeApiHelper.Instance.GetWindowHandle(this);
         }
 
         #region properties
+
+        public IntPtr Handle
+        {
+            get { return _handle; }
+        }
 
         public FrameworkElement HeaderContent
         {
@@ -56,6 +72,12 @@ namespace NullVoidCreations.Janitor.Shell.Controls
         {
             get { return (CommandBase)GetValue(CloseCommandProperty); }
             set { SetValue(CloseCommandProperty, value); }
+        }
+
+        public CommandBase MinimizeCommand
+        {
+            get { return (CommandBase)GetValue(MinimizeCommandProperty); }
+            set { SetValue(MinimizeCommandProperty, value); }
         }
 
         #endregion
@@ -93,8 +115,10 @@ namespace NullVoidCreations.Janitor.Shell.Controls
 
         void Minimize_Click(object sender, RoutedEventArgs e)
         {
-            ShowInTaskbar = true;
-            WindowState = WindowState.Minimized;
+            if (MinimizeCommand != null && MinimizeCommand.IsEnabled)
+                MinimizeCommand.Execute(this);
+            else
+                WindowState = WindowState.Minimized;
 
             e.Handled = true;
         }

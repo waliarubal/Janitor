@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Interop;
+using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
+
     class NativeApiHelper
     {
 
@@ -64,6 +68,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
             /// <remarks>See SW_FORCEMINIMIZE</remarks>
             ForceMinimized = 11
         }
+
+        const int CSIDL_COMMON_STARTMENU = 0x16;  // All Users\Start Menu
+
+        [DllImport("shell32.dll")]
+        static extern bool SHGetSpecialFolderPath(IntPtr hwndOwner, [Out] StringBuilder lpszPath, int nFolder, bool fCreate);
 
         [DllImport("user32", CharSet = CharSet.Unicode)]
         static extern IntPtr FindWindow(string cls, string win);
@@ -133,9 +142,50 @@ namespace NullVoidCreations.Janitor.Shell.Core
             ShowWindow(hWnd, (int)WindowShowStyle.Restore);
         }
 
-        public void CreateTask()
+        public string GetStartMenuDirectory()
         {
-            
+            var path = new StringBuilder(260);
+            SHGetSpecialFolderPath(IntPtr.Zero, path, CSIDL_COMMON_STARTMENU, false);
+            return path.ToString();
+        }
+
+        public void CreateShortcut(string lnkPath, string executable, string arguments, string workingDirectory, string iconPath, bool isMinimized)
+        {
+            // delete existing link
+            FileSystemHelper.Instance.DeleteFile(lnkPath);
+
+            // Windows Script Host Shell Object
+            var type = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")); 
+            var shell = Activator.CreateInstance(type);
+            try
+            {
+                var link = type.InvokeMember("CreateShortcut", BindingFlags.InvokeMethod, null, shell, new object[] { lnkPath });
+                try
+                {
+                    type.InvokeMember("TargetPath", BindingFlags.SetProperty, null, link, new object[] { executable });
+                    if (!string.IsNullOrEmpty(arguments))
+                        type.InvokeMember("Arguments", BindingFlags.SetProperty, null, link, new object[] { arguments });
+                    type.InvokeMember("IconLocation", BindingFlags.SetProperty, null, link, new object[] { iconPath });
+                    type.InvokeMember("WindowStyle", BindingFlags.SetProperty, null, link, new object[] { isMinimized ? 7 : 1 });
+                    type.InvokeMember("Save", BindingFlags.InvokeMethod, null, link, null);
+                }
+                catch (Exception ex)
+                {
+
+                }
+                finally
+                {
+                    Marshal.FinalReleaseComObject(link);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                Marshal.FinalReleaseComObject(shell);
+            }
         }
     }
 }

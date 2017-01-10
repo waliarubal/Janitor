@@ -17,6 +17,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         BackgroundWorker _worker;
         LicenseModel _license;
         bool _isFixPending;
+        volatile bool _isCancelled;
 
         #region constructor / destructor
 
@@ -248,6 +249,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         EXIT_SCAN:
             RaiseProgessChanged(null, null, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent, false);
             scan.Issues = issues;
+            scan.IsCancelled = _isCancelled;
 
             ScanModel.SaveScanDetails(scan);
             SignalHost.Instance.RaiseSignal(this, Signal.AnalysisStopped, issues.Count);
@@ -312,12 +314,13 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         EXIT_SCAN:
             RaiseProgessChanged(null, null, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent, false);
+            scan.IsCancelled = _isCancelled;
             scan.Issues = issues;
 
             ScanModel.SaveScanDetails(scan);
             SignalHost.Instance.RaiseSignal(this, Signal.FixingStopped, issues.Count);
 
-            scan.IsFixed = true;
+            scan.IsFixed = !scan.IsCancelled;
             return scan;
         }
 
@@ -348,6 +351,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
             _viewModel.Scan = e.Result as ScanModel;
             _viewModel.IsExecuting = IsExecuting = false;
+            _isCancelled = false;
 
             if (_viewModel.Scan.IsFixed)
             {
@@ -365,6 +369,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         void CancelScan()
         {
+            _isCancelled = true;
             if (_worker != null && _worker.IsBusy)
                 _worker.CancelAsync();
         }

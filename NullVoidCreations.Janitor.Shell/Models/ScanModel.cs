@@ -75,6 +75,12 @@ namespace NullVoidCreations.Janitor.Core.Models
             internal set;
         }
 
+        public bool IsCancelled
+        {
+            get;
+            internal set;
+        }
+
         public List<IssueBase> Issues
         {
             get { return _issues; }
@@ -122,7 +128,7 @@ namespace NullVoidCreations.Janitor.Core.Models
 
         internal static void SaveScanDetails(ScanModel scan)
         {
-            if (scan == null)
+            if (scan == null || scan.IsCancelled)
                 return;
 
             if (scan.Type == ScanType.CustomScan)

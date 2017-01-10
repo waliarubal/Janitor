@@ -99,10 +99,22 @@ namespace NullVoidCreations.Janitor.Shell.Core
             set { this["PluginsVersion"] = value.ToString(); }
         }
 
-        public DateTime FirstExecutionDate
+        public DateTime FirstExecution
         {
             get { return GetSetting<DateTime>("FirstExecutionDate"); }
             set { this["FirstExecutionDate"] = value; }
+        }
+
+        public DateTime LastPluginUpdateCheck
+        {
+            get { return GetSetting<DateTime>("LastPluginUpdateDate"); }
+            set { this["LastPluginUpdateDate"] = value; }
+        }
+
+        public DateTime LastProgramUpdateCheck
+        {
+            get { return GetSetting<DateTime>("LastProgramUpdateDate"); }
+            set { this["LastProgramUpdateDate"] = value; }
         }
 
         public bool RunAtBoot

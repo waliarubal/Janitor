@@ -27,6 +27,8 @@ namespace NullVoidCreations.Janitor.Shell.Models
             taskDefinition.Actions.Add(ExecutablePath, CommandLineArguments, new FileInfo(ExecutablePath).DirectoryName);
             taskDefinition.Principal.LogonType = TaskLogonType.InteractiveToken;
             taskDefinition.Principal.RunLevel = TaskRunLevel.Highest;
+            taskDefinition.Settings.MultipleInstances = TaskInstancesPolicy.Parallel;
+            taskDefinition.Settings.StopIfGoingOnBatteries = false;
 
             return TaskService.Instance.RootFolder.RegisterTaskDefinition(Name, taskDefinition) != null;
         }

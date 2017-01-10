@@ -29,17 +29,17 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         const string DownloadErrorMessage = "An error occured while downloading update. Please try again later.";
         const string UpdateErrorMessage = "An error occured while installing the update.";
         const string UpdatingMessage = "Updating from version {0} to version {1}.";
-        const string UpToDateMessage = "Installed version {0} is up to date.";
+        const string UpToDateMessage = "Installed version {0} is up to date. Last checked for update on {1}.";
         const string RestartRequiredMessage = "Update has been downloaded. Please restart program to apply update.";
         const char Separator = '|';
-        readonly Uri  MetadataUrl = new Uri(@"https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Update.txt");
+        readonly Uri MetadataUrl = new Uri(@"https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Update.txt");
 
         readonly UpdateType _type;
         bool _isSilent;
         volatile int _progress;
         Uri _updateUrl;
         WebClient _client;
-        
+
         #region constructor/destructor
 
         public UpdateCommand(ViewModelBase viewModel, UpdateType type)
@@ -50,9 +50,9 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             Title = "Check for Updates";
             _type = type;
             if (_type == UpdateType.Program)
-                Description = string.Format(UpToDateMessage, App.Current.Resources["ProductVersion"]);
+                Description = string.Format(UpToDateMessage, App.Current.Resources["ProductVersion"], SettingsManager.Instance.LastProgramUpdateCheck.ToString("MM/dd/yyyy HH:mm:ss"));
             else
-                Description = string.Format(UpToDateMessage, string.Empty);
+                Description = string.Format(UpToDateMessage, string.Empty, SettingsManager.Instance.LastPluginUpdateCheck.ToString("MM/dd/yyyy HH:mm:ss"));
 
             UpdateUrl = MetadataUrl;
             IsEnabled = true;
@@ -117,6 +117,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             SignalHost.Instance.RaiseSignal(this, Signal.UpdateStarted, _type);
             Progress = 0;
             Title = "Updating...";
+            if (_type == UpdateType.Plugin)
+                SettingsManager.Instance.LastPluginUpdateCheck = DateTime.Now;
+            else
+                SettingsManager.Instance.LastProgramUpdateCheck = DateTime.Now;
 
             string[] metaData;
 
@@ -150,16 +154,19 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                 Description = DownloadErrorMessage;
                 return;
             }
-  
+
             // validate version
             AvailableVersion = new Version(metaData[1]);
             var currentVersion = _type == UpdateType.Program ?
-                new Version(App.Current.Resources["ProductVersion"] as string) : 
+                new Version(App.Current.Resources["ProductVersion"] as string) :
                 PluginManager.Instance.Version;
             if (AvailableVersion <= currentVersion)
             {
                 Title = "Check for Updates";
-                Description = string.Format(UpToDateMessage, currentVersion);
+                Description = string.Format(UpToDateMessage, currentVersion,
+                    _type == UpdateType.Plugin ?
+                    SettingsManager.Instance.LastPluginUpdateCheck.ToString("MM/dd/yyyy HH:mm:ss") :
+                    SettingsManager.Instance.LastProgramUpdateCheck.ToString("MM/dd/yyyy HH:mm:ss"));
                 SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, true);
                 SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
                 return;
@@ -194,7 +201,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             IsExecuting = false;
             if (ViewModel != null)
                 ViewModel.IsExecuting = IsExecuting;
-            
+
             // update failed
             if (string.IsNullOrEmpty(updateFile) || !File.Exists(updateFile))
             {
@@ -251,11 +258,14 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {
-            switch(signal)
+            switch (signal)
             {
                 case Signal.Initialized:
                     if (_type == UpdateType.Plugin)
-                        Description = string.Format(UpToDateMessage, PluginManager.Instance.Version);
+                        Description = string.Format(UpToDateMessage, PluginManager.Instance.Version,
+                    _type == UpdateType.Plugin ?
+                    SettingsManager.Instance.LastPluginUpdateCheck.ToString("MM/dd/yyyy HH:mm:ss") :
+                    SettingsManager.Instance.LastProgramUpdateCheck.ToString("MM/dd/yyyy HH:mm:ss"));
                     break;
 
                 case Signal.UpdateTriggered:

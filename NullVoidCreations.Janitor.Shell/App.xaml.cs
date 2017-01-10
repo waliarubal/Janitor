@@ -71,6 +71,10 @@ namespace NullVoidCreations.Janitor.Shell
             if (SettingsManager.Instance.RunAtBoot)
                 new ScheduleSilentRunCommand(null).Execute(SettingsManager.Instance.RunAtBoot);
 
+            // skip UAC
+            if (SettingsManager.Instance.SkipUac)
+                new SkipUacCommand(null).Execute(SettingsManager.Instance.SkipUac);
+
             // load license
             LicenseExManager.Instance.LoadLicense();
 
@@ -86,7 +90,6 @@ namespace NullVoidCreations.Janitor.Shell
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             SignalHost.Instance.RaiseSignal(this, Signal.Initialized);
-            SignalHost.Instance.RaiseSignal(this, Signal.SystemInformationLoaded);
 
             // trigger work pipeline
             if (SettingsManager.Instance.RunProgramUpdateAtLaunch)
@@ -110,16 +113,15 @@ namespace NullVoidCreations.Janitor.Shell
         /// </summary>
         void FirstTimeExecution()
         {
-            var firstExecutionDate = SettingsManager.Instance.FirstExecutionDate;
+            var firstExecutionDate = SettingsManager.Instance.FirstExecution;
             if (default(DateTime) != firstExecutionDate)
                 return;
 
-            SettingsManager.Instance.FirstExecutionDate = DateTime.Now;
+            SettingsManager.Instance.FirstExecution = DateTime.Now;
 
             SettingsManager.Instance.RunProgramUpdateAtLaunch = true;
             SettingsManager.Instance.RunPluginUpdateAtLaunch = true;
             SettingsManager.Instance.RunScanAtLaunch = true;
-
             SettingsManager.Instance.RunAtBoot = true;
         }
 

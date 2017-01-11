@@ -111,6 +111,7 @@
     <Compile Include="Commands\PurchaseLicenseCommand.cs" />
     <Compile Include="Commands\ScanCommand.cs" />
     <Compile Include="Controls\CustomWindow.cs" />
+    <Compile Include="Controls\DateTimeBox.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\StartupAreaToImageConverter.cs" />

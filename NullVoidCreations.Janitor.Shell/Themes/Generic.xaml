@@ -2,9 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:NullVoidCreations.Janitor.Shell.Controls">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/NullVoidCreations.Janitor.Shell;component/Themes/SharedResources.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <Style TargetType="{x:Type local:CustomWindow}">
         <Style.Resources>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <SolidColorBrush x:Key="HeaderBorderBrush" Color="#44525F" />
             <SolidColorBrush x:Key="BackgroundBrush" Color="#FFFFFF" />
             <LinearGradientBrush x:Key="HeaderBackgroundBrush" StartPoint="0.5,0" EndPoint="0.5,1">
@@ -148,6 +151,62 @@
                                 <ContentPresenter Margin="0 1 0 1" ContentSource="{TemplateBinding Content}" />
                             </AdornerDecorator>
                         </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:DateTimeBox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:DateTimeBox}">
+                    <Border x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid.Resources>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="BorderBrush" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                </Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </Grid.Resources>
+
+                            <!--  date box  -->
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsTime, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}, Mode=OneWay}">
+                                <TextBox x:Name="PART_Day"
+                                         MaxLength="2"
+                                         Text="00" />
+                                <TextBlock Text="/" />
+                                <TextBox x:Name="PART_Month"
+                                         MaxLength="2"
+                                         Text="00" />
+                                <TextBlock Text="/" />
+                                <TextBox x:Name="PART_Year"
+                                         MaxLength="4"
+                                         Text="0000" />
+                            </StackPanel>
+
+                            <!--  time box  -->
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsTime, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}, Mode=OneWay}">
+                                <TextBox x:Name="PART_Hour"
+                                         MaxLength="2"
+                                         Text="00" />
+                                <TextBlock Text=":" />
+                                <TextBox x:Name="PART_Minute"
+                                         MaxLength="2"
+                                         Text="00" />
+                                <TextBlock Text=":" />
+                                <TextBox x:Name="PART_Second"
+                                         MaxLength="2"
+                                         Text="00" />
+                            </StackPanel>
+                        </Grid>
+
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

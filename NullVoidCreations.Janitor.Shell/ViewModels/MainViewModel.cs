@@ -239,6 +239,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 case Signal.ShowHome:
                     SelectedViewIndex = (int)SelectedView.Home;
+                    SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
                     break;
 
                 case Signal.ShowUi:
@@ -314,8 +315,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 case Signal.Initialized:
                     View.NotificationIcon.Visibility = Visibility.Visible;
-                    if (LicenseExManager.Instance.License.IsTrial)
-                        new BalloonCommand(null).Execute("https://www.google.com");
                     break;
 
                 case Signal.ShowBaloon:

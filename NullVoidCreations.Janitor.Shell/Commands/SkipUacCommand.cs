@@ -21,7 +21,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             var icon = string.Format("{0}, 0", SettingsManager.Instance.ExecutablePath);
 
             var task = new TaskModel();
-            task.Name = string.Format("{0} - Skip UAC", App.ProductName);
+            task.Name = string.Format("{0}SkipUAC", SettingsManager.Instance.CodeName);
             task.ExecutablePath = SettingsManager.Instance.ExecutablePath;
 
             bool result;

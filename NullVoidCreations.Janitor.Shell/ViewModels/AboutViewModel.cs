@@ -140,9 +140,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.SystemInformationLoaded:
-                    Memory = Convert.ToDecimal(SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "TotalPhysicalMemory"]) / 1024 / 1024 / 1024;
-                    OperatingSystem = string.Format("{0} ({1})", SysInformation.Instance[SysInformation.ManagementClassNames.OperatingSystem, "Caption"], SysInformation.Instance[SysInformation.ManagementClassNames.OperatingSystem, "OSArchitecture"]);
-                    Processor = SysInformation.Instance[SysInformation.ManagementClassNames.Processor, "Name"] as string;
+                    Memory = SysInformation.Instance.Memory;
+                    OperatingSystem = string.Format("{0} ({1})", SysInformation.Instance.OperatingSystem, SysInformation.Instance.OperatingSystemArchitecture);
+                    Processor = SysInformation.Instance.Processor;
                     break;
 
                 case Signal.PluginsLoaded:

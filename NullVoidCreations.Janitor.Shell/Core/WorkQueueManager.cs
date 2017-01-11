@@ -9,7 +9,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
         ProgramUpdate,
         PluginUpdate,
         SmartScan,
-        ShowHome
+        ShowHome,
+        ShowTrialWarning
     }
 
     class WorkQueueManager: ISignalObserver
@@ -77,6 +78,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
                 case WorkSignal.ShowHome:
                     SignalHost.Instance.RaiseSignal(this, Signal.ShowHome);
+                    break;
+
+                case WorkSignal.ShowTrialWarning:
+                    if (LicenseExManager.Instance.License.IsTrial)
+                        new BalloonCommand(null).Execute("https://www.google.com");
                     break;
             }
         }

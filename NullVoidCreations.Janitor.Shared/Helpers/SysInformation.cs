@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Management;
+using System;
 
 namespace NullVoidCreations.Janitor.Shared.Helpers
 {
@@ -441,6 +442,8 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
 
         volatile static SysInformation _instance;
         readonly Dictionary<string, Dictionary<string, object>> _infoCache;
+        string _computerName, _model, _os, _osArchitecture, _processor;
+        decimal _memory;
 
         #region constructor / destructor
 
@@ -480,6 +483,36 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             }
         }
 
+        public string ComputerName
+        {
+            get { return _computerName; }
+        }
+
+        public string Model
+        {
+            get { return _model; }
+        }
+
+        public string OperatingSystem
+        {
+            get { return _os; }
+        }
+
+        public string OperatingSystemArchitecture
+        {
+            get { return _osArchitecture; }
+        }
+
+        public decimal Memory
+        {
+            get { return _memory; }
+        }
+
+        public string Processor
+        {
+            get { return _processor; }
+        }
+
         #endregion
 
         public void Clear()
@@ -508,6 +541,39 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
                         {
                             try
                             {
+                                if (className.Equals(SysInformation.ManagementClassNames.ComputerSystem))
+                                {
+                                    switch(property.Name)
+                                    {
+                                        case "Name":
+                                            _computerName = managementObject.Properties[property.Name].Value.ToString();
+                                            break;
+
+                                        case "Model":
+                                            _model = managementObject.Properties[property.Name].Value.ToString();
+                                            break;
+
+                                        case "TotalPhysicalMemory":
+                                            _memory = Convert.ToDecimal(managementObject.Properties[property.Name].Value) / 1024 / 1024 / 1024;
+                                            break;
+                                    }
+                                }
+                                else if (className.Equals(SysInformation.ManagementClassNames.OperatingSystem))
+                                {
+                                    switch(property.Name)
+                                    {
+                                        case "Caption":
+                                            _os = managementObject.Properties[property.Name].Value.ToString();
+                                            break;
+
+                                        case "OSArchitecture":
+                                            _osArchitecture = managementObject.Properties[property.Name].Value.ToString();
+                                            break;
+                                    }
+                                }
+                                else if (className.Equals(SysInformation.ManagementClassNames.Processor) && property.Name.Equals("Name"))
+                                    _processor = managementObject.Properties[property.Name].Value.ToString();
+
                                 if (_infoCache[className].ContainsKey(property.Name))
                                     _infoCache[className][property.Name] = managementObject.Properties[property.Name].Value;
                                 else

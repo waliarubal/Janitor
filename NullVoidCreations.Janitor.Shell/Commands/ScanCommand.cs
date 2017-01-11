@@ -353,17 +353,20 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _viewModel.IsExecuting = IsExecuting = false;
             _isCancelled = false;
 
+            if (!_viewModel.Scan.IsCancelled && _isFixPending)
+            {
+                _isFixPending = false;
+                Execute("Fix");
+            }
+            else
+                SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
+
             if (_viewModel.Scan.IsFixed)
             {
                 if (SettingsManager.Instance.CloseAfterFixing)
                     SignalHost.Instance.RaiseSignal(this, Signal.Close);
                 if (SettingsManager.Instance.ShutdownAfterFixing)
                     SignalHost.Instance.RaiseSignal(this, Signal.Shutdown);
-            }
-            else if (_isFixPending)
-            {
-                _isFixPending = false;
-                Execute("Fix");
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
@@ -245,11 +244,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.SystemInformationLoaded:
-                    ComputerName = SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "Name"] as string;
-                    Model = SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "Model"] as string;
-                    Memory = Convert.ToDecimal(SysInformation.Instance[SysInformation.ManagementClassNames.ComputerSystem, "TotalPhysicalMemory"]) / 1024 / 1024 / 1024;
-                    OperatingSystem = string.Format("{0} ({1})", SysInformation.Instance[SysInformation.ManagementClassNames.OperatingSystem, "Caption"], SysInformation.Instance[SysInformation.ManagementClassNames.OperatingSystem, "OSArchitecture"]);
-                    Processor = SysInformation.Instance[SysInformation.ManagementClassNames.Processor, "Name"] as string;
+                    ComputerName = SysInformation.Instance.ComputerName;
+                    Model = SysInformation.Instance.Model;
+                    Memory = SysInformation.Instance.Memory;
+                    OperatingSystem = string.Format("{0} ({1})", SysInformation.Instance.OperatingSystem, SysInformation.Instance.OperatingSystemArchitecture);
+                    Processor = SysInformation.Instance.Processor;
                     break;
 
                 case Signal.LicenseChanged:

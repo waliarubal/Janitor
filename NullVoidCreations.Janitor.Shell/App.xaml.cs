@@ -100,6 +100,7 @@ namespace NullVoidCreations.Janitor.Shell
                 WorkQueueManager.Instance.AddWork(WorkSignal.SmartScan);
             else
                 WorkQueueManager.Instance.AddWork(WorkSignal.ShowHome);
+            WorkQueueManager.Instance.AddWork(WorkSignal.ShowTrialWarning);
             WorkQueueManager.Instance.DoWork();
 
             _worker.DoWork -= new DoWorkEventHandler(Worker_DoWork);

@@ -1,21 +1,145 @@
-﻿using NullVoidCreations.Janitor.Shared.Base;
+﻿using System.Collections.ObjectModel;
+using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
+using System.Diagnostics;
+using NullVoidCreations.Janitor.Shell.Models;
+using Microsoft.Win32.TaskScheduler;
+using System;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class SettingsViewModel: ViewModelBase
     {
-        readonly CommandBase _scheduleSilentRun, _skipUac;
+        enum ScheduleType : byte
+        {
+            None,
+            Once,
+            Daily,
+            Weekly
+        }
+
+        readonly ObservableCollection<bool> _weekDays;
+        readonly CommandBase _scheduleSilentRun, _skipUac, _saveSchedule;
+        bool _isScheduleDisabled, _isScheduleOnce, _isScheduleDaily, _isScheduleWeekly;
+        DateTime _schedule;
+        ScheduleType _type;
 
         public SettingsViewModel()
         {
+            _weekDays = new ObservableCollection<bool>();
+            for (var index = 0; index < 7; index++)
+                _weekDays.Add(false);
+
+            _isScheduleDisabled = true;
             _scheduleSilentRun = new ScheduleSilentRunCommand(this);
             _skipUac = new SkipUacCommand(this);
-            _scheduleSilentRun.IsEnabled = _skipUac.IsEnabled = true;
+            _saveSchedule = new AsyncDelegateCommand(this, null, ExecuteSaveSchedule, SaveScheduleExecuted);
+            _scheduleSilentRun.IsEnabled = _skipUac.IsEnabled = _saveSchedule.IsEnabled = true;
         }
 
         #region properties
+
+        private ScheduleType Type
+        {
+            get { return _type; }
+            set
+            {
+                _type = value;
+                switch(_type)
+                {
+                    case ScheduleType.None:
+                        IsScheduleOnce = IsScheduleDaily = IsScheduleWeekly = false;
+                        break;
+
+                    case ScheduleType.Once:
+                        IsScheduleDisabled = IsScheduleDaily = IsScheduleWeekly = false;
+                        break;
+
+                    case ScheduleType.Daily:
+                        IsScheduleDisabled = IsScheduleOnce = IsScheduleWeekly = false;
+                        break;
+
+                    case ScheduleType.Weekly:
+                        IsScheduleDisabled = IsScheduleOnce = IsScheduleDaily = false;
+                        break;
+                }
+            }
+        }
+
+        public DateTime Schedule
+        {
+            get { return _schedule; }
+            set
+            {
+                if (value == _schedule)
+                    return;
+
+                _schedule = value;
+                RaisePropertyChanged("Schedule");
+            }
+        }
+
+        public bool IsScheduleDisabled
+        {
+            get { return _isScheduleDisabled; }
+            set
+            {
+                if (value == IsScheduleDisabled)
+                    return;
+
+                _isScheduleDisabled = value;
+                if (!_isScheduleDisabled) Type = ScheduleType.None;
+                RaisePropertyChanged("IsScheduleDisabled");
+            }
+        }
+
+        public bool IsScheduleOnce
+        {
+            get { return _isScheduleOnce; }
+            set
+            {
+                if (value == _isScheduleOnce)
+                    return;
+
+                _isScheduleOnce = value;
+                if (!_isScheduleOnce) Type = ScheduleType.Once;
+                RaisePropertyChanged("IsScheduleOnce");
+            }
+        }
+
+        public bool IsScheduleDaily
+        {
+            get { return _isScheduleDaily; }
+            set
+            {
+                if (value == _isScheduleDaily)
+                    return;
+
+                _isScheduleDaily = value;
+                if (!_isScheduleDaily) Type = ScheduleType.Daily;
+                RaisePropertyChanged("IsScheduleDaily");
+            }
+        }
+
+        public bool IsScheduleWeekly
+        {
+            get { return _isScheduleWeekly; }
+            set
+            {
+                if (value == _isScheduleWeekly)
+                    return;
+
+                _isScheduleWeekly = value;
+                if (!_isScheduleWeekly) Type = ScheduleType.Weekly;
+                RaisePropertyChanged("IsScheduleWeekly");
+            }
+        }
+
+        public ObservableCollection<bool> WeekDays
+        {
+            get { return _weekDays; }
+        }
 
         public bool RunAtBoot
         {
@@ -135,6 +259,47 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             get { return _skipUac; }
         }
 
+        public CommandBase SaveSchedule
+        {
+            get { return _saveSchedule; }
+        }
+
         #endregion
+
+        object ExecuteSaveSchedule(object parameter)
+        {
+            var task = new TaskModel();
+            task.Name = string.Format("{0}AutomaticSmartScan", App.ProductName);
+            if (IsScheduleDisabled)
+                return task.Delete();
+
+            task.ExecutablePath = SettingsManager.Instance.ExecutablePath;
+            task.CommandLineArguments = string.Format("/{0} /{1}", CommandLineManager.CommandLineArgument.Silent, CommandLineManager.CommandLineArgument.FixIssues);
+
+            switch(Type)
+            {
+                case ScheduleType.Once:
+                    task.Schedule = new TimeTrigger(DateTime.Now);
+                    break;
+
+                case ScheduleType.Daily:
+                    task.Schedule = new DailyTrigger();
+                    task.Schedule.StartBoundary = DateTime.Now;
+                    break;
+
+                case ScheduleType.Weekly:
+                    task.Schedule = new WeeklyTrigger(DaysOfTheWeek.Monday | DaysOfTheWeek.Saturday);
+                    task.Schedule.StartBoundary = DateTime.Now;
+                    break;
+            }
+            
+
+            return task.Create();
+        }
+
+        void SaveScheduleExecuted(object result)
+        {
+
+        }
     }
 }

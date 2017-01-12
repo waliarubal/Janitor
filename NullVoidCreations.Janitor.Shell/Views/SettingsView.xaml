@@ -188,25 +188,39 @@
             <TextBlock Grid.Row="1"
                        Grid.Column="1"
                        Text="Scan should not run automatically." />
-            <RadioButton Grid.Row="1" Grid.Column="2" />
+            <RadioButton Grid.Row="1"
+                         Grid.Column="2"
+                         IsChecked="{Binding Path=IsScheduleDisabled,
+                                             Mode=TwoWay}" />
 
             <TextBlock Grid.Row="2"
                        Grid.Column="1"
-                       Text="Scan should automatically run only once." />
-            <RadioButton Grid.Row="2" Grid.Column="2" />
+                       Text="Scan should run automatically only once." />
+            <RadioButton Grid.Row="2"
+                         Grid.Column="2"
+                         IsChecked="{Binding Path=IsScheduleOnce,
+                                             Mode=TwoWay}" />
 
             <TextBlock Grid.Row="3"
                        Grid.Column="1"
-                       Text="Scan should automatically run daily." />
-            <RadioButton Grid.Row="3" Grid.Column="2" />
+                       Text="Scan should run automatically daily." />
+            <RadioButton Grid.Row="3"
+                         Grid.Column="2"
+                         IsChecked="{Binding Path=IsScheduleDaily,
+                                             Mode=TwoWay}" />
 
             <TextBlock Grid.Row="4"
                        Grid.Column="1"
-                       Text="Scan should automatically run on the following week days:" />
-            <RadioButton Grid.Row="4" Grid.Column="2" />
+                       Text="Scan should run automatically on the following week days:" />
+            <RadioButton Grid.Row="4"
+                         Grid.Column="2"
+                         IsChecked="{Binding Path=IsScheduleWeekly,
+                                             Mode=TwoWay}" />
             <Grid Grid.Row="5"
                   Grid.Column="1"
-                  Margin="8 4">
+                  Margin="8 4"
+                  IsEnabled="{Binding Path=IsScheduleWeekly,
+                                      Mode=OneWay}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -221,37 +235,58 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <CheckBox Grid.Row="0" Grid.Column="0" />
+                <CheckBox Grid.Row="0"
+                          Grid.Column="0"
+                          IsChecked="{Binding Path=WeekDays[0],
+                                              Mode=TwoWay}" />
                 <TextBlock Grid.Row="0"
                            Grid.Column="1"
                            Text="Sunday" />
 
-                <CheckBox Grid.Row="0" Grid.Column="2" />
+                <CheckBox Grid.Row="0"
+                          Grid.Column="2"
+                          IsChecked="{Binding Path=WeekDays[1],
+                                              Mode=TwoWay}" />
                 <TextBlock Grid.Row="0"
                            Grid.Column="3"
                            Text="Monday" />
 
-                <CheckBox Grid.Row="0" Grid.Column="4" />
+                <CheckBox Grid.Row="0"
+                          Grid.Column="4"
+                          IsChecked="{Binding Path=WeekDays[2],
+                                              Mode=TwoWay}" />
                 <TextBlock Grid.Row="0"
                            Grid.Column="5"
                            Text="Tuesday" />
 
-                <CheckBox Grid.Row="0" Grid.Column="6" />
+                <CheckBox Grid.Row="0"
+                          Grid.Column="6"
+                          IsChecked="{Binding Path=WeekDays[3],
+                                              Mode=TwoWay}" />
                 <TextBlock Grid.Row="0"
                            Grid.Column="7"
                            Text="Wednesday" />
 
-                <CheckBox Grid.Row="1" Grid.Column="0" />
+                <CheckBox Grid.Row="1"
+                          Grid.Column="0"
+                          IsChecked="{Binding Path=WeekDays[4],
+                                              Mode=TwoWay}" />
                 <TextBlock Grid.Row="1"
                            Grid.Column="1"
                            Text="Thursday" />
 
-                <CheckBox Grid.Row="1" Grid.Column="2" />
+                <CheckBox Grid.Row="1"
+                          Grid.Column="2"
+                          IsChecked="{Binding Path=WeekDays[5],
+                                              Mode=TwoWay}" />
                 <TextBlock Grid.Row="1"
                            Grid.Column="3"
                            Text="Friday" />
 
-                <CheckBox Grid.Row="1" Grid.Column="4" />
+                <CheckBox Grid.Row="1"
+                          Grid.Column="4"
+                          IsChecked="{Binding Path=WeekDays[6],
+                                              Mode=TwoWay}" />
                 <TextBlock Grid.Row="1"
                            Grid.Column="5"
                            Text="Saturday" />
@@ -261,9 +296,15 @@
                         Grid.Column="1"
                         Orientation="Horizontal">
                 <TextBlock Text="Start scan execution from date " />
-                <c:DateTimeBox Foreground="{StaticResource ResourceKey=TextBrush}" />
+                <c:DateTimeBox Date="{Binding Path=Schedule,
+                                              Mode=TwoWay}"
+                               Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                               IsTime="False" />
                 <TextBlock Text=" and time " />
-                <c:DateTimeBox Foreground="{StaticResource ResourceKey=TextBrush}" IsTime="True" />
+                <c:DateTimeBox Date="{Binding Path=Schedule,
+                                              Mode=TwoWay}"
+                               Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                               IsTime="True" />
                 <TextBlock Text=" onwards." />
             </StackPanel>
 
@@ -272,6 +313,8 @@
                     Width="120"
                     Margin="0 12 0 0"
                     HorizontalAlignment="Left"
+                    Command="{Binding Path=SaveSchedule,
+                                      Mode=OneTime}"
                     Content="Save Schedule" />
         </Grid>
     </Grid>

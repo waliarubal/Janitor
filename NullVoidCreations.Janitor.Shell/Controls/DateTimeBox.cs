@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Shell.Controls
 {
@@ -12,11 +13,13 @@ namespace NullVoidCreations.Janitor.Shell.Controls
     [TemplatePart(Name = "PART_Hour", Type = typeof(TextBox))]
     [TemplatePart(Name = "PART_Minute", Type = typeof(TextBox))]
     [TemplatePart(Name = "PART_Second", Type = typeof(TextBox))]
+    [TemplatePart(Name = "PART_Border", Type = typeof(Border))]
     public class DateTimeBox : Control
     {
         public static readonly DependencyProperty DateProperty, IsTimeProperty;
 
         TextBox _day, _month, _year, _hour, _minute, _second;
+        Border _border;
         bool _isInitialized;
         readonly Regex _regex;
 
@@ -80,6 +83,7 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             _hour = Template.FindName("PART_Hour", this) as TextBox;
             _minute = Template.FindName("PART_Minute", this) as TextBox;
             _second = Template.FindName("PART_Second", this) as TextBox;
+            _border = Template.FindName("PART_Border", this) as Border;
 
             _hour.PreviewTextInput += new System.Windows.Input.TextCompositionEventHandler(Text_PreviewTextInput);
             _minute.PreviewTextInput += new System.Windows.Input.TextCompositionEventHandler(Text_PreviewTextInput);
@@ -95,67 +99,113 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             _month.GotFocus += new RoutedEventHandler(Text_GotFocus);
             _year.GotFocus += new RoutedEventHandler(Text_GotFocus);
 
+            _hour.LostFocus += new RoutedEventHandler(Hour_LostFocus);
+            _minute.LostFocus += new RoutedEventHandler(MinSec_LostFocus);
+            _second.LostFocus += new RoutedEventHandler(MinSec_LostFocus);
+            _day.LostFocus += new RoutedEventHandler(Day_LostFocus);
+            _month.LostFocus += new RoutedEventHandler(Month_LostFocus);
+            _year.LostFocus += new RoutedEventHandler(Year_LostFocus);
+
             _isInitialized = true;
         }
 
-        protected override void OnGotFocus(RoutedEventArgs e)
+        void Year_LostFocus(object sender, RoutedEventArgs e)
         {
-            base.OnGotFocus(e);
-
-            if (_isInitialized)
-            {
-                if (IsTime)
-                    _hour.Focus();
-                else
-                    _day.Focus();
-            }
-            e.Handled = true;
+            var textBox = sender as TextBox;
+            var value = int.Parse(textBox.Text);
+            if (value < 1900)
+                value = 1900;
+            else if (value > 9999)
+                value = 9999;
+            textBox.Text = value.ToString("0000");
+            ValidateData();
         }
 
-        protected override void OnLostFocus(RoutedEventArgs e)
+        void Month_LostFocus(object sender, RoutedEventArgs e)
         {
-            base.OnLostFocus(e);
+            var textBox = sender as TextBox;
+            var value = int.Parse(textBox.Text);
+            if (value < 1)
+                value = 1;
+            else if (value > 12)
+                value = 12;
+            textBox.Text = value.ToString("00");
+            ValidateData();
+        }
 
-            if (_isInitialized)
+        void Day_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            var value = int.Parse(textBox.Text);
+            if (value < 1)
+                value = 1;
+            else if (value > 31)
+                value = 31;
+            textBox.Text = value.ToString("00");
+            ValidateData();
+        }
+
+        void Hour_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            var value = int.Parse(textBox.Text);
+            if (value < 0)
+                value = 0;
+            else if (value > 23)
+                value = 23;
+            textBox.Text = value.ToString("00");
+            ValidateData();
+        }
+
+        void MinSec_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            var value = int.Parse(textBox.Text);
+            if (value < 0)
+                value = 0;
+            else if (value > 59)
+                value = 59;
+            textBox.Text = value.ToString("00");
+            ValidateData();
+        }
+
+        void ValidateData()
+        {
+            if (IsTime)
             {
-                if (IsTime)
-                {
-                    var hour = int.Parse(_hour.Text);
-                    var minute = int.Parse(_minute.Text);
-                    var second = int.Parse(_second.Text);
+                var hour = int.Parse(_hour.Text);
+                var minute = int.Parse(_minute.Text);
+                var second = int.Parse(_second.Text);
 
-                    try
-                    {
-                        Date = new DateTime(1900, 1, 1, hour, minute, second);
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        Date = DateTime.MinValue;
-                    }
+                try
+                {
+                    Date = new DateTime(1900, 1, 1, hour, minute, second);
                 }
-                else
+                catch (ArgumentOutOfRangeException)
                 {
-                    var year = int.Parse(_year.Text);
-                    var month = int.Parse(_month.Text);
-                    var day = int.Parse(_day.Text);
-
-                    try
-                    {
-                        Date = new DateTime(year, month, day);
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        Date = DateTime.MinValue;
-                    }
+                    Date = DateTime.MinValue;
                 }
             }
-            e.Handled = true;
+            else
+            {
+                var year = int.Parse(_year.Text);
+                var month = int.Parse(_month.Text);
+                var day = int.Parse(_day.Text);
+
+                try
+                {
+                    Date = new DateTime(year, month, day);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    Date = DateTime.MinValue;
+                }
+            }
         }
 
         void Text_GotFocus(object sender, RoutedEventArgs e)
         {
             (sender as TextBox).SelectAll();
-            e.Handled = true;
         }
 
         void Text_PreviewTextInput(object sender, TextCompositionEventArgs e)

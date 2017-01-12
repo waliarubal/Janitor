@@ -71,7 +71,7 @@
                                 <Condition Property="IsMouseOver" Value="True" />
                                 <Condition Property="IsChecked" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="imgCheck" Property="Source" Value="/NullVoidCreations.Janitor.Shell;component/Resources/BulbOn.png" />
+                            <Setter TargetName="imgCheck" Property="Source" Value="/NullVoidCreations.Janitor.Shell;component/Resources/BulbGlow.png" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -96,7 +96,7 @@
                                 <Condition Property="IsMouseOver" Value="True" />
                                 <Condition Property="IsChecked" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="imgCheck" Property="Source" Value="/NullVoidCreations.Janitor.Shell;component/Resources/BulbOn.png" />
+                            <Setter TargetName="imgCheck" Property="Source" Value="/NullVoidCreations.Janitor.Shell;component/Resources/BulbGlow.png" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

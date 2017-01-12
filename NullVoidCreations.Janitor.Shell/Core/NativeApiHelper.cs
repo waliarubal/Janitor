@@ -5,6 +5,8 @@ using System.Text;
 using System.Windows;
 using System.Windows.Interop;
 using NullVoidCreations.Janitor.Shared.Helpers;
+using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -89,6 +91,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
         [DllImport("user32.dll")]
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
+        [DllImport("user32.dll")]
+        static extern bool HideCaret(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        static extern bool ShowCaret(IntPtr hWnd);
+
         static NativeApiHelper _instance;
 
         private NativeApiHelper()
@@ -120,6 +128,21 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 if (IsIconic(other))
                     OpenIcon(other);
             }
+        }
+
+        public IntPtr GetHandle(Visual element)
+        {
+            var source = (HwndSource)HwndSource.FromVisual(element);
+            return source.Handle;
+        }
+
+        public bool ToggleCaret(TextBox textBox, bool showCaret)
+        {
+            var handle = GetHandle(textBox);
+            if (showCaret)
+                return ShowCaret(handle);
+            else
+                return HideCaret(handle);
         }
 
         public IntPtr GetWindowHandle(Window window)

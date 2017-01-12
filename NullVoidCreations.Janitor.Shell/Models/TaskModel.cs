@@ -1,9 +1,10 @@
 ﻿using System.IO;
 using Microsoft.Win32.TaskScheduler;
+using NullVoidCreations.Janitor.Shared.Base;
 
 namespace NullVoidCreations.Janitor.Shell.Models
 {
-    public class TaskModel
+    public class TaskModel: NotificationBase
     {
         #region properties
 
@@ -14,6 +15,8 @@ namespace NullVoidCreations.Janitor.Shell.Models
         public string ExecutablePath { get; set; }
 
         public string CommandLineArguments { get; set; }
+
+        public Trigger Schedule { get; set; }
 
         #endregion
 
@@ -29,6 +32,8 @@ namespace NullVoidCreations.Janitor.Shell.Models
             taskDefinition.Principal.RunLevel = TaskRunLevel.Highest;
             taskDefinition.Settings.MultipleInstances = TaskInstancesPolicy.Parallel;
             taskDefinition.Settings.StopIfGoingOnBatteries = false;
+            if (Schedule != null)
+                taskDefinition.Triggers.Add(Schedule);
 
             return TaskService.Instance.RootFolder.RegisterTaskDefinition(Name, taskDefinition) != null;
         }
@@ -38,7 +43,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
             var isDeleted = true;
             try
             {
-                TaskService.Instance.RootFolder.DeleteTask(Name);
+                TaskService.Instance.RootFolder.DeleteTask(Name, false);
             }
             catch
             {

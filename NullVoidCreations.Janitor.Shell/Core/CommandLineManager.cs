@@ -15,6 +15,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             public const string NoOfDays = "days";
             public const string KeyFile = "key_file";
             public const string SecondInstance = "secondary";
+            public const string FixIssues = "fix";
         }
 
         readonly Dictionary<string, string> _arguments;

@@ -202,7 +202,7 @@
                             <TextBlock Grid.Row="1"
                                        Grid.Column="1"
                                        Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
-                                       Text="Perform a full system scan looking all the scan targets for issues." />
+                                       Text="Perform a full system scan looking at all the scan targets for issues." />
                         </Grid>
                     </Button>
                     <Button Grid.Row="1"
@@ -230,7 +230,7 @@
                             <TextBlock Grid.Row="1"
                                        Grid.Column="1"
                                        Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
-                                       Text="Perform a system scan looking only the selected scan targets for issues." />
+                                       Text="Perform a system scan looking at only the selected scan targets for issues." />
                         </Grid>
                     </Button>
                     <Button Grid.Row="2"

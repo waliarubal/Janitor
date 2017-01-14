@@ -6,7 +6,7 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
     public class KnownPaths
     {
         static volatile KnownPaths _instance;
-        readonly string _desktopDirectory, _appTemp, _system32Directory, _windowsDirectory, _appDataRoaming, _appDataLocal, _appDataLocalLow, _appData, _internetCache, _appDirectory, _systemTemp, _userTemp, _programData;
+        readonly string _taskScheduler, _desktopDirectory, _appTemp, _system32Directory, _windowsDirectory, _appDataRoaming, _appDataLocal, _appDataLocalLow, _appData, _internetCache, _appDirectory, _systemTemp, _userTemp, _programData;
 
         private KnownPaths()
         {
@@ -23,9 +23,15 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             _appDataLocal = Path.Combine(_appData, "Local");
             _appDataLocalLow = Path.Combine(_appData, "LocalLow");
             _appTemp = Path.Combine(ApplicationDirectory, "Temp");
+            _taskScheduler = Path.Combine(_system32Directory, "schtasks.exe");
         }
 
         #region properties
+
+        public string TaskScheduler
+        {
+            get { return _taskScheduler; }
+        }
 
         public string DesktopDirectory
         {

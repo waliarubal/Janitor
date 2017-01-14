@@ -295,13 +295,13 @@
             <StackPanel Grid.Row="6"
                         Grid.Column="1"
                         Orientation="Horizontal">
-                <TextBlock Text="Start scan execution from date " />
-                <c:DateTimeBox Date="{Binding Path=Schedule,
+                <TextBlock Text="Start execution from date " />
+                <c:DateTimeBox Date="{Binding Path=Date,
                                               Mode=TwoWay}"
                                Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
                                IsTime="False" />
                 <TextBlock Text=" and time " />
-                <c:DateTimeBox Date="{Binding Path=Schedule,
+                <c:DateTimeBox Date="{Binding Path=Time,
                                               Mode=TwoWay}"
                                Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
                                IsTime="True" />

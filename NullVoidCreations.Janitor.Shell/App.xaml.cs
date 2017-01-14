@@ -67,13 +67,14 @@ namespace NullVoidCreations.Janitor.Shell
 
             FirstTimeExecution();
 
-            // configure to run at startup
-            if (SettingsManager.Instance.RunAtBoot)
-                new ScheduleSilentRunCommand(null).Execute(SettingsManager.Instance.RunAtBoot);
-
             // skip UAC
-            if (SettingsManager.Instance.SkipUac)
-                new SkipUacCommand(null).Execute(SettingsManager.Instance.SkipUac);
+            var skipUac = new SkipUacCommand(null);
+            skipUac.Execute(SettingsManager.Instance.SkipUac);
+
+            // run at startup, disable if UAC skipping is not enabled
+            SettingsManager.Instance.RunAtBoot = SettingsManager.Instance.RunAtBoot && SettingsManager.Instance.SkipUac;
+            var runAtBoot = new ScheduleSilentRunCommand(null);
+            runAtBoot.Execute(SettingsManager.Instance.RunAtBoot);
 
             // load license
             LicenseExManager.Instance.LoadLicense();

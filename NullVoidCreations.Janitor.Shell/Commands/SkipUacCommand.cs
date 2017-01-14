@@ -8,6 +8,13 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 {
     class SkipUacCommand: AsyncDelegateCommand
     {
+        public static string SkipUacTask;
+
+        static SkipUacCommand()
+        {
+            SkipUacTask = string.Format("{0}SkipUAC", SettingsManager.Instance.CodeName); ;
+        }
+
         public SkipUacCommand(ViewModelBase viewMode)
             : base(viewMode)
         {
@@ -21,7 +28,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             var icon = string.Format("{0}, 0", SettingsManager.Instance.ExecutablePath);
 
             var task = new TaskModel();
-            task.Name = string.Format("{0}SkipUAC", SettingsManager.Instance.CodeName);
+            task.Name = SkipUacTask;
             task.ExecutablePath = SettingsManager.Instance.ExecutablePath;
 
             bool result;
@@ -30,14 +37,13 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                 result = task.Create();
                 if (result)
                 {
-                    var taskSchedulerPath = Path.Combine(KnownPaths.Instance.System32Directory, "schtasks.exe");
                     var arguments = string.Format("/run /TN \"{0}\"", task.Name);
 
                     if (File.Exists(lnkPath))
-                        NativeApiHelper.Instance.CreateShortcut(lnkPath, taskSchedulerPath, arguments, KnownPaths.Instance.ApplicationDirectory, icon, true);
+                        NativeApiHelper.Instance.CreateShortcut(lnkPath, KnownPaths.Instance.TaskScheduler, arguments, KnownPaths.Instance.ApplicationDirectory, icon, true);
 
                     if (File.Exists(lnk1Path))
-                        NativeApiHelper.Instance.CreateShortcut(lnk1Path, taskSchedulerPath, arguments, KnownPaths.Instance.ApplicationDirectory, icon, true);
+                        NativeApiHelper.Instance.CreateShortcut(lnk1Path, KnownPaths.Instance.TaskScheduler, arguments, KnownPaths.Instance.ApplicationDirectory, icon, true);
                 }
             }
             else

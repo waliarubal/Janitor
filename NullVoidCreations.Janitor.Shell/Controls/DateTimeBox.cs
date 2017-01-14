@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Shell.Controls
 {
@@ -13,13 +12,11 @@ namespace NullVoidCreations.Janitor.Shell.Controls
     [TemplatePart(Name = "PART_Hour", Type = typeof(TextBox))]
     [TemplatePart(Name = "PART_Minute", Type = typeof(TextBox))]
     [TemplatePart(Name = "PART_Second", Type = typeof(TextBox))]
-    [TemplatePart(Name = "PART_Border", Type = typeof(Border))]
     public class DateTimeBox : Control
     {
         public static readonly DependencyProperty DateProperty, IsTimeProperty;
 
         TextBox _day, _month, _year, _hour, _minute, _second;
-        Border _border;
         bool _isInitialized;
         readonly Regex _regex;
 
@@ -83,7 +80,6 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             _hour = Template.FindName("PART_Hour", this) as TextBox;
             _minute = Template.FindName("PART_Minute", this) as TextBox;
             _second = Template.FindName("PART_Second", this) as TextBox;
-            _border = Template.FindName("PART_Border", this) as Border;
 
             _hour.PreviewTextInput += new System.Windows.Input.TextCompositionEventHandler(Text_PreviewTextInput);
             _minute.PreviewTextInput += new System.Windows.Input.TextCompositionEventHandler(Text_PreviewTextInput);
@@ -118,7 +114,6 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             else if (value > 9999)
                 value = 9999;
             textBox.Text = value.ToString("0000");
-            ValidateData();
         }
 
         void Month_LostFocus(object sender, RoutedEventArgs e)
@@ -130,7 +125,6 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             else if (value > 12)
                 value = 12;
             textBox.Text = value.ToString("00");
-            ValidateData();
         }
 
         void Day_LostFocus(object sender, RoutedEventArgs e)
@@ -142,7 +136,6 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             else if (value > 31)
                 value = 31;
             textBox.Text = value.ToString("00");
-            ValidateData();
         }
 
         void Hour_LostFocus(object sender, RoutedEventArgs e)
@@ -154,7 +147,6 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             else if (value > 23)
                 value = 23;
             textBox.Text = value.ToString("00");
-            ValidateData();
         }
 
         void MinSec_LostFocus(object sender, RoutedEventArgs e)
@@ -166,6 +158,10 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             else if (value > 59)
                 value = 59;
             textBox.Text = value.ToString("00");
+        }
+
+        protected override void OnLostFocus(RoutedEventArgs e)
+        {
             ValidateData();
         }
 
@@ -192,6 +188,10 @@ namespace NullVoidCreations.Janitor.Shell.Controls
                 var month = int.Parse(_month.Text);
                 var day = int.Parse(_day.Text);
 
+                var daysMax = DateTime.DaysInMonth(year, month);
+                if (day > daysMax)
+                    day = daysMax;
+                
                 try
                 {
                     Date = new DateTime(year, month, day);

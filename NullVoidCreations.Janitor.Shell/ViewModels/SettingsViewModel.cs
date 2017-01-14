@@ -1,15 +1,14 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using Microsoft.Win32.TaskScheduler;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
-using System.Diagnostics;
 using NullVoidCreations.Janitor.Shell.Models;
-using Microsoft.Win32.TaskScheduler;
-using System;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
-    public class SettingsViewModel: ViewModelBase
+    public class SettingsViewModel : ViewModelBase
     {
         enum ScheduleType : byte
         {
@@ -22,8 +21,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         readonly ObservableCollection<bool> _weekDays;
         readonly CommandBase _scheduleSilentRun, _skipUac, _saveSchedule;
         bool _isScheduleDisabled, _isScheduleOnce, _isScheduleDaily, _isScheduleWeekly;
-        DateTime _schedule;
-        ScheduleType _type;
+        DateTime _date, _time;
 
         public SettingsViewModel()
         {
@@ -31,52 +29,39 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             for (var index = 0; index < 7; index++)
                 _weekDays.Add(false);
 
-            _isScheduleDisabled = true;
             _scheduleSilentRun = new ScheduleSilentRunCommand(this);
             _skipUac = new SkipUacCommand(this);
             _saveSchedule = new AsyncDelegateCommand(this, null, ExecuteSaveSchedule, SaveScheduleExecuted);
             _scheduleSilentRun.IsEnabled = _skipUac.IsEnabled = _saveSchedule.IsEnabled = true;
+
+            IsScheduleDisabled = true;
         }
 
         #region properties
 
-        private ScheduleType Type
+        public DateTime Date
         {
-            get { return _type; }
+            get { return _date; }
             set
             {
-                _type = value;
-                switch(_type)
-                {
-                    case ScheduleType.None:
-                        IsScheduleOnce = IsScheduleDaily = IsScheduleWeekly = false;
-                        break;
+                if (value == _date)
+                    return;
 
-                    case ScheduleType.Once:
-                        IsScheduleDisabled = IsScheduleDaily = IsScheduleWeekly = false;
-                        break;
-
-                    case ScheduleType.Daily:
-                        IsScheduleDisabled = IsScheduleOnce = IsScheduleWeekly = false;
-                        break;
-
-                    case ScheduleType.Weekly:
-                        IsScheduleDisabled = IsScheduleOnce = IsScheduleDaily = false;
-                        break;
-                }
+                _date = value;
+                RaisePropertyChanged("Date");
             }
         }
 
-        public DateTime Schedule
+        public DateTime Time
         {
-            get { return _schedule; }
+            get { return _time; }
             set
             {
-                if (value == _schedule)
+                if (value == _time)
                     return;
 
-                _schedule = value;
-                RaisePropertyChanged("Schedule");
+                _time = value;
+                RaisePropertyChanged("Time");
             }
         }
 
@@ -89,8 +74,10 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     return;
 
                 _isScheduleDisabled = value;
-                if (!_isScheduleDisabled) Type = ScheduleType.None;
                 RaisePropertyChanged("IsScheduleDisabled");
+
+                if (IsScheduleDisabled)
+                    IsScheduleOnce = IsScheduleDaily = IsScheduleWeekly = false;
             }
         }
 
@@ -103,8 +90,10 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     return;
 
                 _isScheduleOnce = value;
-                if (!_isScheduleOnce) Type = ScheduleType.Once;
                 RaisePropertyChanged("IsScheduleOnce");
+
+                if (IsScheduleOnce)
+                    IsScheduleDisabled = IsScheduleDaily = IsScheduleWeekly = false;
             }
         }
 
@@ -117,8 +106,10 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     return;
 
                 _isScheduleDaily = value;
-                if (!_isScheduleDaily) Type = ScheduleType.Daily;
                 RaisePropertyChanged("IsScheduleDaily");
+
+                if (IsScheduleDaily)
+                    IsScheduleDisabled = IsScheduleOnce = IsScheduleWeekly = false;
             }
         }
 
@@ -131,8 +122,10 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     return;
 
                 _isScheduleWeekly = value;
-                if (!_isScheduleWeekly) Type = ScheduleType.Weekly;
                 RaisePropertyChanged("IsScheduleWeekly");
+
+                if (IsScheduleWeekly)
+                    IsScheduleDisabled = IsScheduleOnce = IsScheduleDaily = false;
             }
         }
 
@@ -151,6 +144,10 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 SettingsManager.Instance.RunAtBoot = value;
                 RaisePropertyChanged("RunAtBoot");
+
+                // enable UAC skipping
+                if (RunAtBoot)
+                    SkipUac = true;
             }
         }
 
@@ -203,6 +200,13 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 SettingsManager.Instance.SkipUac = value;
                 RaisePropertyChanged("SkipUac");
+
+                // disable boot time execution when UAC is disabled
+                if (!SkipUac)
+                {
+                    RunAtBoot = false;
+                    ScheduleSilentRun.Execute(RunAtBoot);
+                }
             }
         }
 
@@ -275,24 +279,22 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
             task.ExecutablePath = SettingsManager.Instance.ExecutablePath;
             task.CommandLineArguments = string.Format("/{0} /{1}", CommandLineManager.CommandLineArgument.Silent, CommandLineManager.CommandLineArgument.FixIssues);
-
-            switch(Type)
-            {
-                case ScheduleType.Once:
-                    task.Schedule = new TimeTrigger(DateTime.Now);
-                    break;
-
-                case ScheduleType.Daily:
-                    task.Schedule = new DailyTrigger();
-                    task.Schedule.StartBoundary = DateTime.Now;
-                    break;
-
-                case ScheduleType.Weekly:
-                    task.Schedule = new WeeklyTrigger(DaysOfTheWeek.Monday | DaysOfTheWeek.Saturday);
-                    task.Schedule.StartBoundary = DateTime.Now;
-                    break;
-            }
             
+            var schedule = new DateTime(Date.Year, Date.Month, Date.Day, Time.Hour, Time.Minute, Time.Second);
+            if (IsScheduleOnce)
+            {
+                task.Schedule = new TimeTrigger(schedule);
+            }
+            else if (IsScheduleDaily)
+            {
+                task.Schedule = new DailyTrigger();
+                task.Schedule.StartBoundary = schedule;
+            }
+            else if (IsScheduleWeekly)
+            {
+                task.Schedule = new WeeklyTrigger(DaysOfTheWeek.Monday | DaysOfTheWeek.Saturday);
+                task.Schedule.StartBoundary = schedule;
+            }
 
             return task.Create();
         }

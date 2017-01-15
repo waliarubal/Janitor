@@ -240,7 +240,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
                             RaiseProgessChanged(target, area, true, false, targets, areas, issues.Count, progressMax, 0, progressCurrent, true);
                             issues.Add(issue);
-                            Thread.Sleep(2);
+                            Thread.Sleep(20);
                         }
                     }
                 }
@@ -306,7 +306,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
                             RaiseProgessChanged(target, area, false, true, targets, areas, issues.Count, progressMax, 0, progressCurrent, true);
                             issues.Add(issue);
-                            Thread.Sleep(2);
+                            Thread.Sleep(20);
                         }
                     }
                 }

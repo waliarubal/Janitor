@@ -280,6 +280,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             task.ExecutablePath = SettingsManager.Instance.ExecutablePath;
             task.CommandLineArguments = string.Format("/{0} /{1}", CommandLineManager.CommandLineArgument.Silent, CommandLineManager.CommandLineArgument.FixIssues);
             
+            //TODO: work on scheduling
             var schedule = new DateTime(Date.Year, Date.Month, Date.Day, Time.Hour, Time.Minute, Time.Second);
             if (IsScheduleOnce)
             {

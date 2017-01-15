@@ -23,8 +23,8 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         protected override object ExecuteOverride(object parameter)
         {
-            var lnkPath = Path.Combine(KnownPaths.Instance.DesktopDirectory, string.Format("{0}.lnk", App.ProductName));
-            var lnk1Path = Path.Combine(NativeApiHelper.Instance.GetStartMenuDirectory(), string.Format("{0}.lnk", App.ProductName));
+            var lnkPath = Path.Combine(NativeApiHelper.Instance.GetPublicDesktopDirectory(), string.Format("{0}.lnk", App.ProductName));
+            var lnk1Path = Path.Combine(NativeApiHelper.Instance.GetStartMenuDirectory(), string.Format("PC Mechanic Pro\\{0}.lnk", App.ProductName));
             var icon = string.Format("{0}, 0", SettingsManager.Instance.ExecutablePath);
 
             var task = new TaskModel();

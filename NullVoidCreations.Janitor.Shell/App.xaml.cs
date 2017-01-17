@@ -96,11 +96,13 @@ namespace NullVoidCreations.Janitor.Shell
             if (SettingsManager.Instance.RunProgramUpdateAtLaunch)
                 WorkQueueManager.Instance.AddWork(WorkSignal.ProgramUpdate);
             if (SettingsManager.Instance.RunPluginUpdateAtLaunch)
+            {
                 WorkQueueManager.Instance.AddWork(WorkSignal.PluginUpdate);
+                WorkQueueManager.Instance.AddWork(WorkSignal.ShowHome);
+            }
             if (SettingsManager.Instance.RunScanAtLaunch)
                 WorkQueueManager.Instance.AddWork(WorkSignal.SmartScan);
-            else
-                WorkQueueManager.Instance.AddWork(WorkSignal.ShowHome);
+                
             WorkQueueManager.Instance.AddWork(WorkSignal.ShowTrialWarning);
             WorkQueueManager.Instance.DoWork();
 

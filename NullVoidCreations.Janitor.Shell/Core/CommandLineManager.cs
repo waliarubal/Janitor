@@ -11,11 +11,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
         {
             public const string Silent = "silent";
             public const string Keygen = "keygen";
-            public const string Email = "email";
+            public const string Name = "name";
             public const string NoOfDays = "days";
             public const string KeyFile = "key_file";
             public const string SecondInstance = "secondary";
-            public const string FixIssues = "fix";
+            public const string SmartScan = "smart";
         }
 
         readonly Dictionary<string, string> _arguments;
@@ -60,17 +60,17 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         bool GenerateKey()
         {
-            var email = this[CommandLineArgument.Email];
+            var name = this[CommandLineArgument.Name];
             var days = this[CommandLineArgument.NoOfDays];
             var keyFile = this[CommandLineArgument.KeyFile];
-            if (email == null || days == null || keyFile == null)
+            if (name == null || days == null || keyFile == null)
                 return false;
 
             int noOfDays;
             if (!int.TryParse(days, out noOfDays))
                 return false;
 
-            var key = LicenseExManager.Instance.GenerateLicenseKey(email, noOfDays);
+            var key = LicenseExManager.Instance.GenerateLicenseKey(name, noOfDays);
             if (!FileSystemHelper.Instance.DeleteFile(keyFile))
                 return false;
 
@@ -93,6 +93,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
                     case CommandLineArgument.Keygen:
                         GenerateKey();
+                        break;
+
+                    case CommandLineArgument.SmartScan:
+                        WorkQueueManager.Instance.AddWork(WorkSignal.SmartScan);
+                        WorkQueueManager.Instance.DoWork();
                         break;
                 }
             }

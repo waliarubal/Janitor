@@ -3,7 +3,7 @@
                     xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Converters"
                     xmlns:clr="clr-namespace:System;assembly=mscorlib">
     <clr:String x:Key="ProductName">PC MECHANIC PRO™</clr:String>
-    <clr:String x:Key="ProductVersion">1.5.0.0</clr:String>
+    <clr:String x:Key="ProductVersion">1.6.0.0</clr:String>
 
     <clr:Boolean x:Key="True">True</clr:Boolean>
     <clr:Boolean x:Key="False">False</clr:Boolean>

@@ -22,7 +22,7 @@
             <Style TargetType="TextBlock">
                 <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
                 <Setter Property="FontSize" Value="12" />
-                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Top" />
                 <Setter Property="TextWrapping" Value="Wrap" />
                 <Setter Property="Margin" Value="8 0" />
             </Style>

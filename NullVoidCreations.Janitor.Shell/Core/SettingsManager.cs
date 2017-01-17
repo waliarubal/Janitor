@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Helpers;
+using NullVoidCreations.Janitor.Shell.ViewModels;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -195,6 +196,46 @@ namespace NullVoidCreations.Janitor.Shell.Core
             set { this["LastScanSelectedAreas"] = value; }
         }
 
+        public DateTime ScheduleDate
+        {
+            get { return GetSetting<DateTime>("ScheduleDate"); }
+            set { this["ScheduleDate"] = value; }
+        }
+
+        public DateTime ScheduleTime
+        {
+            get { return GetSetting<DateTime>("ScheduleTime"); }
+            set { this["ScheduleTime"] = value; }
+        }
+
+        public ScheduleType ScheduleType
+        {
+            get { return GetSetting<ScheduleType>("ScheduleType"); }
+            set { this["ScheduleType"] = value; }
+        }
+
+        public bool[] ScheduleDays
+        {
+            get 
+            {
+                var days = GetSetting<string>("ScheduleDays");
+                if (string.IsNullOrEmpty(days) || days.Length != 7)
+                    return new bool[7];
+
+                var daysBool = new bool[days.Length];
+                for (var index = 0; index < days.Length; index++)
+                    daysBool[index] = days[index] == '1';
+                return daysBool;
+            }
+            set 
+            {
+                var daysString = new StringBuilder(value.Length);
+                for (var index = 0; index < value.Length; index++)
+                    daysString.Append(value[index] ? '1' : '0');
+                this["ScheduleDays"] = daysString.ToString();
+            }
+        }
+
         #endregion
 
         T GetSetting<T>(string key)
@@ -206,9 +247,13 @@ namespace NullVoidCreations.Janitor.Shell.Core
             if (string.IsNullOrEmpty(key))
                 return setting;
 
+            var type = typeof(T);
             try
             {
-                setting = (T)Convert.ChangeType(_settings[key], typeof(T));
+                if (type.IsEnum)
+                    setting = (T)Enum.Parse(type, GetSetting<string>(key));
+                else
+                    setting = (T)Convert.ChangeType(_settings[key], typeof(T));
             }
             catch (Exception ex)
             {

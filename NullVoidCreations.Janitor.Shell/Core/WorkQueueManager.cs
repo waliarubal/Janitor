@@ -17,6 +17,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
     {
         readonly Queue<WorkSignal> _work;
         static WorkQueueManager _instance;
+        bool _isWorking;
 
         #region constructor / destructor
 
@@ -58,9 +59,16 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         public void DoWork()
         {
-            if (_work.Count == 0)
+            if (_isWorking)
                 return;
 
+            if (_work.Count == 0)
+            {
+                _isWorking = false;
+                return;
+            }
+
+            _isWorking = true;
             var work =_work.Dequeue();
             switch(work)
             {
@@ -92,6 +100,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             switch(signal)
             {
                 case Signal.StopWork:
+                    _isWorking = false;
                     DoWork();
                     break;
             }

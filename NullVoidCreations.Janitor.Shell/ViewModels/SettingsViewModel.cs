@@ -8,16 +8,16 @@ using NullVoidCreations.Janitor.Shell.Models;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
+    public enum ScheduleType : byte
+    {
+        None,
+        Once,
+        Daily,
+        Weekly
+    }
+
     public class SettingsViewModel : ViewModelBase
     {
-        enum ScheduleType : byte
-        {
-            None,
-            Once,
-            Daily,
-            Weekly
-        }
-
         readonly ObservableCollection<bool> _weekDays;
         readonly CommandBase _scheduleSilentRun, _skipUac, _saveSchedule;
         bool _isScheduleDisabled, _isScheduleOnce, _isScheduleDaily, _isScheduleWeekly;
@@ -25,16 +25,22 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public SettingsViewModel()
         {
+            // load schedule
             _weekDays = new ObservableCollection<bool>();
             for (var index = 0; index < 7; index++)
-                _weekDays.Add(false);
+                _weekDays.Add(SettingsManager.Instance.ScheduleDays[index]);
+            _date = SettingsManager.Instance.ScheduleDate;
+            _time = SettingsManager.Instance.ScheduleTime;
+            _isScheduleDisabled = SettingsManager.Instance.ScheduleType == ScheduleType.None;
+            _isScheduleOnce = SettingsManager.Instance.ScheduleType == ScheduleType.Once;
+            _isScheduleDaily = SettingsManager.Instance.ScheduleType == ScheduleType.Daily;
+            _isScheduleWeekly = SettingsManager.Instance.ScheduleType == ScheduleType.Weekly;
 
+            // commands
             _scheduleSilentRun = new ScheduleSilentRunCommand(this);
             _skipUac = new SkipUacCommand(this);
             _saveSchedule = new AsyncDelegateCommand(this, null, ExecuteSaveSchedule, SaveScheduleExecuted);
             _scheduleSilentRun.IsEnabled = _skipUac.IsEnabled = _saveSchedule.IsEnabled = true;
-
-            IsScheduleDisabled = true;
         }
 
         #region properties
@@ -86,7 +92,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             get { return _isScheduleOnce; }
             set
             {
-                if (value == _isScheduleOnce)
+                if (value == IsScheduleOnce)
                     return;
 
                 _isScheduleOnce = value;
@@ -102,7 +108,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             get { return _isScheduleDaily; }
             set
             {
-                if (value == _isScheduleDaily)
+                if (value == IsScheduleDaily)
                     return;
 
                 _isScheduleDaily = value;
@@ -118,7 +124,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             get { return _isScheduleWeekly; }
             set
             {
-                if (value == _isScheduleWeekly)
+                if (value == IsScheduleWeekly)
                     return;
 
                 _isScheduleWeekly = value;
@@ -273,14 +279,14 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         object ExecuteSaveSchedule(object parameter)
         {
             var task = new TaskModel();
-            task.Name = string.Format("{0}AutomaticSmartScan", App.ProductName);
+            task.Name = string.Format("{0}AutomaticSmartScan", SettingsManager.Instance.CodeName);
             if (IsScheduleDisabled)
                 return task.Delete();
 
             task.ExecutablePath = SettingsManager.Instance.ExecutablePath;
-            task.CommandLineArguments = string.Format("/{0} /{1}", CommandLineManager.CommandLineArgument.Silent, CommandLineManager.CommandLineArgument.FixIssues);
-            
-            
+            task.CommandLineArguments = string.Format("/{0} /{1}", CommandLineManager.CommandLineArgument.Silent, CommandLineManager.CommandLineArgument.SmartScan);
+
+
             var schedule = new DateTime(Date.Year, Date.Month, Date.Day, Time.Hour, Time.Minute, Time.Second);
             if (IsScheduleOnce)
             {
@@ -293,28 +299,86 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
             else if (IsScheduleWeekly)
             {
-                //TODO: work on scheduling
                 DaysOfTheWeek days = DaysOfTheWeek.AllDays;
-                for (var index = 0; index < WeekDays.Count; index++)
+                for (short index = 0; index < WeekDays.Count; index++)
                 {
                     if (!WeekDays[index])
                         continue;
 
+                    DaysOfTheWeek day = DaysOfTheWeek.AllDays;
+                    switch (index)
+                    {
+                        case 0:
+                            day = DaysOfTheWeek.Sunday;
+                            break;
+
+                        case 1:
+                            day = DaysOfTheWeek.Monday;
+                            break;
+
+                        case 2:
+                            day = DaysOfTheWeek.Tuesday;
+                            break;
+
+                        case 3:
+                            day = DaysOfTheWeek.Wednesday;
+                            break;
+
+                        case 4:
+                            day = DaysOfTheWeek.Thursday;
+                            break;
+
+                        case 5:
+                            day = DaysOfTheWeek.Friday;
+                            break;
+
+                        case 6:
+                            day = DaysOfTheWeek.Saturday;
+                            break;
+                    }
+
                     if (days == DaysOfTheWeek.AllDays)
-                        days = (DaysOfTheWeek)index + 1;
+                        days = day;
                     else
-                        days |= (DaysOfTheWeek)index + 1;
+                        days |= day;
                 }
                 task.Schedule = new WeeklyTrigger(days);
                 task.Schedule.StartBoundary = schedule;
             }
 
-            return task.Create();
+
+            var result = task.Create();
+            if (result)
+            {
+                Date = task.Schedule.StartBoundary;
+                Time = task.Schedule.StartBoundary;
+            }
+            return result;
         }
 
         void SaveScheduleExecuted(object result)
         {
+            if ((bool)result)
+            {
+                // weekdays
+                var d = new bool[WeekDays.Count];
+                for (var i = 0; i < WeekDays.Count; i++)
+                    d[i] = WeekDays[i];
+                SettingsManager.Instance.ScheduleDays = d;
 
+                if (IsScheduleOnce)
+                    SettingsManager.Instance.ScheduleType = ScheduleType.Once;
+                else if (IsScheduleDaily)
+                    SettingsManager.Instance.ScheduleType = ScheduleType.Daily;
+                else if (IsScheduleWeekly)
+                    SettingsManager.Instance.ScheduleType = ScheduleType.Weekly;
+                else
+                    SettingsManager.Instance.ScheduleType = ScheduleType.None;
+
+                UiHelper.Instance.Alert("Smart scan schedule saved successfully.");
+            }
+            else
+                UiHelper.Instance.Error("Failed to save smart scan schedule.");
         }
     }
 }

@@ -280,7 +280,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             task.ExecutablePath = SettingsManager.Instance.ExecutablePath;
             task.CommandLineArguments = string.Format("/{0} /{1}", CommandLineManager.CommandLineArgument.Silent, CommandLineManager.CommandLineArgument.FixIssues);
             
-            //TODO: work on scheduling
+            
             var schedule = new DateTime(Date.Year, Date.Month, Date.Day, Time.Hour, Time.Minute, Time.Second);
             if (IsScheduleOnce)
             {
@@ -293,7 +293,19 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
             else if (IsScheduleWeekly)
             {
-                task.Schedule = new WeeklyTrigger(DaysOfTheWeek.Monday | DaysOfTheWeek.Saturday);
+                //TODO: work on scheduling
+                DaysOfTheWeek days = DaysOfTheWeek.AllDays;
+                for (var index = 0; index < WeekDays.Count; index++)
+                {
+                    if (!WeekDays[index])
+                        continue;
+
+                    if (days == DaysOfTheWeek.AllDays)
+                        days = (DaysOfTheWeek)index + 1;
+                    else
+                        days |= (DaysOfTheWeek)index + 1;
+                }
+                task.Schedule = new WeeklyTrigger(days);
                 task.Schedule.StartBoundary = schedule;
             }
 

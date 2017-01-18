@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -36,7 +37,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         StopWork
     }
 
-    class SignalHost
+    class SignalHost: IDisposable
     {
         List<ISignalObserver> _observers;
         volatile static SignalHost _instance;
@@ -48,7 +49,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             _observers = new List<ISignalObserver>();
         }
 
-        ~SignalHost()
+        public void Dispose()
         {
             _observers.Clear();
         }

@@ -40,14 +40,7 @@ namespace NullVoidCreations.Janitor.Shell.Controls
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-            try
-            {
-                _handle = NativeApiHelper.Instance.GetWindowHandle(this);
-            }
-            catch
-            {
-                //TODO: add exception handler
-            }
+            _handle = NativeApiHelper.Instance.GetWindowHandle(this);
         }
 
         #region properties

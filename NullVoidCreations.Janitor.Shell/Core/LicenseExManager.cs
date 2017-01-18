@@ -1,7 +1,5 @@
-﻿using System.IO;
-using NullVoidCreations.Janitor.Shared.Helpers;
+﻿using System;
 using NullVoidCreations.Janitor.Shell.Models;
-using System;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -17,11 +15,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
         private LicenseExManager()
         {
             _license = new LicenseModel();
-        }
-
-        ~LicenseExManager()
-        {
-            
         }
 
         #endregion

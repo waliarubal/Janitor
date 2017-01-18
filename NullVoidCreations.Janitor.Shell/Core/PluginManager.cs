@@ -31,11 +31,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 LoadPlugins();
         }
 
-        ~PluginManager()
-        {
-            
-        }
-
         #endregion
 
         #region properties

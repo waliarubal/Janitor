@@ -27,7 +27,11 @@ namespace NullVoidCreations.Janitor.Shell
 
         protected override void OnExit(ExitEventArgs e)
         {
+            WorkQueueManager.Instance.Dispose();
+            SettingsManager.Instance.Dispose();
+            SignalHost.Instance.Dispose();
             App.Current.DispatcherUnhandledException -= new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
+
             base.OnExit(e);
         }
         
@@ -126,6 +130,7 @@ namespace NullVoidCreations.Janitor.Shell
             SettingsManager.Instance.RunProgramUpdateAtLaunch = true;
             SettingsManager.Instance.RunPluginUpdateAtLaunch = true;
             SettingsManager.Instance.RunScanAtLaunch = true;
+            SettingsManager.Instance.SkipUac = true;
             SettingsManager.Instance.RunAtBoot = true;
         }
 

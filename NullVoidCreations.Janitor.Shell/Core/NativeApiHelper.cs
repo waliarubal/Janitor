@@ -3,10 +3,10 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
-using System.Windows.Interop;
-using NullVoidCreations.Janitor.Shared.Helpers;
-using System.Windows.Media;
 using System.Windows.Controls;
+using System.Windows.Interop;
+using System.Windows.Media;
+using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {

@@ -45,8 +45,7 @@
                             IconSource="/NullVoidCreations.Janitor.Shell;component/Resources/Logo16.ico"
                             LeftClickCommand="{Binding Path=Open,
                                                        Mode=OneTime}"
-                            MenuActivation="All"
-                            ToolTip="{StaticResource ResourceKey=ProductName}" />
+                            MenuActivation="LeftOrDoubleClick" />
         </Grid>
     </c:CustomWindow.HeaderContent>
 

@@ -1,7 +1,7 @@
-﻿using NullVoidCreations.Janitor.Shell.ViewModels;
-using NullVoidCreations.Janitor.Shell.Views;
-using System;
+﻿using System;
 using System.Windows.Threading;
+using NullVoidCreations.Janitor.Shell.ViewModels;
+using NullVoidCreations.Janitor.Shell.Views;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {

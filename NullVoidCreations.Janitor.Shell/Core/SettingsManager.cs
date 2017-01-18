@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Xml;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.ViewModels;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
-    class SettingsManager : ISignalObserver
+    class SettingsManager : ISignalObserver, IDisposable
     {
         static volatile SettingsManager _instance;
         string _codeName, _pluginsDirectory, _pluginsSearchFilter;
         readonly string _settingsFile, _assemblyPath;
         readonly Dictionary<string, object> _settings;
         volatile bool _isLoaded;
-
-        const char Separator1 = '♪';
-        const char Separator2 = '♫';
 
         private SettingsManager()
         {
@@ -30,10 +28,9 @@ namespace NullVoidCreations.Janitor.Shell.Core
             _settings = new Dictionary<string, object>();
             _settingsFile = Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Settings.dat");
             Load();
-
         }
 
-        ~SettingsManager()
+        public void Dispose()
         {
             Save();
             _isLoaded = false;
@@ -238,7 +235,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
             if (!_isLoaded)
                 return setting;
-            if (string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(key) || !_settings.ContainsKey(key))
                 return setting;
 
             var type = typeof(T);
@@ -262,16 +259,13 @@ namespace NullVoidCreations.Janitor.Shell.Core
             if (!File.Exists(_settingsFile))
                 goto LOADED;
 
-            var settings = File.ReadAllText(_settingsFile).Split(new char[] { Separator2 });
-            foreach (var setting in settings)
+            var document = new XmlDocument();
+            document.Load(_settingsFile);
+            var nodes = document.SelectNodes("/Settings/Setting");
+            foreach (XmlNode node in nodes)
             {
-                var settingEntry = setting.Split(new char[] { Separator1 });
-                if (settingEntry.Length == 0)
-                    continue;
-
-                var key = settingEntry[0];
-                var value = settingEntry.Length > 1 ? settingEntry[1] : null;
-
+                var key = node.Attributes["Key"].Value;
+                var value = node.Attributes["Value"].Value;
                 if (_settings.ContainsKey(key))
                     _settings[key] = value;
                 else
@@ -285,11 +279,28 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         void Save()
         {
-            var data = new StringBuilder();
-            foreach (var key in _settings.Keys)
-                data.AppendFormat("{2}{1}{3}{0}", Separator2, Separator1, key, _settings[key]);
+                var writer = new XmlTextWriter(_settingsFile, Encoding.Default);
+                writer.Formatting = Formatting.None;
 
-            File.WriteAllText(_settingsFile, data.ToString());
+                var xmlDocument = new XmlDocument();
+                var rootNode = xmlDocument.CreateElement("Settings");
+                foreach (var key in _settings.Keys)
+                {
+                    var node = xmlDocument.CreateElement("Setting");
+
+                    var attribute = xmlDocument.CreateAttribute("Key");
+                    attribute.Value = key;
+                    node.Attributes.Append(attribute);
+
+                    attribute = xmlDocument.CreateAttribute("Value");
+                    attribute.Value = _settings[key].ToString();
+                    node.Attributes.Append(attribute);
+
+                    rootNode.AppendChild(node);
+                }
+                xmlDocument.AppendChild(rootNode);
+                xmlDocument.Save(writer);
+
             SignalHost.Instance.RaiseSignal(this, Signal.SettingsSaved);
         }
 

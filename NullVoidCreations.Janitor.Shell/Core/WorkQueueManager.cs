@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shell.Commands;
 
@@ -13,7 +14,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         ShowTrialWarning
     }
 
-    class WorkQueueManager: ISignalObserver
+    class WorkQueueManager: ISignalObserver, IDisposable
     {
         readonly Queue<WorkSignal> _work;
         static WorkQueueManager _instance;
@@ -27,7 +28,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             SignalHost.Instance.AddObserver(this);
         }
 
-        ~WorkQueueManager()
+        public void Dispose()
         {
             SignalHost.Instance.RemoveObserver(this);
         }

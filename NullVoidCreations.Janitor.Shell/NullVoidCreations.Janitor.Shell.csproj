@@ -109,6 +109,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\ActivateLicenseCommand.cs" />
     <Compile Include="Commands\BalloonCommand.cs" />
+    <Compile Include="Commands\RunProgramCommand.cs" />
     <Compile Include="Commands\ScheduleSilentRunCommand.cs" />
     <Compile Include="Commands\SkipUacCommand.cs" />
     <Compile Include="Commands\UpdateCommand.cs" />

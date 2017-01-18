@@ -21,7 +21,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         readonly ObservableCollection<bool> _weekDays;
         readonly CommandBase _scheduleSilentRun, _skipUac, _saveSchedule;
         bool _isScheduleDisabled, _isScheduleOnce, _isScheduleDaily, _isScheduleWeekly;
-        DateTime _date, _time;
+        DateTime _date;
 
         public SettingsViewModel()
         {
@@ -30,7 +30,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             for (var index = 0; index < 7; index++)
                 _weekDays.Add(SettingsManager.Instance.ScheduleDays[index]);
             _date = SettingsManager.Instance.ScheduleDate;
-            _time = SettingsManager.Instance.ScheduleTime;
             _isScheduleDisabled = SettingsManager.Instance.ScheduleType == ScheduleType.None;
             _isScheduleOnce = SettingsManager.Instance.ScheduleType == ScheduleType.Once;
             _isScheduleDaily = SettingsManager.Instance.ScheduleType == ScheduleType.Daily;
@@ -55,19 +54,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 _date = value;
                 RaisePropertyChanged("Date");
-            }
-        }
-
-        public DateTime Time
-        {
-            get { return _time; }
-            set
-            {
-                if (value == _time)
-                    return;
-
-                _time = value;
-                RaisePropertyChanged("Time");
             }
         }
 
@@ -287,15 +273,16 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             task.CommandLineArguments = string.Format("/{0} /{1}", CommandLineManager.CommandLineArgument.Silent, CommandLineManager.CommandLineArgument.SmartScan);
 
 
-            var schedule = new DateTime(Date.Year, Date.Month, Date.Day, Time.Hour, Time.Minute, Time.Second);
             if (IsScheduleOnce)
             {
-                task.Schedule = new TimeTrigger(schedule);
+                task.Schedule = new TimeTrigger(Date);
+                task.Schedule.EndBoundary = DateTime.MaxValue;
             }
             else if (IsScheduleDaily)
             {
                 task.Schedule = new DailyTrigger();
-                task.Schedule.StartBoundary = schedule;
+                task.Schedule.StartBoundary = Date;
+                task.Schedule.EndBoundary = DateTime.MaxValue;
             }
             else if (IsScheduleWeekly)
             {
@@ -343,16 +330,15 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                         days |= day;
                 }
                 task.Schedule = new WeeklyTrigger(days);
-                task.Schedule.StartBoundary = schedule;
+                task.Schedule.StartBoundary = Date;
+                task.Schedule.EndBoundary = DateTime.MaxValue;
             }
 
 
-            var result = task.Create();
+            var result = task.CreateOrUpdate();
             if (result)
-            {
                 Date = task.Schedule.StartBoundary;
-                Time = task.Schedule.StartBoundary;
-            }
+
             return result;
         }
 
@@ -365,7 +351,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 for (var i = 0; i < WeekDays.Count; i++)
                     d[i] = WeekDays[i];
                 SettingsManager.Instance.ScheduleDays = d;
-
+                SettingsManager.Instance.ScheduleDate = Date;
                 if (IsScheduleOnce)
                     SettingsManager.Instance.ScheduleType = ScheduleType.Once;
                 else if (IsScheduleDaily)

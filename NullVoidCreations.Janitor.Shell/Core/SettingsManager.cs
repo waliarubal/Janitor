@@ -202,12 +202,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
             set { this["ScheduleDate"] = value; }
         }
 
-        public DateTime ScheduleTime
-        {
-            get { return GetSetting<DateTime>("ScheduleTime"); }
-            set { this["ScheduleTime"] = value; }
-        }
-
         public ScheduleType ScheduleType
         {
             get { return GetSetting<ScheduleType>("ScheduleType"); }

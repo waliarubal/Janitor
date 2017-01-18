@@ -34,7 +34,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             bool result;
             if ((bool)parameter)
             {
-                result = task.Create();
+                result = task.CreateOrUpdate();
                 if (result)
                 {
                     var arguments = string.Format("/run /TN \"{0}\"", task.Name);

@@ -4,6 +4,7 @@
              xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:t="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
              d:DesignHeight="520"
              d:DesignWidth="640"
@@ -292,21 +293,25 @@
                            Text="Saturday" />
             </Grid>
 
+
+
+
             <StackPanel Grid.Row="6"
                         Grid.Column="1"
+                        Grid.ColumnSpan="2"
                         Orientation="Horizontal">
-                <TextBlock Text="Start execution from date " />
-                <c:DateTimeBox Date="{Binding Path=Date,
-                                              Mode=TwoWay}"
-                               Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
-                               IsTime="False" />
-                <TextBlock Text=" and time " />
-                <c:DateTimeBox Date="{Binding Path=Time,
-                                              Mode=TwoWay}"
-                               Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
-                               IsTime="True" />
-                <TextBlock Text=" onwards." />
+                <TextBlock Text="Schedule should starts from " />
+                <t:DateTimePicker Background="{StaticResource ResourceKey=BackgroundBrush}"
+                                  BorderThickness="0"
+                                  Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                                  Format="Custom"
+                                  FormatString="dd/MM/yyyy HH:mm:ss"
+                                  ShowDropDownButton="False"
+                                  Value="{Binding Path=Date,
+                                                  Mode=TwoWay}" />
+                <TextBlock Text=" (Date and Time)." />
             </StackPanel>
+
 
             <Button Grid.Row="7"
                     Grid.Column="1"

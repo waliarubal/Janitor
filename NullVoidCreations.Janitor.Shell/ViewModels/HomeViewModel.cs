@@ -29,7 +29,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _computerName = _operatingSyetem = _processor = _model = "Analysing...";
 
             _showPopup = new BalloonCommand(this);
-            _purchaseLicense = new PurchaseLicenseCommand(this);
+            _purchaseLicense = new RunProgramCommand(this);
             _doScan = new DelegateCommand(this, ExecuteDoScan);
             _activate = new ActivateLicenseCommand(this);
             _activate.IsEnabled = _doScan.IsEnabled = true;

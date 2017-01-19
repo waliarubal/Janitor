@@ -13,7 +13,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public LicenseActivationViewModel()
         {
-            _purchaseLicense = new PurchaseLicenseCommand(this);
+            _purchaseLicense = new RunProgramCommand(this);
             _activate = new AsyncDelegateCommand(this, null, ExecuteValidate, ValidationComplete);
             _copyFromClipboard = new DelegateCommand(this, ExecuteCopyFromClipboard);
             _activate.IsEnabled = _copyFromClipboard.IsEnabled = true;

@@ -113,7 +113,6 @@
     <Compile Include="Commands\ScheduleSilentRunCommand.cs" />
     <Compile Include="Commands\SkipUacCommand.cs" />
     <Compile Include="Commands\UpdateCommand.cs" />
-    <Compile Include="Commands\PurchaseLicenseCommand.cs" />
     <Compile Include="Commands\ScanCommand.cs" />
     <Compile Include="Controls\CustomWindow.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />

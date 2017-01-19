@@ -207,7 +207,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         public bool[] ScheduleDays
         {
-            get 
+            get
             {
                 var days = GetSetting<string>("ScheduleDays");
                 if (string.IsNullOrEmpty(days) || days.Length != 7)
@@ -218,7 +218,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
                     daysBool[index] = days[index] == '1';
                 return daysBool;
             }
-            set 
+            set
             {
                 var daysString = new StringBuilder(value.Length);
                 for (var index = 0; index < value.Length; index++)
@@ -279,27 +279,27 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         void Save()
         {
-                var writer = new XmlTextWriter(_settingsFile, Encoding.Default);
-                writer.Formatting = Formatting.None;
+            var writer = new XmlTextWriter(_settingsFile, Encoding.Default);
+            writer.Formatting = Formatting.None;
 
-                var xmlDocument = new XmlDocument();
-                var rootNode = xmlDocument.CreateElement("Settings");
-                foreach (var key in _settings.Keys)
-                {
-                    var node = xmlDocument.CreateElement("Setting");
+            var xmlDocument = new XmlDocument();
+            var rootNode = xmlDocument.CreateElement("Settings");
+            foreach (var key in _settings.Keys)
+            {
+                var node = xmlDocument.CreateElement("Setting");
 
-                    var attribute = xmlDocument.CreateAttribute("Key");
-                    attribute.Value = key;
-                    node.Attributes.Append(attribute);
+                var attribute = xmlDocument.CreateAttribute("Key");
+                attribute.Value = key;
+                node.Attributes.Append(attribute);
 
-                    attribute = xmlDocument.CreateAttribute("Value");
-                    attribute.Value = _settings[key].ToString();
-                    node.Attributes.Append(attribute);
+                attribute = xmlDocument.CreateAttribute("Value");
+                attribute.Value = _settings[key].ToString();
+                node.Attributes.Append(attribute);
 
-                    rootNode.AppendChild(node);
-                }
-                xmlDocument.AppendChild(rootNode);
-                xmlDocument.Save(writer);
+                rootNode.AppendChild(node);
+            }
+            xmlDocument.AppendChild(rootNode);
+            xmlDocument.Save(writer);
 
             SignalHost.Instance.RaiseSignal(this, Signal.SettingsSaved);
         }

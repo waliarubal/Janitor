@@ -18,9 +18,13 @@ namespace NullVoidCreations.Janitor.Shell
         internal const string ProductName = "PC MECHANIC PRO™";
 
         static Mutex _mutex;
-        BackgroundWorker _worker;
 
         void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            //TODO: add exception handeler
+        }
+
+        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             //TODO: add exception handeler
         }
@@ -31,12 +35,14 @@ namespace NullVoidCreations.Janitor.Shell
             SettingsManager.Instance.Dispose();
             SignalHost.Instance.Dispose();
             App.Current.DispatcherUnhandledException -= new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
+            AppDomain.CurrentDomain.UnhandledException -= new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
             base.OnExit(e);
         }
         
         protected override void OnStartup(StartupEventArgs e)
         {
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             App.Current.DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
 
             // ensure single instance
@@ -52,10 +58,10 @@ namespace NullVoidCreations.Janitor.Shell
             base.OnStartup(e);
 
             // initialization
-            _worker = new BackgroundWorker();
-            _worker.DoWork += new DoWorkEventHandler(Worker_DoWork);
-            _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
-            _worker.RunWorkerAsync();
+            var worker = new BackgroundWorker();
+            worker.DoWork += new DoWorkEventHandler(Worker_DoWork);
+            worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
+            worker.RunWorkerAsync(worker);
             
             MainWindow = new MainView();
             MainWindow.Show();
@@ -90,6 +96,8 @@ namespace NullVoidCreations.Janitor.Shell
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.ComputerSystem);
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.OperatingSystem);
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.Processor);
+
+            e.Result = e.Argument;
         }
 
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -110,10 +118,11 @@ namespace NullVoidCreations.Janitor.Shell
             WorkQueueManager.Instance.AddWork(WorkSignal.ShowTrialWarning);
             WorkQueueManager.Instance.DoWork();
 
-            _worker.DoWork -= new DoWorkEventHandler(Worker_DoWork);
-            _worker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
-            _worker.Dispose();
-            _worker = null;
+            var worker = e.Result as BackgroundWorker;
+            worker.DoWork -= new DoWorkEventHandler(Worker_DoWork);
+            worker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
+            worker.Dispose();
+            worker = null;
         }
 
         /// <summary>

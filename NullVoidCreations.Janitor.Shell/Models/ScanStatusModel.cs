@@ -1,5 +1,4 @@
 ﻿using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shared.Models;
 
 namespace NullVoidCreations.Janitor.Shell.Models
 {

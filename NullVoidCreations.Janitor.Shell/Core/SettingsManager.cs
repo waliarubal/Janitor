@@ -30,9 +30,21 @@ namespace NullVoidCreations.Janitor.Shell.Core
             Load();
         }
 
+        ~SettingsManager()
+        {
+            Dispose(false);
+        }
+
         public void Dispose()
         {
-            Save();
+            Dispose(true);
+        }
+
+        void Dispose(bool disposing)
+        {
+            if (disposing)
+                Save();
+
             _isLoaded = false;
         }
 
@@ -256,11 +268,17 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         void Load()
         {
-            if (!File.Exists(_settingsFile))
+            if (UiHelper.Instance.DesignMode || !File.Exists(_settingsFile))
                 goto LOADED;
 
+            var settings = new XmlReaderSettings();
+            settings.IgnoreComments = true;
+            settings.IgnoreWhitespace = true;
+
+            var reader = XmlTextReader.Create(_settingsFile, settings);
+
             var document = new XmlDocument();
-            document.Load(_settingsFile);
+            document.Load(reader);
             var nodes = document.SelectNodes("/Settings/Setting");
             foreach (XmlNode node in nodes)
             {
@@ -271,6 +289,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 else
                     _settings.Add(key, value);
             }
+
+            reader.Close();
 
         LOADED:
             _isLoaded = true;

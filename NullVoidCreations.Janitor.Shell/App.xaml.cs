@@ -33,7 +33,7 @@ namespace NullVoidCreations.Janitor.Shell
         {
             WorkQueueManager.Instance.Dispose();
             SettingsManager.Instance.Dispose();
-            SignalHost.Instance.Dispose();
+            //SignalHost.Instance.Dispose();
             App.Current.DispatcherUnhandledException -= new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
             AppDomain.CurrentDomain.UnhandledException -= new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 

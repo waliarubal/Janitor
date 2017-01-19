@@ -39,15 +39,21 @@ namespace NullVoidCreations.Janitor.Core.Models
 
         ~ScanModel()
         {
-            Dispose();
+            Dispose(false);
         }
 
         public void Dispose()
         {
-            _issues.Clear();
+            Dispose(true);
+        }
 
-            // TODO: this throws cross thread exception, investigate this
-            UiHelper.Instance.ExecuteOnUiThread(new Action(() => _targets.Clear()));
+        void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _issues.Clear();
+                _targets.Clear();
+            }
         }
 
         #endregion

@@ -252,7 +252,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             scan.IsCancelled = _isCancelled;
 
             ScanModel.SaveScanDetails(scan);
-            SignalHost.Instance.RaiseSignal(this, Signal.AnalysisStopped, issues.Count);
+            SignalHost.Instance.RaiseSignal(this, Signal.AnalysisStopped, issues.Count, scan.IsCancelled);
 
             return scan;
         }
@@ -318,7 +318,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             scan.Issues = issues;
 
             ScanModel.SaveScanDetails(scan);
-            SignalHost.Instance.RaiseSignal(this, Signal.FixingStopped, issues.Count);
+            SignalHost.Instance.RaiseSignal(this, Signal.FixingStopped, issues.Count, scan.IsCancelled);
 
             scan.IsFixed = !scan.IsCancelled;
             return scan;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Win32;
 using NullVoidCreations.Janitor.Shared.Helpers;
-using NullVoidCreations.Janitor.Shell.Commands;
 
 namespace NullVoidCreations.Janitor.Shell.Models
 {

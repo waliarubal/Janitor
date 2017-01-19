@@ -28,9 +28,20 @@ namespace NullVoidCreations.Janitor.Shell.Core
             SignalHost.Instance.AddObserver(this);
         }
 
+        ~WorkQueueManager()
+        {
+            Dispose(false);
+        }
+
         public void Dispose()
         {
-            SignalHost.Instance.RemoveObserver(this);
+            Dispose(true);
+        }
+
+        void Dispose(bool disposing)
+        {
+            if (disposing)
+                SignalHost.Instance.RemoveObserver(this);
         }
 
         #endregion

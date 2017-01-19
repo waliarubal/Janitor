@@ -31,16 +31,18 @@ namespace NullVoidCreations.Janitor.Shell.Controls
 
         public CustomWindow()
         {
+            _handle = IntPtr.Zero;
             IsMinimizeAllowed = true;
             IsCloseAllowed = true;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            _handle = IntPtr.Zero;
         }
 
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-            _handle = NativeApiHelper.Instance.GetWindowHandle(this);
+
+            if (_handle == IntPtr.Zero)
+                _handle = NativeApiHelper.Instance.GetWindowHandle(this);
         }
 
         #region properties

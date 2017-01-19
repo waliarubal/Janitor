@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Threading;
 using NullVoidCreations.Janitor.Shell.ViewModels;
 using NullVoidCreations.Janitor.Shell.Views;
@@ -25,6 +27,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
                 return _instance;
             }
+        }
+
+        public bool DesignMode
+        {
+            get { return (bool)(DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue); }
         }
 
         #endregion

@@ -282,7 +282,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 case Signal.AnalysisStopped:
                     IsWorking = false;
                     IssueCount = (int)data[0];
-                    IsHavingIssues = IsAnalysing && IssueCount > 0;
+                    IsHavingIssues = IsAnalysing && IssueCount > 0 && !(bool)data[1];
                     IsAnalysing = signal == Signal.AnalysisStopped;
                     IsFixing = signal == Signal.FixingStopped;
                     break;

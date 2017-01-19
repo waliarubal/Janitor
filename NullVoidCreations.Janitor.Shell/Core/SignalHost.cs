@@ -49,9 +49,20 @@ namespace NullVoidCreations.Janitor.Shell.Core
             _observers = new List<ISignalObserver>();
         }
 
+        ~SignalHost()
+        {
+            Dispose(false);
+        }
+
         public void Dispose()
         {
-            _observers.Clear();
+            Dispose(true);
+        }
+
+        void Dispose(bool disposing)
+        {
+            if (disposing)
+                _observers.Clear();
         }
 
         #endregion

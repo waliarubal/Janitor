@@ -271,11 +271,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             if (UiHelper.Instance.DesignMode || !File.Exists(_settingsFile))
                 goto LOADED;
 
-            var settings = new XmlReaderSettings();
-            settings.IgnoreComments = true;
-            settings.IgnoreWhitespace = true;
-
-            var reader = XmlTextReader.Create(_settingsFile, settings);
+            var reader = XmlTextReader.Create(_settingsFile);
 
             var document = new XmlDocument();
             document.Load(reader);
@@ -300,7 +296,9 @@ namespace NullVoidCreations.Janitor.Shell.Core
         void Save()
         {
             var writer = new XmlTextWriter(_settingsFile, Encoding.Default);
-            writer.Formatting = Formatting.None;
+            writer.Formatting = Formatting.Indented;
+            writer.Indentation = 1;
+            writer.IndentChar = '\t';
 
             var xmlDocument = new XmlDocument();
             var rootNode = xmlDocument.CreateElement("Settings");

@@ -66,14 +66,12 @@
                        Source="/NullVoidCreations.Janitor.Shell;component/Resources/Paste.png" />
             </Button>
         </Grid>
-        <TextBlock Grid.Row="3"
-                   Margin="0 20 0 4"
-                   Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
-                   Text="Where I can find the license key?" />
-        <TextBlock Grid.Row="4"
-                   Margin="0 0 0 4"
-                   Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
-                   Text="I have username and password, what do I do?" />
+        <TextBlock Grid.Row="3" Margin="0 20 0 4">
+            <Hyperlink>Where I can find the license key?</Hyperlink>
+        </TextBlock>
+        <TextBlock Grid.Row="4" Margin="0 0 0 4">
+            <Hyperlink>I have username and password, what do I do?</Hyperlink>
+        </TextBlock>
         <Button Grid.Row="5"
                 Margin="0 8 0 0"
                 HorizontalAlignment="Left"

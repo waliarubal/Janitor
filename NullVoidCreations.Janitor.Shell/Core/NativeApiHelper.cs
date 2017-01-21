@@ -144,13 +144,13 @@ namespace NullVoidCreations.Janitor.Shell.Core
         [DllImport("user32")]
         static extern bool OpenIcon(IntPtr hWnd);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32")]
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32")]
         static extern bool HideCaret(IntPtr hWnd);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32")]
         static extern bool ShowCaret(IntPtr hWnd);
 
         static NativeApiHelper _instance;

@@ -44,6 +44,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #region properties
 
+        public string BuyNowUrl
+        {
+            get { return SharedConstants.BuyNowUrl; }
+        }
+
         public LicenseModel License
         {
             get { return _license; }

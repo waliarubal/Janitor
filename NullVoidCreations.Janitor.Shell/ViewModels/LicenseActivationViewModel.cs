@@ -21,6 +21,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #region properties
 
+        public string BuyNowUrl
+        {
+            get { return SharedConstants.BuyNowUrl; }
+        }
+
         public string LicenseKey
         {
             get { return _licenseKey; }

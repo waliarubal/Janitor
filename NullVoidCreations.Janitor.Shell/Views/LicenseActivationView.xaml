@@ -103,7 +103,8 @@
                 Margin="0 12 0 0"
                 Command="{Binding Path=PurchaseLicense,
                                   Mode=OneTime}"
-                CommandParameter="http://www.google.com/"
+                CommandParameter="{Binding Path=BuyNowUrl,
+                                           Mode=OneWay}"
                 Style="{StaticResource ResourceKey=ScanButtonStyle}">
             <Grid>
                 <Grid.ColumnDefinitions>

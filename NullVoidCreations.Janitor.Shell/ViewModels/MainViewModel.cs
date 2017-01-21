@@ -265,7 +265,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     UiHelper.Instance.ExecuteOnUiThread(() =>
                     {
                         App.Current.Shutdown(0);
-                        Process.Start(SettingsManager.Instance.ExecutablePath);
+                        Process.Start(SharedConstants.ExecutableFile);
                     });
                     break;
 

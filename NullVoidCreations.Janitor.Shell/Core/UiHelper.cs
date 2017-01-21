@@ -43,17 +43,17 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         public bool Question(string messageFormat, params object[] messageParts)
         {
-            return ShowMessage(App.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Question48.png", "Yes", "No", messageFormat, messageParts);
+            return ShowMessage(SharedConstants.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Question48.png", "Yes", "No", messageFormat, messageParts);
         }
 
         public void Error(string messageFormat, params object[] messageParts)
         {
-            ShowMessage(App.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Error48.png", "OK", "Cancel", messageFormat, messageParts);
+            ShowMessage(SharedConstants.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Error48.png", "OK", "Cancel", messageFormat, messageParts);
         }
 
         public void Alert(string messageFormat, params object[] messageParts)
         {
-            ShowMessage(App.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Info48.png", "OK", "Cancel", messageFormat, messageParts);
+            ShowMessage(SharedConstants.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Info48.png", "OK", "Cancel", messageFormat, messageParts);
         }
 
         bool ShowMessage(

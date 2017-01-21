@@ -15,8 +15,6 @@ namespace NullVoidCreations.Janitor.Shell
     /// </summary>
     public partial class App : Application, ISignalObserver
     {
-        internal const string ProductName = "PC MECHANIC PRO™";
-
         static Mutex _mutex;
 
         void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
@@ -47,10 +45,10 @@ namespace NullVoidCreations.Janitor.Shell
 
             // ensure single instance
             bool createdNew;
-            _mutex = new Mutex(true, ProductName, out createdNew);
+            _mutex = new Mutex(true, SharedConstants.ProductName, out createdNew);
             if (!createdNew)
             {
-                NativeApiHelper.Instance.ActivateOtherWindow(ProductName);
+                NativeApiHelper.Instance.ActivateOtherWindow(SharedConstants.ProductName);
                 Shutdown(0);
                 return;
             }
@@ -62,6 +60,9 @@ namespace NullVoidCreations.Janitor.Shell
             worker.DoWork += new DoWorkEventHandler(Worker_DoWork);
             worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
             worker.RunWorkerAsync(worker);
+
+            SettingsManager.Instance.Load(SharedConstants.UpdatesMetadataUrl);
+            SettingsManager.Instance.Load(SharedConstants.WebLinksUrl);
             
             MainWindow = new MainView();
             MainWindow.Show();

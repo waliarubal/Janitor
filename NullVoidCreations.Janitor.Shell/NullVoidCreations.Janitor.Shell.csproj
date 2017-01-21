@@ -136,6 +136,7 @@
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Models\StartupEntryModel.cs" />
     <Compile Include="Models\TaskModel.cs" />
+    <Compile Include="SharedConstants.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\BalloonViewModel.cs" />
     <Compile Include="ViewModels\ComputerScanViewModel.cs" />

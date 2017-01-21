@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
+using System.Net;
 using System.Text;
 using System.Xml;
 using NullVoidCreations.Janitor.Core.Models;
@@ -13,21 +13,17 @@ namespace NullVoidCreations.Janitor.Shell.Core
     class SettingsManager : ISignalObserver, IDisposable
     {
         static volatile SettingsManager _instance;
-        string _codeName, _pluginsDirectory, _pluginsSearchFilter;
-        readonly string _settingsFile, _assemblyPath;
+        readonly string _settingsFile;
         readonly Dictionary<string, object> _settings;
         volatile bool _isLoaded;
 
         private SettingsManager()
         {
-            _codeName = "Janitor";
-            _pluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
-            _pluginsSearchFilter = "NullVoidCreations.Janitor.Plugin.*.dll";
-            _assemblyPath = Assembly.GetExecutingAssembly().Location;
-
             _settings = new Dictionary<string, object>();
             _settingsFile = Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Settings.dat");
-            Load();
+
+            if (!UiHelper.Instance.DesignMode)
+                Load(_settingsFile);
         }
 
         ~SettingsManager()
@@ -59,26 +55,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
                 return _instance;
             }
-        }
-
-        public string ExecutablePath
-        {
-            get { return _assemblyPath; }
-        }
-
-        public string CodeName
-        {
-            get { return _codeName; }
-        }
-
-        public string PluginsDirectory
-        {
-            get { return _pluginsDirectory; }
-        }
-
-        public string PluginsSearchFilter
-        {
-            get { return _pluginsSearchFilter; }
         }
 
         public object this[string key]
@@ -266,15 +242,45 @@ namespace NullVoidCreations.Janitor.Shell.Core
             return setting;
         }
 
-        void Load()
+        public void Load(Uri url)
         {
-            if (UiHelper.Instance.DesignMode || !File.Exists(_settingsFile))
-                goto LOADED;
+            var client = new WebClient();
+            client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(Setings_DownloadStringCompleted);
+            client.Proxy = null;
+            client.DownloadStringAsync(url, client);
+        }
 
-            var reader = XmlTextReader.Create(_settingsFile);
+        void Setings_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            var client = e.UserState as WebClient;
+            client.DownloadStringCompleted -= new DownloadStringCompletedEventHandler(Setings_DownloadStringCompleted);
+            client.Dispose();
+
+            if (e.Error != null)
+                return;
 
             var document = new XmlDocument();
+            document.LoadXml(e.Result);
+            Load(document);
+        }
+
+        public void Load(string fileName)
+        {
+            if (!File.Exists(fileName))
+                return;
+
+            var reader = XmlTextReader.Create(fileName);
+            var document = new XmlDocument();
             document.Load(reader);
+            Load(document);
+            reader.Close();
+        }
+
+        void Load(XmlDocument document)
+        {
+            if (UiHelper.Instance.DesignMode)
+                goto LOADED;
+
             var nodes = document.SelectNodes("/Settings/Setting");
             foreach (XmlNode node in nodes)
             {
@@ -285,8 +291,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 else
                     _settings.Add(key, value);
             }
-
-            reader.Close();
 
         LOADED:
             _isLoaded = true;

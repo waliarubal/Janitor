@@ -102,7 +102,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
                 case WorkSignal.ShowTrialWarning:
                     if (LicenseExManager.Instance.License.IsTrial)
-                        new BalloonCommand(null).Execute("https://www.google.com");
+                        new BalloonCommand(null).Execute(SharedConstants.OfferUrl);
                     break;
             }
         }

@@ -100,6 +100,7 @@
                     HorizontalAlignment="Left"
                     Command="{Binding Path=PluginUpdate,
                                       Mode=OneTime}"
+                    CommandParameter="PluginsUpdate"
                     Content="{Binding Path=PluginUpdate.Title,
                                       Mode=OneWay}"
                     IsEnabled="{Binding Path=IsExecuting,
@@ -194,6 +195,7 @@
                     HorizontalAlignment="Left"
                     Command="{Binding Path=ProgramUpdate,
                                       Mode=OneTime}"
+                    CommandParameter="ProgramUpdate"
                     Content="{Binding Path=ProgramUpdate.Title,
                                       Mode=OneWay}"
                     IsEnabled="{Binding Path=IsExecuting,

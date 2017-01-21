@@ -265,11 +265,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         object ExecuteSaveSchedule(object parameter)
         {
             var task = new TaskModel();
-            task.Name = string.Format("{0}AutomaticSmartScan", SettingsManager.Instance.CodeName);
+            task.Name = string.Format("{0}AutomaticSmartScan", SharedConstants.InternalName);
             if (IsScheduleDisabled)
                 return task.Delete();
 
-            task.ExecutablePath = SettingsManager.Instance.ExecutablePath;
+            task.ExecutablePath = SharedConstants.ExecutableFile;
             task.CommandLineArguments = string.Format("/{0} /{1}", CommandLineManager.CommandLineArgument.Silent, CommandLineManager.CommandLineArgument.SmartScan);
 
 

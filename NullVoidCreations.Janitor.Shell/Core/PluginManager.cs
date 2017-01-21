@@ -21,8 +21,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
             _targets = new Dictionary<string, ScanTargetBase>();
 
             // create plugins directory if missing
-            if (!Directory.Exists(SettingsManager.Instance.PluginsDirectory))
-                Directory.CreateDirectory(SettingsManager.Instance.PluginsDirectory);
+            if (!Directory.Exists(SharedConstants.PluginsDirectory))
+                Directory.CreateDirectory(SharedConstants.PluginsDirectory);
 
             // install any pending plugins update
             if (File.Exists(UpdateCommand.PluginsUpdateFile))
@@ -90,7 +90,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             foreach (var entry in directory)
             {
                 var fileName = Path.GetFileName(entry.FilenameInZip);
-                var filePath = Path.Combine(SettingsManager.Instance.PluginsDirectory, fileName);
+                var filePath = Path.Combine(SharedConstants.PluginsDirectory, fileName);
                 zip.ExtractFile(entry, filePath);
             }
             LoadPlugins();
@@ -108,7 +108,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             var proxyType = typeof(Proxy);
             var proxy = (Proxy)_container.CreateInstanceAndUnwrap(proxyType.Assembly.FullName, proxyType.FullName);
 
-            var pluginFiles = Directory.GetFiles(SettingsManager.Instance.PluginsDirectory, SettingsManager.Instance.PluginsSearchFilter);
+            var pluginFiles = Directory.GetFiles(SharedConstants.PluginsDirectory, SharedConstants.PluginsSearchFilter);
             foreach (var pluginFile in pluginFiles)
             {
                 var assembly = proxy.GetAssembly(pluginFile);
@@ -142,7 +142,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             var evidence = AppDomain.CurrentDomain.Evidence;
 
             var setupInfo = new AppDomainSetup();
-            setupInfo.ApplicationBase = SettingsManager.Instance.PluginsDirectory;
+            setupInfo.ApplicationBase = SharedConstants.PluginsDirectory;
 
             _container = AppDomain.CreateDomain("ScanTargets", evidence, setupInfo);
         }

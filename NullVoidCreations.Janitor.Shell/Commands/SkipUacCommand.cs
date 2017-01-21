@@ -12,7 +12,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         static SkipUacCommand()
         {
-            SkipUacTask = string.Format("{0}SkipUAC", SettingsManager.Instance.CodeName); ;
+            SkipUacTask = string.Format("{0}SkipUAC", SharedConstants.InternalName); ;
         }
 
         public SkipUacCommand(ViewModelBase viewMode)
@@ -23,13 +23,13 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         protected override object ExecuteOverride(object parameter)
         {
-            var lnkPath = Path.Combine(NativeApiHelper.Instance.GetPublicDesktopDirectory(), string.Format("{0}.lnk", App.ProductName));
-            var lnk1Path = Path.Combine(NativeApiHelper.Instance.GetStartMenuDirectory(), string.Format("PC Mechanic Pro\\{0}.lnk", App.ProductName));
-            var icon = string.Format("{0}, 0", SettingsManager.Instance.ExecutablePath);
+            var lnkPath = Path.Combine(NativeApiHelper.Instance.GetPublicDesktopDirectory(), string.Format("{0}.lnk", SharedConstants.ProductName));
+            var lnk1Path = Path.Combine(NativeApiHelper.Instance.GetStartMenuDirectory(), string.Format("PC Mechanic Pro\\{0}.lnk", SharedConstants.ProductName));
+            var icon = string.Format("{0}, 0", SharedConstants.ExecutableFile);
 
             var task = new TaskModel();
             task.Name = SkipUacTask;
-            task.ExecutablePath = SettingsManager.Instance.ExecutablePath;
+            task.ExecutablePath = SharedConstants.ExecutableFile;
 
             bool result;
             if ((bool)parameter)
@@ -52,10 +52,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                 if (result)
                 {
                     if (File.Exists(lnkPath))
-                        NativeApiHelper.Instance.CreateShortcut(lnkPath, SettingsManager.Instance.ExecutablePath, null, KnownPaths.Instance.ApplicationDirectory, icon, true);
+                        NativeApiHelper.Instance.CreateShortcut(lnkPath, SharedConstants.ExecutableFile, null, KnownPaths.Instance.ApplicationDirectory, icon, true);
 
                     if (File.Exists(lnk1Path))
-                        NativeApiHelper.Instance.CreateShortcut(lnk1Path, SettingsManager.Instance.ExecutablePath, null, KnownPaths.Instance.ApplicationDirectory, icon, true);
+                        NativeApiHelper.Instance.CreateShortcut(lnk1Path, SharedConstants.ExecutableFile, null, KnownPaths.Instance.ApplicationDirectory, icon, true);
                 }
             }
 

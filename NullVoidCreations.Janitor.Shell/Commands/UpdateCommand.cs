@@ -32,7 +32,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         const string UpToDateMessage = "Installed version {0} is up to date. Last checked for update on {1}.";
         const string RestartRequiredMessage = "Update has been downloaded. Please restart program to apply update.";
         const char Separator = '|';
-        readonly Uri MetadataUrl = new Uri(@"https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Update.txt");
+        readonly Uri MetadataUrl = new Uri(@"https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Updates.dat");
 
         readonly UpdateType _type;
         bool _isSilent;
@@ -122,41 +122,18 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             else
                 SettingsManager.Instance.LastProgramUpdateCheck = DateTime.Now;
 
-            string[] metaData;
+            if (parameter != null)
+                SettingsManager.Instance.Load(SharedConstants.UpdatesMetadataUrl);
 
-            // fetch metadata
-            try
-            {
-                metaData = _client.DownloadString(MetadataUrl).Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            }
-            catch
-            {
-                Description = DownloadErrorMessage;
-                SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, true);
-                SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
-                return;
-            }
+            var programVersionString = SettingsManager.Instance["ProgramVersion"] as string;
+            if (programVersionString == null)
+                programVersionString = "0.0.0.0";
+            var pluginsVersionString = SettingsManager.Instance["PluginsVersion"] as string;
+            if (pluginsVersionString == null)
+                pluginsVersionString = "0.0.0.0";
 
-            if (metaData.Length != 2)
-            {
-                Description = DownloadErrorMessage;
-                SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, true);
-                SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
-                return;
-            }
-
-            // validate meta data
-            metaData = _type == UpdateType.Program ?
-                metaData[1].Split(new char[] { Separator }, StringSplitOptions.RemoveEmptyEntries) :
-                metaData[0].Split(new char[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
-            if (metaData.Length != 3)
-            {
-                Description = DownloadErrorMessage;
-                return;
-            }
-
-            // validate version
-            AvailableVersion = new Version(metaData[1]);
+            // version validation
+            AvailableVersion = new Version(_type == UpdateType.Program ? programVersionString : pluginsVersionString);
             var currentVersion = _type == UpdateType.Program ?
                 new Version(App.Current.Resources["ProductVersion"] as string) :
                 PluginManager.Instance.Version;
@@ -177,7 +154,9 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
             // download update
             Description = string.Format(UpdatingMessage, currentVersion, AvailableVersion);
-            UpdateUrl = new Uri(metaData[2]);
+            UpdateUrl = _type == UpdateType.Program ?
+                new Uri(SettingsManager.Instance["ProgramUpdateUrl"].ToString()) :
+                new Uri(SettingsManager.Instance["PluginsUpdateUrl"].ToString());
             var updateFile = _type == UpdateType.Program ? ApplicationUpdateFile : PluginsUpdateFile;
             FileSystemHelper.Instance.DeleteFile(updateFile);
             try
@@ -216,7 +195,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (_type == UpdateType.Program)
             {
                 message = RestartRequiredMessage;
-                if (_isSilent || UiHelper.Instance.Question(App.ProductName, RestartRequiredMessage))
+                if (_isSilent || UiHelper.Instance.Question(SharedConstants.ProductName, RestartRequiredMessage))
                 {
                     var startInfo = new ProcessStartInfo(updateFile);
                     startInfo.UseShellExecute = true;
@@ -229,7 +208,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             else
             {
                 message = RestartRequiredMessage;
-                if (_isSilent || UiHelper.Instance.Question(App.ProductName, RestartRequiredMessage))
+                if (_isSilent || UiHelper.Instance.Question(SharedConstants.ProductName, RestartRequiredMessage))
                 {
                     PluginManager.Instance.Version = AvailableVersion;
                     SignalHost.Instance.RaiseSignal(this, Signal.CloseAndStart);

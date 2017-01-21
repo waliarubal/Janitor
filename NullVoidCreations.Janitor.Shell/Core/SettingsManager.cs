@@ -267,7 +267,10 @@ namespace NullVoidCreations.Janitor.Shell.Core
         public void Load(string fileName)
         {
             if (!File.Exists(fileName))
+            {
+                _isLoaded = true;
                 return;
+            }
 
             var reader = XmlTextReader.Create(fileName);
             var document = new XmlDocument();

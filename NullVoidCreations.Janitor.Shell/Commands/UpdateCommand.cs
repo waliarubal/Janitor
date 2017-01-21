@@ -31,8 +31,6 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         const string UpdatingMessage = "Updating from version {0} to version {1}.";
         const string UpToDateMessage = "Installed version {0} is up to date. Last checked for update on {1}.";
         const string RestartRequiredMessage = "Update has been downloaded. Please restart program to apply update.";
-        const char Separator = '|';
-        readonly Uri MetadataUrl = new Uri(@"https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Updates.dat");
 
         readonly UpdateType _type;
         bool _isSilent;
@@ -54,7 +52,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             else
                 Description = string.Format(UpToDateMessage, string.Empty, SettingsManager.Instance.LastPluginUpdateCheck.ToString("MM/dd/yyyy HH:mm:ss"));
 
-            UpdateUrl = MetadataUrl;
+            UpdateUrl = SharedConstants.UpdatesMetadataUrl;
             IsEnabled = true;
             IsRecallAllowed = true;
 
@@ -125,10 +123,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (parameter != null)
                 SettingsManager.Instance.Load(SharedConstants.UpdatesMetadataUrl);
 
-            var programVersionString = SettingsManager.Instance["ProgramVersion"] as string;
+            var programVersionString = SettingsManager.Instance["AvailableProgramVersion"] as string;
             if (programVersionString == null)
                 programVersionString = "0.0.0.0";
-            var pluginsVersionString = SettingsManager.Instance["PluginsVersion"] as string;
+            var pluginsVersionString = SettingsManager.Instance["AvailablePluginsVersion"] as string;
             if (pluginsVersionString == null)
                 pluginsVersionString = "0.0.0.0";
 

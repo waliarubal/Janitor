@@ -18,7 +18,7 @@ namespace NullVoidCreations.Janitor.Shared
 
             PluginsSearchFilter = "NullVoidCreations.Janitor.Plugin.*.dll";
             PluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
-            ExecutableFile = Assembly.GetExecutingAssembly().Location;
+            ExecutableFile = Assembly.GetEntryAssembly().Location;
 
             UpdatesMetadataUrl = new Uri("https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Updates.dat");
             WebLinksUrl = new Uri("https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/WebLinks.dat");

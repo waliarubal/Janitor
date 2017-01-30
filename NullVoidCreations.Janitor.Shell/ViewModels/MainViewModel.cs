@@ -1,11 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using NullVoidCreations.Janitor.Shared;
 using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shell.Commands;
+using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Views;
-using NullVoidCreations.Janitor.Shared.Helpers;
-using NullVoidCreations.Janitor.Shared;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -264,11 +263,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.CloseAndStart:
-                    UiHelper.Instance.ExecuteOnUiThread(() =>
-                    {
-                        App.Current.Shutdown(0);
-                        Process.Start(Constants.ExecutableFile);
-                    });
+                    App.Current.Shutdown(0);
+                    Process.Start(Constants.ExecutableFile);
                     break;
 
                 case Signal.FixingStarted:

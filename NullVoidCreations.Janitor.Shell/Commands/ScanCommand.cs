@@ -157,6 +157,8 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         void StartFix(ScanModel scan)
         {
+            UiHelper.Instance.Alert("Some issues may not be resolved due to resources locked by running programs. This ensures error free execution of running applications.");
+
             _viewModel.IsExecuting = IsExecuting = true;
 
             _worker = new BackgroundWorker();

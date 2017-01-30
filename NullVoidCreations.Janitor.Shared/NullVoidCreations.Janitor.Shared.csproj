@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.5.21.0, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
+      <HintPath>..\packages\TaskScheduler.2.5.21\lib\net35\Microsoft.Win32.TaskScheduler.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Management" />
@@ -49,15 +53,18 @@
     <Compile Include="Base\CommandBase.cs" />
     <Compile Include="Base\DelegateCommand.cs" />
     <Compile Include="Base\NotificationBase.cs" />
+    <Compile Include="Base\SettingsBase.cs" />
     <Compile Include="Base\ViewModelBase.cs" />
     <Compile Include="Helpers\DirectoryWalker.cs" />
     <Compile Include="Helpers\FileSystemHelper.cs" />
     <Compile Include="Helpers\KnownPaths.cs" />
+    <Compile Include="Helpers\Win32Helper.cs" />
     <Compile Include="Helpers\SysInformation.cs" />
     <Compile Include="Models\FileIssueModel.cs" />
     <Compile Include="Base\IssueBase.cs" />
     <Compile Include="Base\ScanAreaBase.cs" />
     <Compile Include="Base\ScanTargetBase.cs" />
+    <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -71,10 +78,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Constants.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

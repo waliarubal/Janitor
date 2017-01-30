@@ -46,7 +46,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public string BuyNowUrl
         {
-            get { return SharedConstants.BuyNowUrl; }
+            get { return SettingsManager.Instance["BuyNowUrl"] as string; }
         }
 
         public LicenseModel License

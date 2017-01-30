@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using NullVoidCreations.Janitor.Shared;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
@@ -45,15 +46,18 @@ namespace NullVoidCreations.Janitor.Shell
 
             // ensure single instance
             bool createdNew;
-            _mutex = new Mutex(true, SharedConstants.ProductName, out createdNew);
+            _mutex = new Mutex(true, Constants.ProductName, out createdNew);
             if (!createdNew)
             {
-                NativeApiHelper.Instance.ActivateOtherWindow(SharedConstants.ProductName);
+                Win32Helper.Instance.ActivateOtherWindow(Constants.ProductName);
                 Shutdown(0);
                 return;
             }
 
             base.OnStartup(e);
+
+            Resources["ProductName"] = Constants.ProductName;
+            Resources["ProductVersion"] = Constants.ProductVersion.ToString();
 
             // initialization
             var worker = new BackgroundWorker();
@@ -61,8 +65,8 @@ namespace NullVoidCreations.Janitor.Shell
             worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
             worker.RunWorkerAsync(worker);
 
-            SettingsManager.Instance.Load(SharedConstants.UpdatesMetadataUrl);
-            SettingsManager.Instance.Load(SharedConstants.WebLinksUrl);
+            SettingsManager.Instance.Load(Constants.UpdatesMetadataUrl);
+            SettingsManager.Instance.Load(Constants.WebLinksUrl);
             
             MainWindow = new MainView();
             MainWindow.Show();

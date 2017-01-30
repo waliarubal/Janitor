@@ -75,6 +75,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 return false;
 
             File.WriteAllText(keyFile, key);
+            UiHelper.Instance.Alert("License key generated and exported to file '{0}'.", keyFile);
             return true;
         }
 

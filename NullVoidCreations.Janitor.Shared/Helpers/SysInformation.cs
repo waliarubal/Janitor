@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Management;
-using System;
 
 namespace NullVoidCreations.Janitor.Shared.Helpers
 {
     public class SysInformation
     {
+        /// <summary>
+        /// List of known Management Classes.
+        /// </summary>
         public class ManagementClassNames
         {
             public const string Controller1394 = "Win32_1394Controller";

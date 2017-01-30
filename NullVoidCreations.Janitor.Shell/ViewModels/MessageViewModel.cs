@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using NullVoidCreations.Janitor.Shared.Base;
+﻿using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Controls;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels

@@ -6,13 +6,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
-using NullVoidCreations.Janitor.Shared.Helpers;
 
-namespace NullVoidCreations.Janitor.Shell.Core
+namespace NullVoidCreations.Janitor.Shared.Helpers
 {
 
-    class NativeApiHelper
+    public class Win32Helper
     {
+
+        #region native declares
 
         /// <summary>Enumeration of the different ways of showing a window using ShowWindow</summary>
         [Flags]
@@ -72,7 +73,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         }
 
         [Flags]
-        public enum CSIDL
+        enum CSIDL
         {
             CSIDL_DESKTOP = 0x0000,    // <desktop>
             CSIDL_INTERNET = 0x0001,    // Internet Explorer (icon on desktop)
@@ -129,7 +130,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             CSIDL_CDBURN_AREA = 0x003b    // USERPROFILE\Local Settings\Application Data\Microsoft\CD Burning
         }
 
-        [DllImport("shell32.dll")]
+        [DllImport("shell32")]
         static extern bool SHGetSpecialFolderPath(IntPtr hwndOwner, [Out] StringBuilder lpszPath, int nFolder, bool fCreate);
 
         [DllImport("user32", CharSet = CharSet.Unicode)]
@@ -153,24 +154,37 @@ namespace NullVoidCreations.Janitor.Shell.Core
         [DllImport("user32")]
         static extern bool ShowCaret(IntPtr hWnd);
 
-        static NativeApiHelper _instance;
+        #endregion
 
-        private NativeApiHelper()
+        static Win32Helper _instance;
+
+        private Win32Helper()
         {
 
         }
 
         #region properties
 
-        public static NativeApiHelper Instance
+        public static Win32Helper Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new NativeApiHelper();
+                    _instance = new Win32Helper();
 
                 return _instance;
             }
+        }
+
+        #endregion
+
+        #region private methods
+
+        string GetSpecialDirectory(CSIDL specialFolder)
+        {
+            var path = new StringBuilder(260);
+            SHGetSpecialFolderPath(IntPtr.Zero, path, (int)specialFolder, false);
+            return path.ToString();
         }
 
         #endregion
@@ -219,13 +233,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
         public void Show(IntPtr hWnd)
         {
             ShowWindow(hWnd, (int)WindowShowStyle.Restore);
-        }
-
-        string GetSpecialDirectory(CSIDL specialFolder)
-        {
-            var path = new StringBuilder(260);
-            SHGetSpecialFolderPath(IntPtr.Zero, path, (int)specialFolder, false);
-            return path.ToString();
         }
 
         public string GetPublicDesktopDirectory()

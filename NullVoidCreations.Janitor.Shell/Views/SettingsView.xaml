@@ -188,7 +188,7 @@
 
             <TextBlock Grid.Row="1"
                        Grid.Column="1"
-                       Text="Scan should not run automatically." />
+                       Text="Do not run automatic scan." />
             <RadioButton Grid.Row="1"
                          Grid.Column="2"
                          IsChecked="{Binding Path=IsScheduleDisabled,
@@ -196,7 +196,7 @@
 
             <TextBlock Grid.Row="2"
                        Grid.Column="1"
-                       Text="Scan should run automatically only once." />
+                       Text="Run automatic scan only once." />
             <RadioButton Grid.Row="2"
                          Grid.Column="2"
                          IsChecked="{Binding Path=IsScheduleOnce,
@@ -204,7 +204,7 @@
 
             <TextBlock Grid.Row="3"
                        Grid.Column="1"
-                       Text="Scan should run automatically daily." />
+                       Text="Run automatic scan daily." />
             <RadioButton Grid.Row="3"
                          Grid.Column="2"
                          IsChecked="{Binding Path=IsScheduleDaily,
@@ -212,7 +212,7 @@
 
             <TextBlock Grid.Row="4"
                        Grid.Column="1"
-                       Text="Scan should run automatically on the following week days:" />
+                       Text="Run automatic scan on the following week days:" />
             <RadioButton Grid.Row="4"
                          Grid.Column="2"
                          IsChecked="{Binding Path=IsScheduleWeekly,

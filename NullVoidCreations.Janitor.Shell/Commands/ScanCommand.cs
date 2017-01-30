@@ -277,7 +277,6 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                     if (area.IsSelected)
                         progressMax++;
 
-
             if (_worker.CancellationPending)
                 goto EXIT_SCAN;
 

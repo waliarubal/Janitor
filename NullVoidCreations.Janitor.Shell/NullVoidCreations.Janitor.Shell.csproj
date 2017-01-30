@@ -71,10 +71,6 @@
       <HintPath>..\packages\HtmlRenderer.WPF.1.5.1-beta1\lib\net35-client\HtmlRenderer.WPF.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.5.21.0, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
-      <HintPath>..\packages\TaskScheduler.2.5.21\lib\net35\Microsoft.Win32.TaskScheduler.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -121,7 +117,6 @@
     <Compile Include="Core\CommandLineManager.cs" />
     <Compile Include="Core\ISignalObserver.cs" />
     <Compile Include="Core\LicenseExManager.cs" />
-    <Compile Include="Core\NativeApiHelper.cs" />
     <Compile Include="Core\PluginManager.cs" />
     <Compile Include="Core\Proxy.cs" />
     <Compile Include="Core\SettingsManager.cs" />
@@ -135,8 +130,6 @@
     <Compile Include="Models\ScanStatusModel.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Models\StartupEntryModel.cs" />
-    <Compile Include="Models\TaskModel.cs" />
-    <Compile Include="SharedConstants.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\BalloonViewModel.cs" />
     <Compile Include="ViewModels\ComputerScanViewModel.cs" />
@@ -388,6 +381,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\BulbGlow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\NortonSeal.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

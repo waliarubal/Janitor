@@ -3,6 +3,7 @@ using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Controls;
 using NullVoidCreations.Janitor.Shell.Core;
+using NullVoidCreations.Janitor.Shared;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -23,7 +24,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public string BuyNowUrl
         {
-            get { return SharedConstants.BuyNowUrl; }
+            get { return SettingsManager.Instance["BuyNowUrl"] as string; }
         }
 
         public string LicenseKey

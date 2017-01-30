@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Reflection;
 using NullVoidCreations.Janitor.Shared.Helpers;
-using NullVoidCreations.Janitor.Shell.Core;
 
-namespace NullVoidCreations.Janitor.Shell
+namespace NullVoidCreations.Janitor.Shared
 {
-    class SharedConstants
+    public class Constants
     {
         public static readonly string ProductName, InternalName, ExecutableFile, PluginsDirectory, PluginsSearchFilter;
         public static readonly Uri UpdatesMetadataUrl, WebLinksUrl;
+        public static readonly Version ProductVersion;
 
-        static SharedConstants()
+        static Constants()
         {
             ProductName = "PC MECHANIC PRO™";
+            ProductVersion = new Version("1.8.0.0");
             InternalName = "Janitor";
 
             PluginsSearchFilter = "NullVoidCreations.Janitor.Plugin.*.dll";
@@ -21,16 +22,6 @@ namespace NullVoidCreations.Janitor.Shell
 
             UpdatesMetadataUrl = new Uri("https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Updates.dat");
             WebLinksUrl = new Uri("https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/WebLinks.dat");
-        }
-
-        public static string BuyNowUrl
-        {
-            get { return SettingsManager.Instance["BuyNowUrl"] as string; }
-        }
-
-        public static string OfferUrl
-        {
-            get { return SettingsManager.Instance["OfferUrl"] as string; }
         }
     }
 }

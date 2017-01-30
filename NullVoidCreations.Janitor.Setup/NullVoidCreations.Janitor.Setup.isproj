@@ -27,7 +27,7 @@
 			<TargetPath>My Test Exe.exe</TargetPath>
 		</TaggedOutputs> -->
 	</ItemGroup>
-	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2015Limited\InstallShield.targets"/>
+	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2015\InstallShield.targets"/>
 	<ItemGroup>
 		<ProjectReference Include="..\NullVoidCreations.Janitor.Shell\NullVoidCreations.Janitor.Shell.csproj">
 			<Name>NullVoidCreations.Janitor.Shell</Name>

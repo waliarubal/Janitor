@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shell.Commands;
+using NullVoidCreations.Janitor.Shared;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -102,7 +103,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
                 case WorkSignal.ShowTrialWarning:
                     if (LicenseExManager.Instance.License.IsTrial)
-                        new BalloonCommand(null).Execute(SharedConstants.OfferUrl);
+                        new BalloonCommand(null).Execute(SettingsManager.Instance["OfferUrl"] as string);
                     break;
             }
         }

@@ -120,7 +120,7 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
         #region methods
 
-        void RaiseCanExecuteChanged()
+        public void RaiseCanExecuteChanged()
         {
             if (CanExecuteChanged == null)
                 return;

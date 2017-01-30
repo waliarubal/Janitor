@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Threading;
 using NullVoidCreations.Janitor.Shell.ViewModels;
 using NullVoidCreations.Janitor.Shell.Views;
+using NullVoidCreations.Janitor.Shared;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -43,17 +44,17 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         public bool Question(string messageFormat, params object[] messageParts)
         {
-            return ShowMessage(SharedConstants.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Question48.png", "Yes", "No", messageFormat, messageParts);
+            return ShowMessage(Constants.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Question48.png", "Yes", "No", messageFormat, messageParts);
         }
 
         public void Error(string messageFormat, params object[] messageParts)
         {
-            ShowMessage(SharedConstants.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Error48.png", "OK", "Cancel", messageFormat, messageParts);
+            ShowMessage(Constants.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Error48.png", "OK", "Cancel", messageFormat, messageParts);
         }
 
         public void Alert(string messageFormat, params object[] messageParts)
         {
-            ShowMessage(SharedConstants.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Info48.png", "OK", "Cancel", messageFormat, messageParts);
+            ShowMessage(Constants.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Info48.png", "OK", "Cancel", messageFormat, messageParts);
         }
 
         bool ShowMessage(

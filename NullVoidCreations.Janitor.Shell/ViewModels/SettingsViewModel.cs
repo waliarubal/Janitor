@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using Microsoft.Win32.TaskScheduler;
+using NullVoidCreations.Janitor.Shared;
 using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shared.Models;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
-using NullVoidCreations.Janitor.Shell.Models;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -34,6 +34,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _isScheduleOnce = SettingsManager.Instance.ScheduleType == ScheduleType.Once;
             _isScheduleDaily = SettingsManager.Instance.ScheduleType == ScheduleType.Daily;
             _isScheduleWeekly = SettingsManager.Instance.ScheduleType == ScheduleType.Weekly;
+            if (_isScheduleDisabled)
+                _date = DateTime.Now;
 
             // commands
             _scheduleSilentRun = new ScheduleSilentRunCommand(this);
@@ -265,79 +267,33 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         object ExecuteSaveSchedule(object parameter)
         {
             var task = new TaskModel();
-            task.Name = string.Format("{0}AutomaticSmartScan", SharedConstants.InternalName);
+            task.Name = string.Format("{0}AutomaticSmartScan", Constants.InternalName);
             if (IsScheduleDisabled)
                 return task.Delete();
 
-            task.ExecutablePath = SharedConstants.ExecutableFile;
+            task.ExecutablePath = Constants.ExecutableFile;
             task.CommandLineArguments = string.Format("/{0} /{1}", CommandLineManager.CommandLineArgument.Silent, CommandLineManager.CommandLineArgument.SmartScan);
-
-
             if (IsScheduleOnce)
             {
-                task.Schedule = new TimeTrigger(Date);
-                task.Schedule.EndBoundary = DateTime.MaxValue;
+                task.Schedule = TaskModel.ScheduleType.Once;
+                task.Start = Date;
             }
             else if (IsScheduleDaily)
             {
-                task.Schedule = new DailyTrigger();
-                task.Schedule.StartBoundary = Date;
-                task.Schedule.EndBoundary = DateTime.MaxValue;
+                task.Schedule = TaskModel.ScheduleType.Daily;
+                task.Start = Date;
             }
             else if (IsScheduleWeekly)
             {
-                DaysOfTheWeek days = DaysOfTheWeek.AllDays;
-                for (short index = 0; index < WeekDays.Count; index++)
-                {
-                    if (!WeekDays[index])
-                        continue;
-
-                    DaysOfTheWeek day = DaysOfTheWeek.AllDays;
-                    switch (index)
-                    {
-                        case 0:
-                            day = DaysOfTheWeek.Sunday;
-                            break;
-
-                        case 1:
-                            day = DaysOfTheWeek.Monday;
-                            break;
-
-                        case 2:
-                            day = DaysOfTheWeek.Tuesday;
-                            break;
-
-                        case 3:
-                            day = DaysOfTheWeek.Wednesday;
-                            break;
-
-                        case 4:
-                            day = DaysOfTheWeek.Thursday;
-                            break;
-
-                        case 5:
-                            day = DaysOfTheWeek.Friday;
-                            break;
-
-                        case 6:
-                            day = DaysOfTheWeek.Saturday;
-                            break;
-                    }
-
-                    if (days == DaysOfTheWeek.AllDays)
-                        days = day;
-                    else
-                        days |= day;
-                }
-                task.Schedule = new WeeklyTrigger(days);
-                task.Schedule.StartBoundary = Date;
-                task.Schedule.EndBoundary = DateTime.MaxValue;
+                task.Schedule = TaskModel.ScheduleType.Weekly;
+                task.Start = Date;
+                for (var index = 0; index < WeekDays.Count; index++)
+                    task.WeekDays[index] = WeekDays[index];
             }
-
 
             var result = task.CreateOrUpdate();
             if (result)
-                Date = task.Schedule.StartBoundary;
+                Date = task.Start;
 
             return result;
         }

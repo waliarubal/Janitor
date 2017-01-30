@@ -4,6 +4,8 @@ using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Views;
+using NullVoidCreations.Janitor.Shared.Helpers;
+using NullVoidCreations.Janitor.Shared;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -243,11 +245,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.ShowUi:
-                    NativeApiHelper.Instance.Show(View.Handle);
+                    Win32Helper.Instance.Show(View.Handle);
                     break;
 
                 case Signal.Minimize:
-                    NativeApiHelper.Instance.Minimize(View.Handle);
+                    Win32Helper.Instance.Minimize(View.Handle);
                     break;
 
                 case Signal.Close:
@@ -258,14 +260,14 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.CloseToTray:
-                    NativeApiHelper.Instance.Hide(View.Handle);
+                    Win32Helper.Instance.Hide(View.Handle);
                     break;
 
                 case Signal.CloseAndStart:
                     UiHelper.Instance.ExecuteOnUiThread(() =>
                     {
                         App.Current.Shutdown(0);
-                        Process.Start(SharedConstants.ExecutableFile);
+                        Process.Start(Constants.ExecutableFile);
                     });
                     break;
 

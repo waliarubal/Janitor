@@ -6,10 +6,11 @@
                 Title="{Binding Path=Title,
                                 Mode=OneWay}"
                 Width="380"
-                Height="180"
+                Height="Auto"
                 Background="{StaticResource ResourceKey=BackgroundBrush}"
                 IsCloseAllowed="False"
                 IsMinimizeAllowed="False"
+                SizeToContent="Height"
                 WindowStartupLocation="CenterOwner">
     <c:CustomWindow.DataContext>
         <vm:MessageViewModel />
@@ -28,14 +29,17 @@
             </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Image Width="48" Source="{Binding Path=Icon, Mode=OneWay}" />
+        <Image Width="48"
+               Height="48"
+               Source="{Binding Path=Icon,
+                                Mode=OneWay}" />
         <TextBlock Grid.Column="1" Text="{Binding Path=Message, Mode=OneWay}" />
         <StackPanel Grid.Row="1"
                     Grid.ColumnSpan="2"

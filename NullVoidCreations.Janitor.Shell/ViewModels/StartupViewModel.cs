@@ -14,7 +14,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         public StartupViewModel()
         {
             _refresh = new AsyncDelegateCommand(this, null, ExecuteRefresh, RefreshCompleted);
-            _delete = new AsyncDelegateCommand(this, null, ExecuteDelete, DeleteComplete);
+            _delete = new AsyncDelegateCommand(this, CanDelete, ExecuteDelete, DeleteComplete, ConfirmDelete);
             _refresh.IsEnabled = _delete.IsEnabled = true;
 
             SignalHost.Instance.AddObserver(this);
@@ -50,6 +50,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 _selectedEntry = value;
                 RaisePropertyChanged("SelectedEntry");
+                Delete.RaiseCanExecuteChanged();
+                
             }
         }
 
@@ -69,6 +71,16 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #endregion
 
+        bool CanDelete(object parameter)
+        {
+            return SelectedEntry != null;
+        }
+
+        bool ConfirmDelete(object parameter)
+        {
+            return UiHelper.Instance.Question("Are you sure you want to remove program {0} from startup?", SelectedEntry.Name);
+        }
+
         void DeleteComplete(object result)
         {
             if ((bool)result)
@@ -82,7 +94,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         object ExecuteDelete(object parameter)
         {
-            //TODO: add confirmation message
             var entry = parameter as StartupEntryModel;
             if (entry == null)
                 return false;
@@ -105,6 +116,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         void RefreshCompleted(object startupEntries)
         {
+            SelectedEntry = null;
             Entries = startupEntries as ObservableCollection<StartupEntryModel>;
         }
 

@@ -1,47 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Text;
-using System.Xml;
 using NullVoidCreations.Janitor.Core.Models;
+using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.ViewModels;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
-    class SettingsManager : ISignalObserver, IDisposable
+    class SettingsManager : SettingsBase, ISignalObserver
     {
         static volatile SettingsManager _instance;
-        readonly string _settingsFile;
-        readonly Dictionary<string, object> _settings;
-        volatile bool _isLoaded;
 
         private SettingsManager()
         {
-            _settings = new Dictionary<string, object>();
-            _settingsFile = Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Settings.dat");
-
             if (!UiHelper.Instance.DesignMode)
-                Load(_settingsFile);
-        }
-
-        ~SettingsManager()
-        {
-            Dispose(false);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        void Dispose(bool disposing)
-        {
-            if (disposing)
-                Save();
-
-            _isLoaded = false;
+            {
+                var fileName = Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Settings.dat");
+                Load(fileName);
+                SignalHost.Instance.RaiseSignal(this, Signal.SettingsLoaded);
+            }
         }
 
         #region properties
@@ -54,21 +32,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
                     _instance = new SettingsManager();
 
                 return _instance;
-            }
-        }
-
-        public object this[string key]
-        {
-            get
-            {
-                return _settings.ContainsKey(key) ? _settings[key] : null;
-            }
-            set
-            {
-                if (_settings.ContainsKey(key))
-                    _settings[key] = value;
-                else
-                    _settings.Add(key, value);
             }
         }
 
@@ -216,118 +179,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
         }
 
         #endregion
-
-        T GetSetting<T>(string key)
-        {
-            T setting = default(T);
-
-            if (!_isLoaded)
-                return setting;
-            if (string.IsNullOrEmpty(key) || !_settings.ContainsKey(key))
-                return setting;
-
-            var type = typeof(T);
-            try
-            {
-                if (type.IsEnum)
-                    setting = (T)Enum.Parse(type, GetSetting<string>(key));
-                else
-                    setting = (T)Convert.ChangeType(_settings[key], typeof(T));
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-            return setting;
-        }
-
-        public void Load(Uri url)
-        {
-            var client = new WebClient();
-            client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(Setings_DownloadStringCompleted);
-            client.Proxy = null;
-            client.DownloadStringAsync(url, client);
-        }
-
-        void Setings_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
-            var client = e.UserState as WebClient;
-            client.DownloadStringCompleted -= new DownloadStringCompletedEventHandler(Setings_DownloadStringCompleted);
-            client.Dispose();
-
-            if (e.Error != null)
-                return;
-
-            var document = new XmlDocument();
-            document.LoadXml(e.Result);
-            Load(document);
-        }
-
-        public void Load(string fileName)
-        {
-            if (!File.Exists(fileName))
-            {
-                _isLoaded = true;
-                return;
-            }
-
-            var reader = XmlTextReader.Create(fileName);
-            var document = new XmlDocument();
-            document.Load(reader);
-            Load(document);
-            reader.Close();
-        }
-
-        void Load(XmlDocument document)
-        {
-            if (UiHelper.Instance.DesignMode)
-                goto LOADED;
-
-            var nodes = document.SelectNodes("/Settings/Setting");
-            foreach (XmlNode node in nodes)
-            {
-                var key = node.Attributes["Key"].Value;
-                var value = node.Attributes["Value"].Value;
-                if (_settings.ContainsKey(key))
-                    _settings[key] = value;
-                else
-                    _settings.Add(key, value);
-            }
-
-        LOADED:
-            _isLoaded = true;
-            SignalHost.Instance.RaiseSignal(this, Signal.SettingsLoaded);
-        }
-
-        void Save()
-        {
-            var writer = new XmlTextWriter(_settingsFile, Encoding.Default);
-            writer.Formatting = Formatting.Indented;
-            writer.Indentation = 1;
-            writer.IndentChar = '\t';
-
-            var xmlDocument = new XmlDocument();
-            var rootNode = xmlDocument.CreateElement("Settings");
-            foreach (var key in _settings.Keys)
-            {
-                var node = xmlDocument.CreateElement("Setting");
-
-                var attribute = xmlDocument.CreateAttribute("Key");
-                attribute.Value = key;
-                node.Attributes.Append(attribute);
-
-                attribute = xmlDocument.CreateAttribute("Value");
-                attribute.Value = _settings[key].ToString();
-                node.Attributes.Append(attribute);
-
-                rootNode.AppendChild(node);
-            }
-            xmlDocument.AppendChild(rootNode);
-            xmlDocument.Save(writer);
-
-            SignalHost.Instance.RaiseSignal(this, Signal.SettingsSaved);
-        }
 
         public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
         {

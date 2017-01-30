@@ -7,6 +7,7 @@ namespace NullVoidCreations.Janitor.Shared.Base
     public class AsyncDelegateCommand : CommandBase
     {
         Func<object, object> _method;
+        Func<object, bool> _confirmExecution;
         Action<object> _callback;
         BackgroundWorker _worker;
 
@@ -19,7 +20,7 @@ namespace NullVoidCreations.Janitor.Shared.Base
             _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(WorkCompleted);
         }
 
-        public AsyncDelegateCommand(ViewModelBase viewModel, Func<object, bool> canExecute, Func<object, object> method, Action<object> callback)
+        public AsyncDelegateCommand(ViewModelBase viewModel, Func<object, bool> canExecute, Func<object, object> method, Action<object> callback, Func<object, bool> confirmExecution = null)
             : this(viewModel, canExecute)
         {
             if (method == null)
@@ -27,6 +28,7 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
             _method = method;
             _callback = callback;
+            _confirmExecution = confirmExecution;
         }
 
         public AsyncDelegateCommand(ViewModelBase viewModel) : this(viewModel, null)
@@ -47,12 +49,12 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
         protected virtual object ExecuteOverride(object parameter)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Don't call this method from child.");
         }
 
         protected virtual void ExecuteSuccessOverride(object result)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Don't call this method from child.");
         }
 
         void DoWork(object sender, DoWorkEventArgs target)
@@ -76,6 +78,9 @@ namespace NullVoidCreations.Janitor.Shared.Base
         public override void Execute(object parameter)
         {
             if (_worker.IsBusy)
+                return;
+
+            if (_confirmExecution != null && !_confirmExecution(parameter))
                 return;
 
             IsExecuting = true;

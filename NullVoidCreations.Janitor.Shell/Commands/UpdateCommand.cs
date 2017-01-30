@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using NullVoidCreations.Janitor.Shared;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Core;
@@ -52,7 +53,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             else
                 Description = string.Format(UpToDateMessage, string.Empty, SettingsManager.Instance.LastPluginUpdateCheck.ToString("MM/dd/yyyy HH:mm:ss"));
 
-            UpdateUrl = SharedConstants.UpdatesMetadataUrl;
+            UpdateUrl = Constants.UpdatesMetadataUrl;
             IsEnabled = true;
             IsRecallAllowed = true;
 
@@ -121,7 +122,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                 SettingsManager.Instance.LastProgramUpdateCheck = DateTime.Now;
 
             if (parameter != null)
-                SettingsManager.Instance.Load(SharedConstants.UpdatesMetadataUrl);
+                SettingsManager.Instance.Load(Constants.UpdatesMetadataUrl);
 
             var programVersionString = SettingsManager.Instance["AvailableProgramVersion"] as string;
             if (programVersionString == null)
@@ -133,7 +134,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             // version validation
             AvailableVersion = new Version(_type == UpdateType.Program ? programVersionString : pluginsVersionString);
             var currentVersion = _type == UpdateType.Program ?
-                new Version(App.Current.Resources["ProductVersion"] as string) :
+                Constants.ProductVersion :
                 PluginManager.Instance.Version;
             if (AvailableVersion <= currentVersion)
             {
@@ -193,7 +194,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (_type == UpdateType.Program)
             {
                 message = RestartRequiredMessage;
-                if (_isSilent || UiHelper.Instance.Question(SharedConstants.ProductName, RestartRequiredMessage))
+                if (_isSilent || UiHelper.Instance.Question(Constants.ProductName, RestartRequiredMessage))
                 {
                     var startInfo = new ProcessStartInfo(updateFile);
                     startInfo.UseShellExecute = true;
@@ -206,7 +207,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             else
             {
                 message = RestartRequiredMessage;
-                if (_isSilent || UiHelper.Instance.Question(SharedConstants.ProductName, RestartRequiredMessage))
+                if (_isSilent || UiHelper.Instance.Question(Constants.ProductName, RestartRequiredMessage))
                 {
                     PluginManager.Instance.Version = AvailableVersion;
                     SignalHost.Instance.RaiseSignal(this, Signal.CloseAndStart);

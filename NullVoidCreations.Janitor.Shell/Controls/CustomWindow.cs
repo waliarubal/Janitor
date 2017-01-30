@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shell.Core;
+using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shell.Controls
 {
@@ -42,7 +42,7 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             base.OnActivated(e);
 
             if (_handle == IntPtr.Zero)
-                _handle = NativeApiHelper.Instance.GetWindowHandle(this);
+                _handle = Win32Helper.Instance.GetWindowHandle(this);
         }
 
         #region properties

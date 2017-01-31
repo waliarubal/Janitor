@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reflection;
+using System.Windows;
 using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shared
@@ -18,10 +20,15 @@ namespace NullVoidCreations.Janitor.Shared
 
             PluginsSearchFilter = "NullVoidCreations.Janitor.Plugin.*.dll";
             PluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
-            ExecutableFile = Assembly.GetEntryAssembly().Location;
+            ExecutableFile = DesignMode ? string.Empty : Assembly.GetEntryAssembly().Location;
 
             UpdatesMetadataUrl = new Uri("https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Updates.dat");
             WebLinksUrl = new Uri("https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/WebLinks.dat");
+        }
+
+        public static bool DesignMode
+        {
+            get { return (bool)(DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue); }
         }
     }
 }

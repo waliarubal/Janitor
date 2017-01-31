@@ -4362,7 +4362,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[INSTALLDIR]NullVoidCreations.Janitor.Shell.Primary output</td><td/></row>
-		<row><td>ProductCode</td><td>{E004F92B-7A4C-40EE-8D7A-01BF44B18BBF}</td><td/></row>
+		<row><td>ProductCode</td><td>{30A9AE47-DA24-46FA-8DE2-D30333EF142B}</td><td/></row>
 		<row><td>ProductName</td><td>PC Mechanic Pro</td><td/></row>
 		<row><td>ProductVersion</td><td>1.8.0000</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>

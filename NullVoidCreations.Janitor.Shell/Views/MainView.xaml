@@ -20,23 +20,40 @@
     </c:CustomWindow.DataContext>
     <c:CustomWindow.HeaderContent>
         <Grid>
-            <Grid.ToolTip>
-                <Grid>
-                    <TextBlock Text="{Binding Path=ProblemsCount, Mode=OneWay, StringFormat='{}{0} problem(s) require your attention.'}" Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
-                    <TextBlock Text="Your system is running at maximum efficiency." Visibility="{Binding Path=IsOk, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
-                </Grid>
-            </Grid.ToolTip>
-            <Image Width="32"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Image Width="18"
+                   Height="18"
+                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Phone.png"
+                   ToolTip="Toll Free Customer Care" />
+            <TextBlock Grid.Column="1"
+                       Margin="0 0 8 0"
+                       VerticalAlignment="Center"
+                       Foreground="#B0C1D4"
+                       Style="{StaticResource ResourceKey=HeaderTitleStyle}"
+                       Text="+1-877-817-5188"
+                       ToolTip="Toll Free Customer Care" />
+            <Image Grid.Column="2"
+                   Width="32"
                    Height="32"
                    Margin="0 0 8 0"
                    Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png"
                    Visibility="{Binding Path=IsOk,
                                         Mode=OneWay,
-                                        Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
-            <Image Width="32"
+                                        Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}">
+                <Image.ToolTip>
+                    <TextBlock Text="{Binding Path=ProblemsCount, Mode=OneWay, StringFormat='{}{0} problem(s) require your attention.'}" />
+                </Image.ToolTip>
+            </Image>
+            <Image Grid.Column="2"
+                   Width="32"
                    Height="32"
                    Margin="0 0 8 0"
                    Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png"
+                   ToolTip="Your system is running at maximum efficiency."
                    Visibility="{Binding Path=IsOk,
                                         Mode=OneWay,
                                         Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />

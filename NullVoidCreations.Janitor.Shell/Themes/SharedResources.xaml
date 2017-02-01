@@ -3,7 +3,10 @@
                     xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Converters"
                     xmlns:clr="clr-namespace:System;assembly=mscorlib">
     <clr:String x:Key="ProductName">Product Name String</clr:String>
+    <clr:String x:Key="ProductTagLine">Product Tag Line String</clr:String>
     <clr:String x:Key="ProductVersion">0.0.0.0</clr:String>
+    <clr:String x:Key="SupportPhone">1234567890</clr:String>
+    <clr:String x:Key="SupportEmail">email@domain.com</clr:String>
 
     <clr:Boolean x:Key="True">True</clr:Boolean>
     <clr:Boolean x:Key="False">False</clr:Boolean>
@@ -23,6 +26,7 @@
     <SolidColorBrush x:Key="BackgroundBrush" Color="#FFFFFF" />
     <SolidColorBrush x:Key="BorderBrush" Color="#C8CBD2" />
     <SolidColorBrush x:Key="HeaderBorderBrush" Color="#44525F" />
+    <SolidColorBrush x:Key="HeaderTextBrush" Color="#FFFFFF" />
     <LinearGradientBrush x:Key="HeaderBackgroundBrush" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Offset="0" Color="#768290" />
         <GradientStop Offset="1" Color="#65778B" />

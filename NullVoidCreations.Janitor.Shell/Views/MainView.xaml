@@ -34,8 +34,8 @@
                        VerticalAlignment="Center"
                        Foreground="#B0C1D4"
                        Style="{StaticResource ResourceKey=HeaderTitleStyle}"
-                       Text="+1-877-817-5188"
-                       ToolTip="Toll Free Customer Care" />
+                       Text="{StaticResource ResourceKey=SupportPhone}"
+                       ToolTip="Support Contact Number" />
             <Image Grid.Column="2"
                    Width="32"
                    Height="32"
@@ -85,7 +85,6 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TabPanel Grid.Column="0"
                                           Margin="0 40 0 0"
@@ -133,13 +132,9 @@
                                            FontSize="9"
                                            FontWeight="Bold"
                                            Foreground="{StaticResource ResourceKey=TextBrush}"
-                                           Text="CLEANING AT YOUR FINGERTIPS" />
-                                <Image Grid.Row="3"
-                                       MaxWidth="140"
-                                       Margin="0 0 0 18"
-                                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/NortonSeal.png" />
+                                           Text="{StaticResource ResourceKey=ProductTagLine}" />
 
-                                <Border Grid.RowSpan="4"
+                                <Border Grid.RowSpan="3"
                                         Grid.Column="1"
                                         Background="{StaticResource ResourceKey=BackgroundBrush}"
                                         BorderBrush="{StaticResource ResourceKey=BorderBrush}"

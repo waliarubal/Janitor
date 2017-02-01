@@ -8,15 +8,18 @@ namespace NullVoidCreations.Janitor.Shared
 {
     public class Constants
     {
-        public static readonly string ProductName, InternalName, ExecutableFile, PluginsDirectory, PluginsSearchFilter;
+        public static readonly string ProductName, ProductTagLine, InternalName, ExecutableFile, PluginsDirectory, PluginsSearchFilter, SupportPhone, SupportEmail;
         public static readonly Uri UpdatesMetadataUrl, WebLinksUrl;
         public static readonly Version ProductVersion;
 
         static Constants()
         {
             InternalName = "Janitor";
-            ProductName = "PC MECHANIC PRO™";
+            ProductName = "WinDoc";
+            ProductTagLine = "Your Computer's Family Doctor";
             ProductVersion = new Version("1.8.0.0");
+            SupportPhone = "+91 99288 93416";
+            SupportEmail = "walia.rubal@gmail.com";
 
             PluginsSearchFilter = "NullVoidCreations.Janitor.Plugin.*.dll";
             PluginsDirectory = KnownPaths.Instance.ApplicationDirectory;

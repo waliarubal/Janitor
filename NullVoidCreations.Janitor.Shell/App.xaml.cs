@@ -32,7 +32,7 @@ namespace NullVoidCreations.Janitor.Shell
         {
             WorkQueueManager.Instance.Dispose();
             SettingsManager.Instance.Dispose();
-            //SignalHost.Instance.Dispose();
+            SignalHost.Instance.Dispose();
             App.Current.DispatcherUnhandledException -= new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
             AppDomain.CurrentDomain.UnhandledException -= new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
@@ -56,8 +56,13 @@ namespace NullVoidCreations.Janitor.Shell
 
             base.OnStartup(e);
 
-            Resources["ProductName"] = Constants.ProductName;
-            Resources["ProductVersion"] = Constants.ProductVersion.ToString();
+            UiHelper.Instance.Resources["ProductName"] = Constants.ProductName;
+            UiHelper.Instance.Resources["ProductTagLine"] = Constants.ProductTagLine;
+            UiHelper.Instance.Resources["ProductVersion"] = Constants.ProductVersion.ToString();
+            UiHelper.Instance.Resources["SupportPhone"] = Constants.SupportPhone;
+            UiHelper.Instance.Resources["SupportEmail"] = Constants.SupportEmail;
+
+            LanguageManager.Instance.GetLanguageFiles();
 
             // initialization
             var worker = new BackgroundWorker();

@@ -280,13 +280,13 @@
                                            RenderOptions.BitmapScalingMode="HighQuality"
                                            RenderOptions.EdgeMode="Aliased"
                                            SnapsToDevicePixels="True"
-                                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Logo.png" />
+                                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Logo32.png" />
                                     <TextBlock Grid.Column="1"
                                                VerticalAlignment="Center"
                                                FontFamily="Verdana"
                                                FontSize="14"
-                                               FontWeight="Normal"
-                                               Foreground="{StaticResource ResourceKey=BackgroundBrush}"
+                                               FontWeight="Bold"
+                                               Foreground="{StaticResource ResourceKey=HeaderTextBrush}"
                                                Text="{TemplateBinding Title}" />
                                     <ContentPresenter Grid.Column="2"
                                                       VerticalAlignment="Center"

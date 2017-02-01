@@ -30,6 +30,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
             }
         }
 
+        public ResourceDictionary Resources
+        {
+            get { return App.Current.Resources; }
+        }
+
         #endregion
 
         public void ExecuteOnUiThread(Action action, params object[] arguments)

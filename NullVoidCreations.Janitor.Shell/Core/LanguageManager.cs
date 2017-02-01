@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
@@ -9,15 +8,16 @@ namespace NullVoidCreations.Janitor.Shell.Core
     class LanguageManager: SettingsBase
     {
         static LanguageManager _instance;
-        FileInfo _loadedLanguage;
+        string _language;
         readonly string _path;
-        readonly List<FileInfo> _languageFiles;
+        readonly Dictionary<string, string> _languages;
 
         private LanguageManager()
         {
-            _languageFiles = new List<FileInfo>();
+            _languages = new Dictionary<string, string>();
+
             _path = Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Translations");
-            if (Directory.Exists(_path))
+            if (!Directory.Exists(_path))
                 Directory.CreateDirectory(_path);
         }
 
@@ -34,36 +34,31 @@ namespace NullVoidCreations.Janitor.Shell.Core
             }
         }
 
-        public List<FileInfo> LanguageFiles
+        public IEnumerable<string> Languages
         {
-            get { return _languageFiles; }
+            get { return _languages.Keys; }
+        }
+
+        public string LoadedLanguage
+        {
+            get { return _language; }
         }
 
         #endregion
 
-        bool SelectFile(string fileName)
-        {
-            var fileInfo = new FileInfo(fileName);
-            if (fileInfo.Name.StartsWith("Lang_", StringComparison.InvariantCultureIgnoreCase) && 
-                fileInfo.Extension.Equals(".dat", StringComparison.InvariantCultureIgnoreCase))
-                return true;
-
-            return false;
-        }
-
         public void GetLanguageFiles()
         {
-            _languageFiles.Clear();
-            foreach (var fileName in new DirectoryWalker(_path, SelectFile, false))
-                _languageFiles.Add(new FileInfo(fileName));
+            _languages.Clear();
+            foreach (var fileName in new DirectoryWalker(_path, false))
+                _languages.Add(Path.GetFileNameWithoutExtension(fileName), fileName);
         }
 
-        public void LoadLanguage(FileInfo languageFile)
+        public void LoadLanguage(string language)
         {
-            _loadedLanguage = languageFile;
-            Load(_loadedLanguage.FullName);
+            _language = language;
+            Load(_languages[language]);
 
-            var resources = App.Current.Resources;
+            var resources = UiHelper.Instance.Resources;
             foreach (var key in Keys)
                 resources[key] = GetSetting<string>(key);
         }

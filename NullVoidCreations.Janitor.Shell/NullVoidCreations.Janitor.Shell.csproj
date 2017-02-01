@@ -252,7 +252,7 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Translations\Lang_Hindi.dat">
+    <Content Include="Translations\Hindi.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
@@ -263,9 +263,6 @@
       <Project>{828E8A68-B06C-4750-97D4-4E6B25B8523D}</Project>
       <Name>NullVoidCreations.Janitor.Shared</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Home.png" />
@@ -388,9 +385,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\BulbGlow.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\NortonSeal.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Phone.png" />

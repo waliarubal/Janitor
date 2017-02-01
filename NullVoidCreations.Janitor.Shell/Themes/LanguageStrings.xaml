@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:clr="clr-namespace:System;assembly=mscorlib">
+    <!--  about  -->
+    <clr:String x:Key="About1">Copyright © 2016-2017 NullVoid Creations. All rights reserved.</clr:String>
+    <clr:String x:Key="About2">License Valid Until:</clr:String>
+    <clr:String x:Key="About3">Registered To:</clr:String>
+    <clr:String x:Key="About4">The following list contains loaded plugins with {0} scan targets. Scan targets are looked for issues during an active scan operation.</clr:String>
+    <clr:String x:Key="About5">No plugin with scan targets loaded.</clr:String>
+    <clr:String x:Key="About6">Analysing...</clr:String>
+    <clr:String x:Key="About7">Warning: This program is protected by copyright and international treaties. Copying or distributing without express permission from NullVoid Creations by any means, in part or full, is strictly prohibited and will result in prosecution to the full extent that the law will allow internationally.</clr:String>
+    <clr:String x:Key="About8">(version {0}</clr:String>
+    <clr:String x:Key="About9">released on {0:MM/dd/yyyy}</clr:String>
+    <clr:String x:Key="About10">with {0} scan areas)</clr:String>
+    <clr:String x:Key="About11">License not Activated</clr:String>
+</ResourceDictionary>

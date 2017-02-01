@@ -36,11 +36,11 @@
                 <TextBlock FontWeight="Bold" Text="{StaticResource ResourceKey=ProductName}" />
                 <TextBlock Text="{Binding Source={StaticResource ResourceKey=ProductVersion}, BindsDirectlyToSource=True, StringFormat=', Version {0}'}" />
             </StackPanel>
-            <TextBlock Grid.Row="1" Text="Copyright © 2016-2017 NullVoid Creations. All rights reserved." />
+            <TextBlock Grid.Row="1" Text="{StaticResource ResourceKey=About1}" />
             <StackPanel Grid.Row="2"
                         Margin="0 12 0 0"
                         Orientation="Horizontal">
-                <TextBlock Text="License Valid Until: " />
+                <TextBlock Text="{StaticResource ResourceKey=About2}" />
                 <TextBlock FontWeight="Bold"
                            Text="{Binding Path=ExpiryDate,
                                           Mode=OneWay,
@@ -50,13 +50,13 @@
                                                 Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
                 <TextBlock FontWeight="Bold"
                            Foreground="{StaticResource ResourceKey=BadBrush}"
-                           Text="License not Activated"
+                           Text="{StaticResource ResourceKey=About11}"
                            Visibility="{Binding Path=IsTrial,
                                                 Mode=OneWay,
                                                 Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
             </StackPanel>
             <StackPanel Grid.Row="3" Orientation="Horizontal">
-                <TextBlock Text="Registered To: " />
+                <TextBlock Text="{StaticResource ResourceKey=About3}" />
                 <TextBlock FontWeight="Bold"
                            Text="{Binding Path=RegisteredTo,
                                           Mode=OneWay}"
@@ -65,7 +65,7 @@
                                                 Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
                 <TextBlock FontWeight="Bold"
                            Foreground="{StaticResource ResourceKey=BadBrush}"
-                           Text="License not Activated"
+                           Text="{StaticResource ResourceKey=About11}"
                            Visibility="{Binding Path=IsTrial,
                                                 Mode=OneWay,
                                                 Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
@@ -74,8 +74,8 @@
                        Margin="0 12 0 2"
                        Text="{Binding Path=Targets.Count,
                                       Mode=OneWay,
-                                      StringFormat='The following list contains loaded plugins with {0} scan targets. Scan targets are looked for issues during an active scan operation.',
-                                      FallbackValue='No plugin with scan targets loaded.'}"
+                                      StringFormat='{StaticResource ResourceKey=About4}',
+                                      FallbackValue='{StaticResource ResourceKey=About5}'}"
                        TextWrapping="Wrap" />
             <Border Grid.Row="5"
                     Background="{StaticResource ResourceKey=BackgroundBrush}"
@@ -118,9 +118,9 @@
                                                FontWeight="Bold"
                                                Text="{Binding Path=Name,
                                                               Mode=OneWay}" />
-                                    <TextBlock Text="{Binding Path=Version, Mode=OneWay, StringFormat='(version {0} '}" />
-                                    <TextBlock Text="{Binding Path=Date, Mode=OneWay, StringFormat='released on {0:MM/dd/yyyy} '}" />
-                                    <TextBlock Text="{Binding Path=Areas.Count, Mode=OneWay, StringFormat='with {0} scan areas)'}" />
+                                    <TextBlock Text="{Binding Path=Version, Mode=OneWay, StringFormat='{StaticResource ResourceKey=About8}'}" />
+                                    <TextBlock Text="{Binding Path=Date, Mode=OneWay, StringFormat='{StaticResource ResourceKey=About9}'}" />
+                                    <TextBlock Text="{Binding Path=Areas.Count, Mode=OneWay, StringFormat='{StaticResource ResourceKey=About10}'}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -131,14 +131,14 @@
                        FontWeight="Bold"
                        Text="{Binding Path=OperatingSystem,
                                       Mode=OneWay,
-                                      FallbackValue='Analysing...'}" />
+                                      FallbackValue='{StaticResource ResourceKey=About6}'}" />
             <StackPanel Grid.Row="7" Orientation="Horizontal">
-                <TextBlock Text="{Binding Path=Processor, Mode=OneWay, FallbackValue='Analysing...'}" />
+                <TextBlock Text="{Binding Path=Processor, Mode=OneWay, FallbackValue='{StaticResource ResourceKey=About6}'}" />
                 <TextBlock Text="{Binding Path=Memory, Mode=OneWay, StringFormat=', {0:N2} GB RAM'}" />
             </StackPanel>
             <TextBlock Grid.Row="8"
                        Margin="0 12 0 0"
-                       Text="Warning: This program is protected by copyright and international treaties. Copying or distributing without express permission from NullVoid Creations by any means, in part or full, is strictly prohibited and will result in prosecution to the full extent that the law will allow internationally."
+                       Text="{StaticResource ResourceKey=About7}"
                        TextWrapping="Wrap" />
         </Grid>
     </Grid>

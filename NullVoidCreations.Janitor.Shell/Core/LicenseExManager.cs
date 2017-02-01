@@ -49,7 +49,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         /// </summary>
         public void LoadLicense()
         {
-            _license.Validate(SettingsManager.Instance.LicenseKey);
+            _license.Validate(SettingsManager.Instance.ActivationKey);
             SignalHost.Instance.RaiseSignal(this, Signal.LicenseChanged);
         }
 
@@ -64,7 +64,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             if (!string.IsNullOrEmpty(key))
                 errorMessage = _license.Validate(key);
 
-            SettingsManager.Instance.LicenseKey = key;
+            SettingsManager.Instance.ActivationKey = key;
             SignalHost.Instance.RaiseSignal(this, Signal.LicenseChanged, errorMessage);
 
             return errorMessage;

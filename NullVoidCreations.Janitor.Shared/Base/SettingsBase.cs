@@ -8,7 +8,7 @@ using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shared.Base
 {
-    public abstract class SettingsBase : IDisposable
+    public abstract class SettingsBase : NotificationBase, IDisposable
     {
         readonly Dictionary<string, object> _settings;
         string _fileName;
@@ -46,6 +46,11 @@ namespace NullVoidCreations.Janitor.Shared.Base
         public string FileName
         {
             get { return _fileName; }
+        }
+
+        public IEnumerable<string> Keys
+        {
+            get { return _settings.Keys; }
         }
 
         public object this[string key]

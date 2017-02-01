@@ -116,6 +116,7 @@
     <Compile Include="Converters\StartupAreaToImageConverter.cs" />
     <Compile Include="Core\CommandLineManager.cs" />
     <Compile Include="Core\ISignalObserver.cs" />
+    <Compile Include="Core\LanguageManager.cs" />
     <Compile Include="Core\LicenseExManager.cs" />
     <Compile Include="Core\PluginManager.cs" />
     <Compile Include="Core\Proxy.cs" />
@@ -124,7 +125,6 @@
     <Compile Include="Core\SignalHost.cs" />
     <Compile Include="Core\UiHelper.cs" />
     <Compile Include="Core\WorkQueueManager.cs" />
-    <Compile Include="Core\ZipStorer.cs" />
     <Compile Include="Models\LicenseModel.cs" />
     <Compile Include="Models\ScanModel.cs" />
     <Compile Include="Models\ScanStatusModel.cs" />
@@ -172,6 +172,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\LanguageStrings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\NamedStyles.xaml">
       <SubType>Designer</SubType>
@@ -248,6 +252,9 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Translations\Lang_Hindi.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
@@ -388,6 +395,7 @@
   <ItemGroup>
     <Resource Include="Resources\Phone.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

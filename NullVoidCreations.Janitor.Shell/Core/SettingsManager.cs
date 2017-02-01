@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using NullVoidCreations.Janitor.Core.Models;
+using NullVoidCreations.Janitor.Shared;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.ViewModels;
@@ -14,7 +15,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         private SettingsManager()
         {
-            if (!UiHelper.Instance.DesignMode)
+            if (!Constants.IsInDesignMode)
             {
                 var fileName = Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Settings.dat");
                 Load(fileName);
@@ -114,15 +115,15 @@ namespace NullVoidCreations.Janitor.Shell.Core
             set { this["ShutdownAfterFixing"] = value; }
         }
 
-        public string LicenseKey
+        public string ActivationKey
         {
-            get { return GetSetting<string>("LicenseKey"); }
+            get { return GetSetting<string>("ActivationKey"); }
             set
             {
-                if (value == GetSetting<string>("LicenseKey"))
+                if (value == GetSetting<string>("ActivationKey"))
                     return;
 
-                this["LicenseKey"] = value;
+                this["ActivationKey"] = value;
             }
         }
 

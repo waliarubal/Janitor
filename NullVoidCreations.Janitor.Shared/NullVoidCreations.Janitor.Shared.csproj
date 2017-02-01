@@ -60,6 +60,7 @@
     <Compile Include="Helpers\KnownPaths.cs" />
     <Compile Include="Helpers\Win32Helper.cs" />
     <Compile Include="Helpers\SysInformation.cs" />
+    <Compile Include="Helpers\ZipStorer.cs" />
     <Compile Include="Models\FileIssueModel.cs" />
     <Compile Include="Base\IssueBase.cs" />
     <Compile Include="Base\ScanAreaBase.cs" />

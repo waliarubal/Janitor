@@ -14,19 +14,19 @@ namespace NullVoidCreations.Janitor.Shared
 
         static Constants()
         {
+            InternalName = "Janitor";
             ProductName = "PC MECHANIC PRO™";
             ProductVersion = new Version("1.8.0.0");
-            InternalName = "Janitor";
 
             PluginsSearchFilter = "NullVoidCreations.Janitor.Plugin.*.dll";
             PluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
-            ExecutableFile = DesignMode ? string.Empty : Assembly.GetEntryAssembly().Location;
+            ExecutableFile = IsInDesignMode ? string.Empty : Assembly.GetEntryAssembly().Location;
 
             UpdatesMetadataUrl = new Uri("https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Updates.dat");
             WebLinksUrl = new Uri("https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/WebLinks.dat");
         }
 
-        public static bool DesignMode
+        public static bool IsInDesignMode
         {
             get { return (bool)(DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue); }
         }

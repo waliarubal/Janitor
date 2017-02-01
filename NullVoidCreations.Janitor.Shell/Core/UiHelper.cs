@@ -30,11 +30,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
             }
         }
 
-        public bool DesignMode
-        {
-            get { return (bool)(DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue); }
-        }
-
         #endregion
 
         public void ExecuteOnUiThread(Action action, params object[] arguments)

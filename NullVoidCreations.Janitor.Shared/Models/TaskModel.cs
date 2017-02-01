@@ -110,13 +110,18 @@ namespace NullVoidCreations.Janitor.Shared.Models
                 trigger.EndBoundary = DateTime.MaxValue;
             }
 
+            // enclose path with spaces in double quotes
+            var executable = ExecutablePath;
+            if (executable.Contains(" "))
+                executable = string.Format("\"{0}\"", ExecutablePath);
+
             // task
             var existingTask = TaskService.Instance.GetTask(Name);
             if (existingTask != null)
             {
                 existingTask.Definition.RegistrationInfo.Description = Description;
                 existingTask.Definition.Actions.Clear();
-                existingTask.Definition.Actions.Add(ExecutablePath, CommandLineArguments, new FileInfo(ExecutablePath).DirectoryName);
+                existingTask.Definition.Actions.Add(executable, CommandLineArguments, new FileInfo(ExecutablePath).DirectoryName);
                 existingTask.Definition.Principal.LogonType = TaskLogonType.InteractiveToken;
                 existingTask.Definition.Principal.RunLevel = TaskRunLevel.Highest;
                 existingTask.Definition.Settings.MultipleInstances = TaskInstancesPolicy.Parallel;
@@ -132,7 +137,7 @@ namespace NullVoidCreations.Janitor.Shared.Models
 
             var taskDefinition = TaskService.Instance.NewTask();
             taskDefinition.RegistrationInfo.Description = Description;
-            taskDefinition.Actions.Add(ExecutablePath, CommandLineArguments, new FileInfo(ExecutablePath).DirectoryName);
+            taskDefinition.Actions.Add(executable, CommandLineArguments, new FileInfo(ExecutablePath).DirectoryName);
             taskDefinition.Principal.LogonType = TaskLogonType.InteractiveToken;
             taskDefinition.Principal.RunLevel = TaskRunLevel.Highest;
             taskDefinition.Settings.MultipleInstances = TaskInstancesPolicy.Parallel;

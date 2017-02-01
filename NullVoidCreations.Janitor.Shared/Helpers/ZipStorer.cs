@@ -2,15 +2,18 @@
 // Website: zipstorer.codeplex.com
 // Version: 2.35 (March 14, 2010)
 
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Text;
 
-namespace System.IO.Compression
+namespace NullVoidCreations.Janitor.Shared.Helpers
 {
     /// <summary>
     /// Unique class for compression/decompression file. Represents a Zip file.
     /// </summary>
-    class ZipStorer : IDisposable
+    public class ZipStorer : IDisposable
     {
         /// <summary>
         /// Compression method enumeration

@@ -9,7 +9,7 @@ using NullVoidCreations.Janitor.Shell.ViewModels;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
-    class SettingsManager : SettingsBase, ISignalObserver
+    class SettingsManager : SettingsBase
     {
         static volatile SettingsManager _instance;
 
@@ -19,7 +19,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             {
                 var fileName = Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Settings.dat");
                 Load(fileName);
-                SignalHost.Instance.RaiseSignal(this, Signal.SettingsLoaded);
+                SignalHost.Instance.RaiseSignal(Signal.SettingsLoaded);
             }
         }
 
@@ -115,18 +115,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
             set { this["ShutdownAfterFixing"] = value; }
         }
 
-        public string ActivationKey
-        {
-            get { return GetSetting<string>("ActivationKey"); }
-            set
-            {
-                if (value == GetSetting<string>("ActivationKey"))
-                    return;
-
-                this["ActivationKey"] = value;
-            }
-        }
-
         public ScanType LastScan
         {
             get { return (ScanType)GetSetting<byte>("LastScan"); }
@@ -180,10 +168,5 @@ namespace NullVoidCreations.Janitor.Shell.Core
         }
 
         #endregion
-
-        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
-        {
-
-        }
     }
 }

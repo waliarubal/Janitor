@@ -129,14 +129,14 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #endregion
 
-        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
+        public void SignalReceived(Signal signal, params object[] data)
         {
             switch (signal)
             {
                 case Signal.Initialized:
-                    SignalReceived(sender, Signal.PluginsLoaded, PluginManager.Instance.Targets);
-                    SignalReceived(sender, Signal.SystemInformationLoaded, data);
-                    SignalReceived(sender, Signal.LicenseChanged, data);
+                    SignalReceived(Signal.PluginsLoaded, PluginManager.Instance.Targets);
+                    SignalReceived(Signal.SystemInformationLoaded, data);
+                    SignalReceived(Signal.LicenseChanged, data);
                     break;
 
                 case Signal.SystemInformationLoaded:
@@ -158,9 +158,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.LicenseChanged:
-                    RegisteredTo = LicenseExManager.Instance.License.RegisteredEmail;
-                    ExpiryDate = LicenseExManager.Instance.License.ExpirationDate;
-                    IsTrial = LicenseExManager.Instance.License.IsTrial;
+                    RegisteredTo = LicenseManager.Instance.License.Email;
+                    ExpiryDate = LicenseManager.Instance.License.ExpirationDate;
+                    IsTrial = LicenseManager.Instance.License.IsTrial;
                     break;
             }
         }

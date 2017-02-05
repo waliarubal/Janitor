@@ -124,7 +124,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
-        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
+        public void SignalReceived(Signal signal, params object[] data)
         {
             switch (signal)
             {

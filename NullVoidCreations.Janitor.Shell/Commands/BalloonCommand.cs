@@ -5,7 +5,7 @@ using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
-    public class BalloonCommand: DelegateCommand, ISignalObserver
+    public class BalloonCommand: DelegateCommand
     {
         WebClient _client;
 
@@ -30,20 +30,15 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (e.Error != null)
                 return;
 
-            SignalHost.Instance.RaiseSignal(this, Signal.ShowBaloon, e.Result);
+            SignalHost.Instance.RaiseSignal(Signal.ShowBaloon, e.Result);
         }
 
         protected override void ExecuteOverride(object parameter)
         {
             if (parameter == null)
-                SignalHost.Instance.RaiseSignal(this, Signal.HideBaloon);
+                SignalHost.Instance.RaiseSignal(Signal.HideBaloon);
             else
                 _client.DownloadStringAsync(new Uri(parameter as string));
-        }
-
-        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
-        {
-            
         }
     }
 }

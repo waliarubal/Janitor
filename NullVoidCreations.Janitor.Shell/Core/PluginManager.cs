@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using NullVoidCreations.Janitor.Shared;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
@@ -9,7 +8,7 @@ using NullVoidCreations.Janitor.Shell.Commands;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
-    sealed class PluginManager: ISignalObserver
+    sealed class PluginManager
     {
         AppDomain _container;
         readonly Dictionary<string, ScanTargetBase> _targets;
@@ -126,7 +125,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 }
             }
 
-            SignalHost.Instance.RaiseSignal(this, Signal.PluginsLoaded, Targets);
+            SignalHost.Instance.RaiseSignal(Signal.PluginsLoaded, Targets);
         }
 
         public void UnloadPlugins()
@@ -135,7 +134,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             DestroyContainer();
             CreateContainer();
 
-            SignalHost.Instance.RaiseSignal(this, Signal.PluginsUnloaded);
+            SignalHost.Instance.RaiseSignal(Signal.PluginsUnloaded);
         }
 
         void CreateContainer()
@@ -154,12 +153,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 AppDomain.Unload(_container);
 
             _container = null;
-        }
-
-
-        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
-        {
-            
         }
     }
 }

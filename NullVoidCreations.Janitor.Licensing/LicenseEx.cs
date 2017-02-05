@@ -1,32 +1,30 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using System.Text;
 using System.Xml;
+using MySql.Data.MySqlClient;
 
 namespace NullVoidCreations.Janitor.Licensing
 {
-    public class License: IDisposable
+    public class LicenseEx: IDisposable
     {
         const string ValidCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
         const string EncryptionKey = "QFByb3Blcl9QYXRvbGEhMjAxNQ==";
-        const int KeySize = 20;
+        const int KeySize = 23;
 
         string _serialKey, _activationKey, _fileName;
 
         #region constructor / destructor
 
-        public License(DateTime issueDate, DateTime expirationDate, string email, string whoIsTheBoss)
+        public LicenseEx(DateTime issueDate, DateTime expirationDate, string email)
         {
-            if (string.IsNullOrEmpty(whoIsTheBoss))
-                throw new ArgumentNullException("whoIsTheBoss", "Who is the boss not specified.");
-            if (whoIsTheBoss.Equals("Rubal Walia", StringComparison.InvariantCultureIgnoreCase))
-                throw new ArgumentException("For generating key, go and find out who is the boss first.");
-
             Generate();
             GenerateActivationKey(issueDate, expirationDate, email);
+            Save();
         }
 
-        public License(string fileName)
+        public LicenseEx(string fileName)
         {
             Load(fileName);
         }
@@ -36,7 +34,7 @@ namespace NullVoidCreations.Janitor.Licensing
             Dispose(true);
         }
 
-        ~License()
+        ~LicenseEx()
         {
             Dispose(false);
         }
@@ -51,9 +49,9 @@ namespace NullVoidCreations.Janitor.Licensing
             private set
             {
                 if (string.IsNullOrEmpty(value))
-                    throw new ArgumentNullException("Serial key not specified.");
+                    throw new Exception("Serial key not specified.");
                 if (value.Length != KeySize)
-                    throw new ArgumentException("Invalid serial key size.");
+                    throw new Exception("Invalid serial key size.");
 
                 Segment1 = value.Substring(0, 5);
                 Segment2 = value.Substring(6, 5);
@@ -93,7 +91,7 @@ namespace NullVoidCreations.Janitor.Licensing
             private set
             {
                 if (string.IsNullOrEmpty(value))
-                    throw new ArgumentNullException("Activation key not specified.");
+                    throw new InvalidOperationException("Activation key not specified.");
 
                 var decryptedKey = StringCipher.Instance.Decrypt(value, EncryptionKey);
                 try
@@ -108,7 +106,7 @@ namespace NullVoidCreations.Janitor.Licensing
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Invalid activation key.");
+                    throw new InvalidOperationException("Invalid activation key.");
                 }
             }
         }
@@ -139,12 +137,48 @@ namespace NullVoidCreations.Janitor.Licensing
 
         #endregion
 
-        public void Activate(string activationKey)
+        public void Activate(string serialKey, string fileName)
         {
-            ActivationKey = activationKey;
+            SerialKey = serialKey;
+
+            using (var connection = GetConnection())
+            {
+                var command = connection.CreateCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "get_license";
+
+                command.Parameters.Add("p_serial_key", MySqlDbType.VarChar, 23);
+                command.Parameters["p_serial_key"].Direction = ParameterDirection.Input;
+                command.Parameters["p_serial_key"].Value = serialKey;
+
+                command.Parameters.Add("p_activation_key", MySqlDbType.VarChar, 300);
+                command.Parameters["p_activation_key"].Direction = ParameterDirection.Output;
+
+                command.ExecuteNonQuery();
+
+                var activationKey = command.Parameters["p_activation_key"].Value as string;
+                ActivationKey = activationKey;
+            }
+
+            Save(fileName);
         }
 
         #region private methods
+
+        MySqlConnection GetConnection()
+        {
+            var connectionString = new MySqlConnectionStringBuilder();
+            connectionString.Server = "sql6.freemysqlhosting.net";
+            connectionString.Port = 3306;
+            connectionString.Database = "sql6156982";
+            connectionString.UserID = "sql6156982";
+            connectionString.Password = "fzrk79AWhV";
+
+            var connection = new MySqlConnection(connectionString.ConnectionString);
+            connection.Open();
+
+            return connection;
+        }
 
         void Dispose(bool disposing)
         {
@@ -162,16 +196,15 @@ namespace NullVoidCreations.Janitor.Licensing
 
         void Load(string fileName)
         {
+            _fileName = fileName;
             if (!File.Exists(fileName))
-                throw new FileNotFoundException("License file not found.", fileName);
+                return;
 
             var document = new XmlDocument();
             document.Load(fileName);
 
             SerialKey = document.SelectSingleNode("/License/SerialKey").InnerText;
             ActivationKey = document.SelectSingleNode("/License/ActivationKey").InnerText;
-
-            _fileName = fileName;
         }
 
         void Save(string fileName)
@@ -196,10 +229,34 @@ namespace NullVoidCreations.Janitor.Licensing
             _fileName = fileName;
         }
 
+        void Save()
+        {
+            using (var connection = GetConnection())
+            {
+                var command = connection.CreateCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "set_license";
+
+                command.Parameters.Add("p_email", MySqlDbType.VarChar, 255);
+                command.Parameters["p_email"].Direction = ParameterDirection.Input;
+                command.Parameters["p_email"].Value = Email;
+
+                command.Parameters.Add("p_serial_key", MySqlDbType.VarChar, 23);
+                command.Parameters["p_serial_key"].Direction = ParameterDirection.Input;
+                command.Parameters["p_serial_key"].Value = SerialKey;
+
+                command.Parameters.Add("p_activation_key", MySqlDbType.VarChar, 300);
+                command.Parameters["p_activation_key"].Direction = ParameterDirection.Input;
+                command.Parameters["p_activation_key"].Value = ActivationKey;
+
+                command.ExecuteNonQuery();
+            }
+        }
+
         void Generate()
         {
             var randomGenerator = new Random();
-            var licenseBuilder = new StringBuilder(24);
+            var licenseBuilder = new StringBuilder(23);
 
             for (int index = 1; index <= KeySize; index++)
             {
@@ -240,7 +297,7 @@ namespace NullVoidCreations.Janitor.Licensing
             return date;
         }
 
-        bool IsValid(License license)
+        bool IsValid(LicenseEx license)
         {
             var currentDate = DateTime.Now;
             if (currentDate.Date < license.IssueDate.Date)

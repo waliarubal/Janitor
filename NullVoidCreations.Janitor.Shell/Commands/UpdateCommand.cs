@@ -113,7 +113,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         protected override void ExecuteOverride(object parameter)
         {
-            SignalHost.Instance.RaiseSignal(this, Signal.UpdateStarted, _type);
+            SignalHost.Instance.RaiseSignal(Signal.UpdateStarted, _type);
             Progress = 0;
             Title = "Updating...";
             if (_type == UpdateType.Plugin)
@@ -143,8 +143,8 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                     _type == UpdateType.Plugin ?
                     SettingsManager.Instance.LastPluginUpdateCheck.ToString("MM/dd/yyyy HH:mm:ss") :
                     SettingsManager.Instance.LastProgramUpdateCheck.ToString("MM/dd/yyyy HH:mm:ss"));
-                SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, true);
-                SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
+                SignalHost.Instance.RaiseSignal(Signal.UpdateStopped, _type, true);
+                SignalHost.Instance.RaiseSignal(Signal.StopWork);
                 return;
             }
 
@@ -165,8 +165,8 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             catch
             {
                 Description = DownloadErrorMessage;
-                SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, false);
-                SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
+                SignalHost.Instance.RaiseSignal(Signal.UpdateStopped, _type, false);
+                SignalHost.Instance.RaiseSignal(Signal.StopWork);
                 return;
             }
 
@@ -183,8 +183,8 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             // update failed
             if (string.IsNullOrEmpty(updateFile) || !File.Exists(updateFile))
             {
-                SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, false);
-                SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
+                SignalHost.Instance.RaiseSignal(Signal.UpdateStopped, _type, false);
+                SignalHost.Instance.RaiseSignal(Signal.StopWork);
                 return;
             }
 
@@ -210,15 +210,15 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                 if (_isSilent || UiHelper.Instance.Question(Constants.ProductName, RestartRequiredMessage))
                 {
                     PluginManager.Instance.Version = AvailableVersion;
-                    SignalHost.Instance.RaiseSignal(this, Signal.CloseAndStart);
+                    SignalHost.Instance.RaiseSignal(Signal.CloseAndStart);
                 }
             }
 
             Description = message;
             Title = "Check for Updates";
             _isSilent = false;
-            SignalHost.Instance.RaiseSignal(this, Signal.UpdateStopped, _type, isUpdateInstalled);
-            SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
+            SignalHost.Instance.RaiseSignal(Signal.UpdateStopped, _type, isUpdateInstalled);
+            SignalHost.Instance.RaiseSignal(Signal.StopWork);
         }
 
         void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -234,7 +234,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             Progress = e.ProgressPercentage;
         }
 
-        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
+        public void SignalReceived(Signal signal, params object[] data)
         {
             switch (signal)
             {

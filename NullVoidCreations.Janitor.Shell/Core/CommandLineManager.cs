@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
-    class CommandLineManager: ISignalObserver
+    class CommandLineManager
     {
         public class CommandLineArgument
         {
             public const string Silent = "silent";
-            public const string Keygen = "keygen";
-            public const string Name = "name";
-            public const string NoOfDays = "days";
-            public const string KeyFile = "key_file";
             public const string SecondInstance = "secondary";
             public const string SmartScan = "smart";
         }
@@ -27,7 +21,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
             _coreArguments = new string[] 
             {
                 CommandLineArgument.Silent,
-                CommandLineArgument.Keygen
+                CommandLineArgument.SecondInstance,
+                CommandLineArgument.SmartScan
             };
             _arguments = new Dictionary<string, string>();
         }
@@ -58,27 +53,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #endregion
 
-        bool GenerateKey()
-        {
-            var name = this[CommandLineArgument.Name];
-            var days = this[CommandLineArgument.NoOfDays];
-            var keyFile = this[CommandLineArgument.KeyFile];
-            if (name == null || days == null || keyFile == null)
-                return false;
-
-            int noOfDays;
-            if (!int.TryParse(days, out noOfDays))
-                return false;
-
-            var key = LicenseExManager.Instance.GenerateLicenseKey(name, noOfDays);
-            if (!FileSystemHelper.Instance.DeleteFile(keyFile))
-                return false;
-
-            File.WriteAllText(keyFile, key);
-            UiHelper.Instance.Alert("License key generated and exported to file '{0}'.", keyFile);
-            return true;
-        }
-
         public void ProcessArguments()
         {
             foreach (var arg in _coreArguments)
@@ -89,11 +63,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 switch(arg)
                 {
                     case CommandLineArgument.Silent:
-                        SignalHost.Instance.RaiseSignal(this, Signal.CloseToTray);
-                        break;
-
-                    case CommandLineArgument.Keygen:
-                        GenerateKey();
+                        SignalHost.Instance.RaiseSignal(Signal.CloseToTray);
                         break;
 
                     case CommandLineArgument.SmartScan:
@@ -128,11 +98,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
                         _arguments.Add(argName, argValue);
                 }
             }
-        }
-
-        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
-        {
-            
         }
     }
 }

@@ -25,7 +25,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             SignalHost.Instance.AddObserver(this);
 
             _startupActions = new Queue<CommandBase>();
-            _license = new LicenseModel();
             _computerName = _operatingSyetem = _processor = _model = "Analysing...";
 
             _showPopup = new BalloonCommand(this);
@@ -221,7 +220,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             else if ("Custom".Equals(scanType))
                 type = ScanType.CustomScan;
             
-            SignalHost.Instance.RaiseSignal(this, Signal.ScanTrigerred, type);
+            SignalHost.Instance.RaiseSignal(Signal.ScanTrigerred, type);
         }
 
         void WeHaveProblems()
@@ -236,16 +235,16 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             if (IsHavingUpdatesAvailable)
                 problems++;
 
-            SignalHost.Instance.RaiseSignal(this, Signal.ProblemsAppeared, problems);
+            SignalHost.Instance.RaiseSignal(Signal.ProblemsAppeared, problems);
         }
 
-        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
+        public void SignalReceived(Signal signal, params object[] data)
         {
             switch (signal)
             {
                 case Signal.Initialized:
-                    SignalReceived(sender, Signal.SystemInformationLoaded);
-                    SignalReceived(sender, Signal.LicenseChanged);
+                    SignalReceived(Signal.SystemInformationLoaded);
+                    SignalReceived(Signal.LicenseChanged);
                     break;
 
                 case Signal.SystemInformationLoaded:
@@ -257,7 +256,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.LicenseChanged:
-                    License = LicenseExManager.Instance.License;
+                    License = LicenseManager.Instance.License;
                     IsLicensed = License != null && !License.IsTrial;
                     WeHaveProblems();
                     break;

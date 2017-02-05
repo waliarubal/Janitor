@@ -3,7 +3,6 @@ using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Controls;
 using NullVoidCreations.Janitor.Shell.Core;
-using NullVoidCreations.Janitor.Shared;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -84,7 +83,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             return new object[]
             {
                 window,
-                LicenseExManager.Instance.ValidateLicense(LicenseKey)
+                LicenseManager.Instance.ValidateLicense(LicenseKey)
             };
         }
 

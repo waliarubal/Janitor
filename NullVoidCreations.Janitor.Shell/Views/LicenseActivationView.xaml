@@ -47,14 +47,14 @@
 
         <TextBlock HorizontalAlignment="Left"
                    Style="{StaticResource ResourceKey=HeaderTitleStyle}"
-                   Text="I have a license already" />
-        <TextBlock Grid.Row="1" Text="Enter your license key below. Activating the product will allow you to fix issues." />
+                   Text="I have a serial key already" />
+        <TextBlock Grid.Row="1" Text="Enter your serial key below. Activating the product will allow you to fix issues." />
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox Text="{Binding Path=LicenseKey, Mode=TwoWay}" />
+            <TextBox MaxLength="23" Text="{Binding Path=LicenseKey, Mode=TwoWay}" />
             <Button Grid.Column="1"
                     Margin="4 0 0 0"
                     Command="{Binding Path=CopyFromClipboard,
@@ -67,7 +67,7 @@
             </Button>
         </Grid>
         <TextBlock Grid.Row="3" Margin="0 20 0 4">
-            <Hyperlink>Where I can find the license key?</Hyperlink>
+            <Hyperlink>Where I can find the serial key?</Hyperlink>
         </TextBlock>
         <TextBlock Grid.Row="4" Margin="0 0 0 4">
             <Hyperlink>I have username and password, what do I do?</Hyperlink>
@@ -93,7 +93,7 @@
         <TextBlock Grid.Column="2"
                    HorizontalAlignment="Left"
                    Style="{StaticResource ResourceKey=HeaderTitleStyle}"
-                   Text="I want to purchase a new license" />
+                   Text="I want to get a license" />
         <TextBlock Grid.Row="1"
                    Grid.Column="2"
                    Text="An activated product finds even the newest issues with improved speed." />

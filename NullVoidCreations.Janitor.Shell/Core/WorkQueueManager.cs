@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shell.Commands;
-using NullVoidCreations.Janitor.Shared;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -86,29 +85,29 @@ namespace NullVoidCreations.Janitor.Shell.Core
             switch(work)
             {
                 case WorkSignal.ProgramUpdate:
-                    SignalHost.Instance.RaiseSignal(this, Signal.UpdateTriggered, UpdateCommand.UpdateType.Program);
+                    SignalHost.Instance.RaiseSignal(Signal.UpdateTriggered, UpdateCommand.UpdateType.Program);
                     break;
 
                 case WorkSignal.PluginUpdate:
-                    SignalHost.Instance.RaiseSignal(this, Signal.UpdateTriggered, UpdateCommand.UpdateType.Plugin);
+                    SignalHost.Instance.RaiseSignal(Signal.UpdateTriggered, UpdateCommand.UpdateType.Plugin);
                     break;
 
                 case WorkSignal.SmartScan:
-                    SignalHost.Instance.RaiseSignal(this, Signal.ScanTrigerred, ScanType.SmartScan);
+                    SignalHost.Instance.RaiseSignal(Signal.ScanTrigerred, ScanType.SmartScan);
                     break;
 
                 case WorkSignal.ShowHome:
-                    SignalHost.Instance.RaiseSignal(this, Signal.ShowHome);
+                    SignalHost.Instance.RaiseSignal(Signal.ShowHome);
                     break;
 
                 case WorkSignal.ShowTrialWarning:
-                    if (LicenseExManager.Instance.License.IsTrial)
+                    if (LicenseManager.Instance.License.IsTrial)
                         new BalloonCommand(null).Execute(SettingsManager.Instance["OfferUrl"] as string);
                     break;
             }
         }
 
-        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
+        public void SignalReceived(Signal signal, params object[] data)
         {
             switch(signal)
             {

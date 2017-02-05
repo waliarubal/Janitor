@@ -14,7 +14,7 @@ namespace NullVoidCreations.Janitor.Shell
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application, ISignalObserver
+    public partial class App : Application
     {
         static Mutex _mutex;
 
@@ -32,6 +32,7 @@ namespace NullVoidCreations.Janitor.Shell
         {
             WorkQueueManager.Instance.Dispose();
             SettingsManager.Instance.Dispose();
+            Core.LicenseManager.Instance.Dispose();
             SignalHost.Instance.Dispose();
             App.Current.DispatcherUnhandledException -= new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
             AppDomain.CurrentDomain.UnhandledException -= new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
@@ -97,7 +98,7 @@ namespace NullVoidCreations.Janitor.Shell
             runAtBoot.Execute(SettingsManager.Instance.RunAtBoot);
 
             // load license
-            LicenseExManager.Instance.LoadLicense();
+            Core.LicenseManager.Instance.LoadLicense();
 
             // load plugins
             PluginManager.Instance.LoadPlugins();
@@ -112,7 +113,7 @@ namespace NullVoidCreations.Janitor.Shell
 
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            SignalHost.Instance.RaiseSignal(this, Signal.Initialized);
+            SignalHost.Instance.RaiseSignal(Signal.Initialized);
 
             // trigger work pipeline
             if (SettingsManager.Instance.RunProgramUpdateAtLaunch)
@@ -151,11 +152,6 @@ namespace NullVoidCreations.Janitor.Shell
             SettingsManager.Instance.RunScanAtLaunch = true;
             SettingsManager.Instance.SkipUac = true;
             SettingsManager.Instance.RunAtBoot = true;
-        }
-
-        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
-        {
-            
         }
     }
 }

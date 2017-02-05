@@ -92,11 +92,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
             return _observers.Remove(observer);
         }
 
-        public void RaiseSignal(ISignalObserver sender, Signal signal, params object[] data)
+        public void RaiseSignal(Signal signal, params object[] data)
         {
             for (var index = _observers.Count - 1; index >= 0; index--)
             {
-                _observers[index].SignalReceived(sender, signal, data);
+                _observers[index].SignalReceived(signal, data);
             }
         }
     }

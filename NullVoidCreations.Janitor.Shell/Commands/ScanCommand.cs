@@ -45,12 +45,12 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         #endregion
 
-        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
+        public void SignalReceived(Signal signal, params object[] data)
         {
             switch (signal)
             {
                 case Signal.Initialized:
-                    SignalReceived(sender, Signal.LicenseChanged, data);
+                    SignalReceived(Signal.LicenseChanged, data);
                     break;
 
                 case Signal.ScanStatusChanged:
@@ -59,7 +59,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                     break;
 
                 case Signal.LicenseChanged:
-                    _license = NullVoidCreations.Janitor.Shell.Core.LicenseExManager.Instance.License;
+                    _license = Core.LicenseManager.Instance.License;
                     break;
 
                 case Signal.ScanTrigerred:
@@ -191,7 +191,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             status.ProgressMax = progressMax;
             status.ProgressMin = progressMin;
             status.ProgressCurrent = progressCurrent;
-            SignalHost.Instance.RaiseSignal(this, Signal.ScanStatusChanged, status);
+            SignalHost.Instance.RaiseSignal(Signal.ScanStatusChanged, status);
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         /// <returns></returns>
         ScanModel Analyse(ScanModel scan)
         {
-            SignalHost.Instance.RaiseSignal(this, Signal.AnalysisStarted, false);
+            SignalHost.Instance.RaiseSignal(Signal.AnalysisStarted, false);
 
             var issues = new List<IssueBase>();
             var targets = 0;
@@ -254,7 +254,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             scan.IsCancelled = _isCancelled;
 
             ScanModel.SaveScanDetails(scan);
-            SignalHost.Instance.RaiseSignal(this, Signal.AnalysisStopped, issues.Count, scan.IsCancelled);
+            SignalHost.Instance.RaiseSignal(Signal.AnalysisStopped, issues.Count, scan.IsCancelled);
 
             return scan;
         }
@@ -266,7 +266,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         /// <returns></returns>
         ScanModel Fix(ScanModel scan)
         {
-            SignalHost.Instance.RaiseSignal(this, Signal.FixingStarted);
+            SignalHost.Instance.RaiseSignal(Signal.FixingStarted);
 
             var issues = new List<IssueBase>();
             var targets = 0;
@@ -319,7 +319,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             scan.Issues = issues;
 
             ScanModel.SaveScanDetails(scan);
-            SignalHost.Instance.RaiseSignal(this, Signal.FixingStopped, issues.Count, scan.IsCancelled);
+            SignalHost.Instance.RaiseSignal(Signal.FixingStopped, issues.Count, scan.IsCancelled);
 
             scan.IsFixed = !scan.IsCancelled;
             return scan;
@@ -360,14 +360,14 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                 Execute("Fix");
             }
             else
-                SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
+                SignalHost.Instance.RaiseSignal(Signal.StopWork);
 
             if (_viewModel.Scan.IsFixed)
             {
                 if (SettingsManager.Instance.CloseAfterFixing)
-                    SignalHost.Instance.RaiseSignal(this, Signal.Close);
+                    SignalHost.Instance.RaiseSignal(Signal.Close);
                 if (SettingsManager.Instance.ShutdownAfterFixing)
-                    SignalHost.Instance.RaiseSignal(this, Signal.Shutdown);
+                    SignalHost.Instance.RaiseSignal(Signal.Shutdown);
             }
         }
 

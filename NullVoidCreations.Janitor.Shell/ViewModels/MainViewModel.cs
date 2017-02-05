@@ -212,20 +212,20 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         void ExecuteMinimize(object parameter)
         {
-            SignalReceived(this, Signal.Minimize);
+            SignalReceived(Signal.Minimize);
         }
 
         void ExecuteClose(object parameter)
         {
-            SignalReceived(this, Signal.Close);
+            SignalReceived(Signal.Close);
         }
 
         void ExecuteOpen(object parameter)
         {
-            SignalReceived(this, Signal.ShowUi);
+            SignalReceived(Signal.ShowUi);
         }
 
-        public void SignalReceived(ISignalObserver sender, Signal signal, params object[] data)
+        public void SignalReceived(Signal signal, params object[] data)
         {
             switch (signal)
             {
@@ -240,7 +240,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 case Signal.ShowHome:
                     SelectedViewIndex = (int)SelectedView.Home;
-                    SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
+                    SignalHost.Instance.RaiseSignal(Signal.StopWork);
                     break;
 
                 case Signal.ShowUi:
@@ -255,7 +255,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     if (SettingsManager.Instance.ExitOnClose)
                         App.Current.Shutdown(0);
                     else
-                        SignalReceived(sender, Signal.CloseToTray);
+                        SignalReceived(Signal.CloseToTray);
                     break;
 
                 case Signal.CloseToTray:

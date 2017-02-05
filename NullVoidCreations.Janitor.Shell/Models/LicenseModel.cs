@@ -1,143 +1,80 @@
 ﻿using System;
+using NullVoidCreations.Janitor.Licensing;
 using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Shell.Models
 {
-    public class LicenseModel: NotificationBase
+    public class LicenseModel: NotificationBase, IDisposable
     {
-        bool _isTrial;
-        DateTime _issueDate, _expirationDate;
-        string _registeredEmail, _licenseKey;
+        LicenseEx _license;
 
         public LicenseModel()
         {
-            Rest();
+            _license = new LicenseEx(null);
+        }
+
+        ~LicenseModel()
+        {
+            Dispose();
         }
 
         #region properties
 
-        public string LicenseKey
+        public string SerialKey
         {
-            get { return _licenseKey; }
-            set
-            {
-                _licenseKey = value;
-                RaisePropertyChanged("LicenseKey");
-            }
+            get { return _license.SerialKey; }
         }
 
-        public string RegisteredEmail
+        public string Email
         {
-            get { return _registeredEmail; }
-            private set
-            {
-                _registeredEmail = value;
-                RaisePropertyChanged("RegisteredEmail");
-            }
+            get { return _license.Email; }
         }
 
         public DateTime IssueDate
         {
-            get { return _issueDate; }
-            private set
-            {
-                _issueDate = value;
-                RaisePropertyChanged("IssueDate");
-            }
+            get { return _license.IssueDate; }
         }
 
         public DateTime ExpirationDate
         {
-            get { return _expirationDate; }
-            private set
-            {
-                _expirationDate = value;
-                RaisePropertyChanged("ExpirationDate");
-            }
+            get { return _license.ExpirationDate; }
         }
 
         public bool IsTrial
         {
-            get { return _isTrial; }
-            private set
-            {
-                _isTrial = value;
-                RaisePropertyChanged("IsTrial");
-            }
+            get { return !_license.IsActivated; }
         }
 
         #endregion
 
-        internal void Rest()
+        #region private methods
+
+        void RaisePropertyChanged()
         {
-            IssueDate = new DateTime(1900, 1, 1);
-            ExpirationDate = new DateTime(1900, 1, 1);
-            IsTrial = true;
+            RaisePropertyChanged("SerialKey");
+            RaisePropertyChanged("Email");
+            RaisePropertyChanged("IssueDate");
+            RaisePropertyChanged("ExpirationDate");
+            RaisePropertyChanged("IsTrial");
         }
 
-        internal string Generate(DateTime isssueDate, DateTime expirationDate, string registeredEmail)
+        #endregion
+
+        internal void Load(string licenseFile)
         {
-            IssueDate = isssueDate;
-            ExpirationDate = expirationDate;
-            RegisteredEmail = registeredEmail;
-
-            var key = string.Format("{0:0000}{1:00}{2:00}{3:0000}{4:00}{5:00}{6}",
-                IssueDate.Year,
-                IssueDate.Month,
-                IssueDate.Day,
-                ExpirationDate.Year,
-                ExpirationDate.Month,
-                ExpirationDate.Day,
-                RegisteredEmail);
-            LicenseKey = StringCipher.Instance.Encrypt(key, LicenseExManager.EncryptionKey);
-
-            return LicenseKey;
+            _license = new LicenseEx(licenseFile);
+            RaisePropertyChanged();
         }
 
-        internal string Validate(string key)
+        internal void Activate(string serialKey, string licenseFile)
         {
-            LicenseKey = key;
-            string errorMessage = null;
-            try
-            {
-                var decryptedKey = StringCipher.Instance.Decrypt(LicenseKey, LicenseExManager.EncryptionKey);
-                IssueDate = ExtractDate(decryptedKey, 0);
-                ExpirationDate = ExtractDate(decryptedKey, 8);
-                RegisteredEmail = decryptedKey.Substring(16, decryptedKey.Length - 16);
-                IsTrial = IsExpired(this);
-
-                if (IsTrial)
-                    errorMessage = "License key expired.";
-            }
-            catch
-            {
-                errorMessage = "Invalid license key.";
-                Rest();
-            }
-
-            return errorMessage;
+            _license.Activate(serialKey, licenseFile);
+            RaisePropertyChanged();
         }
 
-        bool IsExpired(LicenseModel license)
+        public void Dispose()
         {
-            var currentDate = DateTime.Now;
-            if (currentDate.Date < license.IssueDate.Date)
-                return true;
-            if (currentDate.Date > license.ExpirationDate.Date)
-                return true;
-
-            return false;
-        }
-
-        DateTime ExtractDate(string text, int startIndex)
-        {
-            var date = new DateTime(
-                int.Parse(text.Substring(startIndex, 4)),
-                int.Parse(text.Substring(startIndex + 4, 2)),
-                int.Parse(text.Substring(startIndex + 6, 2)));
-
-            return date;
+            _license.Dispose();
         }
     }
 }

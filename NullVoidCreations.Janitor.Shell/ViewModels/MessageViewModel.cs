@@ -6,6 +6,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     public class MessageViewModel: ViewModelBase
     {
         string _title, _message, _button1Text, _button2Text, _iconSource;
+        bool _isButton2Visible;
         readonly CommandBase _ok, _cancel;
 
         public MessageViewModel()
@@ -70,6 +71,19 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 _button2Text = value;
                 RaisePropertyChanged("Button2Text");
+            }
+        }
+
+        public bool IsButton2Visible
+        {
+            get { return _isButton2Visible; }
+            internal set
+            {
+                if (value == _isButton2Visible)
+                    return;
+
+                _isButton2Visible = value;
+                RaisePropertyChanged("IsButton2Visible");
             }
         }
 

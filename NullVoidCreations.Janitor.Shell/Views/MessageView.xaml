@@ -60,7 +60,10 @@
                                                Mode=OneWay}"
                     Content="{Binding Path=Button2Text,
                                       Mode=OneWay}"
-                    IsCancel="True" />
+                    IsCancel="True"
+                    Visibility="{Binding Path=IsButton2Visible,
+                                         Mode=OneWay,
+                                         Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
         </StackPanel>
     </Grid>
 </c:CustomWindow>

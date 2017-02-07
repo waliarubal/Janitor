@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Reflection;
+using System.Security.Principal;
 using System.Windows;
 using NullVoidCreations.Janitor.Shared.Helpers;
 
@@ -29,9 +30,33 @@ namespace NullVoidCreations.Janitor.Shared
             WebLinksUrl = new Uri("https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/WebLinks.dat");
         }
 
+        #region properties
+
         public static bool IsInDesignMode
         {
             get { return (bool)(DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue); }
         }
+
+        public static bool IsAdministrator
+        {
+            get
+            {
+                var identity = WindowsIdentity.GetCurrent();
+                if (identity != null)
+                {
+                    var principal = new WindowsPrincipal(identity);
+                    return principal.IsInRole(WindowsBuiltInRole.Administrator);
+                }
+
+                return false;
+            }
+        }
+
+        public bool IsUacSupported
+        {
+            get { return Environment.OSVersion.Version.Major >= 6; }
+        }
+
+        #endregion
     }
 }

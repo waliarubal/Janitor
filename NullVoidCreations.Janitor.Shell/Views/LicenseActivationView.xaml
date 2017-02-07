@@ -97,35 +97,66 @@
         <TextBlock Grid.Row="1"
                    Grid.Column="2"
                    Text="An activated product finds even the newest issues with improved speed." />
-        <Button Grid.Row="2"
-                Grid.RowSpan="2"
-                Grid.Column="2"
-                Margin="0 12 0 0"
-                Command="{Binding Path=PurchaseLicense,
-                                  Mode=OneTime}"
-                CommandParameter="{Binding Path=BuyNowUrl,
-                                           Mode=OneWay}"
-                Style="{StaticResource ResourceKey=ScanButtonStyle}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Image Grid.RowSpan="2"
-                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/Cart.png"
-                       Style="{StaticResource ResourceKey=ScanIconStyle}" />
-                <TextBlock Grid.Column="1"
-                           Style="{StaticResource ResourceKey=ScanNameStyle}"
-                           Text="Purchase License" />
-                <TextBlock Grid.Row="1"
-                           Grid.Column="1"
-                           Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
-                           Text="Purchase a new license for this product." />
-            </Grid>
-        </Button>
+
+        <StackPanel Grid.Row="2"
+                    Grid.RowSpan="5"
+                    Grid.Column="2"
+                    Margin="0 12 0 0">
+            <Button Margin="0 0 0 8"
+                    Command="{Binding Path=PurchaseLicense,
+                                      Mode=OneTime}"
+                    CommandParameter="{Binding Path=BuyNowUrl,
+                                               Mode=OneWay}"
+                    Style="{StaticResource ResourceKey=ScanButtonStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Image Grid.RowSpan="2"
+                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Cart.png"
+                           Style="{StaticResource ResourceKey=ScanIconStyle}" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=ScanNameStyle}"
+                               Text="Purchase License" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
+                               Text="Purchase a new license or re-new an existing license for this product." />
+                </Grid>
+            </Button>
+            <Button Margin="0 0 0 8"
+                    Command="{Binding Path=PurchaseLicense,
+                                      Mode=OneTime}"
+                    CommandParameter="{Binding Path=BuyNowUrl,
+                                               Mode=OneWay}"
+                    Style="{StaticResource ResourceKey=ScanButtonStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Image Grid.RowSpan="2"
+                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Free.png"
+                           Style="{StaticResource ResourceKey=ScanIconStyle}" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=ScanNameStyle}"
+                               Text="Free 90 Days Trial" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
+                               Text="Start experiencing WinDoc's fast and productive computer mentainance commitment - free for 90 days." />
+                </Grid>
+            </Button>
+        </StackPanel>
+
     </Grid>
 </c:CustomWindow>

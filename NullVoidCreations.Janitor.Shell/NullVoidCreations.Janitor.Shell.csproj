@@ -53,7 +53,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>LogoBig.ico</ApplicationIcon>
+    <ApplicationIcon>Logo16.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>NullVoidCreations.Janitor.Shell.App</StartupObject>
@@ -252,6 +252,8 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
+    <Resource Include="Resources\Free.png" />
+    <Resource Include="Logo16.ico" />
     <Content Include="Translations\Hindi.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -342,9 +344,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Timer.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="LogoBig.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Tasks.png" />

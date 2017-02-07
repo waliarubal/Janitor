@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using NullVoidCreations.Janitor.Shared.Base;
+﻿using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Views;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
@@ -15,7 +15,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         public override void Execute(object parameter)
         {
             var activationView = new LicenseActivationView();
-            activationView.Owner = Application.Current.MainWindow;
+            activationView.Owner = UiHelper.Instance.MainWindow;
             activationView.ShowDialog();
         }
     }

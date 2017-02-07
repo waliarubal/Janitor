@@ -35,6 +35,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
             get { return App.Current.Resources; }
         }
 
+        public Window MainWindow
+        {
+            get { return App.Current.MainWindow; }
+        }
+
         #endregion
 
         public void ExecuteOnUiThread(Action action, params object[] arguments)

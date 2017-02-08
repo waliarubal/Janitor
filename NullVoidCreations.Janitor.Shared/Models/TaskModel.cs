@@ -44,9 +44,6 @@ namespace NullVoidCreations.Janitor.Shared.Models
 
         public bool CreateOrUpdate()
         {
-            if (Schedule == ScheduleType.None)
-                return Delete();
-
             // schedule
             Trigger trigger = null;
             if (Schedule == ScheduleType.Once)
@@ -115,6 +112,7 @@ namespace NullVoidCreations.Janitor.Shared.Models
             if (executable.Contains(" "))
                 executable = string.Format("\"{0}\"", ExecutablePath);
 
+            //TODO: check task execution failure
             // task
             var existingTask = TaskService.Instance.GetTask(Name);
             if (existingTask != null)
@@ -125,7 +123,8 @@ namespace NullVoidCreations.Janitor.Shared.Models
                 existingTask.Definition.Principal.LogonType = TaskLogonType.InteractiveToken;
                 existingTask.Definition.Principal.RunLevel = TaskRunLevel.Highest;
                 existingTask.Definition.Settings.MultipleInstances = TaskInstancesPolicy.Parallel;
-                existingTask.Definition.Settings.StopIfGoingOnBatteries = false;
+                existingTask.Definition.Settings.AllowDemandStart = true;
+                existingTask.Definition.Settings.DisallowStartIfOnBatteries = false;
                 existingTask.Definition.Triggers.Clear();
                 if (Schedule != ScheduleType.None)
                     existingTask.Definition.Triggers.Add(trigger);
@@ -141,7 +140,8 @@ namespace NullVoidCreations.Janitor.Shared.Models
             taskDefinition.Principal.LogonType = TaskLogonType.InteractiveToken;
             taskDefinition.Principal.RunLevel = TaskRunLevel.Highest;
             taskDefinition.Settings.MultipleInstances = TaskInstancesPolicy.Parallel;
-            taskDefinition.Settings.StopIfGoingOnBatteries = false;
+            taskDefinition.Settings.AllowDemandStart = true;
+            taskDefinition.Settings.DisallowStartIfOnBatteries = false;
             if (Schedule != ScheduleType.None)
                 taskDefinition.Triggers.Add(trigger);
 

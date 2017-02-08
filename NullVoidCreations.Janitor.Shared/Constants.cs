@@ -52,7 +52,7 @@ namespace NullVoidCreations.Janitor.Shared
             }
         }
 
-        public bool IsUacSupported
+        public static bool IsUacSupported
         {
             get { return Environment.OSVersion.Version.Major >= 6; }
         }

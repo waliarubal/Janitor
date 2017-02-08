@@ -55,6 +55,9 @@ namespace NullVoidCreations.Janitor.Shell
                 return;
             }
 
+            if (!RunWithElivatedPrivilages())
+                return;
+
             base.OnStartup(e);
 
             UiHelper.Instance.Resources["ProductName"] = Constants.ProductName;
@@ -65,35 +68,35 @@ namespace NullVoidCreations.Janitor.Shell
 
             LanguageManager.Instance.GetLanguageFiles();
 
-            // initialization
+            // background bootstraping
             var worker = new BackgroundWorker();
             worker.DoWork += new DoWorkEventHandler(Worker_DoWork);
             worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
-            worker.RunWorkerAsync(worker);
+            var args = new object[] { worker, e.Args };
+            worker.RunWorkerAsync(args);
 
-            SettingsManager.Instance.Load(Constants.UpdatesMetadataUrl);
-            SettingsManager.Instance.Load(Constants.WebLinksUrl);
-            
             MainWindow = new MainView();
             MainWindow.Show();
-
-            CommandLineManager.Instance.LoadArguments(e.Args);
-            CommandLineManager.Instance.ProcessArguments();
         }
+
+        #region background bootstraping
 
         void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             Thread.CurrentThread.IsBackground = true;
             Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
 
+            SettingsManager.Instance.Load(Constants.UpdatesMetadataUrl);
+            SettingsManager.Instance.Load(Constants.WebLinksUrl);
+
             FirstTimeExecution();
 
             // skip UAC
             var skipUac = new SkipUacCommand(null);
-            skipUac.Execute(SettingsManager.Instance.SkipUac);
+            if (skipUac.IsEnabled)
+                skipUac.Execute(SettingsManager.Instance.SkipUac);
 
-            // run at startup, disable if UAC skipping is not enabled
-            SettingsManager.Instance.RunAtBoot = SettingsManager.Instance.RunAtBoot && SettingsManager.Instance.SkipUac;
+            // run at startup
             var runAtBoot = new ScheduleSilentRunCommand(null);
             runAtBoot.Execute(SettingsManager.Instance.RunAtBoot);
 
@@ -113,7 +116,13 @@ namespace NullVoidCreations.Janitor.Shell
 
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            var args = e.Result as object[];
+
             SignalHost.Instance.RaiseSignal(Signal.Initialized);
+
+            // process command line
+            CommandLineManager.Instance.LoadArguments(args[1] as string[]);
+            CommandLineManager.Instance.ProcessArguments();
 
             // trigger work pipeline
             if (SettingsManager.Instance.RunProgramUpdateAtLaunch)
@@ -125,15 +134,40 @@ namespace NullVoidCreations.Janitor.Shell
             }
             if (SettingsManager.Instance.RunScanAtLaunch)
                 WorkQueueManager.Instance.AddWork(WorkSignal.SmartScan);
-                
+
             WorkQueueManager.Instance.AddWork(WorkSignal.ShowTrialWarning);
             WorkQueueManager.Instance.DoWork();
 
-            var worker = e.Result as BackgroundWorker;
+            // dispose off worker
+            var worker = args[0] as BackgroundWorker;
             worker.DoWork -= new DoWorkEventHandler(Worker_DoWork);
             worker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
             worker.Dispose();
             worker = null;
+        }
+
+        #endregion
+
+        bool RunWithElivatedPrivilages()
+        {
+            if (Constants.IsAdministrator)
+                return true;
+
+            Shutdown(0);
+            if (SettingsManager.Instance.SkipUac)
+            {
+                // create UAC skipping task
+                var skipUac = new SkipUacCommand(null);
+                if (skipUac.IsEnabled)
+                    skipUac.Execute(true);
+
+                // execute UAC skipping task
+                FileSystemHelper.Instance.RunScheduledTask(SkipUacCommand.SkipUacTask);
+            }
+            else
+                FileSystemHelper.Instance.RunProgram(Constants.ExecutableFile, string.Empty, true);
+
+            return false;
         }
 
         /// <summary>
@@ -150,7 +184,7 @@ namespace NullVoidCreations.Janitor.Shell
             SettingsManager.Instance.RunProgramUpdateAtLaunch = true;
             SettingsManager.Instance.RunPluginUpdateAtLaunch = true;
             SettingsManager.Instance.RunScanAtLaunch = true;
-            SettingsManager.Instance.SkipUac = true;
+            SettingsManager.Instance.SkipUac = Constants.IsUacSupported;
             SettingsManager.Instance.RunAtBoot = true;
         }
     }

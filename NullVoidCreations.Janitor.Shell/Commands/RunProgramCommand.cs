@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shell.Commands
 {
@@ -14,26 +14,20 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
         protected override void ExecuteOverride(object parameter)
         {
-            string fileName = null, arguments = null;
+            string executable = null, arguments = null;
+            var runAsAdministrator = false;
 
             var multiParams = parameter as List<object>;
             if (multiParams == null)
-                fileName = parameter as string;
+                executable = parameter as string;
             else
             {
-                fileName = multiParams[0] as string;
+                executable = multiParams[0] as string;
                 arguments = multiParams[1] as string;
+                runAsAdministrator = (bool)multiParams[2];
             }
 
-            if (string.IsNullOrEmpty(fileName))
-                return;
-            if (string.IsNullOrEmpty(arguments))
-                arguments = string.Empty;
-
-            var startInfo = new ProcessStartInfo();
-            startInfo.FileName = fileName;
-            startInfo.Arguments = arguments;
-            Process.Start(startInfo);
+            FileSystemHelper.Instance.RunProgram(executable, arguments, runAsAdministrator);
         }
     }
 }

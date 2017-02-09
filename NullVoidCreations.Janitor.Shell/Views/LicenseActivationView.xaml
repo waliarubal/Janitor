@@ -8,7 +8,6 @@
                 Width="580"
                 Height="340"
                 Background="{StaticResource ResourceKey=BackgroundBrush}"
-                Icon="/NullVoidCreations.Janitor.Shell;component/Resources/Logo32.png"
                 IsMinimizeAllowed="False"
                 ShowInTaskbar="True"
                 Style="{StaticResource ResourceKey=ChildWindowStyle}"

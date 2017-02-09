@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
@@ -150,7 +151,7 @@ namespace NullVoidCreations.Janitor.Shell
 
         bool RunWithElivatedPrivilages()
         {
-            if (Constants.IsAdministrator)
+            if (Debugger.IsAttached || Constants.IsAdministrator)
                 return true;
 
             Shutdown(0);

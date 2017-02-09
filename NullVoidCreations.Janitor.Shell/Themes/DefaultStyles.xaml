@@ -53,6 +53,33 @@
         </Setter>
     </Style>
 
+    <Style TargetType="PasswordBox">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="AllowDrop" Value="True" />
+        <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+        <Setter Property="MinHeight" Value="22" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Border Name="ContentElement"
+                            Background="{StaticResource ResourceKey=BackgroundBrush}"
+                            BorderBrush="{StaticResource ResourceKey=BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="1">
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="ContentElement" Property="Background" Value="{StaticResource ResourceKey=BackgroundActiveBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type Hyperlink}">
         <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextAlternateBrush}" />
         <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />

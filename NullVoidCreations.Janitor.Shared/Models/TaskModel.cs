@@ -112,7 +112,6 @@ namespace NullVoidCreations.Janitor.Shared.Models
             if (executable.Contains(" "))
                 executable = string.Format("\"{0}\"", ExecutablePath);
 
-            //TODO: check task execution failure
             // task
             var existingTask = TaskService.Instance.GetTask(Name);
             if (existingTask != null)

@@ -243,6 +243,7 @@
                 </Setter>
             </Style>
         </Style.Resources>
+        <Setter Property="Icon" Value="/NullVoidCreations.Janitor.Shell;component/Resources/Logo32.png" />
         <Setter Property="AllowsTransparency" Value="True" />
         <Setter Property="WindowStyle" Value="None" />
         <Setter Property="ResizeMode" Value="NoResize" />

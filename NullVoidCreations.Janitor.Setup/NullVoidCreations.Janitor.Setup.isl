@@ -1148,7 +1148,7 @@
 		<row><td>FavoritesFolder</td><td>TARGETDIR</td><td>.:FAVORI~1|Favorites</td><td/><td>0</td><td/></row>
 		<row><td>FontsFolder</td><td>TARGETDIR</td><td>.:Fonts</td><td/><td>0</td><td/></row>
 		<row><td>GlobalAssemblyCache</td><td>TARGETDIR</td><td>.:Global~1|GlobalAssemblyCache</td><td/><td>0</td><td/></row>
-		<row><td>INSTALLDIR</td><td>PC_MECHANIC_PRO</td><td>.</td><td/><td>0</td><td/></row>
+		<row><td>INSTALLDIR</td><td>WINDOC</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>ISCommonFilesFolder</td><td>CommonFilesFolder</td><td>Instal~1|InstallShield</td><td/><td>0</td><td/></row>
 		<row><td>ISMyCompanyDir</td><td>ProgramFilesFolder</td><td>MYCOMP~1|My Company Name</td><td/><td>0</td><td/></row>
 		<row><td>ISMyProductDir</td><td>ISMyCompanyDir</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
@@ -1175,6 +1175,7 @@
 		<row><td>TempFolder</td><td>TARGETDIR</td><td>.:Temp</td><td/><td>0</td><td/></row>
 		<row><td>TemplateFolder</td><td>TARGETDIR</td><td>.:ShellNew</td><td/><td>0</td><td/></row>
 		<row><td>USERPROFILE</td><td>TARGETDIR</td><td>.:USERPR~1|UserProfile</td><td/><td>0</td><td/></row>
+		<row><td>WINDOC</td><td>CommonAppDataFolder</td><td>WinDoc</td><td/><td>0</td><td/></row>
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
 		<row><td>WindowsVolume</td><td>TARGETDIR</td><td>.:WinRoot</td><td/><td>0</td><td/></row>
 		<row><td>_PRODUCTNAME_</td><td>CommonAppDataFolder</td><td>_PRODU~1|[ProductName]</td><td/><td>0</td><td/></row>
@@ -2585,7 +2586,7 @@
 		<col def="I2">Order</col>
 		<col def="I2">ISSetupLocation</col>
 		<col def="S255">ISReleaseFlags</col>
-		<row><td>_B236C2B6_4187_478D_8802_F07248093F06_</td><td>Microsoft .NET Framework 3.5 (Web Download).prq</td><td/><td/><td/></row>
+		<row><td>_B236C2B6_4187_478D_8802_F07248093F06_</td><td>Microsoft .NET Framework 3.5 (Web Download).prq</td><td/><td>2</td><td/></row>
 	</table>
 
 	<table name="ISSetupType">
@@ -2619,7 +2620,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>NullVoid Creations</td><td>0</td><td/><td>279268002</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>Rubal Walia</td><td>0</td><td/><td>1361409651</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION35</td><td>1033</td><td>Microsoft .NET Framework 3.5 needs to be installed for this installation to continue.</td><td>0</td><td/><td>-31163857</td></row>
@@ -3432,7 +3433,7 @@
 		<row><td>IDS_PROGMSG_XML_UPDATE_FILE</td><td>1033</td><td>Updating XML file %s...</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDS_SETUPEXE_EXPIRE_MSG</td><td>1033</td><td>This setup works until %s. The setup will now exit.</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDS_SETUPEXE_LAUNCH_COND_E</td><td>1033</td><td>This setup was built with an evaluation version of InstallShield and can only be launched from setup.exe.</td><td>0</td><td/><td>-31134963</td></row>
-		<row><td>IDS_SHORTCUT_DISPLAY_NAME1</td><td>1033</td><td>PCMECH~1|PC MECHANIC PRO™</td><td>0</td><td/><td>1487268736</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME1</td><td>1033</td><td>WinDoc</td><td>0</td><td/><td>1361434323</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO</td><td>1033</td><td>From the list of servers below, select the database server you would like to target.</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>1033</td><td>From the list of catalog names below, select the database catalog you would like to target.</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>1033</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>-31134963</td></row>
@@ -3722,15 +3723,17 @@
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>-31134963</td></row>
 		<row><td>ID_STRING1</td><td>1033</td><td/><td>0</td><td/><td>-31194323</td></row>
-		<row><td>ID_STRING10</td><td>1033</td><td>http://www.NullVoidCreations.com/support</td><td>0</td><td/><td>279268002</td></row>
-		<row><td>ID_STRING11</td><td>1033</td><td>http://www.pcmechanicpro.com/download</td><td>0</td><td/><td>-31157489</td></row>
-		<row><td>ID_STRING2</td><td>1033</td><td>http://www.NullVoidCreations.com</td><td>0</td><td/><td>279268002</td></row>
-		<row><td>ID_STRING3</td><td>1033</td><td>Cleaning ay your fingertips.</td><td>0</td><td/><td>-31167475</td></row>
+		<row><td>ID_STRING10</td><td>1033</td><td>http://waliarubal.bitbucket.io/windoc/support.html</td><td>0</td><td/><td>1361411731</td></row>
+		<row><td>ID_STRING11</td><td>1033</td><td>http://waliarubal.bitbucket.io/windoc/download.html</td><td>0</td><td/><td>1361428115</td></row>
+		<row><td>ID_STRING12</td><td>1033</td><td>+91 99288 93416</td><td>0</td><td/><td>1361408116</td></row>
+		<row><td>ID_STRING13</td><td>1033</td><td>walia.rubal@gmail.com</td><td>0</td><td/><td>1361430644</td></row>
+		<row><td>ID_STRING2</td><td>1033</td><td>http://waliarubal.bitbucket.io/windoc</td><td>0</td><td/><td>1361428083</td></row>
+		<row><td>ID_STRING3</td><td>1033</td><td>Your Computer's Family Doctor</td><td>0</td><td/><td>1361434291</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>PCMECH~1|PC Mechanic Pro</td><td>0</td><td/><td>-31142771</td></row>
 		<row><td>ID_STRING5</td><td>1033</td><td>Cleaning at your fingertips.</td><td>0</td><td/><td>-31181651</td></row>
 		<row><td>ID_STRING6</td><td>1033</td><td>PCMECH~1|PC Mechanic Pro</td><td>0</td><td/><td>-31146835</td></row>
 		<row><td>ID_STRING7</td><td>1033</td><td>Cleaning at your fingertips.</td><td>0</td><td/><td>-31187763</td></row>
-		<row><td>ID_STRING8</td><td>1033</td><td>NullVoid Creations</td><td>0</td><td/><td>279268002</td></row>
+		<row><td>ID_STRING8</td><td>1033</td><td>Rubal Walia</td><td>0</td><td/><td>1361380979</td></row>
 		<row><td>ID_STRING9</td><td>1033</td><td>Launch |Built</td><td>0</td><td/><td>-31163825</td></row>
 		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>1033</td><td>This feature will remain uninstalled.</td><td>0</td><td/><td>-31134963</td></row>
 	</table>
@@ -3738,7 +3741,7 @@
 	<table name="ISSwidtagProperty">
 		<col key="yes" def="s72">Name</col>
 		<col def="s0">Value</col>
-		<row><td>UniqueId</td><td>0D9199F9-F026-4431-BBE8-0CF3AFBF7F64</td></row>
+		<row><td>UniqueId</td><td>ABFF6CD9-5ABD-4743-9690-23B7D5E90A80</td></row>
 	</table>
 
 	<table name="ISTargetImage">
@@ -3845,7 +3848,7 @@
 		<col def="V0">Data</col>
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
-		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;VSSolutionFolder&gt;\NullVoidCreations.Janitor.Shell\LogoBig.ico</td><td>0</td></row>
+		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;VSSolutionFolder&gt;\NullVoidCreations.Janitor.Shell\Logo16.ico</td><td>0</td></row>
 		<row><td>NewShortcut1_E460D90650F84030985CA44565707890.exe</td><td/><td>D:\Projects\Janitor\NullVoidCreations.Janitor.Shell\bin\Debug\NullVoidCreations.Janitor.Shell.exe</td><td>0</td></row>
 		<row><td>NewShortcut2_9AE6C6F0824246D48B0DB2BB1D2436C8.exe</td><td/><td>D:\Projects\Janitor\NullVoidCreations.Janitor.Shell\bin\Debug\NullVoidCreations.Janitor.Shell.exe</td><td>0</td></row>
 	</table>
@@ -4289,7 +4292,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<row><td>ALLUSERS</td><td>1</td><td/></row>
 		<row><td>ARPCOMMENTS</td><td>##ID_STRING3##</td><td/></row>
+		<row><td>ARPCONTACT</td><td>##ID_STRING13##</td><td/></row>
 		<row><td>ARPHELPLINK</td><td>##ID_STRING10##</td><td/></row>
+		<row><td>ARPHELPTELEPHONE</td><td>##ID_STRING12##</td><td/></row>
 		<row><td>ARPINSTALLLOCATION</td><td/><td/></row>
 		<row><td>ARPNOMODIFY</td><td>1</td><td/></row>
 		<row><td>ARPPRODUCTICON</td><td>ARPPRODUCTICON.exe</td><td/></row>
@@ -4362,9 +4367,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[INSTALLDIR]NullVoidCreations.Janitor.Shell.Primary output</td><td/></row>
-		<row><td>ProductCode</td><td>{30A9AE47-DA24-46FA-8DE2-D30333EF142B}</td><td/></row>
-		<row><td>ProductName</td><td>PC Mechanic Pro</td><td/></row>
-		<row><td>ProductVersion</td><td>1.8.0000</td><td/></row>
+		<row><td>ProductCode</td><td>{B3A799AA-18A1-41F9-8E38-5BD16AC1C4E6}</td><td/></row>
+		<row><td>ProductName</td><td>WinDoc</td><td/></row>
+		<row><td>ProductVersion</td><td>1.0.0000</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4380,7 +4385,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;ISACTIONPROP2</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
-		<row><td>UpgradeCode</td><td>{233A8D8E-EA27-40EB-BCF1-E6C22F73F4C1}</td><td/></row>
+		<row><td>UpgradeCode</td><td>{D7221F6F-CC85-479C-BB9E-115CD7B231B6}</td><td/></row>
 		<row><td>_IsMaintenance</td><td>Change</td><td/></row>
 		<row><td>_IsSetupTypeMin</td><td>Typical</td><td/></row>
 	</table>
@@ -4652,7 +4657,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s72">ActionProperty</col>
 		<col def="S72">ISDisplayName</col>
 		<row><td>{00000000-0000-0000-0000-000000000000}</td><td>***ALL_VERSIONS***</td><td></td><td></td><td>2</td><td/><td>ISFOUNDNEWERPRODUCTVERSION</td><td>ISPreventDowngrade</td></row>
-		<row><td>{233A8D8E-EA27-40EB-BCF1-E6C22F73F4C1}</td><td></td><td>1.8.0000</td><td></td><td>512</td><td/><td>ISACTIONPROP2</td><td>Upgrade</td></row>
+		<row><td>{D7221F6F-CC85-479C-BB9E-115CD7B231B6}</td><td></td><td>1.0.0000</td><td></td><td>512</td><td/><td>ISACTIONPROP2</td><td>Upgrade</td></row>
 	</table>
 
 	<table name="Verb">

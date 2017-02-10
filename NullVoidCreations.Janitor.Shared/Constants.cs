@@ -18,7 +18,7 @@ namespace NullVoidCreations.Janitor.Shared
             InternalName = "Janitor";
             ProductName = "WinDoc";
             ProductTagLine = "Your Computer's Family Doctor";
-            ProductVersion = new Version("1.8.0.0");
+            ProductVersion = new Version("1.0.0.0");
             SupportPhone = "+91 99288 93416";
             SupportEmail = "walia.rubal@gmail.com";
 
@@ -26,8 +26,8 @@ namespace NullVoidCreations.Janitor.Shared
             PluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
             ExecutableFile = IsInDesignMode ? string.Empty : Assembly.GetEntryAssembly().Location;
 
-            UpdatesMetadataUrl = new Uri("https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Updates.dat");
-            WebLinksUrl = new Uri("https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/WebLinks.dat");
+            UpdatesMetadataUrl = new Uri("https://bitbucket.org/waliarubal/waliarubal.bitbucket.org/raw/master/windoc/binaries/Updates.dat");
+            WebLinksUrl = new Uri("https://bitbucket.org/waliarubal/waliarubal.bitbucket.org/raw/master/windoc/binaries/WebLinks.dat");
         }
 
         #region properties

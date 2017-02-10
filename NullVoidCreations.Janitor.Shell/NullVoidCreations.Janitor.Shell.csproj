@@ -103,10 +103,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commands\ActivateLicenseCommand.cs" />
     <Compile Include="Commands\BalloonCommand.cs" />
     <Compile Include="Commands\RunProgramCommand.cs" />
     <Compile Include="Commands\ScheduleSilentRunCommand.cs" />
+    <Compile Include="Commands\ShowPopupCommand.cs" />
     <Compile Include="Commands\SkipUacCommand.cs" />
     <Compile Include="Commands\UpdateCommand.cs" />
     <Compile Include="Commands\ScanCommand.cs" />
@@ -121,7 +121,6 @@
     <Compile Include="Core\PluginManager.cs" />
     <Compile Include="Core\Proxy.cs" />
     <Compile Include="Core\SettingsManager.cs" />
-    <Compile Include="Core\StringCipher.cs" />
     <Compile Include="Core\SignalHost.cs" />
     <Compile Include="Core\UiHelper.cs" />
     <Compile Include="Core\WorkQueueManager.cs" />

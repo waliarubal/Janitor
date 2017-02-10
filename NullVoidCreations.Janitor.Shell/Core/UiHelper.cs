@@ -1,10 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Threading;
+using NullVoidCreations.Janitor.Shared;
 using NullVoidCreations.Janitor.Shell.ViewModels;
 using NullVoidCreations.Janitor.Shell.Views;
-using NullVoidCreations.Janitor.Shared;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -42,6 +41,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #endregion
 
+        public bool? ShowPopup(Window window)
+        {
+            window.Owner = MainWindow;
+            return window.ShowDialog();
+        }
+
         public void ExecuteOnUiThread(Action action, params object[] arguments)
         {
             Dispatcher.CurrentDispatcher.BeginInvoke(action, arguments);
@@ -74,7 +79,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
             var message = string.Format(messageFormat, messageParts);
 
             var view = new MessageView();
-            view.Owner = App.Current.MainWindow;
             var viewModel = view.DataContext as MessageViewModel;
             viewModel.Title = title;
             viewModel.Button1Text = button1Text;
@@ -82,7 +86,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
             viewModel.IsButton2Visible = isButton2Visible;
             viewModel.Icon = icon;
             viewModel.Message = message;
-            if (view.ShowDialog() == true)
+            if (ShowPopup(view) == true)
                 return true;
 
             return false;

@@ -120,7 +120,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
                     if (_license.IsTrial)
                     {
-                        _viewModel.Activate.Execute(null);
+                        (UiHelper.Instance.Resources["ShowPopupCommand"] as CommandBase).Execute("LicenseActivation");
                         break;
                     }
 

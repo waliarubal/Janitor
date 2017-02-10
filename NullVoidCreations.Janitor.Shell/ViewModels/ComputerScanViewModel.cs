@@ -11,7 +11,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     {
         volatile ScanModel _scan;
         volatile ScanStatusModel _progress;
-        CommandBase _doScan, _activate;
+        CommandBase _doScan;
         bool _isScannedInPast;
         DateTime _lastScanTime;
         string _lastScanName;
@@ -20,7 +20,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         {
             _progress = new ScanStatusModel(null, null, true, false, false);
             _doScan = new ScanCommand(this);
-            _activate = new ActivateLicenseCommand(this);
 
             SignalHost.Instance.AddObserver(this);
             GetLastScan();
@@ -105,11 +104,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         public CommandBase DoScan
         {
             get { return _doScan; }
-        }
-
-        public CommandBase Activate
-        {
-            get { return _activate; }
         }
 
         #endregion

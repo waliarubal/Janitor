@@ -106,6 +106,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
                             <Setter TargetName="bdrOuter" Property="Border.Effect">
                                 <Setter.Value>
                                     <DropShadowEffect Opacity="1"
@@ -144,6 +145,7 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
                             <Setter TargetName="bdrOuter" Property="Border.Effect">
                                 <Setter.Value>
                                     <DropShadowEffect Opacity="1"

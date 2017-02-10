@@ -10,7 +10,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class HomeViewModel: ViewModelBase, ISignalObserver
     {
-        readonly CommandBase _activate, _purchaseLicense, _doScan, _showPopup;
+        readonly CommandBase _purchaseLicense, _doScan, _showPopup;
         string _computerName, _operatingSyetem, _processor, _model;
         decimal _memory;
         int _issueCount;
@@ -30,8 +30,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _showPopup = new BalloonCommand(this);
             _purchaseLicense = new RunProgramCommand(this);
             _doScan = new DelegateCommand(this, ExecuteDoScan);
-            _activate = new ActivateLicenseCommand(this);
-            _activate.IsEnabled = _doScan.IsEnabled = true;
+            _doScan.IsEnabled = true;
         }
 
         ~HomeViewModel()
@@ -194,11 +193,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         #endregion
 
         #region commands
-
-        public CommandBase Activate
-        {
-            get { return _activate; }
-        }
 
         public CommandBase PurchaseLicense
         {

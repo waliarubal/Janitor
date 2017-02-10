@@ -230,12 +230,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             switch (signal)
             {
                 case Signal.Shutdown:
-                    var shutdown = new ProcessStartInfo();
-                    shutdown.FileName = "shutdown";
-                    shutdown.Arguments = "/s /t 2";
-                    shutdown.UseShellExecute = false;
-                    shutdown.CreateNoWindow = true;
-                    Process.Start(shutdown);
+                    FileSystemHelper.Instance.RunProgram("shutdown", "/s /t 2", false, true);
                     break;
 
                 case Signal.ShowHome:

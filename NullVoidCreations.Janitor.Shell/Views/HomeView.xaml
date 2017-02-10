@@ -111,8 +111,8 @@
                             Style="{StaticResource ResourceKey=BlackButtonStyle}" />
                     <Button MinWidth="120"
                             Margin="4 0 0 0"
-                            Command="{Binding Path=Activate,
-                                              Mode=OneTime}"
+                            Command="{StaticResource ResourceKey=ShowPopupCommand}"
+                            CommandParameter="LicenseActivation"
                             Content="Activate Product"
                             FontSize="12"
                             Foreground="{StaticResource ResourceKey=TextBrush}" />
@@ -268,6 +268,8 @@
                     <Button Grid.Row="3"
                             Grid.Column="2"
                             Margin="0 0 0 8"
+                            Command="{StaticResource ResourceKey=ShowPopupCommand}"
+                            CommandParameter="CustomerRegistration"
                             Style="{StaticResource ResourceKey=ScanButtonStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>

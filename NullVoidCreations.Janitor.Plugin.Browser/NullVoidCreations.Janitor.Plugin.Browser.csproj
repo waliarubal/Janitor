@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NullVoidCreations.Janitor.Plugin.Browser</RootNamespace>
-    <AssemblyName>NullVoidCreations.Janitor.Plugin.Browser</AssemblyName>
+    <AssemblyName>plugin_browser</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

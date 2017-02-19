@@ -58,7 +58,7 @@
             <Image Grid.RowSpan="6"
                    Margin="0 0 8 0"
                    VerticalAlignment="Top"
-                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Client.png" />
+                   Source="/program_shell;component/Resources/Client.png" />
             <TextBlock Grid.Column="1"
                        Style="{StaticResource ResourceKey=TitleStyle}"
                        Text="Startup" />
@@ -130,7 +130,7 @@
             <Image Grid.RowSpan="6"
                    Margin="0 0 8 0"
                    VerticalAlignment="Top"
-                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Support.png" />
+                   Source="/program_shell;component/Resources/Support.png" />
             <TextBlock Grid.Column="1"
                        Style="{StaticResource ResourceKey=TitleStyle}"
                        Text="General" />
@@ -181,7 +181,7 @@
             <Image Grid.RowSpan="6"
                    Margin="0 0 8 0"
                    VerticalAlignment="Top"
-                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Timer.png" />
+                   Source="/program_shell;component/Resources/Timer.png" />
             <TextBlock Grid.Column="1"
                        Style="{StaticResource ResourceKey=TitleStyle}"
                        Text="Smart Scan Schedule" />

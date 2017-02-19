@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Data;
 using System.IO;
 using System.Text;
 using System.Xml;
-using MySql.Data.MySqlClient;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace NullVoidCreations.Janitor.Licensing
 {
+    [BsonDiscriminator("lic")]
     public class LicenseEx: IDisposable
     {
         const string ValidCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
@@ -17,16 +18,16 @@ namespace NullVoidCreations.Janitor.Licensing
 
         #region constructor / destructor
 
-        public LicenseEx(DateTime issueDate, DateTime expirationDate, string email)
+        private LicenseEx()
         {
-            Generate();
-            GenerateActivationKey(issueDate, expirationDate, email);
-            Save();
+
         }
 
-        public LicenseEx(string fileName)
+        [BsonConstructor]
+        public LicenseEx(string serialKey, string activationKey)
         {
-            Load(fileName);
+            SerialKey = serialKey;
+            ActivationKey = activationKey;
         }
 
         public void Dispose()
@@ -43,16 +44,14 @@ namespace NullVoidCreations.Janitor.Licensing
 
         #region properties
 
+        [BsonId]
+        [BsonRepresentation(BsonType.String)]
+        [BsonElement("key", Order = 1)]
         public string SerialKey
         {
             get { return _serialKey; }
             private set
             {
-                if (string.IsNullOrEmpty(value))
-                    throw new Exception("Serial key not specified.");
-                if (value.Length != KeySize)
-                    throw new Exception("Invalid serial key size.");
-
                 Segment1 = value.Substring(0, 5);
                 Segment2 = value.Substring(6, 5);
                 Segment3 = value.Substring(12, 5);
@@ -61,30 +60,36 @@ namespace NullVoidCreations.Janitor.Licensing
             }
         }
 
+        [BsonIgnore]
         public string Segment1
         {
             get;
             private set;
         }
 
+        [BsonIgnore]
         public string Segment2
         {
             get;
             private set;
         }
 
+        [BsonIgnore]
         public string Segment3
         {
             get;
             private set;
         }
 
+        [BsonIgnore]
         public string Segment4
         {
             get;
             private set;
         }
 
+        [BsonRepresentation(BsonType.String)]
+        [BsonElement("act_key", Order = 2)]
         public string ActivationKey
         {
             get { return _activationKey; }
@@ -111,24 +116,28 @@ namespace NullVoidCreations.Janitor.Licensing
             }
         }
 
+        [BsonIgnore]
         public bool IsActivated
         {
             get;
             private set;
         }
 
+        [BsonIgnore]
         public string Email
         {
             get;
             private set;
         }
 
+        [BsonIgnore]
         public DateTime IssueDate
         {
             get;
             private set;
         }
 
+        [BsonIgnore]
         public DateTime ExpirationDate
         {
             get;
@@ -137,77 +146,52 @@ namespace NullVoidCreations.Janitor.Licensing
 
         #endregion
 
-        public void Activate(string serialKey, string fileName)
+        public static string ValidateSerial(string key)
         {
-            SerialKey = serialKey;
+            if (string.IsNullOrEmpty(key))
+                return "Serial key not specified.";
+            if (key.Length != KeySize)
+                return "Invalid serial key size.";
 
-            using (var connection = GetConnection())
-            {
-                var command = connection.CreateCommand();
-                command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "get_license";
-
-                command.Parameters.Add("p_serial_key", MySqlDbType.VarChar, 23);
-                command.Parameters["p_serial_key"].Direction = ParameterDirection.Input;
-                command.Parameters["p_serial_key"].Value = serialKey;
-
-                command.Parameters.Add("p_activation_key", MySqlDbType.VarChar, 300);
-                command.Parameters["p_activation_key"].Direction = ParameterDirection.Output;
-
-                command.ExecuteNonQuery();
-
-                var activationKey = command.Parameters["p_activation_key"].Value as string;
-                ActivationKey = activationKey;
-            }
-
-            Save(fileName);
+            return null;
         }
 
-        #region private methods
-
-        MySqlConnection GetConnection()
+        internal static LicenseEx LoadFromFile(string fileName)
         {
-            var connectionString = new MySqlConnectionStringBuilder();
-            connectionString.Server = "sql6.freemysqlhosting.net";
-            connectionString.Port = 3306;
-            connectionString.Database = "sql6156982";
-            connectionString.UserID = "sql6156982";
-            connectionString.Password = "fzrk79AWhV";
-
-            var connection = new MySqlConnection(connectionString.ConnectionString);
-            connection.Open();
-
-            return connection;
-        }
-
-        void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (!string.IsNullOrEmpty(_fileName))
-                    Save(_fileName);
-            }
-
-            IsActivated = false;
-            _serialKey = _activationKey = _fileName = null;
-            Segment1 = Segment2 = Segment3 = Segment4 = Email = null;
-            ExpirationDate = IssueDate = DateTime.MinValue;
-        }
-
-        void Load(string fileName)
-        {
-            _fileName = fileName;
             if (!File.Exists(fileName))
-                return;
+                return null;
 
             var document = new XmlDocument();
             document.Load(fileName);
 
-            SerialKey = document.SelectSingleNode("/License/SerialKey").InnerText;
-            ActivationKey = document.SelectSingleNode("/License/ActivationKey").InnerText;
+            var license = new LicenseEx();
+            license._fileName = fileName;
+            license.SerialKey = document.SelectSingleNode("/License/SerialKey").InnerText;
+            license.ActivationKey = document.SelectSingleNode("/License/ActivationKey").InnerText;
+            return license;
         }
 
-        void Save(string fileName)
+        internal static LicenseEx Generate(DateTime isssueDate, DateTime expirationDate, string email)
+        {
+            var randomGenerator = new Random();
+            var licenseBuilder = new StringBuilder(23);
+
+            for (int index = 1; index <= KeySize; index++)
+            {
+                var serialChar = randomGenerator.Next(ValidCharacters.Length);
+                if (index % 5 == 0 && index < KeySize)
+                    licenseBuilder.AppendFormat("{0}-", serialChar);
+                else
+                    licenseBuilder.Append(serialChar);
+            }
+
+            var license = new LicenseEx();
+            license.SerialKey = licenseBuilder.ToString();
+            license.GenerateActivationKey(isssueDate, expirationDate, email);
+            return license;
+        }
+
+        internal void SaveToFile(string fileName)
         {
             if (File.Exists(fileName))
                 File.Delete(fileName);
@@ -229,45 +213,20 @@ namespace NullVoidCreations.Janitor.Licensing
             _fileName = fileName;
         }
 
-        void Save()
+        #region private methods
+
+        void Dispose(bool disposing)
         {
-            using (var connection = GetConnection())
+            if (disposing)
             {
-                var command = connection.CreateCommand();
-                command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "set_license";
-
-                command.Parameters.Add("p_email", MySqlDbType.VarChar, 255);
-                command.Parameters["p_email"].Direction = ParameterDirection.Input;
-                command.Parameters["p_email"].Value = Email;
-
-                command.Parameters.Add("p_serial_key", MySqlDbType.VarChar, 23);
-                command.Parameters["p_serial_key"].Direction = ParameterDirection.Input;
-                command.Parameters["p_serial_key"].Value = SerialKey;
-
-                command.Parameters.Add("p_activation_key", MySqlDbType.VarChar, 300);
-                command.Parameters["p_activation_key"].Direction = ParameterDirection.Input;
-                command.Parameters["p_activation_key"].Value = ActivationKey;
-
-                command.ExecuteNonQuery();
-            }
-        }
-
-        void Generate()
-        {
-            var randomGenerator = new Random();
-            var licenseBuilder = new StringBuilder(23);
-
-            for (int index = 1; index <= KeySize; index++)
-            {
-                var serialChar = randomGenerator.Next(ValidCharacters.Length);
-                if (index % 5 == 0 && index < KeySize)
-                    licenseBuilder.AppendFormat("{0}-", serialChar);
-                else
-                    licenseBuilder.Append(serialChar);
+                if (!string.IsNullOrEmpty(_fileName))
+                    SaveToFile(_fileName);
             }
 
-            SerialKey = licenseBuilder.ToString();
+            IsActivated = false;
+            _serialKey = _activationKey = _fileName = null;
+            Segment1 = Segment2 = Segment3 = Segment4 = Email = null;
+            ExpirationDate = IssueDate = DateTime.MinValue;
         }
 
         void GenerateActivationKey(DateTime isssueDate, DateTime expirationDate, string email)

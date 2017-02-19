@@ -12,11 +12,11 @@ namespace NullVoidCreations.Janitor.Shell.Converters
             {
                 case StartupEntryModel.StartupArea.Registry:
                 case StartupEntryModel.StartupArea.RegistryUser:
-                    return "/NullVoidCreations.Janitor.Shell;component/Resources/Registry16.png";
+                    return "/program_shell;component/Resources/Registry16.png";
 
                 case StartupEntryModel.StartupArea.StartupDirectory:
                 case StartupEntryModel.StartupArea.StartupDirectoryUser:
-                    return "/NullVoidCreations.Janitor.Shell;component/Resources/Directory16.png";
+                    return "/program_shell;component/Resources/Directory16.png";
 
                 default:
                     return null;

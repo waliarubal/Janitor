@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:NullVoidCreations.Janitor.Shell.Controls">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/NullVoidCreations.Janitor.Shell;component/Themes/SharedResources.xaml" />
+        <ResourceDictionary Source="/program_shell;component/Themes/SharedResources.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type local:CustomWindow}">
@@ -40,7 +40,7 @@
             </Style>
         </Style.Resources>
 
-        <Setter Property="Icon" Value="/NullVoidCreations.Janitor.Shell;component/Resources/Logo32.png" />
+        <Setter Property="Icon" Value="/program_shell;component/Resources/Logo32.png" />
         <Setter Property="AllowsTransparency" Value="True" />
         <Setter Property="WindowStyle" Value="None" />
         <Setter Property="ResizeMode" Value="NoResize" />
@@ -78,7 +78,7 @@
                                            RenderOptions.BitmapScalingMode="HighQuality"
                                            RenderOptions.EdgeMode="Aliased"
                                            SnapsToDevicePixels="True"
-                                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Logo32.png" />
+                                           Source="/program_shell;component/Resources/Logo32.png" />
                                     <TextBlock Grid.Column="1"
                                                VerticalAlignment="Center"
                                                FontFamily="Verdana"

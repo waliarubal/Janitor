@@ -88,7 +88,7 @@
                            HorizontalAlignment="Right"
                            VerticalAlignment="Bottom"
                            Opacity=".75"
-                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/LogoBig.png" />
+                           Source="/program_shell;component/Resources/LogoBig.png" />
                     <ListBox Background="Transparent"
                              BorderThickness="0"
                              ItemsSource="{Binding Path=Targets,

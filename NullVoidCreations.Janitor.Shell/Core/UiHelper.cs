@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 using NullVoidCreations.Janitor.Shared;
@@ -10,6 +11,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
     class UiHelper
     {
         static UiHelper _instance;
+        MainView _mainWindow;
 
         private UiHelper()
         {
@@ -34,12 +36,28 @@ namespace NullVoidCreations.Janitor.Shell.Core
             get { return App.Current.Resources; }
         }
 
-        public Window MainWindow
+        public MainView MainWindow
         {
-            get { return App.Current.MainWindow; }
+            get 
+            {
+                if (_mainWindow == null)
+                    _mainWindow = App.Current.MainWindow as MainView;
+
+                return _mainWindow; 
+            }
         }
 
         #endregion
+
+        public void DoBackgroundWork(Action work)
+        {
+            var threadStart = new ThreadStart(work);
+
+            var thread = new Thread(threadStart);
+            thread.IsBackground = true;
+            thread.Priority = ThreadPriority.BelowNormal;
+            thread.Start();
+        }
 
         public bool? ShowPopup(Window window)
         {
@@ -54,17 +72,17 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         public bool Question(string messageFormat, params object[] messageParts)
         {
-            return ShowMessage(Constants.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Question48.png", "Yes", "No", true, messageFormat, messageParts);
+            return ShowMessage(Constants.ProductName, "/program_shell;component/Resources/Question48.png", "Yes", "No", true, messageFormat, messageParts);
         }
 
         public void Error(string messageFormat, params object[] messageParts)
         {
-            ShowMessage(Constants.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Error48.png", "OK", "Cancel", false, messageFormat, messageParts);
+            ShowMessage(Constants.ProductName, "/program_shell;component/Resources/Error48.png", "OK", "Cancel", false, messageFormat, messageParts);
         }
 
         public void Alert(string messageFormat, params object[] messageParts)
         {
-            ShowMessage(Constants.ProductName, "/NullVoidCreations.Janitor.Shell;component/Resources/Info48.png", "OK", "Cancel", false, messageFormat, messageParts);
+            ShowMessage(Constants.ProductName, "/program_shell;component/Resources/Info48.png", "OK", "Cancel", false, messageFormat, messageParts);
         }
 
         bool ShowMessage(

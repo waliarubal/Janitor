@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:wpf="http://schemas.microsoft.com/wpf/2008/toolkit">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/NullVoidCreations.Janitor.Shell;component/Themes/SharedResources.xaml" />
+        <ResourceDictionary Source="/program_shell;component/Themes/SharedResources.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="FrameworkElement">
@@ -96,19 +96,19 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
                     <StackPanel Orientation="Horizontal">
-                        <Image x:Name="imgCheck" Source="/NullVoidCreations.Janitor.Shell;component/Resources/BulbOff.png" />
+                        <Image x:Name="imgCheck" Source="/program_shell;component/Resources/BulbOff.png" />
                         <ContentPresenter />
                     </StackPanel>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="imgCheck" Property="Source" Value="/NullVoidCreations.Janitor.Shell;component/Resources/BulbOn.png" />
+                            <Setter TargetName="imgCheck" Property="Source" Value="/program_shell;component/Resources/BulbOn.png" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True" />
                                 <Condition Property="IsChecked" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="imgCheck" Property="Source" Value="/NullVoidCreations.Janitor.Shell;component/Resources/BulbGlow.png" />
+                            <Setter TargetName="imgCheck" Property="Source" Value="/program_shell;component/Resources/BulbGlow.png" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -121,19 +121,19 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RadioButton}">
                     <StackPanel Orientation="Horizontal">
-                        <Image x:Name="imgCheck" Source="/NullVoidCreations.Janitor.Shell;component/Resources/BulbOff.png" />
+                        <Image x:Name="imgCheck" Source="/program_shell;component/Resources/BulbOff.png" />
                         <ContentPresenter />
                     </StackPanel>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="imgCheck" Property="Source" Value="/NullVoidCreations.Janitor.Shell;component/Resources/BulbOn.png" />
+                            <Setter TargetName="imgCheck" Property="Source" Value="/program_shell;component/Resources/BulbOn.png" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True" />
                                 <Condition Property="IsChecked" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="imgCheck" Property="Source" Value="/NullVoidCreations.Janitor.Shell;component/Resources/BulbGlow.png" />
+                            <Setter TargetName="imgCheck" Property="Source" Value="/program_shell;component/Resources/BulbGlow.png" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -5,10 +5,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/NullVoidCreations.Janitor.Shell;component/Themes/SharedResources.xaml" />
-                <ResourceDictionary Source="/NullVoidCreations.Janitor.Shell;component/Themes/DefaultStyles.xaml" />
-                <ResourceDictionary Source="/NullVoidCreations.Janitor.Shell;component/Themes/NamedStyles.xaml" />
-                <ResourceDictionary Source="/NullVoidCreations.Janitor.Shell;component/Themes/LanguageStrings.xaml" />
+                <ResourceDictionary Source="/program_shell;component/Themes/SharedResources.xaml" />
+                <ResourceDictionary Source="/program_shell;component/Themes/DefaultStyles.xaml" />
+                <ResourceDictionary Source="/program_shell;component/Themes/NamedStyles.xaml" />
+                <ResourceDictionary Source="/program_shell;component/Themes/LanguageStrings.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

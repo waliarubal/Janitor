@@ -26,7 +26,7 @@
             </Grid.ColumnDefinitions>
             <Image Width="18"
                    Height="18"
-                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Phone.png"
+                   Source="/program_shell;component/Resources/Phone.png"
                    ToolTip="Toll Free Customer Care" />
             <TextBlock Grid.Column="1"
                        Margin="0 0 8 0"
@@ -39,7 +39,7 @@
                    Width="32"
                    Height="32"
                    Margin="0 0 8 0"
-                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png"
+                   Source="/program_shell;component/Resources/Warning.png"
                    Visibility="{Binding Path=IsOk,
                                         Mode=OneWay,
                                         Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}">
@@ -51,14 +51,14 @@
                    Width="32"
                    Height="32"
                    Margin="0 0 8 0"
-                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png"
+                   Source="/program_shell;component/Resources/Ok.png"
                    ToolTip="Your system is running at maximum efficiency."
                    Visibility="{Binding Path=IsOk,
                                         Mode=OneWay,
                                         Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
 
             <tb:TaskbarIcon Name="NotificationIcon"
-                            IconSource="/NullVoidCreations.Janitor.Shell;component/Resources/Logo16.ico"
+                            IconSource="/program_shell;component/Resources/Logo16.ico"
                             LeftClickCommand="{Binding Path=Open,
                                                        Mode=OneTime}"
                             MenuActivation="LeftOrDoubleClick" />
@@ -228,7 +228,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Home.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <Image Source="/program_shell;component/Resources/Home.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=NavigationTextStyle}"
                                Text="Home" />
@@ -257,13 +257,13 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Scan.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <Image Source="/program_shell;component/Resources/Scan.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=NavigationTextStyle}"
                                Text="Computer Scan" />
                     <Image Grid.Column="2"
                            Margin="0 0 4 0"
-                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png"
+                           Source="/program_shell;component/Resources/Wait.png"
                            Style="{StaticResource ResourceKey=Spinner}"
                            Visibility="{Binding Path=IsWorking,
                                                 Mode=OneWay,
@@ -272,7 +272,7 @@
                            Width="18"
                            Height="18"
                            Margin="0 0 4 0"
-                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png"
+                           Source="/program_shell;component/Resources/Warning.png"
                            Visibility="{Binding Path=IsHavingIssues,
                                                 Mode=OneWay,
                                                 Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
@@ -288,13 +288,13 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Tasks.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <Image Source="/program_shell;component/Resources/Tasks.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=NavigationTextStyle}"
                                Text="Startup" />
                     <Image Grid.Column="2"
                            Margin="0 0 4 0"
-                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png"
+                           Source="/program_shell;component/Resources/Wait.png"
                            Style="{StaticResource ResourceKey=Spinner}"
                            Visibility="{Binding Path=IsLoadingStartupEntries,
                                                 Mode=OneWay,
@@ -311,13 +311,13 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Update.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <Image Source="/program_shell;component/Resources/Update.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=NavigationTextStyle}"
                                Text="Update" />
                     <Image Grid.Column="2"
                            Margin="0 0 4 0"
-                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Wait.png"
+                           Source="/program_shell;component/Resources/Wait.png"
                            Style="{StaticResource ResourceKey=Spinner}"
                            Visibility="{Binding Path=IsUpdating,
                                                 Mode=OneWay,
@@ -333,7 +333,7 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Settings.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <Image Source="/program_shell;component/Resources/Settings.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=NavigationTextStyle}"
                                Text="Settings" />
@@ -348,7 +348,7 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Help.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <Image Source="/program_shell;component/Resources/Help.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=NavigationTextStyle}"
                                Text="Help and About" />

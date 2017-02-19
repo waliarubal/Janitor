@@ -53,7 +53,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox MaxLength="23" Text="{Binding Path=LicenseKey, Mode=TwoWay}" />
+            <TextBox MaxLength="23" Text="{Binding Path=SerialKey, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
             <Button Grid.Column="1"
                     Margin="4 0 0 0"
                     Command="{Binding Path=CopyFromClipboard,
@@ -62,7 +62,7 @@
                     ToolTip="Paste from Clipboard">
                 <Image Width="16"
                        Height="16"
-                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/Paste.png" />
+                       Source="/program_shell;component/Resources/Paste.png" />
             </Button>
         </Grid>
         <TextBlock Grid.Row="3" Margin="0 20 0 4">
@@ -71,16 +71,24 @@
         <TextBlock Grid.Row="4" Margin="0 0 0 4">
             <Hyperlink>I have username and password, what do I do?</Hyperlink>
         </TextBlock>
-        <Button Grid.Row="5"
-                Margin="0 8 0 0"
-                HorizontalAlignment="Left"
-                Command="{Binding Path=Activate,
-                                  Mode=OneTime}"
-                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type c:CustomWindow},
-                                                                          Mode=FindAncestor}}"
-                Content="Activate"
-                FontSize="12"
-                Style="{StaticResource ResourceKey=BlueButtonStyle}" />
+        <StackPanel Grid.Row="5"
+                    Margin="0 8 0 0"
+                    Orientation="Horizontal">
+            <Button Command="{Binding Path=Activate,
+                                      Mode=OneTime}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type c:CustomWindow},
+                                                                              Mode=FindAncestor}}"
+                    Content="Activate"
+                    FontSize="12"
+                    Style="{StaticResource ResourceKey=BlueButtonStyle}" />
+            <Image Margin="4 0 0 0"
+                   Source="/program_shell;component/Resources/Wait.png"
+                   Style="{StaticResource ResourceKey=Spinner}"
+                   Visibility="{Binding Path=IsExecuting,
+                                        Mode=OneWay,
+                                        Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+        </StackPanel>
+
         <TextBlock Grid.Row="6"
                    VerticalAlignment="Bottom"
                    FontWeight="Bold"
@@ -117,7 +125,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Image Grid.RowSpan="2"
-                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Cart.png"
+                           Source="/program_shell;component/Resources/Cart.png"
                            Style="{StaticResource ResourceKey=ScanIconStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=ScanNameStyle}"
@@ -142,7 +150,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Image Grid.RowSpan="2"
-                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Free.png"
+                           Source="/program_shell;component/Resources/Free.png"
                            Style="{StaticResource ResourceKey=ScanIconStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=ScanNameStyle}"

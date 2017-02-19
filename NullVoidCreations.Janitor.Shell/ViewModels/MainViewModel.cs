@@ -50,12 +50,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #region properties
 
-        internal MainView View
-        {
-            get;
-            set;
-        }
-
         public int SelectedViewIndex
         {
             get { return _selectedViewIndex; }
@@ -239,11 +233,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.ShowUi:
-                    Win32Helper.Instance.Show(View.Handle);
+                    Win32Helper.Instance.Show(UiHelper.Instance.MainWindow.Handle);
                     break;
 
                 case Signal.Minimize:
-                    Win32Helper.Instance.Minimize(View.Handle);
+                    Win32Helper.Instance.Minimize(UiHelper.Instance.MainWindow.Handle);
                     break;
 
                 case Signal.Close:
@@ -254,7 +248,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.CloseToTray:
-                    Win32Helper.Instance.Hide(View.Handle);
+                    Win32Helper.Instance.Hide(UiHelper.Instance.MainWindow.Handle);
                     break;
 
                 case Signal.CloseAndStart:
@@ -307,7 +301,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.Initialized:
-                    View.NotificationIcon.Visibility = Visibility.Visible;
+                    UiHelper.Instance.MainWindow.NotificationIcon.Visibility = Visibility.Visible;
                     break;
 
                 case Signal.ShowBaloon:
@@ -315,11 +309,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                         _taskbarBalloon = new BalloonView();
                     
                     (_taskbarBalloon.DataContext as BalloonViewModel).Html = data[0] as string;
-                    View.NotificationIcon.ShowCustomBalloon(_taskbarBalloon, System.Windows.Controls.Primitives.PopupAnimation.Slide, 20000);
+                    UiHelper.Instance.MainWindow.NotificationIcon.ShowCustomBalloon(_taskbarBalloon, System.Windows.Controls.Primitives.PopupAnimation.Slide, 20000);
                     break;
 
                 case Signal.HideBaloon:
-                    View.NotificationIcon.CloseBalloon();
+                    UiHelper.Instance.MainWindow.NotificationIcon.CloseBalloon();
                     break;
             }
         }

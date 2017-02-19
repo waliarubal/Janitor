@@ -13,7 +13,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         {
             _button1Text = "OK";
             _button2Text = "Cancel";
-            _iconSource = "/NullVoidCreations.Janitor.Shell;component/Resources/Info48.png";
+            _iconSource = "/program_shell;component/Resources/Info48.png";
 
             _ok = new DelegateCommand(this, ExecuteOk);
             _cancel = new DelegateCommand(this, ExecuteCancel);

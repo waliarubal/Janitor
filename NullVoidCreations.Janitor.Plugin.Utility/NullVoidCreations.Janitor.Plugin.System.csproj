@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NullVoidCreations.Janitor.Plugin.System</RootNamespace>
-    <AssemblyName>NullVoidCreations.Janitor.Plugin.System</AssemblyName>
+    <AssemblyName>plugin_system</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

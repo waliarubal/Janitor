@@ -36,14 +36,14 @@
                 <Image Grid.RowSpan="2"
                        Margin="24 12 0 0"
                        VerticalAlignment="Top"
-                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png"
+                       Source="/program_shell;component/Resources/Ok.png"
                        Visibility="{Binding Path=IsLicensed,
                                             Mode=OneWay,
                                             Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
                 <Image Grid.RowSpan="2"
                        Margin="24 12 0 0"
                        VerticalAlignment="Top"
-                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png"
+                       Source="/program_shell;component/Resources/Warning.png"
                        Visibility="{Binding Path=IsLicensed,
                                             Mode=OneWay,
                                             Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
@@ -120,7 +120,7 @@
 
                 <Image Grid.RowSpan="3"
                        Grid.Column="2"
-                       Source="/NullVoidCreations.Janitor.Shell;component/Resources/LogoBig.png" />
+                       Source="/program_shell;component/Resources/LogoBig.png" />
             </Grid>
         </Border>
 
@@ -197,7 +197,7 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Image Grid.RowSpan="2"
-                                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanFull.png"
+                                   Source="/program_shell;component/Resources/ScanFull.png"
                                    Style="{StaticResource ResourceKey=ScanIconStyle}" />
                             <TextBlock Grid.Column="1"
                                        Style="{StaticResource ResourceKey=ScanNameStyle}"
@@ -225,7 +225,7 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Image Grid.RowSpan="2"
-                                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanCustom.png"
+                                   Source="/program_shell;component/Resources/ScanCustom.png"
                                    Style="{StaticResource ResourceKey=ScanIconStyle}" />
                             <TextBlock Grid.Column="1"
                                        Style="{StaticResource ResourceKey=ScanNameStyle}"
@@ -254,7 +254,7 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Image Grid.RowSpan="2"
-                                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Cart.png"
+                                   Source="/program_shell;component/Resources/Cart.png"
                                    Style="{StaticResource ResourceKey=ScanIconStyle}" />
                             <TextBlock Grid.Column="1"
                                        Style="{StaticResource ResourceKey=ScanNameStyle}"
@@ -281,7 +281,7 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Image Grid.RowSpan="2"
-                                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Free.png"
+                                   Source="/program_shell;component/Resources/Free.png"
                                    Style="{StaticResource ResourceKey=ScanIconStyle}" />
                             <TextBlock Grid.Column="1"
                                        Style="{StaticResource ResourceKey=ScanNameStyle}"
@@ -326,29 +326,29 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/System.png" />
+                <Image Source="/program_shell;component/Resources/System.png" />
                 <TextBlock Grid.Column="1" Text="{Binding Path=ComputerName, Mode=OneWay}" />
 
-                <Image Grid.Row="1" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Windows.png" />
+                <Image Grid.Row="1" Source="/program_shell;component/Resources/Windows.png" />
                 <TextBlock Grid.Row="1"
                            Grid.Column="1"
                            Text="{Binding Path=OperatingSystem,
                                           Mode=OneWay}" />
 
-                <Image Grid.Row="2" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Memory.png" />
+                <Image Grid.Row="2" Source="/program_shell;component/Resources/Memory.png" />
                 <TextBlock Grid.Row="2"
                            Grid.Column="1"
                            Text="{Binding Path=Memory,
                                           Mode=OneWay,
                                           StringFormat='{}{0:N2} GB RAM'}" />
 
-                <Image Grid.Row="3" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Processor.png" />
+                <Image Grid.Row="3" Source="/program_shell;component/Resources/Processor.png" />
                 <TextBlock Grid.Row="3"
                            Grid.Column="1"
                            Text="{Binding Path=Processor,
                                           Mode=OneWay}" />
 
-                <Image Grid.Row="4" Source="/NullVoidCreations.Janitor.Shell;component/Resources/Bios.png" />
+                <Image Grid.Row="4" Source="/program_shell;component/Resources/Bios.png" />
                 <TextBlock Grid.Row="4"
                            Grid.Column="1"
                            Text="{Binding Path=Model,

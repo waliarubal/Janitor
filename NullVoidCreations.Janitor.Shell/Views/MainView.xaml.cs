@@ -1,5 +1,4 @@
-﻿using NullVoidCreations.Janitor.Shell.ViewModels;
-
+﻿
 namespace NullVoidCreations.Janitor.Shell.Views
 {
     /// <summary>
@@ -10,7 +9,6 @@ namespace NullVoidCreations.Janitor.Shell.Views
         public MainView()
         {
             InitializeComponent();
-            (DataContext as MainViewModel).View = this;
         }
     }
 }

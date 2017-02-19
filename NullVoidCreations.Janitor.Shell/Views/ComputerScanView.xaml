@@ -51,7 +51,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Image Margin="0 0 8 0" Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanAlternate.png" />
+                <Image Margin="0 0 8 0" Source="/program_shell;component/Resources/ScanAlternate.png" />
                 <TextBlock Grid.Column="1"
                            FontSize="12"
                            FontWeight="Bold"
@@ -82,7 +82,7 @@
                         Visibility="{Binding Path=ScanStatus.IsExecuting,
                                              Mode=OneWay,
                                              Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
-                    <Image Source="/NullVoidCreations.Janitor.Shell;component/Resources/Stop.png" />
+                    <Image Source="/program_shell;component/Resources/Stop.png" />
                 </Button>
 
                 <StackPanel Grid.Row="1"
@@ -162,7 +162,7 @@
                     <Image Grid.RowSpan="2"
                            Margin="0 0 8 0"
                            HorizontalAlignment="Center"
-                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Warning.png"
+                           Source="/program_shell;component/Resources/Warning.png"
                            Visibility="{Binding Path=ScanStatus.IsHavingIssues,
                                                 Mode=OneWay,
                                                 Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
@@ -189,7 +189,7 @@
                     <Image Grid.RowSpan="2"
                            Margin="0 0 8 0"
                            HorizontalAlignment="Center"
-                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/Ok.png"
+                           Source="/program_shell;component/Resources/Ok.png"
                            Visibility="{Binding Path=ScanStatus.IsFixing,
                                                 Mode=OneWay,
                                                 Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
@@ -333,7 +333,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Image Grid.RowSpan="2"
-                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanFull.png"
+                           Source="/program_shell;component/Resources/ScanFull.png"
                            Style="{StaticResource ResourceKey=ScanIconStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=ScanNameStyle}"
@@ -362,7 +362,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Image Grid.RowSpan="2"
-                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanCustom.png"
+                           Source="/program_shell;component/Resources/ScanCustom.png"
                            Style="{StaticResource ResourceKey=ScanIconStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=ScanNameStyle}"
@@ -392,7 +392,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Image Grid.RowSpan="2"
-                           Source="/NullVoidCreations.Janitor.Shell;component/Resources/ScanRepeat.png"
+                           Source="/program_shell;component/Resources/ScanRepeat.png"
                            Style="{StaticResource ResourceKey=ScanIconStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=ScanNameStyle}"

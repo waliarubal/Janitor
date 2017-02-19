@@ -22,7 +22,7 @@ namespace NullVoidCreations.Janitor.Shared
             SupportPhone = "+91 99288 93416";
             SupportEmail = "walia.rubal@gmail.com";
 
-            PluginsSearchFilter = "NullVoidCreations.Janitor.Plugin.*.dll";
+            PluginsSearchFilter = "plugin_*.dll";
             PluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
             ExecutableFile = IsInDesignMode ? string.Empty : Assembly.GetEntryAssembly().Location;
 

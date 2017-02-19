@@ -55,6 +55,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
             get { return _license; }
         }
 
+        public string LicenseFile
+        {
+            get { return _licenseFile; }
+        }
+
         #endregion
 
         /// <summary>
@@ -67,34 +72,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 _license.Load(_licenseFile);
                 SignalHost.Instance.RaiseSignal(Signal.LicenseChanged);
             }
-        }
-
-        /// <summary>
-        /// This method validates license key entered by user using UI and returns any error that occured.
-        /// </summary>
-        /// <param name="serialKey"></param>
-        /// <returns></returns>
-        public string ValidateLicense(string serialKey)
-        {
-            var errorMessage = string.Empty;
-            try
-            {
-                _license.Activate(serialKey, _licenseFile);
-            }
-            catch (InvalidOperationException)
-            {
-                errorMessage = "Invalid serial key entered.";
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-            }
-            finally
-            {
-                SignalHost.Instance.RaiseSignal(Signal.LicenseChanged, errorMessage);
-            }
-
-            return errorMessage;
         }
     }
 }

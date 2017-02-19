@@ -40,7 +40,7 @@ namespace NullVoidCreations.Janitor.Shell
 
             base.OnExit(e);
         }
-        
+
         protected override void OnStartup(StartupEventArgs e)
         {
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
@@ -56,7 +56,7 @@ namespace NullVoidCreations.Janitor.Shell
                 return;
             }
 
-            if (!RunWithElivatedPrivilages())
+            if (!RunWithElivatedPrivilages(e.Args))
                 return;
 
             base.OnStartup(e);
@@ -87,9 +87,6 @@ namespace NullVoidCreations.Janitor.Shell
             Thread.CurrentThread.IsBackground = true;
             Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
 
-            SettingsManager.Instance.Load(Constants.UpdatesMetadataUrl);
-            SettingsManager.Instance.Load(Constants.WebLinksUrl);
-
             FirstTimeExecution();
 
             // skip UAC
@@ -111,6 +108,9 @@ namespace NullVoidCreations.Janitor.Shell
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.ComputerSystem);
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.OperatingSystem);
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.Processor);
+
+            SettingsManager.Instance.Load(Constants.UpdatesMetadataUrl);
+            SettingsManager.Instance.Load(Constants.WebLinksUrl);
 
             e.Result = e.Argument;
         }
@@ -149,11 +149,12 @@ namespace NullVoidCreations.Janitor.Shell
 
         #endregion
 
-        bool RunWithElivatedPrivilages()
+        bool RunWithElivatedPrivilages(string[] arguments)
         {
             if (Debugger.IsAttached || Constants.IsAdministrator)
                 return true;
 
+            //TODO: pass command line arguments
             Shutdown(0);
             if (SettingsManager.Instance.SkipUac)
             {

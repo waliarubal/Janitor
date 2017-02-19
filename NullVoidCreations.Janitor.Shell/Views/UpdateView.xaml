@@ -47,7 +47,7 @@
             <Image Grid.RowSpan="4"
                    Margin="0 0 8 0"
                    VerticalAlignment="Top"
-                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/Update.png" />
+                   Source="/program_shell;component/Resources/Update.png" />
             <TextBlock Grid.Column="1"
                        FontSize="12"
                        FontWeight="Bold"
@@ -142,7 +142,7 @@
             <Image Grid.RowSpan="4"
                    Margin="0 0 8 0"
                    VerticalAlignment="Top"
-                   Source="/NullVoidCreations.Janitor.Shell;component/Resources/UpdateProgram.png" />
+                   Source="/program_shell;component/Resources/UpdateProgram.png" />
             <TextBlock Grid.Column="1"
                        FontSize="12"
                        FontWeight="Bold"

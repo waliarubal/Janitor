@@ -97,6 +97,9 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
         public void Load(Uri url)
         {
+            if (!Win32Helper.Instance.IsInternetAvailable)
+                return;
+
             var client = new WebClient();
             client.Proxy = null;
             try

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Controls;
@@ -14,9 +15,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         public LicenseActivationViewModel()
         {
             _purchaseLicense = new RunProgramCommand(this);
-            _activate = new AsyncDelegateCommand(this, null, ExecuteValidate, ValidationComplete);
+            _activate = new AsyncDelegateCommand(this, null, ExecuteActivate, ActivationComplete);
             _copyFromClipboard = new DelegateCommand(this, ExecuteCopyFromClipboard);
-            _activate.IsEnabled = _copyFromClipboard.IsEnabled = true;
+            _copyFromClipboard.IsEnabled = true;
         }
 
         #region properties
@@ -26,7 +27,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             get { return SettingsManager.Instance["BuyNowUrl"] as string; }
         }
 
-        public string LicenseKey
+        public string SerialKey
         {
             get { return _licenseKey; }
             set
@@ -35,7 +36,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     return;
 
                 _licenseKey = value;
-                RaisePropertyChanged("LicenseKey");
+                _activate.IsEnabled = !string.IsNullOrEmpty(value);
+                RaisePropertyChanged("SerialKey");
             }
         }
 
@@ -75,26 +77,33 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         void ExecuteCopyFromClipboard(object parameter)
         {
-            LicenseKey = Clipboard.GetText();
+            SerialKey = Clipboard.GetText();
         }
 
-        object ExecuteValidate(object window)
+        object ExecuteActivate(object window)
         {
-            return new object[]
+            ErrorMessage = null;
+            try
             {
-                window,
-                LicenseManager.Instance.ValidateLicense(LicenseKey)
-            };
+                LicenseManager.Instance.License.Activate(SerialKey);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+            finally
+            {
+                SignalHost.Instance.RaiseSignal(Signal.LicenseChanged, ErrorMessage);
+            }
+
+            return window;
         }
 
-        void ValidationComplete(object result)
+        void ActivationComplete(object win)
         {
-            var res = result as object[];
-
-            ErrorMessage = res[1] as string;
             if (string.IsNullOrEmpty(ErrorMessage))
             {
-                var window = res[0] as CustomWindow;
+                var window = win as CustomWindow;
                 window.DialogResult = true;
                 window.Close();
             }

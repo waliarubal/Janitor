@@ -10,6 +10,8 @@ namespace NullVoidCreations.Janitor.Licensing
     [BsonDiscriminator("cust")]
     public class Customer
     {
+        string _password;
+
         #region properties
 
         [BsonId]
@@ -21,10 +23,24 @@ namespace NullVoidCreations.Janitor.Licensing
         [BsonElement("name", Order = 2)]
         public string Name { get; set; }
 
+        [BsonIgnore]
+        public string Password
+        {
+            get { return _password; }
+            set
+            {
+                if (value == _password)
+                    return;
+
+                _password = value;
+                PasswordHash = StringCipher.Instance.MD5Hash(_password);
+            }
+        }
+
         [BsonRequired]
         [BsonRepresentation(BsonType.String)]
         [BsonElement("pass", Order = 3)]
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
 
         [BsonIgnoreIfNull]
         [BsonElement("lics", Order = 4)]
@@ -33,7 +49,14 @@ namespace NullVoidCreations.Janitor.Licensing
         [BsonIgnore]
         MongoCollection<Customer> Customers
         {
-            get { return MongoHelper.Instance.GetConnection().GetCollection<Customer>("cust"); }
+            get 
+            { 
+                var connection = MongoHelper.Instance.GetConnection();
+                if (connection == null)
+                    return null;
+
+                return connection.GetCollection<Customer>("cust"); 
+            }
         }
 
         #endregion
@@ -47,6 +70,8 @@ namespace NullVoidCreations.Janitor.Licensing
 
         public void Register(string confirmEmail, string confirmPassword, bool generateTrial = false)
         {
+            if (Customers == null)
+                throw new InvalidOperationException("Could not connect to internet for registration.");
             if (string.IsNullOrEmpty(Name))
                 throw new InvalidOperationException("Name not entered.");
             if (string.IsNullOrEmpty(Email))
@@ -85,26 +110,37 @@ namespace NullVoidCreations.Janitor.Licensing
 
         public LicenseEx ActivateLicense(string serialKey, string fileName)
         {
+            if (Customers == null)
+                throw new InvalidOperationException("Could not connect to internet for activation.");
+
             var errorMessage = LicenseEx.ValidateSerial(serialKey);
             if (errorMessage != null)
                 throw new InvalidOperationException(errorMessage);
 
-            var query = Query.And(
-                Query<Customer>.EQ(e => e.Email, Email),
-                Query<Customer>.ElemMatch(e => e.Licenses, q => q.EQ(l => l.SerialKey, serialKey)));
-            var entity = Customers.FindOneAs<LicenseEx>(query);
-            if (entity == null)
-                throw new InvalidOperationException("Customer information not found.");
+            var query = Query<Customer>.ElemMatch(
+                cust => cust.Licenses, 
+                lic => lic.EQ(
+                    l => l.SerialKey, serialKey));
 
-            entity.SaveToFile(fileName);
+            var customer = Customers.FindOne(query);
+            if (customer == null)
+                throw new InvalidOperationException("Invalid serial key.");
 
-            var customer = GetCustomer(entity.Email);
             Email = customer.Email;
             Name = customer.Name;
             Password = customer.Password;
             Licenses = customer.Licenses;
 
-            return entity;
+            foreach (var licence in customer.Licenses)
+            {
+                if (licence.SerialKey.Equals(serialKey))
+                {
+                    licence.SaveToFile(fileName);
+                    return licence;
+                }
+            }
+
+            return null;
         }
 
         public LicenseEx LoadLicense(string fileName)

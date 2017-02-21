@@ -156,6 +156,7 @@ namespace NullVoidCreations.Janitor.Shell
 
             //TODO: pass command line arguments
             Shutdown(0);
+            var argsString = FileSystemHelper.Instance.GetArgumentsString(arguments);
             if (SettingsManager.Instance.SkipUac)
             {
                 // create UAC skipping task
@@ -167,7 +168,7 @@ namespace NullVoidCreations.Janitor.Shell
                 FileSystemHelper.Instance.RunScheduledTask(SkipUacCommand.SkipUacTask);
             }
             else
-                FileSystemHelper.Instance.RunProgram(Constants.ExecutableFile, string.Empty, true);
+                FileSystemHelper.Instance.RunProgram(Constants.ExecutableFile, argsString, true);
 
             return false;
         }

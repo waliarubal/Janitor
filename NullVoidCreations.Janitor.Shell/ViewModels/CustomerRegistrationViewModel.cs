@@ -1,6 +1,7 @@
 ﻿using System;
 using NullVoidCreations.Janitor.Licensing;
 using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shell.Controls;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -8,7 +9,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     {
         Customer _customer;
         string _email, _password, _errorMessage;
-        bool _isCustomerAgrementAgreed;
+        bool _isCustomerAgrementAgreed, _isTrialKeyRequested;
 
         CommandBase _createAccount;
 
@@ -66,6 +67,19 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
+        public bool IsTrialKeyRequested
+        {
+            get { return _isTrialKeyRequested; }
+            set
+            {
+                if (value == _isTrialKeyRequested)
+                    return;
+
+                _isTrialKeyRequested = value;
+                RaisePropertyChanged("IsTrialKeyRequested");
+            }
+        }
+
         public string ErrorMessage
         {
             get { return _errorMessage; }
@@ -89,22 +103,23 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         object ExecuteCreateAccount(object parameter)
         {
-            var errorMessage = string.Empty;
+            ErrorMessage = null;
             try
             {
-                Customer.Register(Email, Password);
+                Customer.Register(Email, Password, IsTrialKeyRequested);
             }
             catch (Exception ex)
             {
-                errorMessage = ex.Message;
+                ErrorMessage = ex.Message;
             }
 
-            return errorMessage;
+            return parameter;
         }
 
         void CreateAccountExecuted(object result)
         {
-            ErrorMessage = result as string;
+            if (string.IsNullOrEmpty(ErrorMessage))
+                (result as CustomWindow).Close();
         }
     }
 }

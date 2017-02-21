@@ -38,6 +38,27 @@ namespace NullVoidCreations.Janitor.Licensing
 
         #endregion
 
+        public string MD5Hash(string text)
+        {
+            var md5 = new MD5CryptoServiceProvider();
+
+            // compute hash from the bytes of text
+            md5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(text));
+
+            //get hash result after compute it
+            var result = md5.Hash;
+
+            StringBuilder strBuilder = new StringBuilder();
+            for (int i = 0; i < result.Length; i++)
+            {
+                //change it into 2 hexadecimal digits
+                //for each byte
+                strBuilder.Append(result[i].ToString("x2"));
+            }
+
+            return strBuilder.ToString();
+        }
+
         public string Encrypt(string plainText, string passPhrase)
         {
             // Salt and IV is randomly generated each time, but is preprended to encrypted cipher text

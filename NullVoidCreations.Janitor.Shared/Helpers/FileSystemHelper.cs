@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Diagnostics;
+using System.Text;
 
 namespace NullVoidCreations.Janitor.Shared.Helpers
 {
@@ -41,6 +42,18 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             }
 
             return isDeleted;
+        }
+
+        public string GetArgumentsString(params string[] arguments)
+        {
+            if (arguments == null || arguments.Length == 0)
+                return string.Empty;
+
+            var args = new StringBuilder(arguments[0]);
+            for (var index = 1; index < arguments.Length; index++)
+                args.AppendFormat(" \"{0}\"", arguments[index]);
+
+            return args.ToString();
         }
 
         public bool RunProgram(string executable, string arguments, bool runAsAdministrator, bool hideUi = false)

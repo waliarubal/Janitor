@@ -174,12 +174,12 @@ namespace NullVoidCreations.Janitor.Licensing
         internal static LicenseEx Generate(DateTime isssueDate, DateTime expirationDate, string email)
         {
             var randomGenerator = new Random();
-            var licenseBuilder = new StringBuilder(23);
+            var licenseBuilder = new StringBuilder(KeySize);
 
-            for (int index = 1; index <= KeySize; index++)
+            for (int index = 1; index <= KeySize - 3; index++)
             {
-                var serialChar = randomGenerator.Next(ValidCharacters.Length);
-                if (index % 5 == 0 && index < KeySize)
+                var serialChar = ValidCharacters[randomGenerator.Next(ValidCharacters.Length)];
+                if (index % 5 == 0 && index < KeySize - 3)
                     licenseBuilder.AppendFormat("{0}-", serialChar);
                 else
                     licenseBuilder.Append(serialChar);

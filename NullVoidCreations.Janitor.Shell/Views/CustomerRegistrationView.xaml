@@ -35,6 +35,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!--  header  -->
@@ -99,8 +100,8 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <CheckBox />
-            <TextBlock Grid.Column="1" Text="Unsuscribe me from email marketing messages" />
+            <CheckBox IsChecked="{Binding Path=IsTrialKeyRequested, Mode=TwoWay}" />
+            <TextBlock Grid.Column="1" Text="Send me free 90 days trial license key." />
         </Grid>
 
         <Grid Grid.Row="4" Margin="20 0 20 12">
@@ -108,19 +109,24 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <CheckBox IsChecked="{Binding Path=IsCustomerAgreementAgreed, Mode=TwoWay}" />
+            <CheckBox VerticalAlignment="Top" IsChecked="{Binding Path=IsCustomerAgreementAgreed, Mode=TwoWay}" />
             <TextBlock Grid.Column="1" TextWrapping="Wrap">
                 Click here to indicate that you have read and agree to the terms of the
                 <Hyperlink>Customer Agreement</Hyperlink>
+                .
             </TextBlock>
         </Grid>
-        <Grid Grid.Row="5" Margin="20 0 20 12">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width=".65*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="1"
+        <StackPanel Grid.Row="5"
+                    Margin="20 0 20 4"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Image Margin="0 0 4 0"
+                   Source="/program_shell;component/Resources/Wait.png"
+                   Style="{StaticResource ResourceKey=Spinner}"
+                   Visibility="{Binding Path=IsExecuting,
+                                        Mode=OneWay,
+                                        Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+            <Button Width="120"
                     Margin="0 0 8 0"
                     Command="{Binding Path=CreateAccount,
                                       Mode=OneTime}"
@@ -128,17 +134,15 @@
                                                                               AncestorType={x:Type c:CustomWindow}}}"
                     Content="Create Account"
                     IsDefault="True" />
-            <Button Grid.Column="2"
-                    Content="Cancel"
-                    IsCancel="True" />
-            <TextBlock Grid.Column="0"
-                       Margin="0 0 4 0"
-                       FontWeight="Bold"
-                       Foreground="{StaticResource ResourceKey=BadBrush}"
-                       Text="{Binding Path=ErrorMessage,
-                                      Mode=OneWay}"
-                       TextWrapping="Wrap" />
-        </Grid>
+            <Button Content="Cancel" IsCancel="True" />
+        </StackPanel>
+        <TextBlock Grid.Row="6"
+                   Margin="20 2 20 4"
+                   FontWeight="Bold"
+                   Foreground="{StaticResource ResourceKey=BadBrush}"
+                   Text="{Binding Path=ErrorMessage,
+                                  Mode=OneWay}"
+                   TextWrapping="Wrap" />
 
     </Grid>
 

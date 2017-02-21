@@ -1,9 +1,13 @@
 ﻿using MongoDB.Driver;
+using System.Runtime.InteropServices;
 
 namespace NullVoidCreations.Janitor.Licensing
 {
     class MongoHelper
     {
+        [DllImport("wininet", SetLastError = true)]
+        static extern bool InternetGetConnectedState(out int lpdwFlags, int dwReserved);
+
         static MongoHelper _instance;
 
         #region properties
@@ -19,10 +23,22 @@ namespace NullVoidCreations.Janitor.Licensing
             }
         }
 
+        public bool IsInternetAvailable
+        {
+            get
+            {
+                int flags;
+                return InternetGetConnectedState(out flags, 0);
+            }
+        }
+
         #endregion
 
         public MongoDatabase GetConnection()
         {
+            if (!IsInternetAvailable)
+                return null;
+
             var connString = new MongoConnectionStringBuilder();
             connString.ConnectionMode = ConnectionMode.Automatic;
             connString.DatabaseName = "windoc";

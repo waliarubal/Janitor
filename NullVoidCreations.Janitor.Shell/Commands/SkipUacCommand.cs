@@ -24,6 +24,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             var task = new TaskModel();
             task.Name = SkipUacTask;
             task.ExecutablePath = Constants.ExecutableFile;
+            task.CommandLineArguments = "$(Arg0)";
 
             bool result;
             if ((bool)parameter)

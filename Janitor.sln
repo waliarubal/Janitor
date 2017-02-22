@@ -12,6 +12,7 @@ EndProject
 Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "NullVoidCreations.Janitor.Setup", "NullVoidCreations.Janitor.Setup\NullVoidCreations.Janitor.Setup.isproj", "{9D1F4D1F-0E46-4235-A25D-6213C0F9C5A4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C8FC9723-C563-4877-81FC-C837B25DC600} = {C8FC9723-C563-4877-81FC-C837B25DC600}
+		{C8FC9723-C563-4877-81FC-C837B25DC600} = {C8FC9723-C563-4877-81FC-C837B25DC600}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullVoidCreations.Janitor.Licensing", "NullVoidCreations.Janitor.Licensing\NullVoidCreations.Janitor.Licensing.csproj", "{065B984D-9D65-4775-BB8A-82D239D851A8}"

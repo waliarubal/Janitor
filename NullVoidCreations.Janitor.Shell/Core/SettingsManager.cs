@@ -133,6 +133,12 @@ namespace NullVoidCreations.Janitor.Shell.Core
             set { this["LastScanSelectedAreas"] = value; }
         }
 
+        public string Language
+        {
+            get { return GetSetting<string>("Language"); }
+            set { this["Language"] = value; }
+        }
+
         public DateTime ScheduleDate
         {
             get { return GetSetting<DateTime>("ScheduleDate"); }

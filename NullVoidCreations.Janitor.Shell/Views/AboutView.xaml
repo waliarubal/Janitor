@@ -26,6 +26,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -56,6 +57,21 @@
                                                 Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
             </StackPanel>
             <StackPanel Grid.Row="3" Orientation="Horizontal">
+                <TextBlock Text="{StaticResource ResourceKey=About12}" />
+                <TextBlock FontWeight="Bold"
+                           Text="{Binding Path=SerialKey,
+                                          Mode=OneWay}"
+                           Visibility="{Binding Path=IsTrial,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                <TextBlock FontWeight="Bold"
+                           Foreground="{StaticResource ResourceKey=BadBrush}"
+                           Text="{StaticResource ResourceKey=About11}"
+                           Visibility="{Binding Path=IsTrial,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+            </StackPanel>
+            <StackPanel Grid.Row="4" Orientation="Horizontal">
                 <TextBlock Text="{StaticResource ResourceKey=About3}" />
                 <TextBlock FontWeight="Bold"
                            Text="{Binding Path=RegisteredTo,
@@ -70,14 +86,14 @@
                                                 Mode=OneWay,
                                                 Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
             </StackPanel>
-            <TextBlock Grid.Row="4"
+            <TextBlock Grid.Row="5"
                        Margin="0 12 0 2"
                        Text="{Binding Path=Targets.Count,
                                       Mode=OneWay,
                                       StringFormat='{StaticResource ResourceKey=About4}',
                                       FallbackValue='{StaticResource ResourceKey=About5}'}"
                        TextWrapping="Wrap" />
-            <Border Grid.Row="5"
+            <Border Grid.Row="6"
                     Background="{StaticResource ResourceKey=BackgroundBrush}"
                     BorderBrush="{StaticResource ResourceKey=BorderBrush}"
                     BorderThickness="1"
@@ -127,16 +143,16 @@
                     </ListBox>
                 </Grid>
             </Border>
-            <TextBlock Grid.Row="6"
+            <TextBlock Grid.Row="7"
                        FontWeight="Bold"
                        Text="{Binding Path=OperatingSystem,
                                       Mode=OneWay,
                                       FallbackValue='{StaticResource ResourceKey=About6}'}" />
-            <StackPanel Grid.Row="7" Orientation="Horizontal">
+            <StackPanel Grid.Row="8" Orientation="Horizontal">
                 <TextBlock Text="{Binding Path=Processor, Mode=OneWay, FallbackValue='{StaticResource ResourceKey=About6}'}" />
                 <TextBlock Text="{Binding Path=Memory, Mode=OneWay, StringFormat=', {0:N2} GB RAM'}" />
             </StackPanel>
-            <TextBlock Grid.Row="8"
+            <TextBlock Grid.Row="9"
                        Margin="0 12 0 0"
                        Text="{StaticResource ResourceKey=About7}"
                        TextWrapping="Wrap" />

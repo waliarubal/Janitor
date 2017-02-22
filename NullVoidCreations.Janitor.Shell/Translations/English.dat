@@ -1,0 +1,14 @@
+<Settings>
+	<Setting Key="About1" Value="Copyright © 2016-2017 Rubal Walia (walia.rubal@gmail.com). All rights reserved." />
+	<Setting Key="About2" Value="License Valid Until:" />
+	<Setting Key="About3" Value="Registered To:" />
+	<Setting Key="About4" Value="The following list contains loaded plugins with {0} scan targets. Scan targets are looked for issues during an active scan operation." />
+	<Setting Key="About5" Value="No plugin with scan targets loaded." />
+	<Setting Key="About6" Value="Analysing..." />
+	<Setting Key="About7" Value="Warning: This program is protected by copyright and international treaties. Copying or distributing without express permission from Rubal Walia (walia.rubal@gmail.com) by any means, in part or full, is strictly prohibited and will result in prosecution to the full extent that the law will allow internationally." />
+	<Setting Key="About8" Value="(version {0}" />
+	<Setting Key="About9" Value="released on {0:MM/dd/yyyy}" />
+	<Setting Key="About10" Value="with {0} scan areas)" />
+	<Setting Key="About11" Value="License not Activated" />
+	<Setting Key="About12" Value="Serial Key:" />
+</Settings>

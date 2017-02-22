@@ -13,4 +13,5 @@
     <clr:String x:Key="About9">released on {0:MM/dd/yyyy}</clr:String>
     <clr:String x:Key="About10">with {0} scan areas)</clr:String>
     <clr:String x:Key="About11">License not Activated</clr:String>
+    <clr:String x:Key="About12">Serial Key:</clr:String>
 </ResourceDictionary>

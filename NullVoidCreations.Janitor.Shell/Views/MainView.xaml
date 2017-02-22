@@ -348,13 +348,28 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Image Source="/program_shell;component/Resources/Help.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <Image Source="/program_shell;component/Resources/Info.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=NavigationTextStyle}"
-                               Text="Help and About" />
+                               Text="About" />
                 </Grid>
             </TabItem.Header>
             <v:AboutView />
+        </TabItem>
+        <TabItem Name="Help">
+            <TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/program_shell;component/Resources/Help.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=NavigationTextStyle}"
+                               Text="Help &amp; Support" />
+                </Grid>
+            </TabItem.Header>
+            <v:HelpView />
         </TabItem>
     </TabControl>
 </c:CustomWindow>

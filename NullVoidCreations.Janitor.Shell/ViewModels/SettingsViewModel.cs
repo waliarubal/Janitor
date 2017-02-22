@@ -5,6 +5,8 @@ using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Models;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
+using System.Collections.Generic;
+using NullVoidCreations.Janitor.Shell.Models;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -45,6 +47,31 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         }
 
         #region properties
+
+        public IEnumerable<LanguageModel> Languages
+        {
+            get { return LanguageManager.Instance.Languages; }
+        }
+
+        public LanguageModel Language
+        {
+            get { return LanguageManager.Instance.LoadedLanguage; }
+            set
+            {
+                if (value == LanguageManager.Instance.LoadedLanguage)
+                    return;
+
+                if (!UiHelper.Instance.Question("Program restart is required to set language to {0}. Are you sure you want to set the language?", value.Name))
+                {
+                    // hack to cancel combo selection
+                    UiHelper.Instance.ExecuteOnUiThread(() => RaisePropertyChanged("Language"));
+                    return;
+                }
+
+                SettingsManager.Instance.Language = value.Name;
+                SignalHost.Instance.RaiseSignal(Signal.CloseAndStart);
+            }
+        }
 
         public DateTime Date
         {

@@ -81,10 +81,15 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             return Process.Start(startInfo) != null;
         }
 
-        public bool RunScheduledTask(string taskName)
+        public bool RunScheduledTask(string taskName, params string[] arguments)
         {
-            var arguments = string.Format("/run /TN \"{0}\"", taskName);
-            return FileSystemHelper.Instance.RunProgram(KnownPaths.Instance.TaskScheduler, arguments, false, true);
+            var commandLine = string.Format("/run /TN \"{0}\"", taskName);
+
+            var args = FileSystemHelper.Instance.GetArgumentsString(arguments);
+            if (args.Length > 0)
+                commandLine = string.Format("{0} {1}", commandLine, args);
+
+            return FileSystemHelper.Instance.RunProgram(KnownPaths.Instance.TaskScheduler, commandLine, false, true);
         }
     }
 }

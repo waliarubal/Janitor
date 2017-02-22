@@ -8,7 +8,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class AboutViewModel: ViewModelBase, ISignalObserver
     {
-        string _operatingSyetem, _processor, _registeredTo;
+        string _operatingSyetem, _processor, _registeredTo, _serialKey;
         decimal _memory;
         bool _isTrial;
         List<ScanTargetBase> _targets;
@@ -95,6 +95,19 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
+        public string SerialKey
+        {
+            get { return _serialKey; }
+            private set
+            {
+                if (value == _serialKey)
+                    return;
+
+                _serialKey = value;
+                RaisePropertyChanged("SerialKey");
+            }
+        }
+
         public DateTime ExpiryDate
         {
             get { return _expiryDate; }
@@ -158,8 +171,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     break;
 
                 case Signal.LicenseChanged:
-                    RegisteredTo = LicenseManager.Instance.License.Email;
+                    RegisteredTo = LicenseManager.Instance.License.Name;
                     ExpiryDate = LicenseManager.Instance.License.ExpirationDate;
+                    SerialKey = LicenseManager.Instance.License.SerialKey;
                     IsTrial = LicenseManager.Instance.License.IsTrial;
                     break;
             }

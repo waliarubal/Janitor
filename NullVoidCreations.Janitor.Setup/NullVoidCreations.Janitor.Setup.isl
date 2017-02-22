@@ -342,6 +342,7 @@
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{0359EF5F-3640-4648-A848-ABEE3D57CA50}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>NullVoidCreations.Janitor.Shell.Content_Files</td><td>{F8E4C2BA-7466-4566-97CB-543ADA0A29CC}</td><td>INSTALLDIR</td><td>2</td><td/><td>nullvoidcreations.janitor.sh1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NullVoidCreations.Janitor.Shell.Primary_output</td><td>{A16CD0AA-28EC-4B8C-8054-58193B6AD914}</td><td>INSTALLDIR</td><td>2</td><td/><td>nullvoidcreations.janitor.sh</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
@@ -1055,6 +1056,7 @@
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
 		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT</td></row>
+		<row><td>INSTALLDIR</td><td>NullVoidCreations.Janitor.Shell.Content_Files</td></row>
 		<row><td>INSTALLDIR</td><td>NullVoidCreations.Janitor.Shell.Primary_output</td></row>
 	</table>
 
@@ -1872,6 +1874,7 @@
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
+		<row><td>AlwaysInstall</td><td>NullVoidCreations.Janitor.Shell.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>NullVoidCreations.Janitor.Shell.Primary_output</td></row>
 	</table>
 
@@ -1888,6 +1891,7 @@
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
 		<row><td>nullvoidcreations.janitor.sh</td><td>NullVoidCreations.Janitor.Shell.Primary_output</td><td>NullVoidCreations.Janitor.Shell.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;NullVoidCreations.Janitor.Shell&gt;|Built</td><td>3</td><td/></row>
+		<row><td>nullvoidcreations.janitor.sh1</td><td>NullVoidCreations.Janitor.Shell.Content_Files</td><td>NullVoidCreations.Janitor.Shell.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;NullVoidCreations.Janitor.Shell&gt;|ContentFiles</td><td>3</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -2030,6 +2034,7 @@
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_33FD3350_91D1_4FD8_A7BB_FD894991DDC8_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>NullVoidCreations.Janitor.Shell.Content_Files</td><td/><td/><td>_F4A39876_7201_4049_8588_9181298EDA11_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NullVoidCreations.Janitor.Shell.Primary_output</td><td/><td/><td>_5E9376E5_45C7_4098_8827_5CBDB10B3A9A_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 

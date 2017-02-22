@@ -58,6 +58,12 @@
   <PropertyGroup>
     <StartupObject>NullVoidCreations.Janitor.Shell.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net35\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
@@ -124,6 +130,7 @@
     <Compile Include="Core\SignalHost.cs" />
     <Compile Include="Core\UiHelper.cs" />
     <Compile Include="Core\WorkQueueManager.cs" />
+    <Compile Include="Models\LanguageModel.cs" />
     <Compile Include="Models\LicenseModel.cs" />
     <Compile Include="Models\ScanModel.cs" />
     <Compile Include="Models\ScanStatusModel.cs" />
@@ -149,6 +156,9 @@
     </Compile>
     <Compile Include="Views\CustomScanView.xaml.cs">
       <DependentUpon>CustomScanView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HelpView.xaml.cs">
+      <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LicenseActivationView.xaml.cs">
       <DependentUpon>LicenseActivationView.xaml</DependentUpon>
@@ -197,6 +207,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ComputerScanView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HelpView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -255,12 +269,22 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Content Include="Translations\Hindi.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Translations\English.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config" />
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Translations\English.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Resources\Free.png" />
     <Resource Include="Logo16.ico" />
+    <Resource Include="Resources\Info.png" />
     <Content Include="Translations\Hindi.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

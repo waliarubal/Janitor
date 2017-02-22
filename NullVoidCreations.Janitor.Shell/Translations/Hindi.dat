@@ -10,4 +10,5 @@
 	<Setting Key="About9" Value="{0:MM/dd/yyyy} पर जारी," />
 	<Setting Key="About10" Value="{0} स्कैन क्षेत्रों साथ)" />
 	<Setting Key="About11" Value="लाइसेंस सक्रिय नहीं" />
+	<Setting Key="About12" Value="क्रमिक कुंजी:" />
 </Settings>

@@ -126,6 +126,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Image Grid.RowSpan="6"
                    Margin="0 0 8 0"
@@ -158,6 +159,32 @@
                       Grid.Column="2"
                       IsChecked="{Binding Path=ShutdownAfterFixing,
                                           Mode=TwoWay}" />
+
+            <StackPanel Grid.Row="4"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Orientation="Horizontal">
+                <TextBlock Text="Set program language to " />
+                <ComboBox MinWidth="120"
+                          ItemsSource="{Binding Path=Languages,
+                                                Mode=OneWay}"
+                          SelectedItem="{Binding Path=Language,
+                                                 Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Height="16" Source="{Binding Path=IconFileName, Mode=OneTime}" />
+                                <TextBlock Margin="4 0"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding Path=Name,
+                                                          Mode=OneTime}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <TextBlock Text="." />
+            </StackPanel>
         </Grid>
 
         <Separator Grid.Row="4" Margin="20 0" />
@@ -292,9 +319,6 @@
                            Grid.Column="5"
                            Text="Saturday" />
             </Grid>
-
-
-
 
             <StackPanel Grid.Row="6"
                         Grid.Column="1"

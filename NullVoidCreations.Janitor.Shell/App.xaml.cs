@@ -67,7 +67,10 @@ namespace NullVoidCreations.Janitor.Shell
             UiHelper.Instance.Resources["SupportPhone"] = Constants.SupportPhone;
             UiHelper.Instance.Resources["SupportEmail"] = Constants.SupportEmail;
 
+            FirstTimeExecution();
+
             LanguageManager.Instance.GetLanguageFiles();
+            LanguageManager.Instance.LoadLanguage(SettingsManager.Instance.Language);
 
             // background bootstraping
             var worker = new BackgroundWorker();
@@ -86,8 +89,6 @@ namespace NullVoidCreations.Janitor.Shell
         {
             Thread.CurrentThread.IsBackground = true;
             Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
-
-            FirstTimeExecution();
 
             // skip UAC
             var skipUac = new SkipUacCommand(null);
@@ -154,7 +155,6 @@ namespace NullVoidCreations.Janitor.Shell
             if (Debugger.IsAttached || Constants.IsAdministrator)
                 return true;
 
-            //TODO: pass command line arguments
             Shutdown(0);
             var argsString = FileSystemHelper.Instance.GetArgumentsString(arguments);
             if (SettingsManager.Instance.SkipUac)
@@ -189,6 +189,7 @@ namespace NullVoidCreations.Janitor.Shell
             SettingsManager.Instance.RunScanAtLaunch = true;
             SettingsManager.Instance.SkipUac = Constants.IsUacSupported;
             SettingsManager.Instance.RunAtBoot = true;
+            SettingsManager.Instance.Language = "English";
         }
     }
 }

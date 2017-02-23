@@ -6,7 +6,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:t="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
-             d:DesignHeight="520"
              d:DesignWidth="640"
              mc:Ignorable="d">
     <UserControl.DataContext>
@@ -37,7 +36,7 @@
 
         <!--  header  -->
         <Border Style="{StaticResource ResourceKey=HeaderStyle}">
-            <TextBlock Style="{StaticResource ResourceKey=HeaderTitleStyle}" Text="Settings" />
+            <TextBlock Style="{StaticResource ResourceKey=HeaderTitleStyle}" Text="{StaticResource ResourceKey=Settings1}" />
         </Border>
 
         <!--  startup  -->
@@ -61,11 +60,11 @@
                    Source="/program_shell;component/Resources/Client.png" />
             <TextBlock Grid.Column="1"
                        Style="{StaticResource ResourceKey=TitleStyle}"
-                       Text="Startup" />
+                       Text="{StaticResource ResourceKey=Settings2}" />
 
             <TextBlock Grid.Row="1"
                        Grid.Column="1"
-                       Text="Run program when the computer starts." />
+                       Text="{StaticResource ResourceKey=Settings3}" />
             <CheckBox Grid.Row="1"
                       Grid.Column="2"
                       Command="{Binding Path=ScheduleSilentRun,
@@ -77,7 +76,7 @@
 
             <TextBlock Grid.Row="2"
                        Grid.Column="1"
-                       Text="Skip User Account Control (UAC) warning." />
+                       Text="{StaticResource ResourceKey=Settings4}" />
             <CheckBox Grid.Row="2"
                       Grid.Column="2"
                       Command="{Binding Path=SkipUserAccountControl,
@@ -89,7 +88,7 @@
 
             <TextBlock Grid.Row="3"
                        Grid.Column="1"
-                       Text="Automatically run Smart Scan on launch." />
+                       Text="{StaticResource ResourceKey=Settings5}" />
             <CheckBox Grid.Row="3"
                       Grid.Column="2"
                       IsChecked="{Binding Path=RunScanAtLaunch,
@@ -97,7 +96,7 @@
 
             <TextBlock Grid.Row="4"
                        Grid.Column="1"
-                       Text="Automatically download and install scan target plugins update on launch." />
+                       Text="{StaticResource ResourceKey=Settings6}" />
             <CheckBox Grid.Row="4"
                       Grid.Column="2"
                       IsChecked="{Binding Path=RunPluginUpdateAtLaunch,
@@ -105,7 +104,7 @@
 
             <TextBlock Grid.Row="5"
                        Grid.Column="1"
-                       Text="Automatically download and install program update on launch." />
+                       Text="{StaticResource ResourceKey=Settings7}" />
             <CheckBox Grid.Row="5"
                       Grid.Column="2"
                       IsChecked="{Binding Path=RunProgramUpdateAtLaunch,
@@ -134,11 +133,11 @@
                    Source="/program_shell;component/Resources/Support.png" />
             <TextBlock Grid.Column="1"
                        Style="{StaticResource ResourceKey=TitleStyle}"
-                       Text="General" />
+                       Text="{StaticResource ResourceKey=Settings8}" />
 
             <TextBlock Grid.Row="1"
                        Grid.Column="1"
-                       Text="Exit program on close." />
+                       Text="{StaticResource ResourceKey=Settings9}" />
             <CheckBox Grid.Row="1"
                       Grid.Column="2"
                       IsChecked="{Binding Path=ExitOnClose,
@@ -146,7 +145,7 @@
 
             <TextBlock Grid.Row="2"
                        Grid.Column="1"
-                       Text="Close program after fixing issues." />
+                       Text="{StaticResource ResourceKey=Settings10}" />
             <CheckBox Grid.Row="2"
                       Grid.Column="2"
                       IsChecked="{Binding Path=CloseAfterFixing,
@@ -154,7 +153,7 @@
 
             <TextBlock Grid.Row="3"
                        Grid.Column="1"
-                       Text="Shutdown computer after fixing issues." />
+                       Text="{StaticResource ResourceKey=Settings11}" />
             <CheckBox Grid.Row="3"
                       Grid.Column="2"
                       IsChecked="{Binding Path=ShutdownAfterFixing,
@@ -164,7 +163,7 @@
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Orientation="Horizontal">
-                <TextBlock Text="Set program language to " />
+                <TextBlock Text="{StaticResource ResourceKey=Settings12}" />
                 <ComboBox MinWidth="120"
                           ItemsSource="{Binding Path=Languages,
                                                 Mode=OneWay}"
@@ -173,7 +172,7 @@
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Image Height="16" Source="{Binding Path=IconFileName, Mode=OneTime}" />
+                                <Image Height="18" Source="{Binding Path=IconFileName, Mode=OneTime}" />
                                 <TextBlock Margin="4 0"
                                            VerticalAlignment="Center"
                                            Text="{Binding Path=Name,
@@ -183,7 +182,7 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 
-                <TextBlock Text="." />
+                <TextBlock Text="{StaticResource ResourceKey=Settings13}" />
             </StackPanel>
         </Grid>
 
@@ -211,11 +210,11 @@
                    Source="/program_shell;component/Resources/Timer.png" />
             <TextBlock Grid.Column="1"
                        Style="{StaticResource ResourceKey=TitleStyle}"
-                       Text="Smart Scan Schedule" />
+                       Text="{StaticResource ResourceKey=Settings14}" />
 
             <TextBlock Grid.Row="1"
                        Grid.Column="1"
-                       Text="Do not run automatic scan." />
+                       Text="{StaticResource ResourceKey=Settings15}" />
             <RadioButton Grid.Row="1"
                          Grid.Column="2"
                          IsChecked="{Binding Path=IsScheduleDisabled,
@@ -223,7 +222,7 @@
 
             <TextBlock Grid.Row="2"
                        Grid.Column="1"
-                       Text="Run automatic scan only once." />
+                       Text="{StaticResource ResourceKey=Settings16}" />
             <RadioButton Grid.Row="2"
                          Grid.Column="2"
                          IsChecked="{Binding Path=IsScheduleOnce,
@@ -231,7 +230,7 @@
 
             <TextBlock Grid.Row="3"
                        Grid.Column="1"
-                       Text="Run automatic scan daily." />
+                       Text="{StaticResource ResourceKey=Settings17}" />
             <RadioButton Grid.Row="3"
                          Grid.Column="2"
                          IsChecked="{Binding Path=IsScheduleDaily,
@@ -239,7 +238,7 @@
 
             <TextBlock Grid.Row="4"
                        Grid.Column="1"
-                       Text="Run automatic scan on the following week days:" />
+                       Text="{StaticResource ResourceKey=Settings18}" />
             <RadioButton Grid.Row="4"
                          Grid.Column="2"
                          IsChecked="{Binding Path=IsScheduleWeekly,
@@ -269,7 +268,7 @@
                                               Mode=TwoWay}" />
                 <TextBlock Grid.Row="0"
                            Grid.Column="1"
-                           Text="Sunday" />
+                           Text="{StaticResource ResourceKey=Settings19}" />
 
                 <CheckBox Grid.Row="0"
                           Grid.Column="2"
@@ -277,7 +276,7 @@
                                               Mode=TwoWay}" />
                 <TextBlock Grid.Row="0"
                            Grid.Column="3"
-                           Text="Monday" />
+                           Text="{StaticResource ResourceKey=Settings20}" />
 
                 <CheckBox Grid.Row="0"
                           Grid.Column="4"
@@ -285,7 +284,7 @@
                                               Mode=TwoWay}" />
                 <TextBlock Grid.Row="0"
                            Grid.Column="5"
-                           Text="Tuesday" />
+                           Text="{StaticResource ResourceKey=Settings21}" />
 
                 <CheckBox Grid.Row="0"
                           Grid.Column="6"
@@ -293,7 +292,7 @@
                                               Mode=TwoWay}" />
                 <TextBlock Grid.Row="0"
                            Grid.Column="7"
-                           Text="Wednesday" />
+                           Text="{StaticResource ResourceKey=Settings22}" />
 
                 <CheckBox Grid.Row="1"
                           Grid.Column="0"
@@ -301,7 +300,7 @@
                                               Mode=TwoWay}" />
                 <TextBlock Grid.Row="1"
                            Grid.Column="1"
-                           Text="Thursday" />
+                           Text="{StaticResource ResourceKey=Settings23}" />
 
                 <CheckBox Grid.Row="1"
                           Grid.Column="2"
@@ -309,7 +308,7 @@
                                               Mode=TwoWay}" />
                 <TextBlock Grid.Row="1"
                            Grid.Column="3"
-                           Text="Friday" />
+                           Text="{StaticResource ResourceKey=Settings24}" />
 
                 <CheckBox Grid.Row="1"
                           Grid.Column="4"
@@ -317,14 +316,14 @@
                                               Mode=TwoWay}" />
                 <TextBlock Grid.Row="1"
                            Grid.Column="5"
-                           Text="Saturday" />
+                           Text="{StaticResource ResourceKey=Settings25}" />
             </Grid>
 
             <StackPanel Grid.Row="6"
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Orientation="Horizontal">
-                <TextBlock Text="Schedule should starts from " />
+                <TextBlock Text="{StaticResource ResourceKey=Settings26}" />
                 <t:DateTimePicker Background="{StaticResource ResourceKey=BackgroundBrush}"
                                   BorderThickness="0"
                                   Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
@@ -333,7 +332,7 @@
                                   ShowDropDownButton="False"
                                   Value="{Binding Path=Date,
                                                   Mode=TwoWay}" />
-                <TextBlock Text=" (Date and Time)." />
+                <TextBlock Text="{StaticResource ResourceKey=Settings27}" />
             </StackPanel>
 
 
@@ -344,7 +343,7 @@
                     HorizontalAlignment="Left"
                     Command="{Binding Path=SaveSchedule,
                                       Mode=OneTime}"
-                    Content="Save Schedule" />
+                    Content="{StaticResource ResourceKey=Settings28}" />
         </Grid>
     </Grid>
 </UserControl>

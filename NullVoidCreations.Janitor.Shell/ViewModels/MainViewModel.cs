@@ -24,6 +24,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             Startup,
             Update,
             Settings,
+            Help,
             About
         }
 

@@ -336,25 +336,10 @@
                     <Image Source="/program_shell;component/Resources/Settings.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource ResourceKey=NavigationTextStyle}"
-                               Text="Settings" />
+                               Text="{StaticResource ResourceKey=Settings1}" />
                 </Grid>
             </TabItem.Header>
             <v:SettingsView />
-        </TabItem>
-        <TabItem Name="About">
-            <TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Image Source="/program_shell;component/Resources/Info.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
-                    <TextBlock Grid.Column="1"
-                               Style="{StaticResource ResourceKey=NavigationTextStyle}"
-                               Text="About" />
-                </Grid>
-            </TabItem.Header>
-            <v:AboutView />
         </TabItem>
         <TabItem Name="Help">
             <TabItem.Header>
@@ -370,6 +355,21 @@
                 </Grid>
             </TabItem.Header>
             <v:HelpView />
+        </TabItem>
+        <TabItem Name="About">
+            <TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/program_shell;component/Resources/Info.png" Style="{StaticResource ResourceKey=NavigationImageStyle}" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=NavigationTextStyle}"
+                               Text="{StaticResource ResourceKey=About13}" />
+                </Grid>
+            </TabItem.Header>
+            <v:AboutView />
         </TabItem>
     </TabControl>
 </c:CustomWindow>

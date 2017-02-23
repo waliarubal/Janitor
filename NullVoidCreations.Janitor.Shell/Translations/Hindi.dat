@@ -11,4 +11,35 @@
 	<Setting Key="About10" Value="{0} स्कैन क्षेत्रों साथ)" />
 	<Setting Key="About11" Value="लाइसेंस सक्रिय नहीं" />
 	<Setting Key="About12" Value="क्रमिक कुंजी:" />
+	<Setting Key="About13" Value="के बारे में" />
+	<Setting Key="Settings1" Value="सेटिंग्स" />
+	<Setting Key="Settings2" Value="चालू होना" />
+	<Setting Key="Settings3" Value="कार्यक्रम चलाने के लिए जब कंप्यूटर शुरू होता है।" />
+	<Setting Key="Settings4" Value="छोड़ें उपयोगकर्ता खाता नियंत्रण (यूएसी) चेतावनी।" />
+	<Setting Key="Settings5" Value="स्वचालित रूप से लॉन्च पर स्मार्ट स्कैन चलाते हैं।" />
+	<Setting Key="Settings6" Value="स्वचालित रूप से डाउनलोड करने और प्रक्षेपण पर स्कैन लक्ष्य प्लगइन अद्यतन स्थापित करें।" />
+	<Setting Key="Settings7" Value="स्वचालित रूप से डाउनलोड करने और प्रक्षेपण पर कार्यक्रम अद्यतन स्थापित करें।" />
+	<Setting Key="Settings8" Value="सामान्य" />
+	<Setting Key="Settings9" Value="बंद पर बाहर निकलें कार्यक्रम।" />
+	<Setting Key="Settings10" Value="समस्याओं को ठीक करने के बाद बंद कार्यक्रम।" />
+	<Setting Key="Settings11" Value="समस्याओं को ठीक करने के बाद कंप्यूटर बंद।" />
+	<Setting Key="Settings12" Value="में कार्यक्रम दिखाने इंटरफेस" />
+	<Setting Key="Settings13" Value="भाषा।" />
+	<Setting Key="Settings14" Value="स्मार्ट स्कैन अनुसूची" />
+	<Setting Key="Settings15" Value="स्वत: स्कैन नहीं चला है।" />
+	<Setting Key="Settings16" Value="केवल एक बार स्वत: स्कैन चलाएँ।" />
+	<Setting Key="Settings17" Value="स्वत: स्कैन दैनिक चलाएँ।" />
+	<Setting Key="Settings18" Value="चलाने के बाद सप्ताह के दिनों में स्वत: स्कैन:" />
+	<Setting Key="Settings19" Value="रविवार" />
+	<Setting Key="Settings20" Value="सोमवार" />
+	<Setting Key="Settings21" Value="मंगलवार" />
+	<Setting Key="Settings22" Value="बुधवार" />
+	<Setting Key="Settings23" Value="गुरूवार" />
+	<Setting Key="Settings24" Value="शुक्रवार" />
+	<Setting Key="Settings25" Value="शनिवार" />
+	<Setting Key="Settings26" Value="शेड्यूल करना चाहिए से शुरू होता है" />
+	<Setting Key="Settings27" Value="(दिनांक और समय)।" />
+	<Setting Key="Settings28" Value="बचाने के लिए अनुसूची" />
+	<Setting Key="Settings29" Value="स्मार्ट स्कैन अनुसूची सफलतापूर्वक बचाया।" />
+	<Setting Key="Settings30" Value="स्मार्ट अनुसूची स्कैन बचाने में विफल।" />
 </Settings>

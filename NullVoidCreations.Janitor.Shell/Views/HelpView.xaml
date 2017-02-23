@@ -7,6 +7,13 @@
              d:DesignWidth="640"
              mc:Ignorable="d">
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <!--  header  -->
+        <Border Style="{StaticResource ResourceKey=HeaderStyle}">
+            <TextBlock Style="{StaticResource ResourceKey=HeaderTitleStyle}" Text="Help &amp; Support" />
+        </Border>
     </Grid>
 </UserControl>

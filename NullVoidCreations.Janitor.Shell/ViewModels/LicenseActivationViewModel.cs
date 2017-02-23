@@ -77,7 +77,13 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         void ExecuteCopyFromClipboard(object parameter)
         {
-            SerialKey = Clipboard.GetText();
+            var text = Clipboard.GetText();
+            if (string.IsNullOrEmpty(text))
+                return;
+            if (text.Length >= 23)
+                text = text.Substring(0, 23);
+
+            SerialKey = text;
         }
 
         object ExecuteActivate(object window)

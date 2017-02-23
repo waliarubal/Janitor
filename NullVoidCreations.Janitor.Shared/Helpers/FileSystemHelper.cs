@@ -58,7 +58,7 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
 
         public bool RunProgram(string executable, string arguments, bool runAsAdministrator, bool hideUi = false)
         {
-            if (string.IsNullOrEmpty(executable) || !File.Exists(executable))
+            if (string.IsNullOrEmpty(executable))
                 return false;
             if (string.IsNullOrEmpty(arguments))
                 arguments = string.Empty;

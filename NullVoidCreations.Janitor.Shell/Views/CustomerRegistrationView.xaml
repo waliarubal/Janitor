@@ -101,7 +101,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <CheckBox IsChecked="{Binding Path=IsTrialKeyRequested, Mode=TwoWay}" />
-            <TextBlock Grid.Column="1" Text="Send me free 90 days trial license key." />
+            <TextBlock Grid.Column="1" Text="Generate and activate a free 90 days trial license key." />
         </Grid>
 
         <Grid Grid.Row="4" Margin="20 0 20 12">

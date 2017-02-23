@@ -50,7 +50,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LicenseEx.cs" />
+    <Compile Include="License.cs" />
     <Compile Include="MongoHelper.cs" />
     <Compile Include="StringCipher.cs" />
     <Compile Include="Customer.cs" />

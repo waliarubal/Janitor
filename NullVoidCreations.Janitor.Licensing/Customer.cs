@@ -19,9 +19,22 @@ namespace NullVoidCreations.Janitor.Licensing
         [BsonElement("mail", Order = 1)]
         public string Email { get; set; }
 
+        [BsonDateTimeOptions(DateOnly = true, Kind = DateTimeKind.Local)]
+        [BsonElement("reg_date", Order = 2)]
+        public DateTime RegistrationDate { get; set; }
+
         [BsonRepresentation(BsonType.String)]
-        [BsonElement("name", Order = 2)]
+        [BsonElement("name", Order = 3)]
         public string Name { get; set; }
+
+        [BsonRequired]
+        [BsonRepresentation(BsonType.String)]
+        [BsonElement("pass", Order = 4)]
+        public string PasswordHash { get; set; }
+
+        [BsonIgnoreIfNull]
+        [BsonElement("lics", Order = 5)]
+        public IList<License> Licenses { get; set; }
 
         [BsonIgnore]
         public string Password
@@ -36,15 +49,6 @@ namespace NullVoidCreations.Janitor.Licensing
                 PasswordHash = StringCipher.Instance.MD5Hash(_password);
             }
         }
-
-        [BsonRequired]
-        [BsonRepresentation(BsonType.String)]
-        [BsonElement("pass", Order = 3)]
-        public string PasswordHash { get; set; }
-
-        [BsonIgnoreIfNull]
-        [BsonElement("lics", Order = 4)]
-        public IList<LicenseEx> Licenses { get; set; }
 
         [BsonIgnore]
         MongoCollection<Customer> Customers
@@ -92,6 +96,7 @@ namespace NullVoidCreations.Janitor.Licensing
             if (entity != null)
                 throw new InvalidOperationException(String.Format("Another user with email address {0} exists. Use a different email address.", Email));
 
+            RegistrationDate = DateTime.Now;
             if (!Customers.Save(this).Ok)
                 throw new Exception("An error occured while registering user.");
 
@@ -101,19 +106,19 @@ namespace NullVoidCreations.Janitor.Licensing
 
         public bool AddLicense(DateTime issueDate, DateTime expirationDate)
         {
-            var license = LicenseEx.Generate(issueDate, expirationDate, Email);
+            var license = License.Generate(issueDate, expirationDate, Email);
 
             var query = Query<Customer>.EQ(e => e.Email, Email);
-            var update = Update<Customer>.Push<LicenseEx>(l => l.Licenses, license);
+            var update = Update<Customer>.Push<License>(l => l.Licenses, license);
             return Customers.Update(query, update).Ok;
         }
 
-        public LicenseEx ActivateLicense(string serialKey, string fileName)
+        public License ActivateLicense(string serialKey, string fileName)
         {
             if (Customers == null)
                 throw new InvalidOperationException("Could not connect to internet for activation.");
 
-            var errorMessage = LicenseEx.ValidateSerial(serialKey);
+            var errorMessage = License.ValidateSerial(serialKey);
             if (errorMessage != null)
                 throw new InvalidOperationException(errorMessage);
 
@@ -143,9 +148,9 @@ namespace NullVoidCreations.Janitor.Licensing
             return null;
         }
 
-        public LicenseEx LoadLicense(string fileName)
+        public License LoadLicense(string fileName)
         {
-            return LicenseEx.LoadFromFile(fileName);
+            return License.LoadFromFile(fileName);
         }
     }
 }

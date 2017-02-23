@@ -90,7 +90,7 @@
             </Grid.ColumnDefinitions>
             <Border x:Name="Border"
                     Grid.ColumnSpan="2"
-                    Background="{StaticResource ResourceKey=BackgroundActiveBrush}"
+                    Background="{StaticResource ResourceKey=BackgroundBrush}"
                     BorderBrush="{StaticResource ResourceKey=BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="2" />
@@ -109,16 +109,16 @@
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                <Setter TargetName="Border" Property="Background" Value="{StaticResource ResourceKey=HeaderBackgroundBrush}" />
+                <Setter TargetName="Border" Property="Background" Value="{StaticResource ResourceKey=BackgroundActiveBrush}" />
             </Trigger>
             <Trigger Property="ToggleButton.IsChecked" Value="true">
                 <Setter TargetName="Border" Property="Background" Value="{StaticResource ResourceKey=ButtonBackgroundBrush}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="Border" Property="Background" Value="#EEEEEE" />
-                <Setter TargetName="Border" Property="BorderBrush" Value="#AAAAAA" />
-                <Setter Property="Foreground" Value="#888888" />
-                <Setter TargetName="Arrow" Property="Fill" Value="#888888" />
+                <Setter TargetName="Border" Property="Background" Value="{StaticResource ResourceKey=BackgroundBrush}" />
+                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ResourceKey=BorderBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+                <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource ResourceKey=TextBrush}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -151,7 +151,7 @@
                                       Template="{StaticResource ComboBoxToggleButton}">
                         </ToggleButton>
                         <ContentPresenter Name="ContentSite"
-                                          Margin="2,2,22,2"
+                                          Margin="2"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
                                           Content="{TemplateBinding SelectionBoxItem}"
@@ -159,7 +159,7 @@
                                           ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                           IsHitTestVisible="False" />
                         <TextBox x:Name="PART_EditableTextBox"
-                                 Margin="2,2,22,2"
+                                 Margin="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Center"
                                  Background="Transparent"

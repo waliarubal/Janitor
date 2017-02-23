@@ -7,7 +7,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
 {
     public class LicenseModel: NotificationBase, IDisposable
     {
-        LicenseEx _license;
+        License _license;
         Customer _customer;
 
         public LicenseModel()

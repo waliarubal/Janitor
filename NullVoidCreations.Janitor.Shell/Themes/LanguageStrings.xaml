@@ -14,4 +14,37 @@
     <clr:String x:Key="About10">with {0} scan areas)</clr:String>
     <clr:String x:Key="About11">License not Activated</clr:String>
     <clr:String x:Key="About12">Serial Key:</clr:String>
+    <clr:String x:Key="About13">About</clr:String>
+
+    <!--  settings  -->
+    <clr:String x:Key="Settings1">Settings</clr:String>
+    <clr:String x:Key="Settings2">Startup</clr:String>
+    <clr:String x:Key="Settings3">Run program when the computer starts.</clr:String>
+    <clr:String x:Key="Settings4">Skip User Account Control (UAC) warning.</clr:String>
+    <clr:String x:Key="Settings5">Automatically run Smart Scan on launch.</clr:String>
+    <clr:String x:Key="Settings6">Automatically download and install scan target plugins update on launch.</clr:String>
+    <clr:String x:Key="Settings7">Automatically download and install program update on launch.</clr:String>
+    <clr:String x:Key="Settings8">General</clr:String>
+    <clr:String x:Key="Settings9">Exit program on close.</clr:String>
+    <clr:String x:Key="Settings10">Close program after fixing issues.</clr:String>
+    <clr:String x:Key="Settings11">Shutdown computer after fixing issues.</clr:String>
+    <clr:String x:Key="Settings12">Show program interface in</clr:String>
+    <clr:String x:Key="Settings13">language.</clr:String>
+    <clr:String x:Key="Settings14">Smart Scan Schedule</clr:String>
+    <clr:String x:Key="Settings15">Do not run automatic scan.</clr:String>
+    <clr:String x:Key="Settings16">Run automatic scan only once.</clr:String>
+    <clr:String x:Key="Settings17">Run automatic scan daily.</clr:String>
+    <clr:String x:Key="Settings18">Run automatic scan on the following week days:</clr:String>
+    <clr:String x:Key="Settings19">Sunday</clr:String>
+    <clr:String x:Key="Settings20">Monday</clr:String>
+    <clr:String x:Key="Settings21">Tuesday</clr:String>
+    <clr:String x:Key="Settings22">Wednesday</clr:String>
+    <clr:String x:Key="Settings23">Thursday</clr:String>
+    <clr:String x:Key="Settings24">Friday</clr:String>
+    <clr:String x:Key="Settings25">Saturday</clr:String>
+    <clr:String x:Key="Settings26">Schedule should starts from</clr:String>
+    <clr:String x:Key="Settings27">(Date and Time).</clr:String>
+    <clr:String x:Key="Settings28">Save Schedule</clr:String>
+    <clr:String x:Key="Settings29">Smart scan schedule saved successfully.</clr:String>
+    <clr:String x:Key="Settings30">Failed to save smart scan schedule.</clr:String>
 </ResourceDictionary>

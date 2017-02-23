@@ -8,7 +8,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace NullVoidCreations.Janitor.Licensing
 {
     [BsonDiscriminator("lic")]
-    public class LicenseEx: IDisposable
+    public class License: IDisposable
     {
         const string ValidCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
         const string EncryptionKey = "QFByb3Blcl9QYXRvbGEhMjAxNQ==";
@@ -18,13 +18,13 @@ namespace NullVoidCreations.Janitor.Licensing
 
         #region constructor / destructor
 
-        private LicenseEx()
+        private License()
         {
 
         }
 
         [BsonConstructor]
-        public LicenseEx(string serialKey, string activationKey)
+        public License(string serialKey, string activationKey)
         {
             SerialKey = serialKey;
             ActivationKey = activationKey;
@@ -35,7 +35,7 @@ namespace NullVoidCreations.Janitor.Licensing
             Dispose(true);
         }
 
-        ~LicenseEx()
+        ~License()
         {
             Dispose(false);
         }
@@ -156,7 +156,7 @@ namespace NullVoidCreations.Janitor.Licensing
             return null;
         }
 
-        internal static LicenseEx LoadFromFile(string fileName)
+        internal static License LoadFromFile(string fileName)
         {
             if (!File.Exists(fileName))
                 return null;
@@ -164,14 +164,14 @@ namespace NullVoidCreations.Janitor.Licensing
             var document = new XmlDocument();
             document.Load(fileName);
 
-            var license = new LicenseEx();
+            var license = new License();
             license._fileName = fileName;
             license.SerialKey = document.SelectSingleNode("/License/SerialKey").InnerText;
             license.ActivationKey = document.SelectSingleNode("/License/ActivationKey").InnerText;
             return license;
         }
 
-        internal static LicenseEx Generate(DateTime isssueDate, DateTime expirationDate, string email)
+        internal static License Generate(DateTime isssueDate, DateTime expirationDate, string email)
         {
             var randomGenerator = new Random();
             var licenseBuilder = new StringBuilder(KeySize);
@@ -185,7 +185,7 @@ namespace NullVoidCreations.Janitor.Licensing
                     licenseBuilder.Append(serialChar);
             }
 
-            var license = new LicenseEx();
+            var license = new License();
             license.SerialKey = licenseBuilder.ToString();
             license.GenerateActivationKey(isssueDate, expirationDate, email);
             return license;
@@ -256,7 +256,7 @@ namespace NullVoidCreations.Janitor.Licensing
             return date;
         }
 
-        bool IsValid(LicenseEx license)
+        bool IsValid(License license)
         {
             var currentDate = DateTime.Now;
             if (currentDate.Date < license.IssueDate.Date)

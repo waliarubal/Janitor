@@ -6,10 +6,10 @@
                 Title="{Binding Source={StaticResource ResourceKey=ProductName},
                                 StringFormat='{}{0} - Activate Product'}"
                 Width="580"
-                Height="340"
                 Background="{StaticResource ResourceKey=BackgroundBrush}"
                 IsMinimizeAllowed="False"
                 ShowInTaskbar="True"
+                SizeToContent="Height"
                 Style="{StaticResource ResourceKey=ChildWindowStyle}"
                 WindowStartupLocation="CenterOwner">
     <c:CustomWindow.DataContext>
@@ -53,7 +53,12 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox MaxLength="23" Text="{Binding Path=SerialKey, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox AcceptsReturn="False"
+                     MaxLength="23"
+                     Text="{Binding Path=SerialKey,
+                                    Mode=TwoWay,
+                                    NotifyOnSourceUpdated=True,
+                                    UpdateSourceTrigger=PropertyChanged}" />
             <Button Grid.Column="1"
                     Margin="4 0 0 0"
                     Command="{Binding Path=CopyFromClipboard,
@@ -90,7 +95,6 @@
         </StackPanel>
 
         <TextBlock Grid.Row="6"
-                   VerticalAlignment="Bottom"
                    FontWeight="Bold"
                    Foreground="{StaticResource ResourceKey=BadBrush}"
                    Text="{Binding Path=ErrorMessage,

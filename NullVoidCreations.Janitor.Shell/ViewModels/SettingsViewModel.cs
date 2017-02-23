@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NullVoidCreations.Janitor.Shared;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Models;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
-using System.Collections.Generic;
 using NullVoidCreations.Janitor.Shell.Models;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
@@ -61,15 +61,13 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 if (value == LanguageManager.Instance.LoadedLanguage)
                     return;
 
-                if (!UiHelper.Instance.Question("Program restart is required to set language to {0}. Are you sure you want to set the language?", value.Name))
-                {
-                    // hack to cancel combo selection
-                    UiHelper.Instance.ExecuteOnUiThread(() => RaisePropertyChanged("Language"));
-                    return;
-                }
-
                 SettingsManager.Instance.Language = value.Name;
-                SignalHost.Instance.RaiseSignal(Signal.CloseAndStart);
+                LanguageManager.Instance.LoadLanguage(value.Name);
+
+                if (UiHelper.Instance.Question("{0} language will be applied when program is closed and started again. Do you want to restart the program again?", value.Name))
+                {
+                    SignalHost.Instance.RaiseSignal(Signal.CloseAndStart);
+                }
             }
         }
 
@@ -344,10 +342,10 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 else
                     SettingsManager.Instance.ScheduleType = ScheduleType.None;
 
-                UiHelper.Instance.Alert("Smart scan schedule saved successfully.");
+                UiHelper.Instance.Alert(UiHelper.Instance.Resources["Settings29"] as string);
             }
             else
-                UiHelper.Instance.Error("Failed to save smart scan schedule.");
+                UiHelper.Instance.Error(UiHelper.Instance.Resources["Settings30"] as string);
         }
     }
 }

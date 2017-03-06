@@ -71,7 +71,7 @@ namespace NullVoidCreations.Janitor.Licensing
             return entity;
         }
 
-        public void Register(string confirmEmail, string confirmPassword, bool generateTrial = false)
+        public string Register(string confirmEmail, string confirmPassword, bool generateTrial = false)
         {
             if (Customers == null)
                 throw new InvalidOperationException("Could not connect to internet for registration.");
@@ -99,13 +99,22 @@ namespace NullVoidCreations.Janitor.Licensing
             if (!Customers.Save(this).Ok)
                 throw new Exception("An error occured while registering user.");
 
-            if (generateTrial && !AddLicense(DateTime.Now, DateTime.Now.AddDays(90)))
-                throw new Exception("Failed to generate license.");
+            
+            if (generateTrial)
+            {
+                License license;
+                if (AddLicense(DateTime.Now, DateTime.Now.AddDays(90), out license))
+                    return license.SerialKey;
+                else
+                    throw new Exception("Failed to generate license.");
+            }
+
+            return null;
         }
 
-        public bool AddLicense(DateTime issueDate, DateTime expirationDate)
+        public bool AddLicense(DateTime issueDate, DateTime expirationDate, out License license)
         {
-            var license = License.Generate(issueDate, expirationDate, Email);
+            license = License.Generate(issueDate, expirationDate, Email);
 
             var query = Query<Customer>.EQ(e => e.Email, Email);
             var update = Update<Customer>.Push<License>(l => l.Licenses, license);

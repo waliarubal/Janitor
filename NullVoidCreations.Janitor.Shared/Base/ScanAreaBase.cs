@@ -5,29 +5,24 @@ namespace NullVoidCreations.Janitor.Shared.Base
 {
     public abstract class ScanAreaBase : NotificationBase
     {
-        string _name;
-        ScanTargetBase _target;
-        readonly List<IssueBase> _issues, _issuesFixed;
-        bool _isSelected;
-
         #region constructor / destructor
 
-        public ScanAreaBase(string name, ScanTargetBase target)
+        protected ScanAreaBase(string name, ScanTargetBase target)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
             if (target == null)
                 throw new ArgumentNullException("target");
 
-            _name = name;
-            _target = target;
-            _issues = new List<IssueBase>();
-            _issuesFixed = new List<IssueBase>();
+            Name = name;
+            Target = target;
+            Issues = new List<IssueBase>();
+            IssuesFixed = new List<IssueBase>();
         }
 
         ~ScanAreaBase()
         {
-            _issues.Clear();
+            Issues.Clear();
         }
 
         #endregion
@@ -36,42 +31,32 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
         public string Name
         {
-            get { return _name; }
-            private set
-            {
-                if (value == _name)
-                    return;
-
-                _name = value;
-            }
+            get { return GetValue<string>("Name"); }
+            private set { this["Name"] = value; }
         }
 
         protected ScanTargetBase Target
         {
-            get { return _target; }
+            get { return GetValue<ScanTargetBase>("Target"); }
+            private set { this["Target"] = value; }
         }
 
         public List<IssueBase> Issues
         {
-            get { return _issues; }
+            get { return GetValue<List<IssueBase>>("Issues"); }
+            private set { this["Issues"] = value; }
         }
 
         public List<IssueBase> IssuesFixed
         {
-            get { return _issuesFixed; }
+            get { return GetValue<List<IssueBase>>("IssuesFixed"); }
+            private set { this["IssuesFixed"] = value; }
         }
 
         public bool IsSelected
         {
-            get { return _isSelected; }
-            set
-            {
-                if (value == _isSelected)
-                    return;
-
-                _isSelected = value;
-                RaisePropertyChanged("IsSelected");
-            }
+            get { return GetValue<bool>("IsSelected"); }
+            set { this["IsSelected"] = value; }
         }
 
         #endregion
@@ -96,12 +81,12 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
         public override int GetHashCode()
         {
-            return string.Format("{0}{1}", _target.Name, Name).GetHashCode();
+            return string.Format("{0}{1}", Target.Name, Name).GetHashCode();
         }
 
         public override string ToString()
         {
-            return string.Format("Target: {0}, Area: {1}", _target.Name, Name);
+            return string.Format("Target: {0}, Area: {1}", Target.Name, Name);
         }
 
         public override bool Equals(object obj)

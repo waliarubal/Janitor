@@ -4,35 +4,31 @@ namespace NullVoidCreations.Janitor.Shared.Base
 {
     public abstract class IssueBase: NotificationBase
     {
-        string _details;
-        bool _isFixed;
-        ScanTargetBase _target;
-        ScanAreaBase _area;
 
         #region constructor / destructor
 
-        public IssueBase(ScanTargetBase target, ScanAreaBase area)
+        protected IssueBase(ScanTargetBase target, ScanAreaBase area)
             : this(target, area, null)
         {
 
         }
 
-        public IssueBase(ScanTargetBase target, ScanAreaBase area, string details)
+        protected IssueBase(ScanTargetBase target, ScanAreaBase area, string details)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
             if (area == null)
                 throw new ArgumentNullException("area");
 
-            _target = target;
-            _area = area;
-            _details = details;
+            Target = target;
+            Area = area;
+            Details = details;
         }
 
         ~IssueBase()
         {
-            _target = null;
-            _area = null;
+            Target = null;
+            Area = null;
         }
 
         #endregion
@@ -41,38 +37,26 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
         public ScanTargetBase Target
         {
-            get { return _target; }
+            get { return GetValue<ScanTargetBase>("Target"); }
+            private set { this["Target"] = value; }
         }
 
         public ScanAreaBase Area
         {
-            get { return _area; }
+            get { return GetValue<ScanAreaBase>("Area"); }
+            private set { this["Area"] = value; }
         }
 
         public string Details
         {
-            get { return _details; }
-            protected set
-            {
-                if (value == _details)
-                    return;
-
-                _details = value;
-                RaisePropertyChanged("Details");
-            }
+            get { return GetValue<string>("Details"); }
+            protected set { this["Details"] = value; }
         }
 
         public bool IsFixed
         {
-            get { return _isFixed; }
-            protected set
-            {
-                if (value == _isFixed)
-                    return;
-
-                _isFixed = value;
-                RaisePropertyChanged("IsFixed");
-            }
+            get { return GetValue<bool>("IsFixed"); }
+            protected set { this["IsFixed"] = value; }
         }
 
         #endregion

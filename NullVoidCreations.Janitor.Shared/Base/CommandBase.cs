@@ -5,25 +5,22 @@ namespace NullVoidCreations.Janitor.Shared.Base
 {
     public abstract class CommandBase: NotificationBase, ICommand
     {
-        volatile bool _isExecuting, _isEnabled, _isRecallAllowed;
-        volatile string _title, _description;
         Func<object, bool> _canExecute;
-        ViewModelBase _viewModel;
 
         public event EventHandler CanExecuteChanged;
 
         #region constructor / destructor
 
-        protected CommandBase(ViewModelBase viewModel)
+        protected CommandBase(ViewModelBase viewModel, bool isEnabled = true)
         {
-            _isEnabled = true;
-            _viewModel = viewModel;
+            IsEnabled = isEnabled;
+            ViewModel = viewModel;
         }
 
         protected CommandBase(ViewModelBase viewModel, Func<object, bool> canExecute)
         {
             _canExecute = canExecute;
-            _viewModel = viewModel;
+            ViewModel = viewModel;
         }
 
         #endregion
@@ -32,75 +29,50 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
         public bool IsEnabled
         {
-            get { return _isEnabled; }
+            get { return GetValue<bool>("IsEnabled"); }
             set
             {
-                if (value == _isEnabled)
-                    return;
-
-                _isEnabled = value;
-                RaisePropertyChanged("IsEnabled");
+                this["IsEnabled"] = value;
                 RaiseCanExecuteChanged();
             }
         }
 
         public bool IsRecallAllowed
         {
-            get { return _isRecallAllowed; }
+            get { return GetValue<bool>("IsRecallAllowed"); }
             set
             {
-                if (value == _isRecallAllowed)
-                    return;
-
-                _isRecallAllowed = value;
-                RaisePropertyChanged("IsRecallAllowed");
+                this["IsRecallAllowed"] = value;
                 RaiseCanExecuteChanged();
             }
         }
 
         public bool IsExecuting
         {
-            get { return _isExecuting; }
+            get { return GetValue<bool>("IsExecuting"); }
             protected set
             {
-                if (value == _isExecuting)
-                    return;
-
-                _isExecuting = value;
-                RaisePropertyChanged("IsExecuting");
+                this["IsExecuting"] = value;
                 RaiseCanExecuteChanged();
             }
         }
 
         public string Title
         {
-            get { return _title; }
-            set
-            {
-                if (value == _title)
-                    return;
-
-                _title = value;
-                RaisePropertyChanged("Title");
-            }
+            get { return GetValue<string>("Title"); }
+            set { this["Title"] = value; }
         }
 
         public string Description
         {
-            get { return _description; }
-            set
-            {
-                if (value == _description)
-                    return;
-
-                _description = value;
-                RaisePropertyChanged("Description");
-            }
+            get { return GetValue<string>("Description"); }
+            set { this["Description"] = value; }
         }
 
         protected ViewModelBase ViewModel
         {
-            get { return _viewModel; }
+            get { return GetValue<ViewModelBase>("ViewModel"); }
+            private set { this["ViewModel"] = value; }
         }
 
         #endregion
@@ -125,7 +97,7 @@ namespace NullVoidCreations.Janitor.Shared.Base
             if (CanExecuteChanged == null)
                 return;
 
-            CanExecuteChanged(this, EventArgs.Empty);
+            CanExecuteChanged.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

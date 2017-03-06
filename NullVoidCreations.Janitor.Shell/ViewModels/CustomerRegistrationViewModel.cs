@@ -2,6 +2,7 @@
 using NullVoidCreations.Janitor.Licensing;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Controls;
+using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
@@ -106,7 +107,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             ErrorMessage = null;
             try
             {
-                Customer.Register(Email, Password, IsTrialKeyRequested);
+                var serialKey = Customer.Register(Email, Password, IsTrialKeyRequested);
+                LicenseManager.Instance.License.Activate(serialKey);
             }
             catch (Exception ex)
             {

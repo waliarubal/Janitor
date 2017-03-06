@@ -22,11 +22,6 @@ namespace NullVoidCreations.Janitor.Shell.Models
 
         #region properties
 
-        public Customer Customer
-        {
-            get { return _customer; }
-        }
-
         public string SerialKey
         {
             get { return _license == null ? string.Empty : _license.SerialKey; }
@@ -101,6 +96,7 @@ namespace NullVoidCreations.Janitor.Shell.Models
             SettingsManager.Instance["CustomerName"] = _customer.Name;
             SettingsManager.Instance["CustomerEmail"] = _customer.Email;
 
+            LicenseManager.Instance.LoadLicense();
             RaisePropertyChanged();
         }
 

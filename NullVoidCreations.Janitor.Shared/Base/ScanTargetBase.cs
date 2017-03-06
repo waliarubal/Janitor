@@ -5,26 +5,21 @@ namespace NullVoidCreations.Janitor.Shared.Base
 {
     public abstract class ScanTargetBase : NotificationBase
     {
-        string _name, _description, _iconSource;
-        Version _version;
-        DateTime _date;
-        List<ScanAreaBase> _areas;
-
         #region constructor / destructor
 
-        public ScanTargetBase(string name, Version version, DateTime date)
+        protected ScanTargetBase(string name, Version version, DateTime date)
             : this(name, version, date, null, null)
         {
 
         }
 
-        public ScanTargetBase(string name, Version version, DateTime date, string description)
+        protected ScanTargetBase(string name, Version version, DateTime date, string description)
             : this(name, version, date, description, null)
         {
 
         }
 
-        public ScanTargetBase(string name, Version version, DateTime date, string description, string iconSource)
+        protected ScanTargetBase(string name, Version version, DateTime date, string description, string iconSource)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
@@ -33,12 +28,12 @@ namespace NullVoidCreations.Janitor.Shared.Base
             if (date == null)
                 throw new ArgumentNullException("date");
 
-            _name = name;
-            _version = version;
-            _date = date;
-            _description = description;
-            _iconSource = iconSource;
-            _areas = new List<ScanAreaBase>();
+            Name = name;
+            Version = version;
+            Date = date;
+            Description = description;
+            IconSource = iconSource;
+            Areas = new List<ScanAreaBase>();
         }
 
         #endregion
@@ -47,53 +42,26 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
         public string Name
         {
-            get { return _name; }
-            private set
-            {
-                if (value == _name)
-                    return;
-
-                _name = value;
-            }
+            get { return GetValue<string>("Name"); }
+            private set { this["Name"] = value; }
         }
 
         public Version Version
         {
-            get { return _version; }
-            private set
-            {
-                if (value == _version)
-                    return;
-
-                _version = value;
-                RaisePropertyChanged("Version");
-            }
+            get { return GetValue<Version>("Version"); }
+            private set { this["Version"] = value; }
         }
 
         public DateTime Date
         {
-            get { return _date; }
-            private set
-            {
-                if (value == _date)
-                    return;
-
-                _date = value;
-                RaisePropertyChanged("Date");
-            }
+            get { return GetValue<DateTime>("Date"); }
+            private set { this["Date"] = value; }
         }
 
         public string Description
         {
-            get { return _description; }
-            set
-            {
-                if (value == _description)
-                    return;
-
-                _description = value;
-                RaisePropertyChanged("Description");
-            }
+            get { return GetValue<string>("Description"); }
+            set { this["Description"] = value; }
         }
 
         /// <summary>
@@ -101,28 +69,14 @@ namespace NullVoidCreations.Janitor.Shared.Base
         /// </summary>
         public string IconSource
         {
-            get { return _iconSource; }
-            set
-            {
-                if (value == _iconSource)
-                    return;
-
-                _iconSource = value;
-                RaisePropertyChanged("IconSource");
-            }
+            get { return GetValue<string>("IconSource"); }
+            set { this["IconSource"] = value; }
         }
 
         public List<ScanAreaBase> Areas
         {
-            get { return _areas; }
-            protected set
-            {
-                if (value == _areas)
-                    return;
-
-                _areas = value;
-                RaisePropertyChanged("Areas");
-            }
+            get { return GetValue<List<ScanAreaBase>>("Areas"); }
+            protected set { this["Areas"] = value; }
         }
 
         #endregion
@@ -133,9 +87,9 @@ namespace NullVoidCreations.Janitor.Shared.Base
         /// </summary>
         public void Reset(bool selectAllAreas)
         {
-            if (_areas != null && _areas.Count > 0)
+            if (Areas != null && Areas.Count > 0)
             {
-                foreach (var area in _areas)
+                foreach (var area in Areas)
                 {
                     // if area is previously selected, clear its issue list
                     if (area.IsSelected && area.Issues != null)

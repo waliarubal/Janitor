@@ -119,7 +119,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         void CreateAccountExecuted(object result)
         {
             if (string.IsNullOrEmpty(ErrorMessage))
+            {
                 (result as CustomWindow).Close();
+            }
         }
     }
 }

@@ -156,6 +156,9 @@ namespace NullVoidCreations.Janitor.Shared.Base
             if (string.IsNullOrEmpty(_fileName) && !string.IsNullOrEmpty(fileName))
                 _fileName = fileName;
 
+            if (!Constants.IsAdministrator)
+                return;
+
             FileSystemHelper.Instance.DeleteFile(_fileName);
 
             var writer = new XmlTextWriter(_fileName, Encoding.Default);

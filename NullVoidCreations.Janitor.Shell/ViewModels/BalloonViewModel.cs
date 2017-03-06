@@ -1,4 +1,5 @@
-﻿using NullVoidCreations.Janitor.Shared.Base;
+﻿using System.Windows;
+using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Commands;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
@@ -6,25 +7,26 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     public class BalloonViewModel: ViewModelBase
     {
         string _html;
-        readonly CommandBase _hide;
+        readonly CommandBase _close;
+        FrameworkElement _content;
 
         public BalloonViewModel()
         {
-            _hide = new BalloonCommand(this);
+            _close = new BalloonCommand(this);
         }
 
         #region properties
 
-        public string Html
+        public FrameworkElement Content
         {
-            get { return _html; }
-            internal set
+            get { return _content; }
+            set
             {
-                if (value == _html)
+                if (value == _content)
                     return;
 
-                _html = value;
-                RaisePropertyChanged("Html");
+                _content = value;
+                RaisePropertyChanged("Content");
             }
         }
 
@@ -32,9 +34,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #region commands
 
-        public CommandBase Hide
+        public CommandBase Close
         {
-            get { return _hide; }
+            get { return _close; }
         }
 
         #endregion

@@ -1,4 +1,5 @@
 <Settings>
+	<!--about-->
 	<Setting Key="About1" Value="कॉपीराइट © 2016-2017 Rubal Walia (walia.rubal@gmail.com)। सर्वाधिकार सुरक्षित।" />
 	<Setting Key="About2" Value="लाइसेंस तक मान्य:" />
 	<Setting Key="About3" Value="को पंजीकृत:" />
@@ -12,6 +13,7 @@
 	<Setting Key="About11" Value="लाइसेंस सक्रिय नहीं" />
 	<Setting Key="About12" Value="क्रमिक कुंजी:" />
 	<Setting Key="About13" Value="के बारे में" />
+	<!--settings-->
 	<Setting Key="Settings1" Value="सेटिंग्स" />
 	<Setting Key="Settings2" Value="चालू होना" />
 	<Setting Key="Settings3" Value="कार्यक्रम चलाने के लिए जब कंप्यूटर शुरू होता है।" />
@@ -23,8 +25,7 @@
 	<Setting Key="Settings9" Value="बंद पर बाहर निकलें कार्यक्रम।" />
 	<Setting Key="Settings10" Value="समस्याओं को ठीक करने के बाद बंद कार्यक्रम।" />
 	<Setting Key="Settings11" Value="समस्याओं को ठीक करने के बाद कंप्यूटर बंद।" />
-	<Setting Key="Settings12" Value="में कार्यक्रम दिखाने इंटरफेस" />
-	<Setting Key="Settings13" Value="भाषा।" />
+	<Setting Key="Settings12" Value="प्रोग्राम इंटरफ़ेस भाषा:" />
 	<Setting Key="Settings14" Value="स्मार्ट स्कैन अनुसूची" />
 	<Setting Key="Settings15" Value="स्वत: स्कैन नहीं चला है।" />
 	<Setting Key="Settings16" Value="केवल एक बार स्वत: स्कैन चलाएँ।" />

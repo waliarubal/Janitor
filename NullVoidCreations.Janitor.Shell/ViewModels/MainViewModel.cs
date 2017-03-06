@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using NullVoidCreations.Janitor.Shared;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
@@ -309,8 +310,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     if (_taskbarBalloon == null)
                         _taskbarBalloon = new BalloonView();
                     
-                    (_taskbarBalloon.DataContext as BalloonViewModel).Html = data[0] as string;
-                    UiHelper.Instance.MainWindow.NotificationIcon.ShowCustomBalloon(_taskbarBalloon, System.Windows.Controls.Primitives.PopupAnimation.Slide, 20000);
+                    (_taskbarBalloon.DataContext as BalloonViewModel).Content = data[0] as FrameworkElement;
+                    UiHelper.Instance.MainWindow.NotificationIcon.ShowCustomBalloon(_taskbarBalloon, PopupAnimation.Slide, 20000);
                     break;
 
                 case Signal.HideBaloon:

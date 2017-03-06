@@ -19,7 +19,6 @@ namespace NullVoidCreations.Janitor.Licensing
         [BsonElement("mail", Order = 1)]
         public string Email { get; set; }
 
-        [BsonDateTimeOptions(DateOnly = true, Kind = DateTimeKind.Local)]
         [BsonElement("reg_date", Order = 2)]
         public DateTime RegistrationDate { get; set; }
 
@@ -100,8 +99,8 @@ namespace NullVoidCreations.Janitor.Licensing
             if (!Customers.Save(this).Ok)
                 throw new Exception("An error occured while registering user.");
 
-            if (generateTrial)
-                AddLicense(DateTime.Now, DateTime.Now.AddDays(90));
+            if (generateTrial && !AddLicense(DateTime.Now, DateTime.Now.AddDays(90)))
+                throw new Exception("Failed to generate license.");
         }
 
         public bool AddLicense(DateTime issueDate, DateTime expirationDate)
@@ -140,6 +139,9 @@ namespace NullVoidCreations.Janitor.Licensing
             {
                 if (licence.SerialKey.Equals(serialKey))
                 {
+                    if (!licence.MachineKey.Equals(licence.GetMachineKey()))
+                        throw new InvalidOperationException("Serial key is not valid for this machine.");
+
                     licence.SaveToFile(fileName);
                     return licence;
                 }

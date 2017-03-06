@@ -130,60 +130,59 @@
             <Image Grid.RowSpan="6"
                    Margin="0 0 8 0"
                    VerticalAlignment="Top"
-                   Source="/program_shell;component/Resources/Support.png" />
+                   Source="/program_shell;component/Resources/Wrench.png" />
             <TextBlock Grid.Column="1"
                        Style="{StaticResource ResourceKey=TitleStyle}"
                        Text="{StaticResource ResourceKey=Settings8}" />
 
             <TextBlock Grid.Row="1"
                        Grid.Column="1"
+                       Text="{StaticResource ResourceKey=Settings12}" />
+            <ComboBox Grid.Row="1"
+                      Grid.Column="2"
+                      Margin="0 4"
+                      ItemsSource="{Binding Path=Languages,
+                                            Mode=OneWay}"
+                      SelectedItem="{Binding Path=Language,
+                                             Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="18" Source="{Binding Path=IconFileName, Mode=OneTime}" />
+                            <TextBlock Margin="4 0"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Path=Name,
+                                                      Mode=OneTime}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="2"
+                       Grid.Column="1"
                        Text="{StaticResource ResourceKey=Settings9}" />
-            <CheckBox Grid.Row="1"
+            <CheckBox Grid.Row="2"
                       Grid.Column="2"
                       IsChecked="{Binding Path=ExitOnClose,
                                           Mode=TwoWay}" />
 
-            <TextBlock Grid.Row="2"
+            <TextBlock Grid.Row="3"
                        Grid.Column="1"
                        Text="{StaticResource ResourceKey=Settings10}" />
-            <CheckBox Grid.Row="2"
+            <CheckBox Grid.Row="3"
                       Grid.Column="2"
                       IsChecked="{Binding Path=CloseAfterFixing,
                                           Mode=TwoWay}" />
 
-            <TextBlock Grid.Row="3"
+            <TextBlock Grid.Row="4"
                        Grid.Column="1"
                        Text="{StaticResource ResourceKey=Settings11}" />
-            <CheckBox Grid.Row="3"
+            <CheckBox Grid.Row="4"
                       Grid.Column="2"
                       IsChecked="{Binding Path=ShutdownAfterFixing,
                                           Mode=TwoWay}" />
 
-            <StackPanel Grid.Row="4"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="2"
-                        Orientation="Horizontal">
-                <TextBlock Text="{StaticResource ResourceKey=Settings12}" />
-                <ComboBox MinWidth="120"
-                          ItemsSource="{Binding Path=Languages,
-                                                Mode=OneWay}"
-                          SelectedItem="{Binding Path=Language,
-                                                 Mode=TwoWay}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Height="18" Source="{Binding Path=IconFileName, Mode=OneTime}" />
-                                <TextBlock Margin="4 0"
-                                           VerticalAlignment="Center"
-                                           Text="{Binding Path=Name,
-                                                          Mode=OneTime}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
 
-                <TextBlock Text="{StaticResource ResourceKey=Settings13}" />
-            </StackPanel>
         </Grid>
 
         <Separator Grid.Row="4" Margin="20 0" />

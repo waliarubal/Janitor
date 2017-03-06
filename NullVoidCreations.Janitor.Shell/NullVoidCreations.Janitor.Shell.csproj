@@ -69,14 +69,6 @@
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net35\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="HtmlRenderer, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlRenderer.Core.1.5.1-beta1\lib\net35-client\HtmlRenderer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="HtmlRenderer.WPF, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlRenderer.WPF.1.5.1-beta1\lib\net35-client\HtmlRenderer.WPF.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -132,6 +124,7 @@
     <Compile Include="Core\WorkQueueManager.cs" />
     <Compile Include="Models\LanguageModel.cs" />
     <Compile Include="Models\LicenseModel.cs" />
+    <Compile Include="Models\ProblemModel.cs" />
     <Compile Include="Models\ScanModel.cs" />
     <Compile Include="Models\ScanStatusModel.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
@@ -269,6 +262,13 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Resource Include="Resources\Key.png" />
+    <Resource Include="Resources\Wrench.png" />
+    <Resource Include="Resources\Facebook32.png" />
+    <Resource Include="Resources\GooglePlus32.png" />
+    <Resource Include="Resources\LinkedIn32.png" />
+    <Resource Include="Resources\Twitter32.png" />
+    <Resource Include="Resources\YouTube32.png" />
     <Content Include="Translations\Hindi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -287,6 +287,7 @@
     <Resource Include="Resources\Info.png" />
     <Content Include="Translations\Hindi.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <None Include="packages.config" />
     <AppDesigner Include="Properties\" />

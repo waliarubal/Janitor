@@ -31,6 +31,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal">
@@ -156,6 +157,31 @@
                        Margin="0 12 0 0"
                        Text="{StaticResource ResourceKey=About7}"
                        TextWrapping="Wrap" />
+            <StackPanel Grid.Row="10"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="Image">
+                        <Setter Property="Width" Value="32" />
+                        <Setter Property="Height" Value="32" />
+                    </Style>
+                </StackPanel.Resources>
+                <Button Style="{StaticResource ResourceKey=ImageButtonStyle}">
+                    <Image Source="/program_shell;component/Resources/Facebook32.png" />
+                </Button>
+                <Button Style="{StaticResource ResourceKey=ImageButtonStyle}">
+                    <Image Source="/program_shell;component/Resources/GooglePlus32.png" />
+                </Button>
+                <Button Style="{StaticResource ResourceKey=ImageButtonStyle}">
+                    <Image Source="/program_shell;component/Resources/Twitter32.png" />
+                </Button>
+                <Button Style="{StaticResource ResourceKey=ImageButtonStyle}">
+                    <Image Source="/program_shell;component/Resources/LinkedIn32.png" />
+                </Button>
+                <Button Style="{StaticResource ResourceKey=ImageButtonStyle}">
+                    <Image Source="/program_shell;component/Resources/YouTube32.png" />
+                </Button>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

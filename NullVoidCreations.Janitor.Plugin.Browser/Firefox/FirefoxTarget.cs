@@ -13,7 +13,7 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Firefox
         public FirefoxTarget()
             : base("Mozilla Firefox", new Version("1.0.0.0"), new DateTime(2016, 12, 31))
         {
-            IconSource = "/NullVoidCreations.Janitor.Plugin.Browser;component/Resources/Firefox.png";
+            IconSource = "/plugin_browser;component/Resources/Firefox.png";
             _profiles = new List<string>();
 
             var configFile = Path.Combine(KnownPaths.Instance.AppDataRoaming, @"Mozilla\Firefox\profiles.ini");

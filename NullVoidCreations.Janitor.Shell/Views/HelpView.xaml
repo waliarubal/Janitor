@@ -10,10 +10,203 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontSize" Value="11" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+                <Setter Property="Margin" Value="0 0 0 2" />
+            </Style>
+        </Grid.Resources>
+
         <!--  header  -->
         <Border Style="{StaticResource ResourceKey=HeaderStyle}">
             <TextBlock Style="{StaticResource ResourceKey=HeaderTitleStyle}" Text="Help &amp; Support" />
         </Border>
+
+        <!--  help  -->
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Image Grid.RowSpan="4"
+                   Margin="0 0 8 0"
+                   VerticalAlignment="Top"
+                   Source="/program_shell;component/Resources/Help.png" />
+            <TextBlock Grid.Column="1"
+                       FontSize="12"
+                       FontWeight="Bold"
+                       Text="Help" />
+            <TextBlock Grid.Row="1" Grid.Column="1">
+                <Hyperlink>How do I register and get free 90 days trial serial key?</Hyperlink>
+            </TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="1">
+                <Hyperlink>I have a registered email and password, how do I find my serial key?</Hyperlink>
+            </TextBlock>
+            <TextBlock Grid.Row="3" Grid.Column="1">
+                <Hyperlink>How do I renew my serial key or buy additional serial keys?</Hyperlink>
+            </TextBlock>
+            <TextBlock Grid.Row="4" Grid.Column="1">
+                <Hyperlink>How do I change the product's interface language?</Hyperlink>
+            </TextBlock>
+            <TextBlock Grid.Row="5" Grid.Column="1">
+                <Hyperlink>How do I schedule a smart scan?</Hyperlink>
+            </TextBlock>
+            <TextBlock Grid.Row="6" Grid.Column="1">
+                <Hyperlink>How do I uninstall the product?</Hyperlink>
+            </TextBlock>
+        </Grid>
+
+        <Separator Grid.Row="2" Margin="20 0" />
+
+        <!--  license  -->
+        <Grid Grid.Row="3" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Image Grid.RowSpan="4"
+                   Margin="0 0 8 0"
+                   VerticalAlignment="Top"
+                   Source="/program_shell;component/Resources/Key.png" />
+            <TextBlock Grid.Column="1"
+                       FontSize="12"
+                       FontWeight="Bold"
+                       Text="Product Activation" />
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+                <TextBlock Text="{StaticResource ResourceKey=About2}" />
+                <TextBlock FontWeight="Bold"
+                           Text="{Binding Path=ExpiryDate,
+                                          Mode=OneWay,
+                                          StringFormat='{}{0:MM/dd/yyyy}'}"
+                           Visibility="{Binding Path=IsTrial,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                <TextBlock FontWeight="Bold"
+                           Foreground="{StaticResource ResourceKey=BadBrush}"
+                           Text="{StaticResource ResourceKey=About11}"
+                           Visibility="{Binding Path=IsTrial,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+            </StackPanel>
+            <StackPanel Grid.Row="2"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+                <TextBlock Text="{StaticResource ResourceKey=About12}" />
+                <TextBlock FontWeight="Bold"
+                           Text="{Binding Path=SerialKey,
+                                          Mode=OneWay}"
+                           Visibility="{Binding Path=IsTrial,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                <TextBlock FontWeight="Bold"
+                           Foreground="{StaticResource ResourceKey=BadBrush}"
+                           Text="{StaticResource ResourceKey=About11}"
+                           Visibility="{Binding Path=IsTrial,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+            </StackPanel>
+            <StackPanel Grid.Row="3"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+                <TextBlock Text="{StaticResource ResourceKey=About3}" />
+                <TextBlock FontWeight="Bold"
+                           Text="{Binding Path=RegisteredTo,
+                                          Mode=OneWay}"
+                           Visibility="{Binding Path=IsTrial,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}" />
+                <TextBlock FontWeight="Bold"
+                           Foreground="{StaticResource ResourceKey=BadBrush}"
+                           Text="{StaticResource ResourceKey=About11}"
+                           Visibility="{Binding Path=IsTrial,
+                                                Mode=OneWay,
+                                                Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+            </StackPanel>
+            <StackPanel Grid.Row="4"
+                        Grid.Column="1"
+                        Margin="0 12 0 0"
+                        Orientation="Horizontal">
+                <Button MinWidth="100"
+                        Margin="0 0 8 0"
+                        Content="Buy Now"
+                        Foreground="{StaticResource ResourceKey=BackgroundBrush}"
+                        Padding="0"
+                        Style="{StaticResource ResourceKey=BlackButtonStyle}" />
+                <Button MinWidth="100"
+                        Margin="0 0 8 0"
+                        Content="Activate Product" />
+                <Button MinWidth="100"
+                        Margin="0 0 8 0"
+                        Content="Manage Licenses" />
+            </StackPanel>
+        </Grid>
+
+        <Separator Grid.Row="4" Margin="20 0" />
+
+        <!--  support  -->
+        <Grid Grid.Row="5" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Image Grid.RowSpan="4"
+                   Margin="0 0 8 0"
+                   VerticalAlignment="Top"
+                   Source="/program_shell;component/Resources/Support.png" />
+            <TextBlock Grid.Column="1"
+                       FontSize="12"
+                       FontWeight="Bold"
+                       Text="Customer Care" />
+            <TextBlock Grid.Row="1"
+                       Grid.Column="1"
+                       Text="Please submit your support queries using the following forms:" />
+            <StackPanel Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="8 4 0 0">
+                <TextBlock>
+                    <Hyperlink>Request a custom software to be developed as per your needs.</Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink>Request a new product feature.</Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink>Submit your valuable feedback.</Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink>Report a product bug.</Hyperlink>
+                </TextBlock>
+            </StackPanel>
+
+        </Grid>
     </Grid>
 </UserControl>

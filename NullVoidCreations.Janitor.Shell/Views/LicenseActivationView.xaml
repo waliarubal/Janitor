@@ -74,7 +74,7 @@
             <Hyperlink>Where I can find the serial key?</Hyperlink>
         </TextBlock>
         <TextBlock Grid.Row="4" Margin="0 0 0 4">
-            <Hyperlink>I have username and password, what do I do?</Hyperlink>
+            <Hyperlink>I have a registered email and password, what do I do?</Hyperlink>
         </TextBlock>
         <StackPanel Grid.Row="5"
                     Margin="0 8 0 0"

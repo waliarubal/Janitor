@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Management;
 using System.Text;
 using System.Xml;
 using MongoDB.Bson;
@@ -24,10 +25,11 @@ namespace NullVoidCreations.Janitor.Licensing
         }
 
         [BsonConstructor]
-        public License(string serialKey, string activationKey)
+        public License(string serialKey, string activationKey, string machineKey)
         {
             SerialKey = serialKey;
             ActivationKey = activationKey;
+            MachineKey = machineKey;
         }
 
         public void Dispose()
@@ -60,34 +62,6 @@ namespace NullVoidCreations.Janitor.Licensing
             }
         }
 
-        [BsonIgnore]
-        public string Segment1
-        {
-            get;
-            private set;
-        }
-
-        [BsonIgnore]
-        public string Segment2
-        {
-            get;
-            private set;
-        }
-
-        [BsonIgnore]
-        public string Segment3
-        {
-            get;
-            private set;
-        }
-
-        [BsonIgnore]
-        public string Segment4
-        {
-            get;
-            private set;
-        }
-
         [BsonRepresentation(BsonType.String)]
         [BsonElement("act_key", Order = 2)]
         public string ActivationKey
@@ -114,6 +88,42 @@ namespace NullVoidCreations.Janitor.Licensing
                     throw new InvalidOperationException("Invalid activation key.");
                 }
             }
+        }
+
+        [BsonRepresentation(BsonType.String)]
+        [BsonElement("sys_key", Order = 3)]
+        public string MachineKey
+        {
+            get;
+            private set;
+        }
+
+        [BsonIgnore]
+        public string Segment1
+        {
+            get;
+            private set;
+        }
+
+        [BsonIgnore]
+        public string Segment2
+        {
+            get;
+            private set;
+        }
+
+        [BsonIgnore]
+        public string Segment3
+        {
+            get;
+            private set;
+        }
+
+        [BsonIgnore]
+        public string Segment4
+        {
+            get;
+            private set;
         }
 
         [BsonIgnore]
@@ -168,6 +178,7 @@ namespace NullVoidCreations.Janitor.Licensing
             license._fileName = fileName;
             license.SerialKey = document.SelectSingleNode("/License/SerialKey").InnerText;
             license.ActivationKey = document.SelectSingleNode("/License/ActivationKey").InnerText;
+            license.MachineKey = document.SelectSingleNode("/License/MachineKey").InnerText;
             return license;
         }
 
@@ -207,10 +218,43 @@ namespace NullVoidCreations.Janitor.Licensing
             activationKeyNode.InnerText = ActivationKey;
             root.AppendChild(activationKeyNode);
 
+            var machineSerialNode = document.CreateElement("MachineKey");
+            machineSerialNode.InnerText = MachineKey;
+            root.AppendChild(machineSerialNode);
+
             document.AppendChild(root);
 
             document.Save(fileName);
             _fileName = fileName;
+        }
+
+        internal string GetMachineKey()
+        {
+            using (var managementClass = new ManagementClass("Win32_BIOS"))
+            {
+                var properties = managementClass.Properties;
+                using (var managementObjects = managementClass.GetInstances())
+                {
+                    foreach (var managementObject in managementObjects)
+                    {
+                        foreach (var property in properties)
+                        {
+                            try
+                            {
+                                if (property.Name.Equals("SerialNumber"))
+                                    return managementObject.Properties[property.Name].Value.ToString();
+                            }
+                            catch
+                            {
+                                // do nothing here
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
 
         #region private methods
@@ -234,6 +278,7 @@ namespace NullVoidCreations.Janitor.Licensing
             IssueDate = isssueDate;
             ExpirationDate = expirationDate;
             Email = email;
+            MachineKey = GetMachineKey();
 
             var key = string.Format("{0:0000}{1:00}{2:00}{3:0000}{4:00}{5:00}{6}",
                 IssueDate.Year,

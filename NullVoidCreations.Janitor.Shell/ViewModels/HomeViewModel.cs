@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using NullVoidCreations.Janitor.Core.Models;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
@@ -10,13 +10,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class HomeViewModel: ViewModelBase, ISignalObserver
     {
-        readonly CommandBase _purchaseLicense, _doScan, _showPopup;
-        string _computerName, _operatingSyetem, _processor, _model;
-        decimal _memory;
-        int _issueCount;
-        bool _isLicensed, _isHavingIssues, _isHavingPluginUpdatesAvailable, _isHavingUpdatesAvailable;
-        LicenseModel _license;
-        readonly Queue<CommandBase> _startupActions;
+        readonly CommandBase _purchaseLicense, _doScan;
 
         #region constructor / destructor
 
@@ -24,10 +18,9 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         {
             SignalHost.Instance.AddObserver(this);
 
-            _startupActions = new Queue<CommandBase>();
-            _computerName = _operatingSyetem = _processor = _model = "Analysing...";
-
-            _showPopup = new BalloonCommand(this);
+            Problems = new ObservableCollection<ProblemModel>();
+            ComputerName = OperatingSystem = Processor = Model = "Analysing...";
+           
             _purchaseLicense = new RunProgramCommand(this);
             _doScan = new DelegateCommand(this, ExecuteDoScan);
             _doScan.IsEnabled = true;
@@ -42,152 +35,57 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #region properties
 
+        public ObservableCollection<ProblemModel> Problems
+        {
+            get { return GetValue<ObservableCollection<ProblemModel>>("Problems"); }
+            private set { this["Problems"] = value; }
+        }
+
         public string BuyNowUrl
         {
-            get { return SettingsManager.Instance["BuyNowUrl"] as string; }
+            get { return TemporarySettingsManager.Instance["BuyNowUrl"] as string; }
         }
 
         public LicenseModel License
         {
-            get { return _license; }
-            private set
-            {
-                if (value == _license)
-                    return;
-
-                _license = value;
-                RaisePropertyChanged("License");
-            }
+            get { return GetValue<LicenseModel>("License"); }
+            private set { this["License"] = value; }
         }
 
         public bool IsLicensed
         {
-            get { return _isLicensed; }
-            private set
-            {
-                if (value == _isLicensed)
-                    return;
-
-                _isLicensed = value;
-                RaisePropertyChanged("IsLicensed");
-            }
-        }
-
-        public bool IsHavingIssues
-        {
-            get { return _isHavingIssues; }
-            private set
-            {
-                if (value == _isHavingIssues)
-                    return;
-
-                _isHavingIssues = value;
-                RaisePropertyChanged("IsHavingIssues");
-            }
-        }
-
-        public int IssueCount
-        {
-            get { return _issueCount; }
-            private set
-            {
-                if (value == _issueCount)
-                    return;
-
-                _issueCount = value;
-                RaisePropertyChanged("IssueCount");
-            }
-        }
-
-        public bool IsHavingPluginUpdatesAvailable
-        {
-            get { return _isHavingPluginUpdatesAvailable; }
-            private set
-            {
-                if (value == _isHavingPluginUpdatesAvailable)
-                    return;
-
-                _isHavingPluginUpdatesAvailable = value;
-                RaisePropertyChanged("IsHavingPluginUpdatesAvailable");
-            }
-        }
-
-        public bool IsHavingUpdatesAvailable
-        {
-            get { return _isHavingUpdatesAvailable; }
-            private set
-            {
-                if (value == _isHavingUpdatesAvailable)
-                    return;
-
-                _isHavingUpdatesAvailable = value;
-                RaisePropertyChanged("IsHavingUpdatesAvailable");
-            }
+            get { return GetValue<bool>("IsLicensed"); }
+            private set { this["IsLicensed"] = value; }
         }
 
         public string ComputerName
         {
-            get { return _computerName; }
-            private set
-            {
-                if (value == _computerName)
-                    return;
-
-                _computerName = value;
-                RaisePropertyChanged("ComputerName");
-            }
+            get { return GetValue<string>("ComputerName"); }
+            private set { this["ComputerName"] = value; }
         }
 
         public string Model
         {
-            get { return _model; }
-            private set
-            {
-                if (value == _model)
-                    return;
-
-                _model = value;
-                RaisePropertyChanged("Model");
-            }
+            get { return GetValue<string>("Model"); }
+            private set { this["Model"] = value; }
         }
 
         public string OperatingSystem
         {
-            get { return _operatingSyetem; }
-            private set
-            {
-                if (value == _operatingSyetem)
-                    return;
-
-                _operatingSyetem = value;
-                RaisePropertyChanged("OperatingSystem");
-            }
+            get { return GetValue<string>("OperatingSystem"); }
+            private set { this["OperatingSystem"] = value; }
         }
 
         public decimal Memory
         {
-            get { return _memory; }
-            private set
-            {
-                if (value == _memory)
-                    return;
-
-                _memory = value;
-                RaisePropertyChanged("Memory");
-            }
+            get { return GetValue<decimal>("Memory"); }
+            private set { this["Memory"] = value; }
         }
 
         public string Processor
         {
-            get { return _processor; }
-            private set
-            {
-                if (value == _processor)
-                    return;
-
-                _processor = value;
-                RaisePropertyChanged("Processor");
-            }
+            get { return GetValue<string>("Processor"); }
+            private set { this["Processor"] = value; }
         }
 
         #endregion
@@ -217,19 +115,43 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             SignalHost.Instance.RaiseSignal(Signal.ScanTrigerred, type);
         }
 
-        void WeHaveProblems()
+        void WeHaveProblem(ProblemType type, bool isResolved = false)
         {
-            byte problems = 0;
-            if (!IsLicensed)
-                problems++;
-            if (IsHavingIssues)
-                problems++;
-            if (IsHavingPluginUpdatesAvailable)
-                problems++;
-            if (IsHavingUpdatesAvailable)
-                problems++;
+            ProblemModel problem = null;
+            if (isResolved)
+            {
+                for (var index = 0; index < Problems.Count; index++)
+                {
+                    problem = Problems[index];
+                    if (problem.Type == type)
+                    {
+                        Problems.RemoveAt(index);
+                        break;
+                    }
+                }
+                problem = null;
+            }
+            else
+            {
+                var found = false;
+                for (var index = 0; index < Problems.Count; index++)
+                {
+                    problem = Problems[index];
+                    if (problem.Type == type)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
 
-            SignalHost.Instance.RaiseSignal(Signal.ProblemsAppeared, problems);
+                if (!found)
+                {
+                    problem = new ProblemModel(type);
+                    Problems.Add(problem);
+                }
+            }
+
+            SignalHost.Instance.RaiseSignal(Signal.ProblemAppeared, Problems.Count, problem);
         }
 
         public void SignalReceived(Signal signal, params object[] data)
@@ -252,40 +174,20 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 case Signal.LicenseChanged:
                     License = LicenseManager.Instance.License;
                     IsLicensed = License != null && !License.IsTrial;
-                    WeHaveProblems();
+                    WeHaveProblem(ProblemType.IsUnlicensed, IsLicensed);
                     break;
 
                 case Signal.FixingStarted:
                 case Signal.AnalysisStarted:
-                    IssueCount = 0;
-                    IsHavingIssues = false;
-                    WeHaveProblems();
+                    WeHaveProblem(ProblemType.IsHavingIssues, true);
                     break;
 
                 case Signal.AnalysisStopped:
-                    IssueCount = (int)data[0];
-                    IsHavingIssues = IssueCount > 0;
-                    WeHaveProblems();
+                    WeHaveProblem(ProblemType.IsHavingIssues, (int)data[0] == 0);
                     break;
 
                 case Signal.FixingStopped:
-                    IssueCount = (int)data[0];
-                    IsHavingIssues = false;
-                    WeHaveProblems();
-                    break;
-
-                case Signal.UpdateStarted:
-                    switch ((UpdateCommand.UpdateType)data[0])
-                    {
-                        case UpdateCommand.UpdateType.Plugin:
-                            IsHavingPluginUpdatesAvailable = true;
-                            break;
-
-                        case UpdateCommand.UpdateType.Program:
-                            IsHavingUpdatesAvailable = true;
-                            break;
-                    }
-                    WeHaveProblems();
+                    WeHaveProblem(ProblemType.IsHavingIssues, true);
                     break;
 
                 case Signal.UpdateStopped:
@@ -293,14 +195,13 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     switch ((UpdateCommand.UpdateType)data[0])
                     {
                         case UpdateCommand.UpdateType.Plugin:
-                            IsHavingPluginUpdatesAvailable = !wasUpdateSuccessful;
+                            WeHaveProblem(ProblemType.IsHavingPluginUpdatesAvailable, wasUpdateSuccessful);
                             break;
 
                         case UpdateCommand.UpdateType.Program:
-                            IsHavingUpdatesAvailable = !wasUpdateSuccessful;
+                            WeHaveProblem(ProblemType.IsHavingUpdatesAvailable, wasUpdateSuccessful);
                             break;
                     }
-                    WeHaveProblems();
                     break;
             }
         }

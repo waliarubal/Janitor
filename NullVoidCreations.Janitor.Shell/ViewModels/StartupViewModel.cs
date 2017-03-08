@@ -8,8 +8,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     public class StartupViewModel : ViewModelBase, ISignalObserver
     {
         readonly CommandBase _refresh, _delete;
-        StartupEntryModel _selectedEntry;
-        ObservableCollection<StartupEntryModel> _entries;
 
         public StartupViewModel()
         {
@@ -29,29 +27,17 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public ObservableCollection<StartupEntryModel> Entries
         {
-            get { return _entries; }
-            private set
-            {
-                if (value == _entries)
-                    return;
-
-                _entries = value;
-                RaisePropertyChanged("Entries");
-            }
+            get { return GetValue<ObservableCollection<StartupEntryModel>>("Entries"); }
+            private set { this["Entries"] = value;}
         }
 
         public StartupEntryModel SelectedEntry
         {
-            get { return _selectedEntry; }
+            get { return GetValue<StartupEntryModel>("SelectedEntry"); }
             set
             {
-                if (value == _selectedEntry)
-                    return;
-
-                _selectedEntry = value;
-                RaisePropertyChanged("SelectedEntry");
+                this["SelectedEntry"] = value;
                 Delete.RaiseCanExecuteChanged();
-                
             }
         }
 

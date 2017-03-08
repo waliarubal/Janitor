@@ -26,7 +26,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             Program
         }
 
-        const string CencelMessage = "Update cancelled by user.";
+        const string CancelMessage = "Update cancelled by user.";
         const string DownloadErrorMessage = "An error occured while downloading update. Please try again later.";
         const string UpdateErrorMessage = "An error occured while installing the update.";
         const string UpdatingMessage = "Updating from version {0} to version {1}.";
@@ -121,15 +121,18 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             else
                 SettingsManager.Instance.LastProgramUpdateCheck = DateTime.Now;
 
-            if (parameter != null)
-                SettingsManager.Instance.Load(Constants.UpdatesMetadataUrl);
+            TemporarySettingsManager.Instance.Load(Constants.UpdatesMetadataUrl);
 
-            var programVersionString = SettingsManager.Instance["AvailableProgramVersion"] as string;
-            if (programVersionString == null)
-                programVersionString = "0.0.0.0";
-            var pluginsVersionString = SettingsManager.Instance["AvailablePluginsVersion"] as string;
-            if (pluginsVersionString == null)
-                pluginsVersionString = "0.0.0.0";
+            var programVersionString = TemporarySettingsManager.Instance["AvailableProgramVersion"] as string;
+            var pluginsVersionString = TemporarySettingsManager.Instance["AvailablePluginsVersion"] as string;
+            if (programVersionString == null || pluginsVersionString == null)
+            {
+                Title = "Check for Updates";
+                Description = DownloadErrorMessage;
+                SignalHost.Instance.RaiseSignal(Signal.UpdateStopped, _type, false);
+                SignalHost.Instance.RaiseSignal(Signal.StopWork);
+                return;
+            }
 
             // version validation
             AvailableVersion = new Version(_type == UpdateType.Program ? programVersionString : pluginsVersionString);
@@ -154,8 +157,8 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             // download update
             Description = string.Format(UpdatingMessage, currentVersion, AvailableVersion);
             UpdateUrl = _type == UpdateType.Program ?
-                new Uri(SettingsManager.Instance["ProgramUpdateUrl"].ToString()) :
-                new Uri(SettingsManager.Instance["PluginsUpdateUrl"].ToString());
+                new Uri(TemporarySettingsManager.Instance["ProgramUpdateUrl"].ToString()) :
+                new Uri(TemporarySettingsManager.Instance["PluginsUpdateUrl"].ToString());
             var updateFile = _type == UpdateType.Program ? ApplicationUpdateFile : PluginsUpdateFile;
             FileSystemHelper.Instance.DeleteFile(updateFile);
             try
@@ -167,10 +170,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                 Description = DownloadErrorMessage;
                 SignalHost.Instance.RaiseSignal(Signal.UpdateStopped, _type, false);
                 SignalHost.Instance.RaiseSignal(Signal.StopWork);
-                return;
             }
-
-            return;
         }
 
         void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)

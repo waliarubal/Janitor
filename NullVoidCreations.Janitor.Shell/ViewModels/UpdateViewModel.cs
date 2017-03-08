@@ -14,7 +14,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             _pluginUpdate.IsEnabled = _programUpdate.IsEnabled = true;
         }
 
-        #region properties
+        #region commands
 
         public UpdateCommand PluginUpdate
         {

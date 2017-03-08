@@ -101,7 +101,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commands\BalloonCommand.cs" />
     <Compile Include="Commands\RunProgramCommand.cs" />
     <Compile Include="Commands\ScheduleSilentRunCommand.cs" />
     <Compile Include="Commands\ShowPopupCommand.cs" />
@@ -117,9 +116,9 @@
     <Compile Include="Core\LanguageManager.cs" />
     <Compile Include="Core\LicenseManager.cs" />
     <Compile Include="Core\PluginManager.cs" />
-    <Compile Include="Core\Proxy.cs" />
     <Compile Include="Core\SettingsManager.cs" />
     <Compile Include="Core\SignalHost.cs" />
+    <Compile Include="Core\TemporarySettingsManager.cs" />
     <Compile Include="Core\UiHelper.cs" />
     <Compile Include="Core\WorkQueueManager.cs" />
     <Compile Include="Models\LanguageModel.cs" />
@@ -269,13 +268,13 @@
     <Resource Include="Resources\LinkedIn32.png" />
     <Resource Include="Resources\Twitter32.png" />
     <Resource Include="Resources\YouTube32.png" />
+    <Resource Include="Resources\MakeInIndia.png" />
     <Content Include="Translations\Hindi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Translations\English.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="app.config" />
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>

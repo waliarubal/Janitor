@@ -2,9 +2,9 @@
 using System.IO;
 using System.Reflection;
 
-namespace NullVoidCreations.Janitor.Shell.Core
+namespace NullVoidCreations.Janitor.Shared
 {
-    class Proxy: MarshalByRefObject
+    public class Proxy: MarshalByRefObject
     {
         public Assembly GetAssembly(string assemblyPath)
         {

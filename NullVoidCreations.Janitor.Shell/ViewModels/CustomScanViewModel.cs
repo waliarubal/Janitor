@@ -7,12 +7,10 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     public class CustomScanViewModel: ViewModelBase
     {
         readonly CommandBase _scan;
-        ObservableCollection<ScanTargetBase> _targets;
-        string _errorMessage;
 
         public CustomScanViewModel()
         {
-            _targets = new ObservableCollection<ScanTargetBase>();
+            Targets = new ObservableCollection<ScanTargetBase>();
             _scan = new DelegateCommand(this, ExecuteScan);
             _scan.IsEnabled = true;
         }
@@ -21,28 +19,14 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public ObservableCollection<ScanTargetBase> Targets
         {
-            get { return _targets; }
-            set
-            {
-                if (value == _targets)
-                    return;
-
-                _targets = value;
-                RaisePropertyChanged("Targets");
-            }
+            get { return GetValue<ObservableCollection<ScanTargetBase>>("Targets"); }
+            set { this["Targets"] = value; }
         }
 
         public string ErrorMessage
         {
-            get { return _errorMessage; }
-            private set
-            {
-                if (value == _errorMessage)
-                    return;
-
-                _errorMessage = value;
-                RaisePropertyChanged("ErrorMessage");
-            }
+            get { return GetValue<string>("ErrorMessage"); }
+            private set { this["ErrorMessage"] = value; }
         }
 
         #endregion

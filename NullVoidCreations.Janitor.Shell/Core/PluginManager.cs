@@ -5,6 +5,7 @@ using NullVoidCreations.Janitor.Shared;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Commands;
+using System.Reflection;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
@@ -76,6 +77,14 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #endregion
 
+        Assembly FindPlugin(object sender, ResolveEventArgs args)
+        {
+            var assemblyName = new AssemblyName(args.Name);
+
+            var pluginAssembly = Path.Combine(Constants.PluginsDirectory, string.Format("{0}.dll", assemblyName.Name));
+            return Assembly.LoadFile(pluginAssembly);
+        }
+
         bool UpdatePlugins(string archiveFile)
         {
             if (string.IsNullOrEmpty(archiveFile))
@@ -104,6 +113,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
         {
             UnloadPlugins();
 
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(FindPlugin);
+
             var scanTargetType = typeof(ScanTargetBase);
             var proxyType = typeof(Proxy);
             var proxy = (Proxy)_container.CreateInstanceAndUnwrap(proxyType.Assembly.FullName, proxyType.FullName);
@@ -130,6 +141,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         public void UnloadPlugins()
         {
+            AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(FindPlugin);
+
             _targets.Clear();
             DestroyContainer();
             CreateContainer();
@@ -139,12 +152,25 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         void CreateContainer()
         {
+            CopyDependencies();
+
             var evidence = AppDomain.CurrentDomain.Evidence;
 
             var setupInfo = new AppDomainSetup();
             setupInfo.ApplicationBase = Constants.PluginsDirectory;
 
             _container = AppDomain.CreateDomain("ScanTargets", evidence, setupInfo);
+        }
+
+        void CopyDependencies()
+        {
+            const string SharedAssemblyName = "shared.dll";
+
+            // copy shared DLL if missing
+            var sharedAssemblyPath = Path.Combine(Constants.PluginsDirectory, SharedAssemblyName);
+            var sharedAssemblySourcePath = Path.Combine(KnownPaths.Instance.ApplicationDirectory, SharedAssemblyName);
+            if (!File.Exists(sharedAssemblyPath))
+                File.Copy(sharedAssemblySourcePath, sharedAssemblyPath, true);
         }
 
         void DestroyContainer()

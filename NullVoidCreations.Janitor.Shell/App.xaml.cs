@@ -110,8 +110,8 @@ namespace NullVoidCreations.Janitor.Shell
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.OperatingSystem);
             SysInformation.Instance.Fill(SysInformation.ManagementClassNames.Processor);
 
-            SettingsManager.Instance.Load(Constants.UpdatesMetadataUrl);
-            SettingsManager.Instance.Load(Constants.WebLinksUrl);
+            TemporarySettingsManager.Instance.Load(Constants.UpdatesMetadataUrl);
+            TemporarySettingsManager.Instance.Load(Constants.WebLinksUrl);
 
             e.Result = e.Argument;
         }
@@ -137,7 +137,6 @@ namespace NullVoidCreations.Janitor.Shell
             if (SettingsManager.Instance.RunScanAtLaunch)
                 WorkQueueManager.Instance.AddWork(WorkSignal.SmartScan);
 
-            WorkQueueManager.Instance.AddWork(WorkSignal.ShowTrialWarning);
             WorkQueueManager.Instance.DoWork();
 
             // dispose off worker

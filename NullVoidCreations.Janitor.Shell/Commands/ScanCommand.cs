@@ -143,6 +143,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             if (scan.Type == ScanType.Unknown)
                 return;
 
+            SignalHost.Instance.RaiseSignal(Signal.AnalysisStarted, false);
             _viewModel.IsExecuting = IsExecuting = true;
 
             _worker = new BackgroundWorker();
@@ -159,6 +160,7 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         {
             UiHelper.Instance.Alert("Some issues may not be resolved due to resources locked by running programs. This ensures error free execution of running applications.");
 
+            SignalHost.Instance.RaiseSignal(Signal.FixingStarted);
             _viewModel.IsExecuting = IsExecuting = true;
 
             _worker = new BackgroundWorker();
@@ -201,8 +203,6 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         /// <returns></returns>
         ScanModel Analyse(ScanModel scan)
         {
-            SignalHost.Instance.RaiseSignal(Signal.AnalysisStarted, false);
-
             var issues = new List<IssueBase>();
             var targets = 0;
             var areas = 0;
@@ -254,7 +254,6 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             scan.IsCancelled = _isCancelled;
 
             ScanModel.SaveScanDetails(scan);
-            SignalHost.Instance.RaiseSignal(Signal.AnalysisStopped, issues.Count, scan.IsCancelled);
 
             return scan;
         }
@@ -266,8 +265,6 @@ namespace NullVoidCreations.Janitor.Shell.Commands
         /// <returns></returns>
         ScanModel Fix(ScanModel scan)
         {
-            SignalHost.Instance.RaiseSignal(Signal.FixingStarted);
-
             var issues = new List<IssueBase>();
             var targets = 0;
             var areas = 0;
@@ -319,7 +316,6 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             scan.Issues = issues;
 
             ScanModel.SaveScanDetails(scan);
-            SignalHost.Instance.RaiseSignal(Signal.FixingStopped, issues.Count, scan.IsCancelled);
 
             scan.IsFixed = !scan.IsCancelled;
             return scan;
@@ -350,7 +346,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             _worker.Dispose();
             _worker = null;
 
-            _viewModel.Scan = e.Result as ScanModel;
+            var scan = e.Result as ScanModel;
+            SignalHost.Instance.RaiseSignal(scan.IsFixed ? Signal.FixingStopped : Signal.AnalysisStopped, scan.Issues.Count, scan.IsCancelled);
+
+            _viewModel.Scan = scan;
             _viewModel.IsExecuting = IsExecuting = false;
             _isCancelled = false;
 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
 using NullVoidCreations.Janitor.Shared;
+using NullVoidCreations.Janitor.Shell.Models;
 using NullVoidCreations.Janitor.Shell.ViewModels;
 using NullVoidCreations.Janitor.Shell.Views;
 
@@ -57,6 +59,18 @@ namespace NullVoidCreations.Janitor.Shell.Core
             thread.IsBackground = true;
             thread.Priority = ThreadPriority.BelowNormal;
             thread.Start();
+        }
+
+        public void ShowBalloon(ProblemModel problem)
+        {
+            ExecuteOnUiThread(() =>
+            {
+                UiHelper.Instance.MainWindow.NotificationIcon.CloseBalloon();
+
+                var balloon = new BalloonView();
+                (balloon.DataContext as BalloonViewModel).Problem = problem;
+                UiHelper.Instance.MainWindow.NotificationIcon.ShowCustomBalloon(balloon, PopupAnimation.Slide, 20000);
+            });
         }
 
         public bool? ShowPopup(Window window)

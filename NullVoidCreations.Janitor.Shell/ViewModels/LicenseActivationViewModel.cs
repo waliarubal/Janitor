@@ -10,7 +10,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
     public class LicenseActivationViewModel: ViewModelBase
     {
         readonly CommandBase _purchaseLicense, _activate, _copyFromClipboard;
-        string _licenseKey, _errorMessage;
 
         public LicenseActivationViewModel()
         {
@@ -24,34 +23,23 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public string BuyNowUrl
         {
-            get { return SettingsManager.Instance["BuyNowUrl"] as string; }
+            get { return TemporarySettingsManager.Instance["BuyNowUrl"] as string; }
         }
 
         public string SerialKey
         {
-            get { return _licenseKey; }
+            get { return GetValue<string>("SerialKey"); }
             set
             {
-                if (value == _licenseKey)
-                    return;
-
-                _licenseKey = value;
-                _activate.IsEnabled = !string.IsNullOrEmpty(value);
-                RaisePropertyChanged("SerialKey");
+                this["SerialKey"] = value;
+                Activate.IsEnabled = !string.IsNullOrEmpty(value);
             }
         }
 
         public string ErrorMessage
         {
-            get { return _errorMessage; }
-            private set
-            {
-                if (value == _errorMessage)
-                    return;
-
-                _errorMessage = value;
-                RaisePropertyChanged("ErrorMessage");
-            }
+            get { return GetValue<string>("ErrorMessage"); }
+            private set { this["ErrorMessage"] = value; }
         }
 
         #endregion

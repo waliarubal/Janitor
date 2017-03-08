@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
+             Width="320"
              Background="{StaticResource ResourceKey=BackgroundBrush}"
              BorderBrush="{StaticResource ResourceKey=BorderBrush}"
              BorderThickness="1"
@@ -11,9 +12,47 @@
     <UserControl.DataContext>
         <vm:BalloonViewModel />
     </UserControl.DataContext>
-    <Grid>
-        <ContentPresenter Content="{Binding Path=Content, Mode=OneWay}" />
-        <Button Margin="0 8 8 0"
+    <UserControl.Resources>
+        <Style x:Key="HeaderStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource ResourceKey=BadBrush}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="0 2" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Image Grid.RowSpan="2"
+               Margin="0 0 4 0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Source="/program_shell;component/Resources/Logo32.png" />
+        <TextBlock Grid.Column="1"
+                   Style="{StaticResource ResourceKey=HeaderStyle}"
+                   Text="{Binding Path=Problem.Title,
+                                  Mode=OneWay}" />
+        <TextBlock Grid.Row="1"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="2"
+                   Text="{Binding Path=Problem.Message,
+                                  Mode=OneWay}"
+                   TextWrapping="Wrap" />
+        <Button Grid.Column="1"
+                Margin="0 -4 -4 0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding Path=Close,

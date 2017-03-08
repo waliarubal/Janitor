@@ -5,15 +5,13 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class MessageViewModel: ViewModelBase
     {
-        string _title, _message, _button1Text, _button2Text, _iconSource;
-        bool _isButton2Visible;
         readonly CommandBase _ok, _cancel;
 
         public MessageViewModel()
         {
-            _button1Text = "OK";
-            _button2Text = "Cancel";
-            _iconSource = "/program_shell;component/Resources/Info48.png";
+            Button1Text = "OK";
+            Button2Text = "Cancel";
+            Icon = "/program_shell;component/Resources/Info48.png";
 
             _ok = new DelegateCommand(this, ExecuteOk);
             _cancel = new DelegateCommand(this, ExecuteCancel);
@@ -24,80 +22,38 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public string Title
         {
-            get { return _title; }
-            internal set
-            {
-                if (value == _title)
-                    return;
-
-                _title = value;
-                RaisePropertyChanged("Title");
-            }
+            get { return GetValue<string>("Title"); }
+            internal set { this["Title"] = value; }
         }
 
         public string Message
         {
-            get { return _message; }
-            internal set
-            {
-                if (value == _message)
-                    return;
-
-                _message = value;
-                RaisePropertyChanged("Message");
-            }
+            get { return GetValue<string>("Message"); }
+            internal set { this["Message"] = value; }
         }
 
         public string Button1Text
         {
-            get { return _button1Text; }
-            internal set
-            {
-                if (value == _button1Text)
-                    return;
-
-                _button1Text = value;
-                RaisePropertyChanged("Button1Text");
-            }
+            get { return GetValue<string>("Button1Text"); }
+            internal set { this["Button1Text"] = value; }
         }
 
         public string Button2Text
         {
-            get { return _button2Text; }
-            internal set
-            {
-                if (value == _button2Text)
-                    return;
-
-                _button2Text = value;
-                RaisePropertyChanged("Button2Text");
-            }
+            get { return GetValue<string>("Button2Text"); }
+            internal set { this["Button2Text"] = value; }
         }
 
         public bool IsButton2Visible
         {
-            get { return _isButton2Visible; }
-            internal set
-            {
-                if (value == _isButton2Visible)
-                    return;
-
-                _isButton2Visible = value;
-                RaisePropertyChanged("IsButton2Visible");
-            }
+            get { return GetValue<bool>("IsButton2Visible"); }
+            internal set { this["IsButton2Visible"] = value; }
         }
 
         public string Icon
         {
-            get { return _iconSource; }
-            internal set
-            {
-                if (value == _iconSource)
-                    return;
-
-                _iconSource = value;
-                RaisePropertyChanged("Icon");
-            }
+            get { return GetValue<string>("Icon"); }
+            internal set { this["Icon"] = value; }
         }
 
         #endregion

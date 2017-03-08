@@ -15,7 +15,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         private LicenseManager()
         {
-            _licenseFile = Path.Combine(KnownPaths.Instance.ApplicationDirectory, "License.dat");
+            _licenseFile = Path.Combine(KnownPaths.Instance.MyDataDirectory, "License.dat");
             _license = new LicenseModel();
         }
 

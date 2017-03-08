@@ -10,8 +10,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         ProgramUpdate,
         PluginUpdate,
         SmartScan,
-        ShowHome,
-        ShowTrialWarning
+        ShowHome
     }
 
     class WorkQueueManager: ISignalObserver, IDisposable
@@ -98,11 +97,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
                 case WorkSignal.ShowHome:
                     SignalHost.Instance.RaiseSignal(Signal.ShowHome);
-                    break;
-
-                case WorkSignal.ShowTrialWarning:
-                    if (LicenseManager.Instance.License.IsTrial)
-                        new BalloonCommand(null).Execute(SettingsManager.Instance["OfferUrl"] as string);
                     break;
             }
         }

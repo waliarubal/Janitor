@@ -124,7 +124,6 @@
             </Grid>
         </Border>
 
-        <!--  problems  -->
         <ScrollViewer Grid.Row="1">
             <StackPanel Margin="20">
                 <StackPanel.Resources>
@@ -143,26 +142,24 @@
                         <Setter Property="TextWrapping" Value="Wrap" />
                     </Style>
                 </StackPanel.Resources>
-                <StackPanel Visibility="{Binding Path=IsLicensed, Mode=OneWay, Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource ResourceKey=HeaderStyle}" Text="Product Not Activated" />
-                    <TextBlock Text="Maximum cleaning is not ensured as the product is not activated. An activated product finds and fixes even the newest issues with improved speed." />
-                    <Separator Margin="0 8" />
-                </StackPanel>
-                <StackPanel Visibility="{Binding Path=IsHavingIssues, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource ResourceKey=HeaderStyle}" Text="Issues Found" />
-                    <TextBlock Text="{Binding Path=IssueCount, Mode=OneWay, StringFormat='{}{0} issues found during a computer scan which need your attention. Issues hamper system performance so they must be fixed as soon as possible.'}" />
-                    <Separator Margin="0 8" />
-                </StackPanel>
-                <StackPanel Visibility="{Binding Path=IsHavingPluginUpdatesAvailable, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource ResourceKey=HeaderStyle}" Text="Scan Target plugins are not up to date" />
-                    <TextBlock Text="Their are updates available for scan targets plugins. Scan targets look for issues in specific computer areas and fix them, update them to ensure maximum cleaning." />
-                    <Separator Margin="0 8" />
-                </StackPanel>
-                <StackPanel Visibility="{Binding Path=IsHavingUpdatesAvailable, Mode=OneWay, Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource ResourceKey=HeaderStyle}" Text="Program is not up to date" />
-                    <TextBlock Text="A new version of program is available. Program update contain patches for discovered issues, always keep the mechanic updated to ensure maximum system performance." />
-                    <Separator Margin="0 8" />
-                </StackPanel>
+
+                <!--  problems  -->
+                <ItemsControl ItemsSource="{Binding Path=Problems, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource ResourceKey=HeaderStyle}" Text="{Binding Path=Title, Mode=OneTime}" />
+                                <TextBlock Text="{Binding Path=Message, Mode=OneTime}" TextWrapping="Wrap" />
+                                <Separator Margin="0 8" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
 
                 <!--  quick actions  -->
                 <Grid Margin="0 0 0 8">
@@ -326,6 +323,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
+
                 <Image Source="/program_shell;component/Resources/System.png" />
                 <TextBlock Grid.Column="1" Text="{Binding Path=ComputerName, Mode=OneWay}" />
 

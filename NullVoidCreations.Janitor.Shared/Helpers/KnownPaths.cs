@@ -6,24 +6,26 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
     public class KnownPaths
     {
         static volatile KnownPaths _instance;
-        readonly string _taskScheduler, _desktopDirectory, _appTemp, _system32Directory, _windowsDirectory, _appDataRoaming, _appDataLocal, _appDataLocalLow, _appData, _internetCache, _appDirectory, _systemTemp, _userTemp, _programData;
+        readonly string _taskScheduler, _desktopDirectory, _appTemp, _system32Directory, _windowsDirectory, _appDataRoaming, _appDataLocal, _appDataLocalLow, _appData, _internetCache, _appDirectory, _systemTemp, _userTemp, _programData, _myDataDirectory;
 
         private KnownPaths()
         {
             _desktopDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             _system32Directory = Environment.GetFolderPath(Environment.SpecialFolder.System);
-            _windowsDirectory = Directory.GetParent(_system32Directory).FullName;
+            _windowsDirectory = Directory.GetParent(System32Directory).FullName;
             _programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             _systemTemp = Environment.GetEnvironmentVariable("TEMP", EnvironmentVariableTarget.Machine);
             _userTemp = Environment.GetEnvironmentVariable("TEMP", EnvironmentVariableTarget.User);
             _appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             _internetCache = Environment.GetFolderPath(Environment.SpecialFolder.InternetCache);
             _appDataRoaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            _appData = Directory.GetParent(_appDataRoaming).FullName;
-            _appDataLocal = Path.Combine(_appData, "Local");
-            _appDataLocalLow = Path.Combine(_appData, "LocalLow");
-            _appTemp = Path.Combine(ApplicationDirectory, "Temp");
-            _taskScheduler = Path.Combine(_system32Directory, "schtasks.exe");
+            _appData = Directory.GetParent(AppDataRoaming).FullName;
+            _appDataLocal = Path.Combine(AppData, "Local");
+            _appDataLocalLow = Path.Combine(AppData, "LocalLow");
+
+            _myDataDirectory = Path.Combine(ProgramDataDirectory, Constants.ProductName);
+            _appTemp = Path.Combine(MyDataDirectory, "Temp");
+            _taskScheduler = Path.Combine(System32Directory, "schtasks.exe");
         }
 
         #region properties
@@ -31,6 +33,11 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
         public string TaskScheduler
         {
             get { return _taskScheduler; }
+        }
+
+        public string MyDataDirectory
+        {
+            get { return _myDataDirectory; }
         }
 
         public string DesktopDirectory

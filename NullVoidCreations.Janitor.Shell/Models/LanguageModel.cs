@@ -5,8 +5,6 @@ namespace NullVoidCreations.Janitor.Shell.Models
 {
     public class LanguageModel: NotificationBase
     {
-        string _name, _fileName, _iconFileName;
-
         public LanguageModel(string fileName)
         {
             Name = Path.GetFileNameWithoutExtension(fileName);
@@ -18,41 +16,20 @@ namespace NullVoidCreations.Janitor.Shell.Models
 
         public string Name
         {
-            get { return _name; }
-            private set
-            {
-                if (value == _name)
-                    return;
-
-                _name = value;
-                RaisePropertyChanged("Name");
-            }
+            get { return GetValue<string>("Name"); }
+            private set { this["Name"] = value; }
         }
 
         public string FileName
         {
-            get { return _fileName; }
-            private set
-            {
-                if (value == _fileName)
-                    return;
-
-                _fileName = value;
-                RaisePropertyChanged("FileName");
-            }
+            get { return GetValue<string>("FileName"); }
+            private set { this["FileName"] = value; }
         }
 
         public string IconFileName
         {
-            get { return _iconFileName; }
-            private set
-            {
-                if (value == _iconFileName)
-                    return;
-
-                _iconFileName = value;
-                RaisePropertyChanged("IconFileName");
-            }
+            get { return GetValue<string>("IconFileName"); }
+            private set { this["IconFileName"] = value; }
         }
 
         #endregion

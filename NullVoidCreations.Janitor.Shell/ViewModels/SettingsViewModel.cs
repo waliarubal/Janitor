@@ -20,24 +20,21 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
     public class SettingsViewModel : ViewModelBase
     {
-        readonly ObservableCollection<bool> _weekDays;
         readonly CommandBase _scheduleSilentRun, _skipUac, _saveSchedule;
-        bool _isScheduleDisabled, _isScheduleOnce, _isScheduleDaily, _isScheduleWeekly;
-        DateTime _date;
 
         public SettingsViewModel()
         {
             // load schedule
-            _weekDays = new ObservableCollection<bool>();
+            WeekDays = new ObservableCollection<bool>();
             for (var index = 0; index < 7; index++)
-                _weekDays.Add(SettingsManager.Instance.ScheduleDays[index]);
-            _date = SettingsManager.Instance.ScheduleDate;
-            _isScheduleDisabled = SettingsManager.Instance.ScheduleType == ScheduleType.None;
-            _isScheduleOnce = SettingsManager.Instance.ScheduleType == ScheduleType.Once;
-            _isScheduleDaily = SettingsManager.Instance.ScheduleType == ScheduleType.Daily;
-            _isScheduleWeekly = SettingsManager.Instance.ScheduleType == ScheduleType.Weekly;
-            if (_isScheduleDisabled)
-                _date = DateTime.Now;
+                WeekDays.Add(SettingsManager.Instance.ScheduleDays[index]);
+            Date = SettingsManager.Instance.ScheduleDate;
+            IsScheduleDisabled = SettingsManager.Instance.ScheduleType == ScheduleType.None;
+            IsScheduleOnce = SettingsManager.Instance.ScheduleType == ScheduleType.Once;
+            IsScheduleDaily = SettingsManager.Instance.ScheduleType == ScheduleType.Daily;
+            IsScheduleWeekly = SettingsManager.Instance.ScheduleType == ScheduleType.Weekly;
+            if (IsScheduleDisabled)
+                Date = DateTime.Now;
 
             // commands
             _scheduleSilentRun = new ScheduleSilentRunCommand(this);
@@ -73,84 +70,58 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public DateTime Date
         {
-            get { return _date; }
-            set
-            {
-                if (value == _date)
-                    return;
-
-                _date = value;
-                RaisePropertyChanged("Date");
-            }
+            get { return GetValue<DateTime>("Date"); }
+            set { this["Date"] = value; }
         }
 
         public bool IsScheduleDisabled
         {
-            get { return _isScheduleDisabled; }
+            get { return GetValue<bool>("IsScheduleDisabled"); }
             set
             {
-                if (value == IsScheduleDisabled)
-                    return;
-
-                _isScheduleDisabled = value;
-                RaisePropertyChanged("IsScheduleDisabled");
-
-                if (IsScheduleDisabled)
+                this["IsScheduleDisabled"] = value;
+                if (value)
                     IsScheduleOnce = IsScheduleDaily = IsScheduleWeekly = false;
             }
         }
 
         public bool IsScheduleOnce
         {
-            get { return _isScheduleOnce; }
+            get { return GetValue<bool>("IsScheduleOnce"); }
             set
             {
-                if (value == IsScheduleOnce)
-                    return;
-
-                _isScheduleOnce = value;
-                RaisePropertyChanged("IsScheduleOnce");
-
-                if (IsScheduleOnce)
+                this["IsScheduleOnce"] = value;
+                if (value)
                     IsScheduleDisabled = IsScheduleDaily = IsScheduleWeekly = false;
             }
         }
 
         public bool IsScheduleDaily
         {
-            get { return _isScheduleDaily; }
+            get { return GetValue<bool>("IsScheduleDaily"); }
             set
             {
-                if (value == IsScheduleDaily)
-                    return;
-
-                _isScheduleDaily = value;
-                RaisePropertyChanged("IsScheduleDaily");
-
-                if (IsScheduleDaily)
+                this["IsScheduleDaily"] = value;
+                if (value)
                     IsScheduleDisabled = IsScheduleOnce = IsScheduleWeekly = false;
             }
         }
 
         public bool IsScheduleWeekly
         {
-            get { return _isScheduleWeekly; }
+            get { return GetValue<bool>("IsScheduleWeekly"); }
             set
             {
-                if (value == IsScheduleWeekly)
-                    return;
-
-                _isScheduleWeekly = value;
-                RaisePropertyChanged("IsScheduleWeekly");
-
-                if (IsScheduleWeekly)
+                this["IsScheduleWeekly"] = value;
+                if (value)
                     IsScheduleDisabled = IsScheduleOnce = IsScheduleDaily = false;
             }
         }
 
         public ObservableCollection<bool> WeekDays
         {
-            get { return _weekDays; }
+            get { return GetValue<ObservableCollection<bool>>("WeekDays"); }
+            private set { this["WeekDays"] = value; }
         }
 
         public bool RunAtBoot

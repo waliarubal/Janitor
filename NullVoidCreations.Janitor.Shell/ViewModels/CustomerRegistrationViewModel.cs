@@ -8,15 +8,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class CustomerRegistrationViewModel: ViewModelBase
     {
-        Customer _customer;
-        string _email, _password, _errorMessage;
-        bool _isCustomerAgrementAgreed, _isTrialKeyRequested;
-
         CommandBase _createAccount;
 
         public CustomerRegistrationViewModel()
         {
-            _customer = new Customer();
+            Customer = new Customer();
 
             _createAccount = new AsyncDelegateCommand(this, null, ExecuteCreateAccount, CreateAccountExecuted);
         }
@@ -25,70 +21,42 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public Customer Customer
         {
-            get { return _customer; }
+            get { return GetValue<Customer>("Customer"); }
+            private set { this["Customer"] = value; }
         }
 
         public string Email
         {
-            get { return _email; }
-            set
-            {
-                if (value == _email)
-                    return;
-
-                _email = value;
-                RaisePropertyChanged("Email");
-            }
+            get { return GetValue<string>("Email"); }
+            set { this["Email"] = value; }
         }
 
         public string Password
         {
-            get { return _password; }
-            set
-            {
-                if (value == _password)
-                    return;
-
-                _password = value;
-                RaisePropertyChanged("Password");
-            }
+            get { return GetValue<string>("Password"); }
+            set { this["Password"] = value; }
         }
 
         public bool IsCustomerAgreementAgreed
         {
-            get { return _isCustomerAgrementAgreed; }
+            get { return GetValue<bool>("IsCustomerAgreementAgreed"); }
             set
             {
-                if (value == _isCustomerAgrementAgreed)
-                    return;
-
-                _isCustomerAgrementAgreed = value;
+                this["IsCustomerAgreementAgreed"] = value;
                 CreateAccount.IsEnabled = value;
-                RaisePropertyChanged("IsCustomerAgreementAgreed");
             }
         }
 
         public bool IsTrialKeyRequested
         {
-            get { return _isTrialKeyRequested; }
-            set
-            {
-                if (value == _isTrialKeyRequested)
-                    return;
-
-                _isTrialKeyRequested = value;
-                RaisePropertyChanged("IsTrialKeyRequested");
-            }
+            get { return GetValue<bool>("IsTrialKeyRequested"); }
+            set { this["IsTrialKeyRequested"] = value; }
         }
 
         public string ErrorMessage
         {
-            get { return _errorMessage; }
-            private set
-            {
-                _errorMessage = value;
-                RaisePropertyChanged("ErrorMessage");
-            }
+            get { return GetValue<string>("ErrorMessage"); }
+            private set { this["ErrorMessage"] = value; }
         }
 
         #endregion

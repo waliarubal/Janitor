@@ -342,6 +342,7 @@
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{0359EF5F-3640-4648-A848-ABEE3D57CA50}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{D5C4C3D2-CE16-4C6D-BC91-F35A7277A6B6}</td><td>ProgramFilesFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NullVoidCreations.Janitor.Shell.Content_Files</td><td>{F8E4C2BA-7466-4566-97CB-543ADA0A29CC}</td><td>INSTALLDIR</td><td>2</td><td/><td>nullvoidcreations.janitor.sh1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NullVoidCreations.Janitor.Shell.Primary_output</td><td>{A16CD0AA-28EC-4B8C-8054-58193B6AD914}</td><td>INSTALLDIR</td><td>2</td><td/><td>nullvoidcreations.janitor.sh</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
@@ -941,8 +942,7 @@
 		<row><td>InstallChangeFolder</td><td>Up</td><td>DirectoryListUp</td><td>0</td><td>1</td><td>0</td></row>
 		<row><td>InstallWelcome</td><td>Back</td><td>NewDialog</td><td>SplashBitmap</td><td>Display_IsBitmapDlg</td><td>0</td></row>
 		<row><td>InstallWelcome</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
-		<row><td>InstallWelcome</td><td>Next</td><td>EndDialog</td><td>Return</td><td>OutOfDiskSpace &lt;&gt; 1</td><td>1</td></row>
-		<row><td>InstallWelcome</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>0</td><td>1</td></row>
+		<row><td>InstallWelcome</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>1</td><td>1</td></row>
 		<row><td>LicenseAgreement</td><td>Back</td><td>NewDialog</td><td>InstallWelcome</td><td>1</td><td>0</td></row>
 		<row><td>LicenseAgreement</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>LicenseAgreement</td><td>ISPrintButton</td><td>DoAction</td><td>ISPrint</td><td>1</td><td>0</td></row>
@@ -1056,8 +1056,10 @@
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
 		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT</td></row>
+		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 		<row><td>INSTALLDIR</td><td>NullVoidCreations.Janitor.Shell.Content_Files</td></row>
 		<row><td>INSTALLDIR</td><td>NullVoidCreations.Janitor.Shell.Primary_output</td></row>
+		<row><td>ProgramFilesFolder</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 	</table>
 
 	<table name="CustomAction">
@@ -1177,7 +1179,7 @@
 		<row><td>TempFolder</td><td>TARGETDIR</td><td>.:Temp</td><td/><td>0</td><td/></row>
 		<row><td>TemplateFolder</td><td>TARGETDIR</td><td>.:ShellNew</td><td/><td>0</td><td/></row>
 		<row><td>USERPROFILE</td><td>TARGETDIR</td><td>.:USERPR~1|UserProfile</td><td/><td>0</td><td/></row>
-		<row><td>WINDOC</td><td>CommonAppDataFolder</td><td>WinDoc</td><td/><td>0</td><td/></row>
+		<row><td>WINDOC</td><td>ProgramFilesFolder</td><td>WinDoc</td><td/><td>0</td><td/></row>
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
 		<row><td>WindowsVolume</td><td>TARGETDIR</td><td>.:WinRoot</td><td/><td>0</td><td/></row>
 		<row><td>_PRODUCTNAME_</td><td>CommonAppDataFolder</td><td>_PRODU~1|[ProductName]</td><td/><td>0</td><td/></row>
@@ -1874,6 +1876,7 @@
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 		<row><td>AlwaysInstall</td><td>NullVoidCreations.Janitor.Shell.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>NullVoidCreations.Janitor.Shell.Primary_output</td></row>
 	</table>
@@ -2034,6 +2037,7 @@
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_33FD3350_91D1_4FD8_A7BB_FD894991DDC8_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_B001CCA9_9D15_42B8_ACDE_4DFD61DA2974_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NullVoidCreations.Janitor.Shell.Content_Files</td><td/><td/><td>_F4A39876_7201_4049_8588_9181298EDA11_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NullVoidCreations.Janitor.Shell.Primary_output</td><td/><td/><td>_5E9376E5_45C7_4098_8827_5CBDB10B3A9A_FILTER</td><td/><td/><td/><td/></row>
 	</table>
@@ -4372,9 +4376,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[INSTALLDIR]NullVoidCreations.Janitor.Shell.Primary output</td><td/></row>
-		<row><td>ProductCode</td><td>{0AA76148-B537-4D9A-890A-F0149070DF95}</td><td/></row>
+		<row><td>ProductCode</td><td>{221C52C2-E524-4A90-8ED4-5E2F28F9503B}</td><td/></row>
 		<row><td>ProductName</td><td>WinDoc</td><td/></row>
-		<row><td>ProductVersion</td><td>17.3.2.0</td><td/></row>
+		<row><td>ProductVersion</td><td>17.3.8.0</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4662,7 +4666,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s72">ActionProperty</col>
 		<col def="S72">ISDisplayName</col>
 		<row><td>{00000000-0000-0000-0000-000000000000}</td><td>***ALL_VERSIONS***</td><td></td><td></td><td>2</td><td/><td>ISFOUNDNEWERPRODUCTVERSION</td><td>ISPreventDowngrade</td></row>
-		<row><td>{D7221F6F-CC85-479C-BB9E-115CD7B231B6}</td><td></td><td>17.3.2.0</td><td></td><td>512</td><td/><td>ISACTIONPROP2</td><td>Upgrade</td></row>
+		<row><td>{D7221F6F-CC85-479C-BB9E-115CD7B231B6}</td><td></td><td>17.3.8.0</td><td></td><td>512</td><td/><td>ISACTIONPROP2</td><td>Upgrade</td></row>
 	</table>
 
 	<table name="Verb">

@@ -1,22 +1,17 @@
 ﻿using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 using NullVoidCreations.Janitor.Shared;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Core;
-using NullVoidCreations.Janitor.Shell.Views;
+using NullVoidCreations.Janitor.Shell.Models;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class MainViewModel: ViewModelBase, ISignalObserver
     {
-        bool _isWorking, _isUpdating, _isOk, _isHavingIssues, _isAnalysing, _isFixing, _isLoadingStartupEntries;
-        byte _problemsCount;
-        int _selectedViewIndex, _issueCount;
+        int _selectedViewIndex;
         readonly CommandBase _close, _open, _minimize;
-
-        BalloonView _taskbarBalloon;
 
         enum SelectedView: int
         {
@@ -33,7 +28,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public MainViewModel()
         {
-            _isOk = false;
+            IsOk = false;
+            ProblemsCount = 1;
 
             _close = new DelegateCommand(this, ExecuteClose);
             _open = new DelegateCommand(this, ExecuteOpen);
@@ -69,120 +65,56 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public bool IsWorking
         {
-            get { return _isWorking; }
-            private set
-            {
-                if (value == _isWorking)
-                    return;
-
-                _isWorking = value;
-                RaisePropertyChanged("IsWorking");
-            }
+            get { return GetValue<bool>("IsWorking"); }
+            private set { this["IsWorking"] = value; }
         }
 
         public bool IsLoadingStartupEntries
         {
-            get { return _isLoadingStartupEntries; }
-            private set
-            {
-                if (value == _isLoadingStartupEntries)
-                    return;
-
-                _isLoadingStartupEntries = value;
-                RaisePropertyChanged("IsLoadingStartupEntries");
-            }
+            get { return GetValue<bool>("IsLoadingStartupEntries"); }
+            private set { this["IsLoadingStartupEntries"] = value; }
         }
 
         public bool IsUpdating
         {
-            get { return _isUpdating; }
-            private set
-            {
-                if (value == _isUpdating)
-                    return;
-
-                _isUpdating = value;
-                RaisePropertyChanged("IsUpdating");
-            }
+            get { return GetValue<bool>("IsUpdating"); }
+            private set { this["IsUpdating"] = value; }
         }
 
-        public byte ProblemsCount
+        public int ProblemsCount
         {
-            get { return _problemsCount; }
-            private set
-            {
-                if (value == _problemsCount)
-                    return;
-
-                _problemsCount = value;
-                RaisePropertyChanged("ProblemsCount");
-            }
+            get { return GetValue<int>("ProblemsCount"); }
+            private set { this["ProblemsCount"] = value; }
         }
         
-
         public bool IsOk
         {
-            get { return _isOk; }
-            private set
-            {
-                if (value == _isOk)
-                    return;
-
-                _isOk = value;
-                RaisePropertyChanged("IsOk");
-            }
+            get { return GetValue<bool>("IsOk"); }
+            private set { this["IsOk"] = value; }
         }
 
         public bool IsHavingIssues
         {
-            get { return _isHavingIssues; }
-            private set
-            {
-                if (value == _isHavingIssues)
-                    return;
-
-                _isHavingIssues = value;
-                RaisePropertyChanged("IsHavingIssues");
-            }
+            get { return GetValue<bool>("IsHavingIssues"); }
+            private set { this["IsHavingIssues"] = value; }
         }
 
         public bool IsAnalysing
         {
-            get { return _isAnalysing; }
-            private set
-            {
-                if (value == _isAnalysing)
-                    return;
-
-                _isAnalysing = value;
-                RaisePropertyChanged("IsAnalysing");
-            }
+            get { return GetValue<bool>("IsAnalysing"); }
+            private set { this["IsAnalysing"] = value; }
         }
 
         public bool IsFixing
         {
-            get { return _isFixing; }
-            private set
-            {
-                if (value == _isFixing)
-                    return;
-
-                _isFixing = value;
-                RaisePropertyChanged("IsFixing");
-            }
+            get { return GetValue<bool>("IsFixing"); }
+            private set { this["IsFixing"] = value; }
         }
 
         public int IssueCount
         {
-            get { return _issueCount; }
-            private set
-            {
-                if (value == _issueCount)
-                    return;
-
-                _issueCount = value;
-                RaisePropertyChanged("IssueCount");
-            }
+            get { return GetValue<int>("IssueCount"); }
+            private set { this["IssueCount"] = value; }
         }
 
         #endregion
@@ -269,16 +201,19 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 case Signal.FixingStopped:
                 case Signal.AnalysisStopped:
-                    IsWorking = false;
                     IssueCount = (int)data[0];
-                    IsHavingIssues = IsAnalysing && IssueCount > 0 && !(bool)data[1];
+                    IsWorking = false;
                     IsAnalysing = signal == Signal.AnalysisStopped;
                     IsFixing = signal == Signal.FixingStopped;
+                    IsHavingIssues = IsAnalysing && IssueCount > 0 && !(bool)data[1];
                     break;
 
-                case Signal.ProblemsAppeared:
-                    ProblemsCount = (byte)data[0];
+                case Signal.ProblemAppeared:
+                    ProblemsCount = (int)data[0];
                     IsOk = ProblemsCount == 0;
+
+                    if (data[1] != null)
+                        UiHelper.Instance.ShowBalloon(data[1] as ProblemModel);
                     break;
 
                 case Signal.ScanTrigerred:
@@ -304,18 +239,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
                 case Signal.Initialized:
                     UiHelper.Instance.MainWindow.NotificationIcon.Visibility = Visibility.Visible;
-                    break;
-
-                case Signal.ShowBaloon:
-                    if (_taskbarBalloon == null)
-                        _taskbarBalloon = new BalloonView();
-                    
-                    (_taskbarBalloon.DataContext as BalloonViewModel).Content = data[0] as FrameworkElement;
-                    UiHelper.Instance.MainWindow.NotificationIcon.ShowCustomBalloon(_taskbarBalloon, PopupAnimation.Slide, 20000);
-                    break;
-
-                case Signal.HideBaloon:
-                    UiHelper.Instance.MainWindow.NotificationIcon.CloseBalloon();
                     break;
             }
         }

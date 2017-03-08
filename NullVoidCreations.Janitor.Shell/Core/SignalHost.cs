@@ -15,7 +15,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         PluginsUnloaded,
         SystemInformationLoaded,
         LicenseChanged,
-        ProblemsAppeared,
+        ProblemAppeared,
         StartupEntriesLoadStarted,
         StartupEntriesLoadStopped,
         SettingsLoaded,
@@ -31,8 +31,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
         ShowUi,
         ShowHome,
         Shutdown,
-        ShowBaloon,
-        HideBaloon,
         StartWork,
         StopWork
     }

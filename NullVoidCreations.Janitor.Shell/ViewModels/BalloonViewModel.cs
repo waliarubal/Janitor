@@ -1,33 +1,25 @@
-﻿using System.Windows;
-using NullVoidCreations.Janitor.Shared.Base;
-using NullVoidCreations.Janitor.Shell.Commands;
+﻿using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shell.Core;
+using NullVoidCreations.Janitor.Shell.Models;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class BalloonViewModel: ViewModelBase
     {
-        string _html;
         readonly CommandBase _close;
-        FrameworkElement _content;
 
         public BalloonViewModel()
         {
-            _close = new BalloonCommand(this);
+            _close = new DelegateCommand(this, (parameter) => UiHelper.Instance.MainWindow.NotificationIcon.CloseBalloon());
+            _close.IsEnabled = true;
         }
 
         #region properties
 
-        public FrameworkElement Content
+        public ProblemModel Problem
         {
-            get { return _content; }
-            set
-            {
-                if (value == _content)
-                    return;
-
-                _content = value;
-                RaisePropertyChanged("Content");
-            }
+            get { return GetValue<ProblemModel>("Problem"); }
+            set { this["Problem"] = value; }
         }
 
         #endregion

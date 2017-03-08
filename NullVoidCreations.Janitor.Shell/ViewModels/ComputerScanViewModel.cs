@@ -9,16 +9,11 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class ComputerScanViewModel: ViewModelBase, ISignalObserver
     {
-        volatile ScanModel _scan;
-        volatile ScanStatusModel _progress;
         CommandBase _doScan;
-        bool _isScannedInPast;
-        DateTime _lastScanTime;
-        string _lastScanName;
 
         public ComputerScanViewModel()
         {
-            _progress = new ScanStatusModel(null, null, true, false, false);
+            ScanStatus = new ScanStatusModel(null, null, true, false, false);
             _doScan = new ScanCommand(this);
 
             SignalHost.Instance.AddObserver(this);
@@ -34,67 +29,32 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public ScanModel Scan
         {
-            get { return _scan; }
-            set
-            {
-                if (value == _scan)
-                    return;
-
-                _scan = value;
-                RaisePropertyChanged("Scan");
-            }
+            get { return GetValue<ScanModel>("Scan"); }
+            set { this["Scan"] = value; }
         }
 
         public ScanStatusModel ScanStatus
         {
-            get { return _progress; }
-            set
-            {
-                if (value == _progress)
-                    return;
-
-                _progress = value;
-                RaisePropertyChanged("ScanStatus");
-            }
+            get { return GetValue<ScanStatusModel>("ScanStatus"); }
+            set { this["ScanStatus"] = value; }
         }
 
         public bool IsScannedInPast
         {
-            get { return _isScannedInPast; }
-            private set
-            {
-                if (value == _isScannedInPast)
-                    return;
-
-                _isScannedInPast = value;
-                RaisePropertyChanged("IsScannedInPast");
-            }
+            get { return GetValue<bool>("IsScannedInPast"); }
+            private set { this["IsScannedInPast"] = value; }
         }
 
         public string LastScanName
         {
-            get { return _lastScanName; }
-            private set
-            {
-                if (value == _lastScanName)
-                    return;
-
-                _lastScanName = value;
-                RaisePropertyChanged("LastScanName");
-            }
+            get { return GetValue<string>("LastScanName"); }
+            private set { this["LastScanName"] = value; }
         }
 
         public DateTime LastScanTime
         {
-            get { return _lastScanTime; }
-            private set
-            {
-                if (value == _lastScanTime)
-                    return;
-
-                _lastScanTime = value;
-                RaisePropertyChanged("LastScanTime");
-            }
+            get { return GetValue<DateTime>("LastScanTime"); }
+            private set { this["LastScanTime"] = value; }
         }
 
         #endregion

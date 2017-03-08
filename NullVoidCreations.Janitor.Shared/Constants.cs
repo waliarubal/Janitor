@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Reflection;
 using System.Security.Principal;
 using System.Windows;
@@ -18,12 +19,12 @@ namespace NullVoidCreations.Janitor.Shared
             InternalName = "Janitor";
             ProductName = "WinDoc";
             ProductTagLine = "Your Computer's Family Doctor";
-            ProductVersion = new Version("17.3.2.0");
+            ProductVersion = new Version("17.3.8.0");
             SupportPhone = "+91 99288 93416";
             SupportEmail = "walia.rubal@gmail.com";
 
             PluginsSearchFilter = "plugin_*.dll";
-            PluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
+            PluginsDirectory = Path.Combine(KnownPaths.Instance.MyDataDirectory, "Plugins");
             ExecutableFile = IsInDesignMode ? string.Empty : Assembly.GetEntryAssembly().Location;
 
             UpdatesMetadataUrl = new Uri("https://bitbucket.org/waliarubal/waliarubal.bitbucket.org/raw/master/windoc/binaries/Updates.dat");

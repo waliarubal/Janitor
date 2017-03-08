@@ -8,12 +8,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class AboutViewModel: ViewModelBase, ISignalObserver
     {
-        string _operatingSyetem, _processor, _registeredTo, _serialKey;
-        decimal _memory;
-        bool _isTrial;
-        List<ScanTargetBase> _targets;
-        DateTime _expiryDate;
-
         #region constructor / destructor
 
         public AboutViewModel()
@@ -32,106 +26,50 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public List<ScanTargetBase> Targets
         {
-            get { return _targets; }
-            private set
-            {
-                if (value == _targets)
-                    return;
-
-                _targets = value;
-                RaisePropertyChanged("Targets");
-            }
+            get { return GetValue<List<ScanTargetBase>>("Targets"); }
+            private set { this["Targets"] = value; }
         }
 
         public string OperatingSystem
         {
-            get { return _operatingSyetem; }
-            private set
-            {
-                if (value == _operatingSyetem)
-                    return;
-
-                _operatingSyetem = value;
-                RaisePropertyChanged("OperatingSystem");
-            }
+            get { return GetValue<string>("OperatingSystem"); }
+            private set { this["OperatingSystem"] = value; }
         }
 
         public decimal Memory
         {
-            get { return _memory; }
-            private set
-            {
-                if (value == _memory)
-                    return;
-
-                _memory = value;
-                RaisePropertyChanged("Memory");
-            }
+            get { return GetValue<decimal>("Memory"); }
+            private set { this["Memory"] = value; }
         }
 
         public string Processor
         {
-            get { return _processor; }
-            private set
-            {
-                if (value == _processor)
-                    return;
-
-                _processor = value;
-                RaisePropertyChanged("Processor");
-            }
+            get { return GetValue<string>("Processor"); }
+            private set { this["Processor"] = value; }
         }
 
         public string RegisteredTo
         {
-            get { return _registeredTo; }
-            private set
-            {
-                if (value == _registeredTo)
-                    return;
-
-                _registeredTo = value;
-                RaisePropertyChanged("RegisteredTo");
-            }
+            get { return GetValue<string>("RegisteredTo"); }
+            private set { this["RegisteredTo"] = value; }
         }
 
         public string SerialKey
         {
-            get { return _serialKey; }
-            private set
-            {
-                if (value == _serialKey)
-                    return;
-
-                _serialKey = value;
-                RaisePropertyChanged("SerialKey");
-            }
+            get { return GetValue<string>("SerialKey"); }
+            private set { this["SerialKey"] = value; }
         }
 
         public DateTime ExpiryDate
         {
-            get { return _expiryDate; }
-            private set
-            {
-                if (value == _expiryDate)
-                    return;
-
-                _expiryDate = value;
-                RaisePropertyChanged("ExpiryDate");
-            }
+            get { return GetValue<DateTime>("ExpiryDate"); }
+            private set { this["ExpiryDate"] = value; }
         }
 
         public bool IsTrial
         {
-            get { return _isTrial; }
-            private set
-            {
-                if (value == _isTrial)
-                    return;
-
-                _isTrial = value;
-                RaisePropertyChanged("IsTrial");
-            }
+            get { return GetValue<bool>("IsTrial"); }
+            private set { this["IsTrial"] = value; }
         }
 
         #endregion

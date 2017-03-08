@@ -17,7 +17,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         {
             if (!Constants.IsInDesignMode)
             {
-                var fileName = Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Settings.dat");
+                var fileName = Path.Combine(KnownPaths.Instance.MyDataDirectory, "Settings.dat");
                 Load(fileName);
                 SignalHost.Instance.RaiseSignal(Signal.SettingsLoaded);
             }

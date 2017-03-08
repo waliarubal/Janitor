@@ -27,11 +27,7 @@
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!--  header  -->
@@ -39,310 +35,315 @@
             <TextBlock Style="{StaticResource ResourceKey=HeaderTitleStyle}" Text="{StaticResource ResourceKey=Settings1}" />
         </Border>
 
-        <!--  startup  -->
-        <Grid Grid.Row="1" Margin="20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width=".25*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Image Grid.RowSpan="6"
-                   Margin="0 0 8 0"
-                   VerticalAlignment="Top"
-                   Source="/program_shell;component/Resources/Client.png" />
-            <TextBlock Grid.Column="1"
-                       Style="{StaticResource ResourceKey=TitleStyle}"
-                       Text="{StaticResource ResourceKey=Settings2}" />
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <!--  startup  -->
+                <Grid Margin="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width=".25*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Image Grid.RowSpan="6"
+                           Margin="0 0 8 0"
+                           VerticalAlignment="Top"
+                           Source="/program_shell;component/Resources/Client.png" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=TitleStyle}"
+                               Text="{StaticResource ResourceKey=Settings2}" />
 
-            <TextBlock Grid.Row="1"
-                       Grid.Column="1"
-                       Text="{StaticResource ResourceKey=Settings3}" />
-            <CheckBox Grid.Row="1"
-                      Grid.Column="2"
-                      Command="{Binding Path=ScheduleSilentRun,
-                                        Mode=OneTime}"
-                      CommandParameter="{Binding Path=RunAtBoot,
-                                                 Mode=OneWay}"
-                      IsChecked="{Binding Path=RunAtBoot,
-                                          Mode=TwoWay}" />
-
-            <TextBlock Grid.Row="2"
-                       Grid.Column="1"
-                       Text="{StaticResource ResourceKey=Settings4}" />
-            <CheckBox Grid.Row="2"
-                      Grid.Column="2"
-                      Command="{Binding Path=SkipUserAccountControl,
-                                        Mode=OneTime}"
-                      CommandParameter="{Binding Path=SkipUac,
-                                                 Mode=OneWay}"
-                      IsChecked="{Binding Path=SkipUac,
-                                          Mode=TwoWay}" />
-
-            <TextBlock Grid.Row="3"
-                       Grid.Column="1"
-                       Text="{StaticResource ResourceKey=Settings5}" />
-            <CheckBox Grid.Row="3"
-                      Grid.Column="2"
-                      IsChecked="{Binding Path=RunScanAtLaunch,
-                                          Mode=TwoWay}" />
-
-            <TextBlock Grid.Row="4"
-                       Grid.Column="1"
-                       Text="{StaticResource ResourceKey=Settings6}" />
-            <CheckBox Grid.Row="4"
-                      Grid.Column="2"
-                      IsChecked="{Binding Path=RunPluginUpdateAtLaunch,
-                                          Mode=TwoWay}" />
-
-            <TextBlock Grid.Row="5"
-                       Grid.Column="1"
-                       Text="{StaticResource ResourceKey=Settings7}" />
-            <CheckBox Grid.Row="5"
-                      Grid.Column="2"
-                      IsChecked="{Binding Path=RunProgramUpdateAtLaunch,
-                                          Mode=TwoWay}" />
-        </Grid>
-
-        <Separator Grid.Row="2" Margin="20 0" />
-
-        <!--  general  -->
-        <Grid Grid.Row="3" Margin="20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width=".25*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Image Grid.RowSpan="6"
-                   Margin="0 0 8 0"
-                   VerticalAlignment="Top"
-                   Source="/program_shell;component/Resources/Wrench.png" />
-            <TextBlock Grid.Column="1"
-                       Style="{StaticResource ResourceKey=TitleStyle}"
-                       Text="{StaticResource ResourceKey=Settings8}" />
-
-            <TextBlock Grid.Row="1"
-                       Grid.Column="1"
-                       Text="{StaticResource ResourceKey=Settings12}" />
-            <ComboBox Grid.Row="1"
-                      Grid.Column="2"
-                      Margin="0 4"
-                      ItemsSource="{Binding Path=Languages,
-                                            Mode=OneWay}"
-                      SelectedItem="{Binding Path=Language,
-                                             Mode=TwoWay}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Height="18" Source="{Binding Path=IconFileName, Mode=OneTime}" />
-                            <TextBlock Margin="4 0"
-                                       VerticalAlignment="Center"
-                                       Text="{Binding Path=Name,
-                                                      Mode=OneTime}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-
-            <TextBlock Grid.Row="2"
-                       Grid.Column="1"
-                       Text="{StaticResource ResourceKey=Settings9}" />
-            <CheckBox Grid.Row="2"
-                      Grid.Column="2"
-                      IsChecked="{Binding Path=ExitOnClose,
-                                          Mode=TwoWay}" />
-
-            <TextBlock Grid.Row="3"
-                       Grid.Column="1"
-                       Text="{StaticResource ResourceKey=Settings10}" />
-            <CheckBox Grid.Row="3"
-                      Grid.Column="2"
-                      IsChecked="{Binding Path=CloseAfterFixing,
-                                          Mode=TwoWay}" />
-
-            <TextBlock Grid.Row="4"
-                       Grid.Column="1"
-                       Text="{StaticResource ResourceKey=Settings11}" />
-            <CheckBox Grid.Row="4"
-                      Grid.Column="2"
-                      IsChecked="{Binding Path=ShutdownAfterFixing,
-                                          Mode=TwoWay}" />
-
-
-        </Grid>
-
-        <Separator Grid.Row="4" Margin="20 0" />
-
-        <Grid Grid.Row="5" Margin="20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width=".25*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Image Grid.RowSpan="6"
-                   Margin="0 0 8 0"
-                   VerticalAlignment="Top"
-                   Source="/program_shell;component/Resources/Timer.png" />
-            <TextBlock Grid.Column="1"
-                       Style="{StaticResource ResourceKey=TitleStyle}"
-                       Text="{StaticResource ResourceKey=Settings14}" />
-
-            <TextBlock Grid.Row="1"
-                       Grid.Column="1"
-                       Text="{StaticResource ResourceKey=Settings15}" />
-            <RadioButton Grid.Row="1"
-                         Grid.Column="2"
-                         IsChecked="{Binding Path=IsScheduleDisabled,
-                                             Mode=TwoWay}" />
-
-            <TextBlock Grid.Row="2"
-                       Grid.Column="1"
-                       Text="{StaticResource ResourceKey=Settings16}" />
-            <RadioButton Grid.Row="2"
-                         Grid.Column="2"
-                         IsChecked="{Binding Path=IsScheduleOnce,
-                                             Mode=TwoWay}" />
-
-            <TextBlock Grid.Row="3"
-                       Grid.Column="1"
-                       Text="{StaticResource ResourceKey=Settings17}" />
-            <RadioButton Grid.Row="3"
-                         Grid.Column="2"
-                         IsChecked="{Binding Path=IsScheduleDaily,
-                                             Mode=TwoWay}" />
-
-            <TextBlock Grid.Row="4"
-                       Grid.Column="1"
-                       Text="{StaticResource ResourceKey=Settings18}" />
-            <RadioButton Grid.Row="4"
-                         Grid.Column="2"
-                         IsChecked="{Binding Path=IsScheduleWeekly,
-                                             Mode=TwoWay}" />
-            <Grid Grid.Row="5"
-                  Grid.Column="1"
-                  Margin="8 4"
-                  IsEnabled="{Binding Path=IsScheduleWeekly,
-                                      Mode=OneWay}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <CheckBox Grid.Row="0"
-                          Grid.Column="0"
-                          IsChecked="{Binding Path=WeekDays[0],
-                                              Mode=TwoWay}" />
-                <TextBlock Grid.Row="0"
-                           Grid.Column="1"
-                           Text="{StaticResource ResourceKey=Settings19}" />
-
-                <CheckBox Grid.Row="0"
-                          Grid.Column="2"
-                          IsChecked="{Binding Path=WeekDays[1],
-                                              Mode=TwoWay}" />
-                <TextBlock Grid.Row="0"
-                           Grid.Column="3"
-                           Text="{StaticResource ResourceKey=Settings20}" />
-
-                <CheckBox Grid.Row="0"
-                          Grid.Column="4"
-                          IsChecked="{Binding Path=WeekDays[2],
-                                              Mode=TwoWay}" />
-                <TextBlock Grid.Row="0"
-                           Grid.Column="5"
-                           Text="{StaticResource ResourceKey=Settings21}" />
-
-                <CheckBox Grid.Row="0"
-                          Grid.Column="6"
-                          IsChecked="{Binding Path=WeekDays[3],
-                                              Mode=TwoWay}" />
-                <TextBlock Grid.Row="0"
-                           Grid.Column="7"
-                           Text="{StaticResource ResourceKey=Settings22}" />
-
-                <CheckBox Grid.Row="1"
-                          Grid.Column="0"
-                          IsChecked="{Binding Path=WeekDays[4],
-                                              Mode=TwoWay}" />
-                <TextBlock Grid.Row="1"
-                           Grid.Column="1"
-                           Text="{StaticResource ResourceKey=Settings23}" />
-
-                <CheckBox Grid.Row="1"
-                          Grid.Column="2"
-                          IsChecked="{Binding Path=WeekDays[5],
-                                              Mode=TwoWay}" />
-                <TextBlock Grid.Row="1"
-                           Grid.Column="3"
-                           Text="{StaticResource ResourceKey=Settings24}" />
-
-                <CheckBox Grid.Row="1"
-                          Grid.Column="4"
-                          IsChecked="{Binding Path=WeekDays[6],
-                                              Mode=TwoWay}" />
-                <TextBlock Grid.Row="1"
-                           Grid.Column="5"
-                           Text="{StaticResource ResourceKey=Settings25}" />
-            </Grid>
-
-            <StackPanel Grid.Row="6"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="2"
-                        Orientation="Horizontal">
-                <TextBlock Text="{StaticResource ResourceKey=Settings26}" />
-                <t:DateTimePicker Background="{StaticResource ResourceKey=BackgroundBrush}"
-                                  BorderThickness="0"
-                                  Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
-                                  Format="Custom"
-                                  FormatString="dd/MM/yyyy HH:mm:ss"
-                                  ShowDropDownButton="False"
-                                  Value="{Binding Path=Date,
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Text="{StaticResource ResourceKey=Settings3}" />
+                    <CheckBox Grid.Row="1"
+                              Grid.Column="2"
+                              Command="{Binding Path=ScheduleSilentRun,
+                                                Mode=OneTime}"
+                              CommandParameter="{Binding Path=RunAtBoot,
+                                                         Mode=OneWay}"
+                              IsChecked="{Binding Path=RunAtBoot,
                                                   Mode=TwoWay}" />
-                <TextBlock Text="{StaticResource ResourceKey=Settings27}" />
+
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="1"
+                               Text="{StaticResource ResourceKey=Settings4}" />
+                    <CheckBox Grid.Row="2"
+                              Grid.Column="2"
+                              Command="{Binding Path=SkipUserAccountControl,
+                                                Mode=OneTime}"
+                              CommandParameter="{Binding Path=SkipUac,
+                                                         Mode=OneWay}"
+                              IsChecked="{Binding Path=SkipUac,
+                                                  Mode=TwoWay}" />
+
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="1"
+                               Text="{StaticResource ResourceKey=Settings5}" />
+                    <CheckBox Grid.Row="3"
+                              Grid.Column="2"
+                              IsChecked="{Binding Path=RunScanAtLaunch,
+                                                  Mode=TwoWay}" />
+
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="1"
+                               Text="{StaticResource ResourceKey=Settings6}" />
+                    <CheckBox Grid.Row="4"
+                              Grid.Column="2"
+                              IsChecked="{Binding Path=RunPluginUpdateAtLaunch,
+                                                  Mode=TwoWay}" />
+
+                    <TextBlock Grid.Row="5"
+                               Grid.Column="1"
+                               Text="{StaticResource ResourceKey=Settings7}" />
+                    <CheckBox Grid.Row="5"
+                              Grid.Column="2"
+                              IsChecked="{Binding Path=RunProgramUpdateAtLaunch,
+                                                  Mode=TwoWay}" />
+                </Grid>
+
+                <Separator Margin="20 0" />
+
+                <!--  general  -->
+                <Grid Margin="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width=".25*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Image Grid.RowSpan="6"
+                           Margin="0 0 8 0"
+                           VerticalAlignment="Top"
+                           Source="/program_shell;component/Resources/Wrench.png" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=TitleStyle}"
+                               Text="{StaticResource ResourceKey=Settings8}" />
+
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Text="{StaticResource ResourceKey=Settings12}" />
+                    <ComboBox Grid.Row="1"
+                              Grid.Column="2"
+                              Margin="0 4"
+                              ItemsSource="{Binding Path=Languages,
+                                                    Mode=OneWay}"
+                              SelectedItem="{Binding Path=Language,
+                                                     Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Height="18" Source="{Binding Path=IconFileName, Mode=OneTime}" />
+                                    <TextBlock Margin="4 0"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding Path=Name,
+                                                              Mode=OneTime}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="1"
+                               Text="{StaticResource ResourceKey=Settings9}" />
+                    <CheckBox Grid.Row="2"
+                              Grid.Column="2"
+                              IsChecked="{Binding Path=ExitOnClose,
+                                                  Mode=TwoWay}" />
+
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="1"
+                               Text="{StaticResource ResourceKey=Settings10}" />
+                    <CheckBox Grid.Row="3"
+                              Grid.Column="2"
+                              IsChecked="{Binding Path=CloseAfterFixing,
+                                                  Mode=TwoWay}" />
+
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="1"
+                               Text="{StaticResource ResourceKey=Settings11}" />
+                    <CheckBox Grid.Row="4"
+                              Grid.Column="2"
+                              IsChecked="{Binding Path=ShutdownAfterFixing,
+                                                  Mode=TwoWay}" />
+
+
+                </Grid>
+
+                <Separator Margin="20 0" />
+
+                <!--  schedule  -->
+                <Grid Margin="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width=".25*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Image Grid.RowSpan="6"
+                           Margin="0 0 8 0"
+                           VerticalAlignment="Top"
+                           Source="/program_shell;component/Resources/Timer.png" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=TitleStyle}"
+                               Text="{StaticResource ResourceKey=Settings14}" />
+
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Text="{StaticResource ResourceKey=Settings15}" />
+                    <RadioButton Grid.Row="1"
+                                 Grid.Column="2"
+                                 IsChecked="{Binding Path=IsScheduleDisabled,
+                                                     Mode=TwoWay}" />
+
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="1"
+                               Text="{StaticResource ResourceKey=Settings16}" />
+                    <RadioButton Grid.Row="2"
+                                 Grid.Column="2"
+                                 IsChecked="{Binding Path=IsScheduleOnce,
+                                                     Mode=TwoWay}" />
+
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="1"
+                               Text="{StaticResource ResourceKey=Settings17}" />
+                    <RadioButton Grid.Row="3"
+                                 Grid.Column="2"
+                                 IsChecked="{Binding Path=IsScheduleDaily,
+                                                     Mode=TwoWay}" />
+
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="1"
+                               Text="{StaticResource ResourceKey=Settings18}" />
+                    <RadioButton Grid.Row="4"
+                                 Grid.Column="2"
+                                 IsChecked="{Binding Path=IsScheduleWeekly,
+                                                     Mode=TwoWay}" />
+                    <Grid Grid.Row="5"
+                          Grid.Column="1"
+                          Margin="8 4"
+                          IsEnabled="{Binding Path=IsScheduleWeekly,
+                                              Mode=OneWay}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <CheckBox Grid.Row="0"
+                                  Grid.Column="0"
+                                  IsChecked="{Binding Path=WeekDays[0],
+                                                      Mode=TwoWay}" />
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="1"
+                                   Text="{StaticResource ResourceKey=Settings19}" />
+
+                        <CheckBox Grid.Row="0"
+                                  Grid.Column="2"
+                                  IsChecked="{Binding Path=WeekDays[1],
+                                                      Mode=TwoWay}" />
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="3"
+                                   Text="{StaticResource ResourceKey=Settings20}" />
+
+                        <CheckBox Grid.Row="0"
+                                  Grid.Column="4"
+                                  IsChecked="{Binding Path=WeekDays[2],
+                                                      Mode=TwoWay}" />
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="5"
+                                   Text="{StaticResource ResourceKey=Settings21}" />
+
+                        <CheckBox Grid.Row="0"
+                                  Grid.Column="6"
+                                  IsChecked="{Binding Path=WeekDays[3],
+                                                      Mode=TwoWay}" />
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="7"
+                                   Text="{StaticResource ResourceKey=Settings22}" />
+
+                        <CheckBox Grid.Row="1"
+                                  Grid.Column="0"
+                                  IsChecked="{Binding Path=WeekDays[4],
+                                                      Mode=TwoWay}" />
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{StaticResource ResourceKey=Settings23}" />
+
+                        <CheckBox Grid.Row="1"
+                                  Grid.Column="2"
+                                  IsChecked="{Binding Path=WeekDays[5],
+                                                      Mode=TwoWay}" />
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="3"
+                                   Text="{StaticResource ResourceKey=Settings24}" />
+
+                        <CheckBox Grid.Row="1"
+                                  Grid.Column="4"
+                                  IsChecked="{Binding Path=WeekDays[6],
+                                                      Mode=TwoWay}" />
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="5"
+                                   Text="{StaticResource ResourceKey=Settings25}" />
+                    </Grid>
+
+                    <StackPanel Grid.Row="6"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="2"
+                                Orientation="Horizontal">
+                        <TextBlock Text="{StaticResource ResourceKey=Settings26}" />
+                        <t:DateTimePicker Background="{StaticResource ResourceKey=BackgroundBrush}"
+                                          BorderThickness="0"
+                                          Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                                          Format="Custom"
+                                          FormatString="dd/MM/yyyy HH:mm:ss"
+                                          ShowDropDownButton="False"
+                                          Value="{Binding Path=Date,
+                                                          Mode=TwoWay}" />
+                        <TextBlock Text="{StaticResource ResourceKey=Settings27}" />
+                    </StackPanel>
+
+
+                    <Button Grid.Row="7"
+                            Grid.Column="1"
+                            Width="120"
+                            Margin="0 12 0 0"
+                            HorizontalAlignment="Left"
+                            Command="{Binding Path=SaveSchedule,
+                                              Mode=OneTime}"
+                            Content="{StaticResource ResourceKey=Settings28}" />
+                </Grid>
             </StackPanel>
-
-
-            <Button Grid.Row="7"
-                    Grid.Column="1"
-                    Width="120"
-                    Margin="0 12 0 0"
-                    HorizontalAlignment="Left"
-                    Command="{Binding Path=SaveSchedule,
-                                      Mode=OneTime}"
-                    Content="{StaticResource ResourceKey=Settings28}" />
-        </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>

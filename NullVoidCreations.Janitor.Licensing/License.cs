@@ -98,6 +98,14 @@ namespace NullVoidCreations.Janitor.Licensing
             private set;
         }
 
+        [BsonRepresentation(BsonType.String)]
+        [BsonElement("sys_name", Order = 4)]
+        public string MachineName
+        {
+            get;
+            private set;
+        }
+
         [BsonIgnore]
         public string Segment1
         {
@@ -179,6 +187,7 @@ namespace NullVoidCreations.Janitor.Licensing
             license.SerialKey = document.SelectSingleNode("/License/SerialKey").InnerText;
             license.ActivationKey = document.SelectSingleNode("/License/ActivationKey").InnerText;
             license.MachineKey = document.SelectSingleNode("/License/MachineKey").InnerText;
+            license.MachineName = document.SelectSingleNode("/License/MachineName").InnerText;
             return license;
         }
 
@@ -221,6 +230,10 @@ namespace NullVoidCreations.Janitor.Licensing
             var machineSerialNode = document.CreateElement("MachineKey");
             machineSerialNode.InnerText = MachineKey;
             root.AppendChild(machineSerialNode);
+
+            var machineNameNode = document.CreateElement("MachineName");
+            machineNameNode.InnerText = MachineName;
+            root.AppendChild(machineNameNode);
 
             document.AppendChild(root);
 
@@ -279,6 +292,7 @@ namespace NullVoidCreations.Janitor.Licensing
             ExpirationDate = expirationDate;
             Email = email;
             MachineKey = GetMachineKey();
+            MachineName = Environment.MachineName;
 
             var key = string.Format("{0:0000}{1:00}{2:00}{3:0000}{4:00}{5:00}{6}",
                 IssueDate.Year,

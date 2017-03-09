@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
@@ -79,6 +80,8 @@ namespace NullVoidCreations.Janitor.Licensing
                 throw new InvalidOperationException("Name not entered.");
             if (string.IsNullOrEmpty(Email))
                 throw new InvalidOperationException("Email address not entered.");
+            if (!Regex.IsMatch(Email, "^([0-9a-zA-Z]([-\\.\\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\\w]*[0-9a-zA-Z]\\.)+[a-zA-Z]{2,9})$"))
+                throw new InvalidOperationException("Email address is not in a valid format.");
             if (string.IsNullOrEmpty(confirmEmail))
                 throw new InvalidOperationException("Please retype email address.");
             if (!Email.Equals(confirmEmail))

@@ -35,7 +35,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
         StopWork
     }
 
-    class SignalHost: IDisposable
+    class SignalHost : IDisposable
     {
         List<ISignalObserver> _observers;
         volatile static SignalHost _instance;

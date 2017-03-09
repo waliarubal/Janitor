@@ -73,24 +73,30 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         object ExecuteCreateAccount(object parameter)
         {
             ErrorMessage = null;
+            var isLicenseActivated = false;
             try
             {
                 var serialKey = Customer.Register(Email, Password, IsTrialKeyRequested);
-                LicenseManager.Instance.License.Activate(serialKey);
+                if (IsTrialKeyRequested && !string.IsNullOrEmpty(serialKey))
+                    isLicenseActivated = LicenseManager.Instance.License.Activate(serialKey);
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
             }
 
-            return parameter;
+            object[] args = { parameter, isLicenseActivated };
+            return args;
         }
 
         void CreateAccountExecuted(object result)
         {
             if (string.IsNullOrEmpty(ErrorMessage))
             {
-                (result as CustomWindow).Close();
+                var args = result as object[];
+                (args[0] as CustomWindow).Close();
+                if ((bool)args[1])
+                    LicenseManager.Instance.LoadLicense();
             }
         }
     }

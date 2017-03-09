@@ -85,19 +85,20 @@ namespace NullVoidCreations.Janitor.Shell.Models
             RaisePropertyChanged();
         }
 
-        internal void Activate(string serialKey)
+        internal bool Activate(string serialKey)
         {
             var customer = new Customer();
             _license = customer.ActivateLicense(serialKey, LicenseManager.Instance.LicenseFile);
             if (_license == null)
-                return;
+                return false;
 
             _customer = customer;
             SettingsManager.Instance["CustomerName"] = _customer.Name;
             SettingsManager.Instance["CustomerEmail"] = _customer.Email;
 
-            LicenseManager.Instance.LoadLicense();
             RaisePropertyChanged();
+
+            return true;
         }
 
         public void Dispose()

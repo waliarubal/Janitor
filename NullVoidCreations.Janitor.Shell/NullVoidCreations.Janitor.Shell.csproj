@@ -133,8 +133,10 @@
     <Compile Include="ViewModels\ComputerScanViewModel.cs" />
     <Compile Include="ViewModels\CustomerRegistrationViewModel.cs" />
     <Compile Include="ViewModels\CustomScanViewModel.cs" />
+    <Compile Include="ViewModels\HelpViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LicenseActivationViewModel.cs" />
+    <Compile Include="ViewModels\LicenseManagemntViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -154,6 +156,9 @@
     </Compile>
     <Compile Include="Views\LicenseActivationView.xaml.cs">
       <DependentUpon>LicenseActivationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LicenseManagementView.xaml.cs">
+      <DependentUpon>LicenseManagementView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MessageView.xaml.cs">
       <DependentUpon>MessageView.xaml</DependentUpon>
@@ -211,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LicenseActivationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LicenseManagementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -34,6 +34,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                     _popup = new CustomerRegistrationView();
                     break;
 
+                case "LicenseManagement":
+                    _popup = new LicenseManagementView();
+                    break;
+
                 default:
                     return;
             }

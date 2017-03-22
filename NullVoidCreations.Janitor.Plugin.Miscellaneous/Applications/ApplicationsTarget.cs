@@ -7,7 +7,7 @@ namespace NullVoidCreations.Janitor.Plugin.Miscellaneous.Applications
     public class ApplicationsTarget: ScanTargetBase
     {
         public ApplicationsTarget()
-            : base("Applications", new Version("2017.3.22.0"), new DateTime(2017, 3, 22))
+            : base("Applications", new Version("17.3.22.0"), new DateTime(2017, 3, 22))
         {
             IconSource = "/plugin_miscellaneous;component/Resources/Application22.png";
 

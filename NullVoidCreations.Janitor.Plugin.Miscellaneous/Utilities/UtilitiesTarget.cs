@@ -7,7 +7,7 @@ namespace NullVoidCreations.Janitor.Plugin.Miscellaneous.Utilities
     public class UtilitiesTarget: ScanTargetBase
     {
         public UtilitiesTarget()
-            : base("Utilities", new Version("2017.3.22.0"), new DateTime(2017, 3, 22))
+            : base("Utilities", new Version("17.3.22.0"), new DateTime(2017, 3, 22))
         {
             IconSource = "/plugin_miscellaneous;component/Resources/Utilities22.png";
 

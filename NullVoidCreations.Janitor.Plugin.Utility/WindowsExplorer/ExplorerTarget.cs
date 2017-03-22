@@ -7,7 +7,7 @@ namespace NullVoidCreations.Janitor.Plugin.System.WindowsExplorer
     public class ExplorerTarget: ScanTargetBase
     {
         public ExplorerTarget()
-            : base("Windows Explorer", new Version("2016.12.31.0"), new DateTime(2016, 12, 31))
+            : base("Windows Explorer", new Version("16.12.31.0"), new DateTime(2016, 12, 31))
         {
             IconSource = "/plugin_system;component/Resources/Explorer.png";
 

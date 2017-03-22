@@ -7,7 +7,7 @@ namespace NullVoidCreations.Janitor.Plugin.System.System
     public class SystemTarget: ScanTargetBase
     {
         public SystemTarget()
-            : base("System", new Version("2016.12.31.0"), new DateTime(2016, 12, 31))
+            : base("System", new Version("16.12.31.0"), new DateTime(2016, 12, 31))
         {
             IconSource = "/plugin_system;component/Resources/System.png";
 

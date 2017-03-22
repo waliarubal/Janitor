@@ -4376,9 +4376,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[INSTALLDIR]NullVoidCreations.Janitor.Shell.Primary output</td><td/></row>
-		<row><td>ProductCode</td><td>{221C52C2-E524-4A90-8ED4-5E2F28F9503B}</td><td/></row>
+		<row><td>ProductCode</td><td>{EF52102B-BAAB-43A8-8081-3B7AFF43D59A}</td><td/></row>
 		<row><td>ProductName</td><td>WinDoc</td><td/></row>
-		<row><td>ProductVersion</td><td>17.3.8.0</td><td/></row>
+		<row><td>ProductVersion</td><td>17.3.22.0</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4666,7 +4666,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s72">ActionProperty</col>
 		<col def="S72">ISDisplayName</col>
 		<row><td>{00000000-0000-0000-0000-000000000000}</td><td>***ALL_VERSIONS***</td><td></td><td></td><td>2</td><td/><td>ISFOUNDNEWERPRODUCTVERSION</td><td>ISPreventDowngrade</td></row>
-		<row><td>{D7221F6F-CC85-479C-BB9E-115CD7B231B6}</td><td></td><td>17.3.8.0</td><td></td><td>512</td><td/><td>ISACTIONPROP2</td><td>Upgrade</td></row>
+		<row><td>{D7221F6F-CC85-479C-BB9E-115CD7B231B6}</td><td></td><td>17.3.22.0</td><td></td><td>512</td><td/><td>ISACTIONPROP2</td><td>Upgrade</td></row>
 	</table>
 
 	<table name="Verb">

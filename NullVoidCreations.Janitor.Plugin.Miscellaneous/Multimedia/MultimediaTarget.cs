@@ -7,7 +7,7 @@ namespace NullVoidCreations.Janitor.Plugin.Miscellaneous.Multimedia
     public class MultimediaTarget: ScanTargetBase
     {
         public MultimediaTarget()
-            : base("Multimedia", new Version("2017.3.22.0"), new DateTime(2017, 3, 22))
+            : base("Multimedia", new Version("17.3.22.0"), new DateTime(2017, 3, 22))
         {
             IconSource = "/plugin_miscellaneous;component/Resources/Multimedia22.png";
 

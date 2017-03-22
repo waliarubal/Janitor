@@ -7,7 +7,7 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.InternetExplorer
     public class IETarget: ScanTargetBase
     {
         public IETarget()
-            : base("Internet Explorer", new Version("1.0.0.0"), new DateTime(2016, 12, 31))
+            : base("Internet Explorer", new Version("2016.12.31.0"), new DateTime(2016, 12, 31))
         {
             IconSource = "/plugin_browser;component/Resources/InternetExplorer.png";
 

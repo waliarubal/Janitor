@@ -55,6 +55,7 @@
     <Compile Include="Base\NotificationBase.cs" />
     <Compile Include="Base\SettingsBase.cs" />
     <Compile Include="Base\ViewModelBase.cs" />
+    <Compile Include="DataStructures\Doublet.cs" />
     <Compile Include="Helpers\DirectoryWalker.cs" />
     <Compile Include="Helpers\FileSystemHelper.cs" />
     <Compile Include="Helpers\KnownPaths.cs" />

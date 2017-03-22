@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Security.Principal;
 using System.Windows;
 using NullVoidCreations.Janitor.Shared.Helpers;
+using System.Diagnostics;
 
 namespace NullVoidCreations.Janitor.Shared
 {
@@ -24,7 +25,7 @@ namespace NullVoidCreations.Janitor.Shared
             SupportEmail = "walia.rubal@gmail.com";
 
             PluginsSearchFilter = "plugin_*.dll";
-            PluginsDirectory = Path.Combine(KnownPaths.Instance.MyDataDirectory, "Plugins");
+            PluginsDirectory = Debugger.IsAttached ? KnownPaths.Instance.ApplicationDirectory : Path.Combine(KnownPaths.Instance.MyDataDirectory, "Plugins");
             ExecutableFile = IsInDesignMode ? string.Empty : Assembly.GetEntryAssembly().Location;
 
             UpdatesMetadataUrl = new Uri("https://bitbucket.org/waliarubal/waliarubal.bitbucket.org/raw/master/windoc/binaries/Updates.dat");

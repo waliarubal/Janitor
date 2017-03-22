@@ -6,7 +6,7 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
     public class KnownPaths
     {
         static volatile KnownPaths _instance;
-        readonly string _taskScheduler, _desktopDirectory, _appTemp, _system32Directory, _windowsDirectory, _appDataRoaming, _appDataLocal, _appDataLocalLow, _appData, _internetCache, _appDirectory, _systemTemp, _userTemp, _programData, _myDataDirectory;
+        readonly string _taskScheduler, _desktopDirectory, _appTemp, _system32Directory, _windowsDirectory, _appDataRoaming, _appDataLocal, _appDataLocalLow, _appData, _internetCache, _appDirectory, _systemTemp, _userTemp, _programData, _myDataDirectory, _programFiles, _myDocuments;
 
         private KnownPaths()
         {
@@ -14,11 +14,13 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             _system32Directory = Environment.GetFolderPath(Environment.SpecialFolder.System);
             _windowsDirectory = Directory.GetParent(System32Directory).FullName;
             _programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            _programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             _systemTemp = Environment.GetEnvironmentVariable("TEMP", EnvironmentVariableTarget.Machine);
             _userTemp = Environment.GetEnvironmentVariable("TEMP", EnvironmentVariableTarget.User);
             _appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             _internetCache = Environment.GetFolderPath(Environment.SpecialFolder.InternetCache);
             _appDataRoaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            _myDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             _appData = Directory.GetParent(AppDataRoaming).FullName;
             _appDataLocal = Path.Combine(AppData, "Local");
             _appDataLocalLow = Path.Combine(AppData, "LocalLow");
@@ -40,6 +42,11 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             get { return _myDataDirectory; }
         }
 
+        public string MyDocumentsDirectory
+        {
+            get { return _myDocuments; }
+        }
+
         public string DesktopDirectory
         {
             get { return _desktopDirectory; }
@@ -58,6 +65,11 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
         public string ProgramDataDirectory
         {
             get { return _programData; }
+        }
+
+        public string ProgramFilesDirectory
+        {
+            get { return _programFiles; }
         }
 
         public string SystemTempDirectory

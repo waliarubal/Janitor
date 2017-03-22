@@ -7,7 +7,7 @@ namespace NullVoidCreations.Janitor.Plugin.Browser.Chrome
     public class ChromeTarget: ScanTargetBase
     {
         public ChromeTarget()
-            : base("Google Chrome", new Version("1.0.0.0"), new DateTime(2016, 12, 31))
+            : base("Google Chrome", new Version("2016.12.31.0"), new DateTime(2016, 12, 31))
         {
             IconSource = "/plugin_browser;component/Resources/Chrome.png";
 

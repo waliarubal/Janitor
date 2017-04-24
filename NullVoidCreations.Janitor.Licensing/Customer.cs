@@ -107,6 +107,37 @@ namespace NullVoidCreations.Janitor.Licensing
             return customer;
         }
 
+        public void ChangePassword(string currentPassword, string newPassword, string confirmPassword)
+        {
+            if (Customers == null)
+                throw new InvalidOperationException("Could not connect to internet for registration.");
+            if (string.IsNullOrEmpty(currentPassword))
+                throw new InvalidOperationException("Password not entered.");
+
+            var currentPasswordHash = StringCipher.Instance.MD5Hash(currentPassword);
+            if (!currentPasswordHash.Equals(PasswordHash))
+                throw new Exception("Invalid password entered.");
+
+            if (string.IsNullOrEmpty(newPassword))
+                throw new InvalidOperationException("New password not entered.");
+
+            var newPasswordHash = StringCipher.Instance.MD5Hash(newPassword);
+            if (newPasswordHash.Equals(currentPasswordHash))
+                throw new InvalidOperationException("Passowrd and new password can't be similar.");
+
+            if (string.IsNullOrEmpty(confirmPassword))
+                throw new InvalidOperationException("Please retype new password.");
+            if (!newPassword.Equals(confirmPassword))
+                throw new InvalidOperationException("New and confirmed password does not match.");
+
+            Password = newPassword;
+
+            var query = Query<Customer>.EQ(e => e.Email, Email);
+            var entity = Customers.FindOne(query);
+            if (!Customers.Update(query, Update.Set("pass", new BsonString(PasswordHash))).Ok)
+                throw new Exception("An error occured while changing password.");
+        }
+
         public void Register(string confirmEmail, string confirmPassword)
         {
             if (Customers == null)

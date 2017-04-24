@@ -20,7 +20,7 @@ namespace NullVoidCreations.Janitor.Shared
             InternalName = "Janitor";
             ProductName = "WinDoc";
             ProductTagLine = "Your Computer's Family Doctor";
-            ProductVersion = new Version("17.4.24.0");
+            ProductVersion = new Version("17.4.24.1");
             SupportPhone = "+91 99288 93416";
             SupportEmail = "walia.rubal@gmail.com";
 

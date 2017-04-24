@@ -106,8 +106,18 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         public Exception ChangePassword(string password, string newPassword, string confirmPassword)
         {
-            //TODO: work here
-            LogOut();
+            if (!IsAuthenticated)
+                return null;
+
+            try
+            {
+                Customer.ChangePassword(password, newPassword, confirmPassword);
+            }
+            catch(Exception ex)
+            {
+                return ex;
+            }
+
             return null;
         }
 

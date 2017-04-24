@@ -10,7 +10,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class LicenseManagemntViewModel: ViewModelBase
     {
-        CommandBase _delete, _copy, _add, _refresh, _logOut;
+        CommandBase _delete, _copy, _add, _refresh, _logOut, _purchase;
         ObservableCollection<License> _licenses;
 
         #region properties
@@ -28,6 +28,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                 this["SelectedLicense"] = value;
                 Copy.RaiseCanExecuteChanged();
                 Delete.RaiseCanExecuteChanged();
+                Purchase.RaiseCanExecuteChanged();
             }
         }
 
@@ -101,7 +102,28 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
+        public CommandBase Purchase
+        {
+            get
+            {
+                if (_purchase == null)
+                    _purchase = new AsyncDelegateCommand(this, CanExecute, ExecutePurchase, PurhaseExecuted);
+
+                return _purchase;
+            }
+        }
+
         #endregion
+
+        object ExecutePurchase(object argument)
+        {
+            return null;
+        }
+
+        void PurhaseExecuted(object result)
+        {
+            
+        }
 
         void ExecuteLogout(object argument)
         {

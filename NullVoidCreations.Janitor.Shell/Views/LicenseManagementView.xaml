@@ -37,6 +37,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!--  header  -->
@@ -120,7 +121,7 @@
                                             Mode=OneWay}"
                       SelectedItem="{Binding Path=SelectedLicense}">
             <wpf:DataGrid.Columns>
-                <wpf:DataGridTemplateColumn Width="*" Header="Machine">
+                <wpf:DataGridTemplateColumn Width="100" Header="Machine">
                     <wpf:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid Margin="6 0 2 0">
@@ -133,41 +134,84 @@
                                        Height="16"
                                        Margin="0 0 2 0"
                                        Source="/program_shell;component/Resources/System.png" />
-                                <TextBlock Grid.Column="1" Text="{Binding Path=MachineName}" />
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding Path=MachineName}"
+                                           ToolTip="{Binding Path=MachineName}" />
                             </Grid>
                         </DataTemplate>
                     </wpf:DataGridTemplateColumn.CellTemplate>
                 </wpf:DataGridTemplateColumn>
-                <wpf:DataGridTemplateColumn Width="Auto" Header="Serial Key">
+                <wpf:DataGridTemplateColumn Width="160" Header="Serial Key">
                     <wpf:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Padding="6 0 2 0" Text="{Binding Path=SerialKey}" />
+                            <TextBlock Padding="6 0 2 0"
+                                       Text="{Binding Path=SerialKey}"
+                                       ToolTip="{Binding Path=SerialKey}" />
                         </DataTemplate>
                     </wpf:DataGridTemplateColumn.CellTemplate>
                 </wpf:DataGridTemplateColumn>
-                <wpf:DataGridTemplateColumn Width="Auto" Header="Issued On">
+                <wpf:DataGridTemplateColumn Width="100" Header="Issued On">
                     <wpf:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Padding="6 0 2 0" Text="{Binding Path=IssueDate, StringFormat={}{0:MM/dd/yyyy}}" />
                         </DataTemplate>
                     </wpf:DataGridTemplateColumn.CellTemplate>
                 </wpf:DataGridTemplateColumn>
-                <wpf:DataGridTemplateColumn Width="Auto" Header="Valid Untill">
+                <wpf:DataGridTemplateColumn Width="100" Header="Valid Untill">
                     <wpf:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Padding="6 0 2 0" Text="{Binding Path=ExpirationDate, StringFormat={}{0:MM/dd/yyyy}}" />
                         </DataTemplate>
                     </wpf:DataGridTemplateColumn.CellTemplate>
                 </wpf:DataGridTemplateColumn>
-                <wpf:DataGridTemplateColumn Width="Auto" Header="Status">
+                <wpf:DataGridTemplateColumn Width="44" Header="Status">
                     <wpf:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding Converter={StaticResource ResourceKey=LicenseStatusToImageConverter}, Path=IsActivated, Mode=OneWay}" />
+                            <Image Width="16" Source="{Binding Converter={StaticResource ResourceKey=LicenseStatusToImageConverter}, Path=IsActivated, Mode=OneWay}" />
                         </DataTemplate>
                     </wpf:DataGridTemplateColumn.CellTemplate>
                 </wpf:DataGridTemplateColumn>
             </wpf:DataGrid.Columns>
         </wpf:DataGrid>
 
+        <Grid Grid.Row="4" Margin="20 0 20 12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image Margin="4 0"
+                   HorizontalAlignment="Left"
+                   Source="/program_shell;component/Resources/Wait.png"
+                   Style="{StaticResource ResourceKey=Spinner}"
+                   Visibility="{Binding Path=IsExecuting,
+                                        Mode=OneWay,
+                                        Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
+            <Button Grid.Column="1"
+                    Margin="0"
+                    Command="{Binding Path=Purchase,
+                                      Mode=OneTime}"
+                    Style="{StaticResource ResourceKey=ScanButtonStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Image Grid.RowSpan="2"
+                           Source="/program_shell;component/Resources/Cart.png"
+                           Style="{StaticResource ResourceKey=ScanIconStyle}" />
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource ResourceKey=ScanNameStyle}"
+                               Text="Purchase License" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
+                               Text="Purchase time extension or re-new selected license for this product." />
+                </Grid>
+            </Button>
+        </Grid>
     </Grid>
 </c:CustomWindow>

@@ -114,10 +114,8 @@
                     Grid.Column="2"
                     Margin="0 12 0 0">
             <Button Margin="0 0 0 8"
-                    Command="{Binding Path=PurchaseLicense,
-                                      Mode=OneTime}"
-                    CommandParameter="{Binding Path=BuyNowUrl,
-                                               Mode=OneWay}"
+                    Command="{StaticResource ResourceKey=ShowPopupCommand}"
+                    CommandParameter="LicenseManagement"
                     Style="{StaticResource ResourceKey=ScanButtonStyle}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -137,7 +135,7 @@
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
                                Style="{StaticResource ResourceKey=ScanDescriptionStyle}"
-                               Text="Purchase a new license or re-new an existing license for this product." />
+                               Text="Purchase time extension or re-new an existing license for this product." />
                 </Grid>
             </Button>
             <Button Margin="0 0 0 8"

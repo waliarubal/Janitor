@@ -133,6 +133,7 @@
     <Compile Include="ViewModels\AuthenticationViewModel.cs" />
     <Compile Include="ViewModels\BalloonViewModel.cs" />
     <Compile Include="ViewModels\ComputerScanViewModel.cs" />
+    <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\CustomerRegistrationViewModel.cs" />
     <Compile Include="ViewModels\CustomScanViewModel.cs" />
     <Compile Include="ViewModels\HelpViewModel.cs" />
@@ -152,6 +153,9 @@
     </Compile>
     <Compile Include="Views\BalloonView.xaml.cs">
       <DependentUpon>BalloonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChangePasswordView.xaml.cs">
+      <DependentUpon>ChangePasswordView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CustomScanView.xaml.cs">
       <DependentUpon>CustomScanView.xaml</DependentUpon>
@@ -215,6 +219,10 @@
     <Page Include="Views\ComputerScanView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChangePasswordView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\HelpView.xaml">
       <SubType>Designer</SubType>
@@ -291,6 +299,7 @@
     <Resource Include="Resources\Ok16.png" />
     <Resource Include="Resources\Exit22.png" />
     <Resource Include="Resources\Enter22.png" />
+    <Resource Include="Resources\EditUser22.png" />
     <Content Include="Translations\Hindi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

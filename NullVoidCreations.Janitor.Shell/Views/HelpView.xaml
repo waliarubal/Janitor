@@ -43,6 +43,16 @@
                                                  Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}">
                         <Image Source="/program_shell;component/Resources/Enter22.png" />
                     </Button>
+                    <Button Margin="0 0 4 0"
+                            Command="{StaticResource ResourceKey=ShowPopupCommand}"
+                            CommandParameter="ChangePassword"
+                            Style="{StaticResource ResourceKey=HeaderButtonStyle}"
+                            ToolTip="Change Password"
+                            Visibility="{Binding Path=IsAuthenticated,
+                                                 Mode=OneWay,
+                                                 Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}">
+                        <Image Source="/program_shell;component/Resources/EditUser22.png" />
+                    </Button>
                     <Button Command="{Binding Path=LogOut,
                                               Mode=OneTime}"
                             Style="{StaticResource ResourceKey=HeaderButtonStyle}"

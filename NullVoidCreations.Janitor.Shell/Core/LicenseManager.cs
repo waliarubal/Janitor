@@ -104,6 +104,13 @@ namespace NullVoidCreations.Janitor.Shell.Core
             return Customer.RemoveLicense(serialKey, LicenseFile);
         }
 
+        public Exception ChangePassword(string password, string newPassword, string confirmPassword)
+        {
+            //TODO: work here
+            LogOut();
+            return null;
+        }
+
         public Exception Login(string email, string password)
         {
             if (IsAuthenticated)

@@ -6,7 +6,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class HelpViewModel : ViewModelBase, ISignalObserver
     {
-        CommandBase _logOut;
+        CommandBase _logOut, _changePassword;
 
         #region constructor / destructor
 

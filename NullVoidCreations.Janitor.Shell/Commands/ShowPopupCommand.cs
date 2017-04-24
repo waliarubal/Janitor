@@ -23,7 +23,10 @@ namespace NullVoidCreations.Janitor.Shell.Commands
                 return;
 
             if (_popup != null)
+            {
                 _popup.Close();
+                _popup = null;
+            }
 
         SHOW_POPUP:
             switch (windowToOpen)
@@ -41,6 +44,11 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
                     _popup = new CustomerRegistrationView();
                     break;
+
+                case "ChangePassword":
+                    _popup = new ChangePasswordView();
+                    break;
+
 
                 case "LicenseManagement":
                     _popup = new LicenseManagementView();

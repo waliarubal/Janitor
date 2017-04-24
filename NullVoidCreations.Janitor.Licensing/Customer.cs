@@ -32,7 +32,7 @@ namespace NullVoidCreations.Janitor.Licensing
         [BsonElement("pass", Order = 4)]
         public string PasswordHash { get; set; }
 
-        [BsonIgnoreIfNull]
+        [BsonIgnoreIfDefault]
         [BsonElement("lics", Order = 5)]
         public IList<License> Licenses { get; set; }
 
@@ -72,7 +72,42 @@ namespace NullVoidCreations.Janitor.Licensing
             return entity;
         }
 
-        public string Register(string confirmEmail, string confirmPassword, bool generateTrial = false)
+        Customer GetCustomer(string email, string password)
+        {
+            var query = Query.And(
+                Query<Customer>.EQ(e => e.Email, email), 
+                Query<Customer>.EQ(e => e.PasswordHash, StringCipher.Instance.MD5Hash(password)));
+            var entity = Customers.FindOneAs<Customer>(query);
+            return entity;
+        }
+
+        public void Refresh()
+        {
+            var customer = GetCustomer(Email);
+            Name = customer.Name;
+            PasswordHash = customer.PasswordHash;
+            Licenses = customer.Licenses;
+        }
+
+        public Customer Login(string email, string password)
+        {
+            if (Customers == null)
+                throw new InvalidOperationException("Could not connect to internet.");
+            if (string.IsNullOrEmpty(email))
+                throw new InvalidOperationException("Email address not entered.");
+            if (!Regex.IsMatch(email, "^([0-9a-zA-Z]([-\\.\\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\\w]*[0-9a-zA-Z]\\.)+[a-zA-Z]{2,9})$"))
+                throw new InvalidOperationException("Email address is not in a valid format.");
+            if (string.IsNullOrEmpty(password))
+                throw new InvalidOperationException("Password not entered.");
+
+            var customer = GetCustomer(email, password);
+            if (customer == null)
+                throw new Exception("Email/password pair is incorrect.");
+
+            return customer;
+        }
+
+        public void Register(string confirmEmail, string confirmPassword)
         {
             if (Customers == null)
                 throw new InvalidOperationException("Could not connect to internet for registration.");
@@ -101,18 +136,28 @@ namespace NullVoidCreations.Janitor.Licensing
             RegistrationDate = DateTime.Now;
             if (!Customers.Save(this).Ok)
                 throw new Exception("An error occured while registering user.");
+        }
 
-            
-            if (generateTrial)
+        public bool RemoveLicense(string serialKey, string fileName)
+        {
+            if (Customers == null)
+                throw new InvalidOperationException("Could not connect to internet license removal.");
+
+            var pull = Update<Customer>.Pull(customer => customer.Licenses, license => license.EQ(q => q.SerialKey, serialKey));
+            var query = Query.And(Query.EQ("_id", new BsonString(Email)), Query.EQ("lics._id", new BsonString(serialKey)));
+            var result = Customers.Update(query, pull).Ok;
+
+            License.DeleteLicenseFile(serialKey, fileName);
+            for (var index = Licenses.Count - 1; index >= 0; index--)
             {
-                License license;
-                if (AddLicense(DateTime.Now, DateTime.Now.AddDays(90), out license))
-                    return license.SerialKey;
-                else
-                    throw new Exception("Failed to generate license.");
+                if (Licenses[index].SerialKey.Equals(serialKey))
+                {
+                    Licenses.RemoveAt(index);
+                    break;
+                }
             }
 
-            return null;
+            return result;
         }
 
         public bool AddLicense(DateTime issueDate, DateTime expirationDate, out License license)
@@ -121,7 +166,15 @@ namespace NullVoidCreations.Janitor.Licensing
 
             var query = Query<Customer>.EQ(e => e.Email, Email);
             var update = Update<Customer>.Push<License>(l => l.Licenses, license);
-            return Customers.Update(query, update).Ok;
+            var result = Customers.Update(query, update).Ok;
+
+            // licenses list is empty in case of new customer
+            if (Licenses == null)
+                Licenses = new List<License>();
+
+            Licenses.Add(license);
+
+            return result;
         }
 
         public License ActivateLicense(string serialKey, string fileName)

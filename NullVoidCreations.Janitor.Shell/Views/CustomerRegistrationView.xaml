@@ -35,7 +35,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!--  header  -->
@@ -95,16 +94,7 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Row="3" Margin="20 0 20 4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <CheckBox IsChecked="{Binding Path=IsTrialKeyRequested, Mode=TwoWay}" />
-            <TextBlock Grid.Column="1" Text="Generate a free 90 days trial serial key." />
-        </Grid>
-
-        <Grid Grid.Row="4" Margin="20 0 20 12">
+        <Grid Grid.Row="3" Margin="20 0 20 12">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -116,8 +106,8 @@
                 .
             </TextBlock>
         </Grid>
-        <StackPanel Grid.Row="5"
-                    Margin="20 0 20 4"
+        <StackPanel Grid.Row="4"
+                    Margin="20 0 20 12"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
             <Image Margin="0 0 4 0"
@@ -136,14 +126,6 @@
                     IsDefault="True" />
             <Button Content="Cancel" IsCancel="True" />
         </StackPanel>
-        <TextBlock Grid.Row="6"
-                   Margin="20 2 20 4"
-                   FontWeight="Bold"
-                   Foreground="{StaticResource ResourceKey=BadBrush}"
-                   Text="{Binding Path=ErrorMessage,
-                                  Mode=OneWay}"
-                   TextWrapping="Wrap" />
-
     </Grid>
 
 </c:CustomWindow>

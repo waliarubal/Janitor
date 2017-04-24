@@ -79,7 +79,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             ErrorMessage = null;
             try
             {
-                LicenseManager.Instance.License.Activate(SerialKey);
+                LicenseManager.Instance.Activate(SerialKey);
             }
             catch (Exception ex)
             {

@@ -17,7 +17,7 @@ namespace NullVoidCreations.Janitor.Shell.Controls
         Button _minimize, _close;
         IntPtr _handle;
 
-        public static readonly DependencyProperty HeaderContentProperty, IsMinimizeAllowedProperty, IsCloseAllowedProperty, CloseCommandProperty, MinimizeCommandProperty;
+        public static readonly DependencyProperty HeaderContentProperty, IsMinimizeAllowedProperty, IsCloseAllowedProperty, CloseCommandProperty, MinimizeCommandProperty, IsAuthenticationRequiredProperty;
 
         static CustomWindow()
         {
@@ -27,6 +27,7 @@ namespace NullVoidCreations.Janitor.Shell.Controls
             CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(CommandBase), typeof(CustomWindow));
             MinimizeCommandProperty = DependencyProperty.Register("MinimizeCommand", typeof(CommandBase), typeof(CustomWindow));
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CustomWindow), new FrameworkPropertyMetadata(typeof(CustomWindow)));
+            IsAuthenticationRequiredProperty = DependencyProperty.Register("IsAuthenticationRequired", typeof(bool), typeof(CustomWindow));
         }
 
         public CustomWindow()
@@ -68,6 +69,12 @@ namespace NullVoidCreations.Janitor.Shell.Controls
         {
             get { return (bool)GetValue(IsCloseAllowedProperty); }
             set { SetValue(IsCloseAllowedProperty, value); }
+        }
+
+        public bool IsAuthenticationRequired
+        {
+            get { return (bool)GetValue(IsAuthenticationRequiredProperty); }
+            set { SetValue(IsAuthenticationRequiredProperty, value); }
         }
 
         public CommandBase CloseCommand

@@ -170,6 +170,9 @@ namespace NullVoidCreations.Janitor.Shared.Base
             var rootNode = xmlDocument.CreateElement("Settings");
             foreach (var key in _settings.Keys)
             {
+                if (_settings[key] == null)
+                    continue;
+
                 var node = xmlDocument.CreateElement("Setting");
 
                 var attribute = xmlDocument.CreateAttribute("Key");

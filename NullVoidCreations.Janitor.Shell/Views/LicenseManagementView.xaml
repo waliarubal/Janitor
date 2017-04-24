@@ -2,18 +2,22 @@
                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:c="clr-namespace:NullVoidCreations.Janitor.Shell.Controls"
+                xmlns:co="clr-namespace:NullVoidCreations.Janitor.Shell.Converters"
+                xmlns:h="clr-namespace:NullVoidCreations.Janitor.Shared.Helpers;assembly=shared"
                 xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
                 xmlns:wpf="http://schemas.microsoft.com/wpf/2008/toolkit"
                 Title="{Binding Source={StaticResource ResourceKey=ProductName},
                                 StringFormat='{}{0} - License Management'}"
                 Width="580"
+                Height="480"
                 Background="{StaticResource ResourceKey=BackgroundBrush}"
-                SizeToContent="Height"
+                IsAuthenticationRequired="True"
                 Style="{StaticResource ResourceKey=ChildWindowStyle}">
     <c:CustomWindow.DataContext>
         <vm:LicenseManagemntViewModel />
     </c:CustomWindow.DataContext>
     <c:CustomWindow.Resources>
+        <co:LicenseStatusToImageConverter x:Key="LicenseStatusToImageConverter" />
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextBrush}" />
             <Setter Property="TextWrapping" Value="Wrap" />
@@ -31,50 +35,127 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!--  header  -->
-        <Border Grid.ColumnSpan="2" Style="{StaticResource ResourceKey=HeaderStyle}">
-            <TextBlock Style="{StaticResource ResourceKey=HeaderTitleStyle}" Text="License Management" />
+        <Border Style="{StaticResource ResourceKey=HeaderStyle}">
+            <Grid>
+                <TextBlock Style="{StaticResource ResourceKey=HeaderTitleStyle}" Text="License Management" />
+                <StackPanel Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                    <Button Margin="0 0 4 0"
+                            Command="{Binding Path=Copy,
+                                              Mode=OneTime}"
+                            Style="{StaticResource ResourceKey=HeaderButtonStyle}"
+                            ToolTip="Copy Serial">
+                        <Image Source="/program_shell;component/Resources/Paste.png" />
+                    </Button>
+                    <Button Margin="0 0 4 0"
+                            Command="{Binding Path=Delete,
+                                              Mode=OneTime}"
+                            Style="{StaticResource ResourceKey=HeaderButtonStyle}"
+                            ToolTip="Remove Selected License">
+                        <Image Source="/program_shell;component/Resources/Delete.png" />
+                    </Button>
+                    <Button Margin="0 0 12 0"
+                            Command="{Binding Path=Add,
+                                              Mode=OneTime}"
+                            Style="{StaticResource ResourceKey=HeaderButtonStyle}"
+                            ToolTip="Generate a free 90 days trial serial key for this machine.">
+                        <Image Source="/program_shell;component/Resources/Free.png" />
+                    </Button>
+                </StackPanel>
+            </Grid>
         </Border>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="20 12 20 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Border Style="{StaticResource ResourceKey=ActiveAreaStyle}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="Email Address" />
-                    <TextBox Grid.Column="1" />
-
-                    <TextBlock Grid.Row="1" Text="Password" />
-                    <PasswordBox Grid.Row="1" Grid.Column="1" />
-                </Grid>
-            </Border>
-            <Button Grid.Row="1"
-                    Margin="20 12"
-                    HorizontalAlignment="Right"
-                    Content="Login" />
+            <WrapPanel Grid.Row="0" Orientation="Horizontal">
+                <TextBlock Grid.Row="1" Text="To copy a serial key, select an appropriate license from the list and then click copy serial " />
+                <Image Width="16" Source="/program_shell;component/Resources/Paste.png" />
+                <TextBlock Text=" button." />
+            </WrapPanel>
+            <WrapPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBlock Text="To remove a license, select it from the list and then click on " />
+                <Image Width="16" Source="/program_shell;component/Resources/Delete.png" />
+                <TextBlock Text=" button." />
+            </WrapPanel>
+            <WrapPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Text="If not already activated, click on " />
+                <Image Width="16" Source="/program_shell;component/Resources/Free.png" />
+                <TextBlock Text=" button to generate and activate a 90 days trial serial key." />
+            </WrapPanel>
         </Grid>
 
-        <wpf:DataGrid Grid.Row="1"
-                      Margin="20 12"
-                      Visibility="Collapsed">
+        <TextBlock Grid.Row="2"
+                   Margin="20 12 20 4"
+                   Text="{Binding Path=CustomerName,
+                                  Mode=OneTime,
+                                  StringFormat='The following list contains licenses issued to {0} for various machines.',
+                                  FallbackValue='Access denied! Authentication is required to use license management.'}" />
+
+        <!--  license management  -->
+        <wpf:DataGrid Grid.Row="3"
+                      Margin="20 0 20 12"
+                      ItemsSource="{Binding Path=Licenses,
+                                            Mode=OneWay}"
+                      SelectedItem="{Binding Path=SelectedLicense}">
             <wpf:DataGrid.Columns>
-                <wpf:DataGridTextColumn Header="Machine" />
-                <wpf:DataGridTextColumn Header="Serial Key" />
-                <wpf:DataGridTextColumn Header="Issued On" />
-                <wpf:DataGridTextColumn Header="Valid Untill" />
+                <wpf:DataGridTemplateColumn Width="*" Header="Machine">
+                    <wpf:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Margin="6 0 2 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0"
+                                       Width="16"
+                                       Height="16"
+                                       Margin="0 0 2 0"
+                                       Source="/program_shell;component/Resources/System.png" />
+                                <TextBlock Grid.Column="1" Text="{Binding Path=MachineName}" />
+                            </Grid>
+                        </DataTemplate>
+                    </wpf:DataGridTemplateColumn.CellTemplate>
+                </wpf:DataGridTemplateColumn>
+                <wpf:DataGridTemplateColumn Width="Auto" Header="Serial Key">
+                    <wpf:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Padding="6 0 2 0" Text="{Binding Path=SerialKey}" />
+                        </DataTemplate>
+                    </wpf:DataGridTemplateColumn.CellTemplate>
+                </wpf:DataGridTemplateColumn>
+                <wpf:DataGridTemplateColumn Width="Auto" Header="Issued On">
+                    <wpf:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Padding="6 0 2 0" Text="{Binding Path=IssueDate, StringFormat={}{0:MM/dd/yyyy}}" />
+                        </DataTemplate>
+                    </wpf:DataGridTemplateColumn.CellTemplate>
+                </wpf:DataGridTemplateColumn>
+                <wpf:DataGridTemplateColumn Width="Auto" Header="Valid Untill">
+                    <wpf:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Padding="6 0 2 0" Text="{Binding Path=ExpirationDate, StringFormat={}{0:MM/dd/yyyy}}" />
+                        </DataTemplate>
+                    </wpf:DataGridTemplateColumn.CellTemplate>
+                </wpf:DataGridTemplateColumn>
+                <wpf:DataGridTemplateColumn Width="Auto" Header="Status">
+                    <wpf:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Converter={StaticResource ResourceKey=LicenseStatusToImageConverter}, Path=IsActivated, Mode=OneWay}" />
+                        </DataTemplate>
+                    </wpf:DataGridTemplateColumn.CellTemplate>
+                </wpf:DataGridTemplateColumn>
             </wpf:DataGrid.Columns>
         </wpf:DataGrid>
+
     </Grid>
 </c:CustomWindow>

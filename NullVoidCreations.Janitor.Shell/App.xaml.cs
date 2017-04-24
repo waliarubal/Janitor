@@ -121,6 +121,7 @@ namespace NullVoidCreations.Janitor.Shell
             var args = e.Result as object[];
 
             SignalHost.Instance.RaiseSignal(Signal.Initialized);
+            SignalHost.Instance.RaiseSignal(Signal.LicenseChanged);
 
             // process command line
             CommandLineManager.Instance.LoadArguments(args[1] as string[]);

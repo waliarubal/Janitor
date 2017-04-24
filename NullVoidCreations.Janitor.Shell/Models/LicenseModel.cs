@@ -2,6 +2,8 @@
 using NullVoidCreations.Janitor.Licensing;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shell.Core;
+using NullVoidCreations.Janitor.Shared.Helpers;
+using System.IO;
 
 namespace NullVoidCreations.Janitor.Shell.Models
 {
@@ -82,6 +84,21 @@ namespace NullVoidCreations.Janitor.Shell.Models
             }
 
             _license = _customer.LoadLicense(licenseFile);
+
+            // attempt re-activation in case license was removed from the server
+            if (Win32Helper.Instance.IsInternetAvailable)
+            {
+                try
+                {
+                    _license = _customer.ActivateLicense(_license.SerialKey, licenseFile);
+                }
+                catch
+                {
+                    _license = null;
+                    File.Delete(licenseFile);
+                }
+            }
+                       
             RaisePropertyChanged();
         }
 

@@ -157,6 +157,8 @@
                         Orientation="Horizontal">
                 <Button MinWidth="100"
                         Margin="0 0 8 0"
+                        Command="{StaticResource ResourceKey=ShowPopupCommand}"
+                        CommandParameter="LicenseManagement"
                         Content="Buy Now"
                         Foreground="{StaticResource ResourceKey=BackgroundBrush}"
                         Padding="0"

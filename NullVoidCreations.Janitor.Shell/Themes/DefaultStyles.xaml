@@ -362,7 +362,7 @@
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
-        <Setter Property="Padding" Value="6 4 0 4" />
+        <Setter Property="Padding" Value="6 4 6 4" />
     </Style>
 
     <!--  scrollbar thumb  -->

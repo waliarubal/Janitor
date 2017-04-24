@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Security.Principal;
 using System.Windows;
 using NullVoidCreations.Janitor.Shared.Helpers;
-using System.Diagnostics;
 
 namespace NullVoidCreations.Janitor.Shared
 {

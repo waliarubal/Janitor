@@ -84,7 +84,7 @@
                            Margin="12 4 0 0"
                            FontSize="12"
                            Foreground="{StaticResource ResourceKey=TextBrush}"
-                           Text="{Binding Path=License.RegisteredEmail,
+                           Text="{Binding Path=License.Email,
                                           Mode=OneWay,
                                           StringFormat='Product is activated and is registered to {0}.'}"
                            TextWrapping="Wrap"
@@ -101,10 +101,8 @@
                                                  Converter={StaticResource ResourceKey=InverseBoolToVisibilityConverter}}">
                     <Button MinWidth="120"
                             Margin="0 0 4 0"
-                            Command="{Binding Path=PurchaseLicense,
-                                              Mode=OneTime}"
-                            CommandParameter="{Binding Path=BuyNowUrl,
-                                                       Mode=OneWay}"
+                            Command="{StaticResource ResourceKey=ShowPopupCommand}"
+                            CommandParameter="LicenseManagement"
                             Content="Buy Now"
                             FontSize="12"
                             Foreground="{StaticResource ResourceKey=BackgroundBrush}"

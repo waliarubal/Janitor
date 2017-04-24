@@ -110,6 +110,7 @@
     <Compile Include="Controls\CustomWindow.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\InverseBoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\LicenseStatusToImageConverter.cs" />
     <Compile Include="Converters\StartupAreaToImageConverter.cs" />
     <Compile Include="Core\CommandLineManager.cs" />
     <Compile Include="Core\ISignalObserver.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Models\StartupEntryModel.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
+    <Compile Include="ViewModels\AuthenticationViewModel.cs" />
     <Compile Include="ViewModels\BalloonViewModel.cs" />
     <Compile Include="ViewModels\ComputerScanViewModel.cs" />
     <Compile Include="ViewModels\CustomerRegistrationViewModel.cs" />
@@ -144,6 +146,9 @@
     <Compile Include="ViewModels\UpdateViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AuthenticationView.xaml.cs">
+      <DependentUpon>AuthenticationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\BalloonView.xaml.cs">
       <DependentUpon>BalloonView.xaml</DependentUpon>
@@ -196,6 +201,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AuthenticationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -278,6 +287,8 @@
     <Resource Include="Resources\Twitter32.png" />
     <Resource Include="Resources\YouTube32.png" />
     <Resource Include="Resources\MakeInIndia.png" />
+    <Resource Include="Resources\Error16.png" />
+    <Resource Include="Resources\Ok16.png" />
     <Content Include="Translations\Hindi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

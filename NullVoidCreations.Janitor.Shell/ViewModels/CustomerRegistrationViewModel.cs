@@ -47,18 +47,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             }
         }
 
-        public bool IsTrialKeyRequested
-        {
-            get { return GetValue<bool>("IsTrialKeyRequested"); }
-            set { this["IsTrialKeyRequested"] = value; }
-        }
-
-        public string ErrorMessage
-        {
-            get { return GetValue<string>("ErrorMessage"); }
-            private set { this["ErrorMessage"] = value; }
-        }
-
         #endregion
 
         #region commands
@@ -72,32 +60,30 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         object ExecuteCreateAccount(object parameter)
         {
-            ErrorMessage = null;
-            var isLicenseActivated = false;
             try
             {
-                var serialKey = Customer.Register(Email, Password, IsTrialKeyRequested);
-                if (IsTrialKeyRequested && !string.IsNullOrEmpty(serialKey))
-                    isLicenseActivated = LicenseManager.Instance.License.Activate(serialKey);
+                Customer.Register(Email, Password);
+                LicenseManager.Instance.Login(Email, Password);
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                return ex;
             }
 
-            object[] args = { parameter, isLicenseActivated };
-            return args;
+            return parameter;
         }
 
         void CreateAccountExecuted(object result)
         {
-            if (string.IsNullOrEmpty(ErrorMessage))
+            IsExecuting = false;
+            if (result is CustomWindow)
             {
-                var args = result as object[];
-                (args[0] as CustomWindow).Close();
-                if ((bool)args[1])
-                    LicenseManager.Instance.LoadLicense();
+                var window = result as CustomWindow;
+                window.DialogResult = true;
+                window.Close();
             }
+            else
+                UiHelper.Instance.Error((result as Exception).Message);
         }
     }
 }

@@ -25,11 +25,12 @@ namespace NullVoidCreations.Janitor.Licensing
         }
 
         [BsonConstructor]
-        public License(string serialKey, string activationKey, string machineKey)
+        public License(string serialKey, string activationKey, string machineKey, string machineName)
         {
             SerialKey = serialKey;
             ActivationKey = activationKey;
             MachineKey = machineKey;
+            MachineName = machineName;
         }
 
         public void Dispose()
@@ -174,6 +175,16 @@ namespace NullVoidCreations.Janitor.Licensing
             return null;
         }
 
+        internal static void DeleteLicenseFile(string serialKey, string fileName)
+        {
+            var license = LoadFromFile(fileName);
+            if (license == null)
+                return;
+
+            if (license.SerialKey.Equals(serialKey))
+                File.Delete(fileName);
+        }
+
         internal static License LoadFromFile(string fileName)
         {
             if (!File.Exists(fileName))
@@ -215,6 +226,11 @@ namespace NullVoidCreations.Janitor.Licensing
         {
             if (File.Exists(fileName))
                 File.Delete(fileName);
+
+            // skip saving if serial is missing
+            // this may be because license was unloaded earlier
+            if (string.IsNullOrEmpty(SerialKey))
+                return;
 
             var document = new XmlDocument();
             var root = document.CreateElement("License");

@@ -30,7 +30,7 @@ namespace NullVoidCreations.Janitor.Shared.Base
 
         protected virtual void ExecuteOverride(object parameter)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Don't call this method from child.");
         }
 
         public override void Execute(object parameter)

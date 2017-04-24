@@ -29,7 +29,17 @@ namespace NullVoidCreations.Janitor.Shell.Commands
             switch (windowToOpen)
             {
                 case "Authentication":
+                    if (LicenseManager.Instance.IsAuthenticated)
+                        return;
+
                     _popup = new AuthenticationView();
+                    break;
+
+                case "CustomerRegistration":
+                    if (LicenseManager.Instance.IsAuthenticated)
+                        return;
+
+                    _popup = new CustomerRegistrationView();
                     break;
 
                 case "LicenseManagement":
@@ -38,10 +48,6 @@ namespace NullVoidCreations.Janitor.Shell.Commands
 
                 case "LicenseActivation":
                     _popup = new LicenseActivationView();
-                    break;
-
-                case "CustomerRegistration":
-                    _popup = new CustomerRegistrationView();
                     break;
 
                 default:

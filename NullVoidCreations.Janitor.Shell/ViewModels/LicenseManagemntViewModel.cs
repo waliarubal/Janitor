@@ -3,16 +3,22 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using NullVoidCreations.Janitor.Licensing;
 using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shell.Controls;
 using NullVoidCreations.Janitor.Shell.Core;
 
 namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class LicenseManagemntViewModel: ViewModelBase
     {
-        CommandBase _delete, _copy, _add, _refresh;
+        CommandBase _delete, _copy, _add, _refresh, _logOut;
         ObservableCollection<License> _licenses;
 
         #region properties
+
+        public string CustomerName
+        {
+            get { return LicenseManager.Instance.Customer.Name; }
+        }
 
         public License SelectedLicense
         {
@@ -40,9 +46,15 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         #region commands
 
-        public string CustomerName
+        public CommandBase LogOut
         {
-            get { return LicenseManager.Instance.Customer.Name; }
+            get
+            {
+                if (_logOut == null)
+                    _logOut = new DelegateCommand(this, ExecuteLogout) { IsEnabled = true };
+
+                return _logOut;
+            }
         }
 
         public CommandBase Refresh
@@ -90,6 +102,18 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         }
 
         #endregion
+
+        void ExecuteLogout(object argument)
+        {
+            LicenseManager.Instance.LogOut();
+            SignalHost.Instance.RaiseSignal(Signal.Authentication, LicenseManager.Instance.IsAuthenticated);
+            if (argument != null)
+            {
+                var window = argument as CustomWindow;
+                window.DialogResult = false;
+                window.Close();
+            }
+        }
 
         void ExecuteRefresh(object parameter)
         {

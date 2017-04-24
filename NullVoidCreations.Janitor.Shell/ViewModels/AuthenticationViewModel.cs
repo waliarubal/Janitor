@@ -52,6 +52,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             var res = result as object[];
             if (res[1] == null)
             {
+                SignalHost.Instance.RaiseSignal(Signal.Authentication, LicenseManager.Instance.IsAuthenticated);
                 var window = res[0] as CustomWindow;
                 window.DialogResult = true;
                 window.Close();

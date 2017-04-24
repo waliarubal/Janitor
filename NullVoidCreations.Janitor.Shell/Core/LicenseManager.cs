@@ -106,7 +106,9 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         public Exception Login(string email, string password)
         {
-            LogOut();
+            if (IsAuthenticated)
+                return null;
+            
             try
             {
                 _customer = new Customer().Login(email, password);

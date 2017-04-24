@@ -37,7 +37,7 @@
 
         <!--  header  -->
         <Border Style="{StaticResource ResourceKey=HeaderStyle}">
-            <TextBlock Style="{StaticResource ResourceKey=HeaderTitleStyle}" Text="Authentication" />
+            <TextBlock Style="{StaticResource ResourceKey=HeaderTitleStyle}" Text="Log In" />
         </Border>
 
         <TextBlock Grid.Row="1"

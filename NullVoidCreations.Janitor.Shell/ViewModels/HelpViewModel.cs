@@ -6,6 +6,8 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class HelpViewModel : ViewModelBase, ISignalObserver
     {
+        CommandBase _logOut;
+
         #region constructor / destructor
 
         public HelpViewModel()
@@ -46,7 +48,34 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             private set { this["IsTrial"] = value; }
         }
 
+        public bool IsAuthenticated
+        {
+            get { return GetValue<bool>("IsAuthenticated"); }
+            private set { this["IsAuthenticated"] = value; }
+        }
+
         #endregion
+
+        #region commands
+
+        public CommandBase LogOut
+        {
+            get
+            {
+                if (_logOut == null)
+                    _logOut = new DelegateCommand(this, ExecuteLogOut) { IsEnabled = true };
+
+                return _logOut;
+            }
+        }
+
+        #endregion
+
+        void ExecuteLogOut(object argument)
+        {
+            LicenseManager.Instance.LogOut();
+            SignalHost.Instance.RaiseSignal(Signal.Authentication, LicenseManager.Instance.IsAuthenticated);
+        }
 
         public void SignalReceived(Signal signal, params object[] data)
         {
@@ -61,6 +90,10 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
                     ExpiryDate = LicenseManager.Instance.License.ExpirationDate;
                     SerialKey = LicenseManager.Instance.License.SerialKey;
                     IsTrial = LicenseManager.Instance.License.IsTrial;
+                    break;
+
+                case Signal.Authentication:
+                    IsAuthenticated = (bool)data[0];
                     break;
             }
         }

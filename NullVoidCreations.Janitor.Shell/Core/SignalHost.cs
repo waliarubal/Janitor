@@ -32,7 +32,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
         ShowHome,
         Shutdown,
         StartWork,
-        StopWork
+        StopWork,
+        Authentication
     }
 
     class SignalHost : IDisposable

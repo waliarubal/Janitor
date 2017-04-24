@@ -42,10 +42,22 @@
         <!--  header  -->
         <Border Style="{StaticResource ResourceKey=HeaderStyle}">
             <Grid>
-                <TextBlock Style="{StaticResource ResourceKey=HeaderTitleStyle}" Text="License Management" />
-                <StackPanel Grid.Column="1"
-                            HorizontalAlignment="Right"
+                <StackPanel Margin="12 0 4 0"
+                            HorizontalAlignment="Left"
                             Orientation="Horizontal">
+                    <Button Margin="0 0 4 0"
+                            Command="{Binding Path=LogOut,
+                                              Mode=OneTime}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type c:CustomWindow},
+                                                                                      Mode=FindAncestor},
+                                                       Mode=OneTime}"
+                            Style="{StaticResource ResourceKey=HeaderButtonStyle}"
+                            ToolTip="Log Out">
+                        <Image Source="/program_shell;component/Resources/Exit22.png" />
+                    </Button>
+                </StackPanel>
+                <TextBlock Style="{StaticResource ResourceKey=HeaderTitleStyle}" Text="License Management" />
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button Margin="0 0 4 0"
                             Command="{Binding Path=Copy,
                                               Mode=OneTime}"

@@ -106,17 +106,25 @@
                 .
             </TextBlock>
         </Grid>
-        <StackPanel Grid.Row="4"
-                    Margin="20 0 20 12"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal">
-            <Image Margin="0 0 4 0"
+        <Grid Grid.Row="4" Margin="20 0 20 12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Margin="0 0 4 0">
+                <Hyperlink Command="{StaticResource ResourceKey=ShowPopupCommand}" CommandParameter="LicenseManagement">I have a registered email and password, what do I do?</Hyperlink>
+            </TextBlock>
+            <Image Grid.Column="1"
+                   Margin="0 0 4 0"
                    Source="/program_shell;component/Resources/Wait.png"
                    Style="{StaticResource ResourceKey=Spinner}"
                    Visibility="{Binding Path=IsExecuting,
                                         Mode=OneWay,
                                         Converter={StaticResource ResourceKey=BooleanToVisibilityConverter}}" />
-            <Button Width="120"
+            <Button Grid.Column="2"
+                    Width="120"
                     Margin="0 0 8 0"
                     Command="{Binding Path=CreateAccount,
                                       Mode=OneTime}"
@@ -124,8 +132,10 @@
                                                                               AncestorType={x:Type c:CustomWindow}}}"
                     Content="Create Account"
                     IsDefault="True" />
-            <Button Content="Cancel" IsCancel="True" />
-        </StackPanel>
+            <Button Grid.Column="3"
+                    Content="Cancel"
+                    IsCancel="True" />
+        </Grid>
     </Grid>
 
 </c:CustomWindow>

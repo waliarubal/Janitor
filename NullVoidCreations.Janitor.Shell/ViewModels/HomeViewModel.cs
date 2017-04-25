@@ -10,7 +10,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 {
     public class HomeViewModel: ViewModelBase, ISignalObserver
     {
-        readonly CommandBase _purchaseLicense, _doScan;
+        readonly CommandBase _doScan;
 
         #region constructor / destructor
 
@@ -21,7 +21,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
             Problems = new ObservableCollection<ProblemModel>();
             ComputerName = OperatingSystem = Processor = Model = "Analysing...";
            
-            _purchaseLicense = new RunProgramCommand(this);
             _doScan = new DelegateCommand(this, ExecuteDoScan);
             _doScan.IsEnabled = true;
         }
@@ -91,11 +90,6 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
         #endregion
 
         #region commands
-
-        public CommandBase PurchaseLicense
-        {
-            get { return _purchaseLicense; }
-        }
 
         public CommandBase DoScan
         {

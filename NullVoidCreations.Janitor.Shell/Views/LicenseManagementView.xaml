@@ -5,7 +5,6 @@
                 xmlns:co="clr-namespace:NullVoidCreations.Janitor.Shell.Converters"
                 xmlns:h="clr-namespace:NullVoidCreations.Janitor.Shared.Helpers;assembly=shared"
                 xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
-                xmlns:wpf="http://schemas.microsoft.com/wpf/2008/toolkit"
                 Title="{Binding Source={StaticResource ResourceKey=ProductName},
                                 StringFormat='{}{0} - License Management'}"
                 Width="580"
@@ -115,14 +114,14 @@
                                   FallbackValue='Access denied! Authentication is required to use license management.'}" />
 
         <!--  license management  -->
-        <wpf:DataGrid Grid.Row="3"
+        <DataGrid Grid.Row="3"
                       Margin="20 0 20 12"
                       ItemsSource="{Binding Path=Licenses,
                                             Mode=OneWay}"
                       SelectedItem="{Binding Path=SelectedLicense}">
-            <wpf:DataGrid.Columns>
-                <wpf:DataGridTemplateColumn Width="100" Header="Machine">
-                    <wpf:DataGridTemplateColumn.CellTemplate>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="100" Header="Machine">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid Margin="6 0 2 0">
                                 <Grid.ColumnDefinitions>
@@ -139,40 +138,40 @@
                                            ToolTip="{Binding Path=MachineName}" />
                             </Grid>
                         </DataTemplate>
-                    </wpf:DataGridTemplateColumn.CellTemplate>
-                </wpf:DataGridTemplateColumn>
-                <wpf:DataGridTemplateColumn Width="160" Header="Serial Key">
-                    <wpf:DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="160" Header="Serial Key">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Padding="6 0 2 0"
                                        Text="{Binding Path=SerialKey}"
                                        ToolTip="{Binding Path=SerialKey}" />
                         </DataTemplate>
-                    </wpf:DataGridTemplateColumn.CellTemplate>
-                </wpf:DataGridTemplateColumn>
-                <wpf:DataGridTemplateColumn Width="100" Header="Issued On">
-                    <wpf:DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="100" Header="Issued On">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Padding="6 0 2 0" Text="{Binding Path=IssueDate, StringFormat={}{0:MM/dd/yyyy}}" />
                         </DataTemplate>
-                    </wpf:DataGridTemplateColumn.CellTemplate>
-                </wpf:DataGridTemplateColumn>
-                <wpf:DataGridTemplateColumn Width="100" Header="Valid Untill">
-                    <wpf:DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="100" Header="Valid Untill">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Padding="6 0 2 0" Text="{Binding Path=ExpirationDate, StringFormat={}{0:MM/dd/yyyy}}" />
                         </DataTemplate>
-                    </wpf:DataGridTemplateColumn.CellTemplate>
-                </wpf:DataGridTemplateColumn>
-                <wpf:DataGridTemplateColumn Width="44" Header="Status">
-                    <wpf:DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="44" Header="Status">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Image Width="16" Source="{Binding Converter={StaticResource ResourceKey=LicenseStatusToImageConverter}, Path=IsActivated, Mode=OneWay}" />
                         </DataTemplate>
-                    </wpf:DataGridTemplateColumn.CellTemplate>
-                </wpf:DataGridTemplateColumn>
-            </wpf:DataGrid.Columns>
-        </wpf:DataGrid>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
 
         <Grid Grid.Row="4" Margin="20 0 20 12">
             <Grid.ColumnDefinitions>

@@ -2595,7 +2595,7 @@
 		<col def="I2">Order</col>
 		<col def="I2">ISSetupLocation</col>
 		<col def="S255">ISReleaseFlags</col>
-		<row><td>_B236C2B6_4187_478D_8802_F07248093F06_</td><td>Microsoft .NET Framework 3.5 (Web Download).prq</td><td/><td>2</td><td/></row>
+		<row><td>_977DE11E_5BF4_4B3C_9F6C_E09218719127_</td><td>Microsoft .NET Framework 4.0 Full (Web Download).prq</td><td/><td/><td/></row>
 	</table>
 
 	<table name="ISSetupType">
@@ -4376,9 +4376,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[INSTALLDIR]NullVoidCreations.Janitor.Shell.Primary output</td><td/></row>
-		<row><td>ProductCode</td><td>{A9A02D59-141D-4D16-BEA3-4DBFC58DCA97}</td><td/></row>
+		<row><td>ProductCode</td><td>{61DEBF4A-252E-4CAA-8B9F-F2C115628E8C}</td><td/></row>
 		<row><td>ProductName</td><td>WinDoc</td><td/></row>
-		<row><td>ProductVersion</td><td>17.4.24.1</td><td/></row>
+		<row><td>ProductVersion</td><td>17.4.25.0</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4666,7 +4666,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s72">ActionProperty</col>
 		<col def="S72">ISDisplayName</col>
 		<row><td>{00000000-0000-0000-0000-000000000000}</td><td>***ALL_VERSIONS***</td><td></td><td></td><td>2</td><td/><td>ISFOUNDNEWERPRODUCTVERSION</td><td>ISPreventDowngrade</td></row>
-		<row><td>{D7221F6F-CC85-479C-BB9E-115CD7B231B6}</td><td></td><td>17.4.24.1</td><td></td><td>512</td><td/><td>ISACTIONPROP2</td><td>Upgrade</td></row>
+		<row><td>{D7221F6F-CC85-479C-BB9E-115CD7B231B6}</td><td></td><td>17.4.25.0</td><td></td><td>512</td><td/><td>ISACTIONPROP2</td><td>Upgrade</td></row>
 	</table>
 
 	<table name="Verb">

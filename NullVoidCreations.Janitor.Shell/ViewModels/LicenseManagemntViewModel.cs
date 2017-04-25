@@ -17,7 +17,7 @@ namespace NullVoidCreations.Janitor.Shell.ViewModels
 
         public string CustomerName
         {
-            get { return LicenseManager.Instance.Customer.Name; }
+            get { return LicenseManager.Instance.IsAuthenticated ? LicenseManager.Instance.Customer.Name : null; }
         }
 
         public License SelectedLicense

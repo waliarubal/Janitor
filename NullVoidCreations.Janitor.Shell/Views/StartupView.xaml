@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
-             xmlns:wpf="http://schemas.microsoft.com/wpf/2008/toolkit"
              d:DesignHeight="480"
              d:DesignWidth="640"
              mc:Ignorable="d">
@@ -90,17 +89,17 @@
                    Text="The following list contains programs that are set to run when your computer starts. To improve your PC performance, remove unwanted programs from startup."
                    TextWrapping="Wrap" />
 
-        <wpf:DataGrid Grid.Row="2"
-                      Grid.ColumnSpan="2"
-                      Margin="20"
-                      Foreground="{StaticResource ResourceKey=TextBrush}"
-                      ItemsSource="{Binding Path=Entries,
-                                            Mode=OneWay}"
-                      SelectedItem="{Binding Path=SelectedEntry,
-                                             Mode=TwoWay}">
-            <wpf:DataGrid.Columns>
-                <wpf:DataGridTemplateColumn Width="140" Header="Name">
-                    <wpf:DataGridTemplateColumn.CellTemplate>
+        <DataGrid Grid.Row="2"
+                  Grid.ColumnSpan="2"
+                  Margin="20"
+                  Foreground="{StaticResource ResourceKey=TextBrush}"
+                  ItemsSource="{Binding Path=Entries,
+                                        Mode=OneWay}"
+                  SelectedItem="{Binding Path=SelectedEntry,
+                                         Mode=TwoWay}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="140" Header="Name">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -122,11 +121,11 @@
                                                              Mode=OneWay}" />
                             </Grid>
                         </DataTemplate>
-                    </wpf:DataGridTemplateColumn.CellTemplate>
-                </wpf:DataGridTemplateColumn>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-                <wpf:DataGridTemplateColumn Width="370" Header="Command">
-                    <wpf:DataGridTemplateColumn.CellTemplate>
+                <DataGridTemplateColumn Width="370" Header="Command">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Padding="6 0 2 0"
                                        Text="{Binding Path=Command,
@@ -135,9 +134,9 @@
                                        ToolTip="{Binding Path=Command,
                                                          Mode=OneWay}" />
                         </DataTemplate>
-                    </wpf:DataGridTemplateColumn.CellTemplate>
-                </wpf:DataGridTemplateColumn>
-            </wpf:DataGrid.Columns>
-        </wpf:DataGrid>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

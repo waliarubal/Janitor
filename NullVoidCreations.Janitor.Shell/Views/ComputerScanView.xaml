@@ -4,7 +4,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:NullVoidCreations.Janitor.Shell.ViewModels"
-             xmlns:wpf="http://schemas.microsoft.com/wpf/2008/toolkit"
              d:DesignHeight="480"
              d:DesignWidth="640"
              mc:Ignorable="d">
@@ -256,15 +255,15 @@
                     </Button>
                 </Grid>
 
-                <wpf:DataGrid Grid.Row="7"
+                <DataGrid Grid.Row="7"
                               Grid.Column="1"
                               Grid.ColumnSpan="3"
                               Foreground="{StaticResource ResourceKey=TextBrush}"
                               ItemsSource="{Binding Path=Scan.Issues,
                                                     Mode=OneWay}">
-                    <wpf:DataGrid.Columns>
-                        <wpf:DataGridTemplateColumn Width="360" Header="Details">
-                            <wpf:DataGridTemplateColumn.CellTemplate>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="360" Header="Details">
+                            <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid Margin="6 0 2 0">
                                         <Grid.ColumnDefinitions>
@@ -287,10 +286,10 @@
                                                                      Mode=OneWay}" />
                                     </Grid>
                                 </DataTemplate>
-                            </wpf:DataGridTemplateColumn.CellTemplate>
-                        </wpf:DataGridTemplateColumn>
-                        <wpf:DataGridTemplateColumn Width="100" Header="Area">
-                            <wpf:DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="100" Header="Area">
+                            <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Padding="6 0 2 0"
                                                Text="{Binding Path=Area.Name,
@@ -299,10 +298,10 @@
                                                ToolTip="{Binding Path=Area.Name,
                                                                  Mode=OneWay}" />
                                 </DataTemplate>
-                            </wpf:DataGridTemplateColumn.CellTemplate>
-                        </wpf:DataGridTemplateColumn>
-                    </wpf:DataGrid.Columns>
-                </wpf:DataGrid>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </Border>
 

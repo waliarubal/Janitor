@@ -1,5 +1,6 @@
-﻿using System.IO;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace NullVoidCreations.Janitor.Shared.Helpers
@@ -27,6 +28,35 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
         }
 
         #endregion
+
+        string ByteArrayToString(byte[] Data)
+        {
+            var builder = new StringBuilder(Data.Length * 2);
+            foreach (byte B in Data)
+                builder.AppendFormat("{0:x2}", B);
+
+            return builder.ToString().ToLower();
+        }
+
+        public string GetSHA512(string fileName)
+        {
+            var sha512 = new SHA512CryptoServiceProvider();
+            var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Write | FileShare.Delete, 8192);
+            sha512.ComputeHash(fileStream);
+            fileStream.Close();
+
+            return ByteArrayToString(sha512.Hash);
+        }
+
+        public string GetMD5(string fileName)
+        {
+            var md5 = new MD5CryptoServiceProvider();
+            var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Write | FileShare.Delete, 8192);
+            md5.ComputeHash(fileStream);
+            fileStream.Close();
+
+            return ByteArrayToString(md5.Hash);
+        }
 
         public bool DeleteFile(string path)
         {

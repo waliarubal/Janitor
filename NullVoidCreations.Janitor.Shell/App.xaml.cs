@@ -9,6 +9,7 @@ using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Views;
+using System.Reflection;
 
 namespace NullVoidCreations.Janitor.Shell
 {
@@ -29,20 +30,29 @@ namespace NullVoidCreations.Janitor.Shell
             //TODO: add exception handeler
         }
 
+        Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            return null;
+        }
+
         protected override void OnExit(ExitEventArgs e)
         {
             WorkQueueManager.Instance.Dispose();
             SettingsManager.Instance.Dispose();
             Core.LicenseManager.Instance.Dispose();
             SignalHost.Instance.Dispose();
+            AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(CurrentDomain_AssemblyResolve);
             App.Current.DispatcherUnhandledException -= new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
             AppDomain.CurrentDomain.UnhandledException -= new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-
+            
             base.OnExit(e);
         }
 
+        
+
         protected override void OnStartup(StartupEventArgs e)
         {
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             App.Current.DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
 

@@ -330,9 +330,9 @@
                                           ShowDropDownButton="False"
                                           Value="{Binding Path=Date,
                                                           Mode=TwoWay}" />
+
                         <TextBlock Text="{StaticResource ResourceKey=Settings27}" />
                     </StackPanel>
-
 
                     <Button Grid.Row="7"
                             Grid.Column="1"

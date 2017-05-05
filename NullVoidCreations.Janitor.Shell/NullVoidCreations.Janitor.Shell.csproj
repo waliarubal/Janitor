@@ -15,6 +15,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -29,7 +30,6 @@
     <ApplicationVersion>1.0.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -54,7 +54,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Logo16.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Logo16.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>NullVoidCreations.Janitor.Shell.App</StartupObject>
@@ -68,6 +68,10 @@
   <ItemGroup>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net40\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -131,6 +135,7 @@
     <Compile Include="Core\SignalHost.cs" />
     <Compile Include="Core\TemporarySettingsManager.cs" />
     <Compile Include="Core\UiHelper.cs" />
+    <Compile Include="Core\VirusTotalClient.cs" />
     <Compile Include="Core\WorkQueueManager.cs" />
     <Compile Include="Models\LanguageModel.cs" />
     <Compile Include="Models\LicenseModel.cs" />
@@ -316,15 +321,14 @@
     <Content Include="Translations\English.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="app.config" />
-    <None Include="app.manifest">
+    <Resource Include="app.config" />
+    <Resource Include="app.manifest">
       <SubType>Designer</SubType>
-    </None>
+    </Resource>
     <Content Include="Translations\English.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Resources\Free.png" />
-    <Resource Include="Logo16.ico" />
     <Resource Include="Resources\Info.png" />
     <Content Include="Translations\Hindi.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

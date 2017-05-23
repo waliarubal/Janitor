@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
@@ -9,7 +10,6 @@ using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Commands;
 using NullVoidCreations.Janitor.Shell.Core;
 using NullVoidCreations.Janitor.Shell.Views;
-using System.Reflection;
 
 namespace NullVoidCreations.Janitor.Shell
 {
@@ -47,8 +47,6 @@ namespace NullVoidCreations.Janitor.Shell
             
             base.OnExit(e);
         }
-
-        
 
         protected override void OnStartup(StartupEventArgs e)
         {

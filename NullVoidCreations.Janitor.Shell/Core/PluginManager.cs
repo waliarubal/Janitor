@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using NullVoidCreations.Janitor.Shared;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
 using NullVoidCreations.Janitor.Shell.Commands;
-using System.Reflection;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
+    [Serializable]
     sealed class PluginManager
     {
         AppDomain _container;
@@ -28,8 +29,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
             // install any pending plugins update
             if (File.Exists(UpdateCommand.PluginsUpdateFile))
                 UpdatePlugins(UpdateCommand.PluginsUpdateFile);
-            else
-                LoadPlugins();
         }
 
         #endregion
@@ -77,14 +76,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         #endregion
 
-        Assembly FindPlugin(object sender, ResolveEventArgs args)
-        {
-            var assemblyName = new AssemblyName(args.Name);
-
-            var pluginAssembly = Path.Combine(Constants.PluginsDirectory, string.Format("{0}.dll", assemblyName.Name));
-            return Assembly.LoadFile(pluginAssembly);
-        }
-
         bool UpdatePlugins(string archiveFile)
         {
             if (string.IsNullOrEmpty(archiveFile))
@@ -102,7 +93,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 var filePath = Path.Combine(Constants.PluginsDirectory, fileName);
                 zip.ExtractFile(entry, filePath);
             }
-            LoadPlugins();
 
             FileSystemHelper.Instance.DeleteFile(archiveFile);
 
@@ -112,8 +102,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
         public void LoadPlugins()
         {
             UnloadPlugins();
-
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(FindPlugin);
 
             var scanTargetType = typeof(ScanTargetBase);
             var proxyType = typeof(Proxy);
@@ -141,13 +129,19 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
         public void UnloadPlugins()
         {
-            AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(FindPlugin);
-
             _targets.Clear();
             DestroyContainer();
             CreateContainer();
 
             SignalHost.Instance.RaiseSignal(Signal.PluginsUnloaded);
+        }
+
+        Assembly FindPlugin(object sender, ResolveEventArgs args)
+        {
+            var assemblyName = new AssemblyName(args.Name);
+
+            var pluginAssembly = Path.Combine(Constants.PluginsDirectory, string.Format("{0}.dll", assemblyName.Name));
+            return Assembly.LoadFile(pluginAssembly);
         }
 
         void CreateContainer()
@@ -160,6 +154,18 @@ namespace NullVoidCreations.Janitor.Shell.Core
             setupInfo.ApplicationBase = Constants.PluginsDirectory;
 
             _container = AppDomain.CreateDomain("ScanTargets", evidence, setupInfo);
+            _container.AssemblyResolve += new ResolveEventHandler(FindPlugin);
+        }
+
+        void DestroyContainer()
+        {
+            if (_container != null)
+            {
+                _container.AssemblyResolve -= new ResolveEventHandler(FindPlugin);
+                AppDomain.Unload(_container);
+            }
+
+            _container = null;
         }
 
         void CopyDependencies()
@@ -171,14 +177,6 @@ namespace NullVoidCreations.Janitor.Shell.Core
             var sharedAssemblySourcePath = Path.Combine(KnownPaths.Instance.ApplicationDirectory, SharedAssemblyName);
             if (!File.Exists(sharedAssemblyPath))
                 File.Copy(sharedAssemblySourcePath, sharedAssemblyPath, true);
-        }
-
-        void DestroyContainer()
-        {
-            if (_container != null)
-                AppDomain.Unload(_container);
-
-            _container = null;
         }
     }
 }

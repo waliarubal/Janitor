@@ -9,7 +9,7 @@ namespace NullVoidCreations.Janitor.Plugin.System.System
         public SystemTarget()
             : base("System", new Version("16.12.31.0"), new DateTime(2016, 12, 31))
         {
-            IconSource = "/plugin_system;component/Resources/System.png";
+            IconSource = "pack://application:,,,/plugin_system;component/Resources/System.png";
 
             var areas = new List<ScanAreaBase>()
             {

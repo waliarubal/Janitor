@@ -4376,9 +4376,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[INSTALLDIR]NullVoidCreations.Janitor.Shell.Primary output</td><td/></row>
-		<row><td>ProductCode</td><td>{61DEBF4A-252E-4CAA-8B9F-F2C115628E8C}</td><td/></row>
+		<row><td>ProductCode</td><td>{1E181F73-2C40-4965-9DA7-F1D559D60BCA}</td><td/></row>
 		<row><td>ProductName</td><td>WinDoc</td><td/></row>
-		<row><td>ProductVersion</td><td>17.4.25.0</td><td/></row>
+		<row><td>ProductVersion</td><td>17.6.1.0</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>

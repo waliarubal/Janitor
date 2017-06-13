@@ -93,33 +93,38 @@ namespace NullVoidCreations.Janitor.Shell
 
         #region background bootstraping
 
+        void SkipUac()
+        {
+            var skipUac = new SkipUacCommand(null);
+            if (skipUac.IsEnabled)
+                skipUac.Execute(SettingsManager.Instance.SkipUac);
+        }
+
+        void RunAtBoot()
+        {
+            var runAtBoot = new ScheduleSilentRunCommand(null);
+            runAtBoot.Execute(SettingsManager.Instance.RunAtBoot);
+        }
+
+        void LoadSystemInformation()
+        {
+            SysInformation.Instance.Fill(SysInformation.ManagementClassNames.ComputerSystem);
+            SysInformation.Instance.Fill(SysInformation.ManagementClassNames.OperatingSystem);
+            SysInformation.Instance.Fill(SysInformation.ManagementClassNames.Processor);
+        }
+
         void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             Thread.CurrentThread.IsBackground = true;
             Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
 
-            // skip UAC
-            var skipUac = new SkipUacCommand(null);
-            if (skipUac.IsEnabled)
-                skipUac.Execute(SettingsManager.Instance.SkipUac);
-
-            // run at startup
-            var runAtBoot = new ScheduleSilentRunCommand(null);
-            runAtBoot.Execute(SettingsManager.Instance.RunAtBoot);
+            UiHelper.Instance.DoBackgroundWork(SkipUac);
+            UiHelper.Instance.DoBackgroundWork(RunAtBoot);
+            UiHelper.Instance.DoBackgroundWork(LoadSystemInformation);
+            UiHelper.Instance.DoBackgroundWork(PluginManager.Instance.LoadPlugins);
 
             // load license
             Core.LicenseManager.Instance.LoadLicense();
-
-            // load plugins
-            PluginManager.Instance.LoadPlugins();
-
-            // load system information
-            SysInformation.Instance.Fill(SysInformation.ManagementClassNames.ComputerSystem);
-            SysInformation.Instance.Fill(SysInformation.ManagementClassNames.OperatingSystem);
-            SysInformation.Instance.Fill(SysInformation.ManagementClassNames.Processor);
-
-            TemporarySettingsManager.Instance.Load(Constants.UpdatesMetadataUrl);
-            TemporarySettingsManager.Instance.Load(Constants.WebLinksUrl);
 
             e.Result = e.Argument;
         }

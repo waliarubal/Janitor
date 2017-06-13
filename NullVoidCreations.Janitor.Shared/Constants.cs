@@ -22,8 +22,8 @@ namespace NullVoidCreations.Janitor.Shared
             PluginsDirectory = KnownPaths.Instance.ApplicationDirectory;
             ExecutableFile = IsInDesignMode ? string.Empty : Assembly.GetEntryAssembly().Location;
 
-            UpdatesMetadataUrl = new Uri("https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/Updates.dat");
-            WebLinksUrl = new Uri("https://raw.githubusercontent.com/waliarubal/JanitorUpdates/master/WebLinks.dat");
+            //UpdatesMetadataUrl = new Uri("https://raw.githubusercontent.com/jainvikas1197/JanitorUpdates/master/Updates.dat");
+            WebLinksUrl = new Uri("https://raw.githubusercontent.com/jainvikas1197/JanitorUpdates/master/WebLinks.dat");
         }
 
         public static bool IsInDesignMode

@@ -103,7 +103,10 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
                 case WorkSignal.ShowTrialWarning:
                     if (LicenseExManager.Instance.License.IsTrial)
+                    {
                         new BalloonCommand(null).Execute(SettingsManager.Instance["OfferUrl"] as string);
+                        SignalHost.Instance.RaiseSignal(this, Signal.StopWork);
+                    }
                     break;
             }
         }

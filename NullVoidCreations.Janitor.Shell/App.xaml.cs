@@ -117,10 +117,12 @@ namespace NullVoidCreations.Janitor.Shell
                 WorkQueueManager.Instance.AddWork(WorkSignal.PluginUpdate);
                 WorkQueueManager.Instance.AddWork(WorkSignal.ShowHome);
             }
+ 
+            WorkQueueManager.Instance.AddWork(WorkSignal.ShowTrialWarning);
+
             if (SettingsManager.Instance.RunScanAtLaunch)
                 WorkQueueManager.Instance.AddWork(WorkSignal.SmartScan);
-                
-            WorkQueueManager.Instance.AddWork(WorkSignal.ShowTrialWarning);
+
             WorkQueueManager.Instance.DoWork();
 
             var worker = e.Result as BackgroundWorker;

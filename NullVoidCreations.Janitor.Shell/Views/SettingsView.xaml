@@ -186,7 +186,7 @@
                 <Separator Margin="20 0" />
 
                 <!--  schedule  -->
-                <Grid Margin="20">
+                <Grid Margin="20" IsEnabled="False">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />

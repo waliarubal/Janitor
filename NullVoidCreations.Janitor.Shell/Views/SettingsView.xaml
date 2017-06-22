@@ -186,7 +186,7 @@
                 <Separator Margin="20 0" />
 
                 <!--  schedule  -->
-                <Grid Margin="20" IsEnabled="False">
+                <Grid Margin="20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -322,19 +322,14 @@
                                 Grid.ColumnSpan="2"
                                 Orientation="Horizontal">
                         <TextBlock Text="{StaticResource ResourceKey=Settings26}" />
-
-                        <!--
-                            <t:DateTimePicker Background="{StaticResource ResourceKey=BackgroundBrush}"
-                            BorderThickness="0"
-                            Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
-                            Format="Custom"
-                            FormatString="dd/MM/yyyy HH:mm:ss"
-                            ShowDropDownButton="False"
-                            Value="{Binding Path=Date,
-                            Mode=TwoWay}" />
-                        -->
-
-
+                        <t:DateTimePicker Background="{StaticResource ResourceKey=BackgroundBrush}"
+                                          BorderThickness="0"
+                                          Foreground="{StaticResource ResourceKey=TextAlternateBrush}"
+                                          Format="Custom"
+                                          FormatString="dd/MM/yyyy HH:mm:ss"
+                                          ShowDropDownButton="False"
+                                          Value="{Binding Path=Date,
+                                                          Mode=TwoWay}" />
                         <TextBlock Text="{StaticResource ResourceKey=Settings27}" />
                     </StackPanel>
 

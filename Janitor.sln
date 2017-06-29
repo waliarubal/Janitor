@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullVoidCreations.Janitor.L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullVoidCreations.Janitor.Plugin.Miscellaneous", "NullVoidCreations.Janitor.Plugin.Miscellaneous\NullVoidCreations.Janitor.Plugin.Miscellaneous.csproj", "{5CCCE8B2-A9EF-481C-807B-AB12FF075BCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullVoidCreations.Janitor.Signature", "NullVoidCreations.Janitor.Signature\NullVoidCreations.Janitor.Signature.csproj", "{A9A76922-49F6-41D5-AB48-1B01F41C338D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
@@ -219,31 +217,6 @@ Global
 		{5CCCE8B2-A9EF-481C-807B-AB12FF075BCC}.SingleImage|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5CCCE8B2-A9EF-481C-807B-AB12FF075BCC}.SingleImage|Mixed Platforms.Build.0 = Release|Any CPU
 		{5CCCE8B2-A9EF-481C-807B-AB12FF075BCC}.SingleImage|x86.ActiveCfg = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.CD_ROM|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.CD_ROM|Mixed Platforms.Build.0 = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.CD_ROM|x86.ActiveCfg = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.DVD-5|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.DVD-5|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.DVD-5|x86.ActiveCfg = Debug|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.Release|x86.ActiveCfg = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.SingleImage|Any CPU.Build.0 = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.SingleImage|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.SingleImage|Mixed Platforms.Build.0 = Release|Any CPU
-		{A9A76922-49F6-41D5-AB48-1B01F41C338D}.SingleImage|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

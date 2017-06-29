@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ScanTarget>
+  <Property Name="Name" Value="" />
+  <Property Name="Version" Value="" />
+  <Property Name="Date" Value="" />
+  <Property Name="Description" Value="" />
+  <Property Name="IconSource" Value="" /> <!--This should point to 22 x 22 image resource.-->
+  <ScanAreas>
+    <ScanArea>
+      <Property Name="Name" Value="" />
+      <ScanPaths>
+        <Path></Path>
+      </ScanPaths>
+      <Filters>
+        <Filter></Filter>
+      </Filters>
+    </ScanArea>
+  </ScanAreas>
+</ScanTarget>

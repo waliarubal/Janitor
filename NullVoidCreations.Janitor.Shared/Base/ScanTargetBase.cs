@@ -43,19 +43,19 @@ namespace NullVoidCreations.Janitor.Shared.Base
         public string Name
         {
             get { return GetValue<string>("Name"); }
-            private set { this["Name"] = value; }
+            protected set { this["Name"] = value; }
         }
 
         public Version Version
         {
             get { return GetValue<Version>("Version"); }
-            private set { this["Version"] = value; }
+            protected set { this["Version"] = value; }
         }
 
         public DateTime Date
         {
             get { return GetValue<DateTime>("Date"); }
-            private set { this["Date"] = value; }
+            protected set { this["Date"] = value; }
         }
 
         public string Description

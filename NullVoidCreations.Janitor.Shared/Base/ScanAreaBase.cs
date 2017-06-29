@@ -32,7 +32,7 @@ namespace NullVoidCreations.Janitor.Shared.Base
         public string Name
         {
             get { return GetValue<string>("Name"); }
-            private set { this["Name"] = value; }
+            protected set { this["Name"] = value; }
         }
 
         protected ScanTargetBase Target

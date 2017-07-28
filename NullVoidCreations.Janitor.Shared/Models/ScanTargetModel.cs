@@ -1,7 +1,7 @@
 ﻿using System;
-using NullVoidCreations.Janitor.Shared.Base;
-using System.Xml;
 using System.Collections.Generic;
+using System.Xml;
+using NullVoidCreations.Janitor.Shared.Base;
 
 namespace NullVoidCreations.Janitor.Shared.Models
 {

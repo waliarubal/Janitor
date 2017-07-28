@@ -9,11 +9,15 @@
     <ScanArea>
       <Property Name="Name" Value="" />
       <ScanPaths>
-        <Path></Path>
+        <Path>
+          <Property Name="FullName" Value="" />
+          <Property Name="Type" Value="" /> <!--0 = directory, 1 = file-->
+          <Property Name="Recursive" Value="" /> <!--true/false-->
+          <Filters>
+            <Filter></Filter>
+          </Filters>
+        </Path>
       </ScanPaths>
-      <Filters>
-        <Filter></Filter>
-      </Filters>
     </ScanArea>
   </ScanAreas>
 </ScanTarget>

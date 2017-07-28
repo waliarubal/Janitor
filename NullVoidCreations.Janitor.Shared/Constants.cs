@@ -24,8 +24,8 @@ namespace NullVoidCreations.Janitor.Shared
             SupportPhone = "+91 99288 93416";
             SupportEmail = "walia.rubal@gmail.com";
 
-            PluginsSearchFilter = "plugin_*.dll";
-            PluginsDirectory = Debugger.IsAttached ? KnownPaths.Instance.ApplicationDirectory : Path.Combine(KnownPaths.Instance.MyDataDirectory, "Plugins");
+            PluginsSearchFilter = "*Target.xml";
+            PluginsDirectory = Debugger.IsAttached ? Path.Combine(KnownPaths.Instance.ApplicationDirectory, "Xml\\ScanTargets") : Path.Combine(KnownPaths.Instance.MyDataDirectory, "Plugins");
             ExecutableFile = IsInDesignMode ? string.Empty : Assembly.GetEntryAssembly().Location;
 
             UpdatesMetadataUrl = new Uri("https://bitbucket.org/waliarubal/waliarubal.bitbucket.org/raw/master/windoc/binaries/Updates.dat");

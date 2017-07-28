@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Xml;
 using NullVoidCreations.Janitor.Shared;
 using NullVoidCreations.Janitor.Shared.Base;
 using NullVoidCreations.Janitor.Shared.Helpers;
-using NullVoidCreations.Janitor.Shell.Commands;
+using NullVoidCreations.Janitor.Shared.Models;
 
 namespace NullVoidCreations.Janitor.Shell.Core
 {
     [Serializable]
     sealed class PluginManager
     {
-        AppDomain _container;
+        //AppDomain _container;
         readonly Dictionary<string, ScanTargetBase> _targets;
         static PluginManager _instance;
 
@@ -27,8 +28,10 @@ namespace NullVoidCreations.Janitor.Shell.Core
                 Directory.CreateDirectory(Constants.PluginsDirectory);
 
             // install any pending plugins update
+            /*
             if (File.Exists(UpdateCommand.PluginsUpdateFile))
                 UpdatePlugins(UpdateCommand.PluginsUpdateFile);
+             */
         }
 
         #endregion
@@ -103,13 +106,19 @@ namespace NullVoidCreations.Janitor.Shell.Core
         {
             UnloadPlugins();
 
-            var scanTargetType = typeof(ScanTargetBase);
-            var proxyType = typeof(Proxy);
-            var proxy = (Proxy)_container.CreateInstanceAndUnwrap(proxyType.Assembly.FullName, proxyType.FullName);
-
             var pluginFiles = Directory.GetFiles(Constants.PluginsDirectory, Constants.PluginsSearchFilter);
             foreach (var pluginFile in pluginFiles)
             {
+                var document = new XmlDocument();
+                document.Load(pluginFile);
+
+                var target = new ScanTargetModel(document);
+                if (_targets.ContainsKey(target.Name))
+                    continue;
+
+                _targets.Add(target.Name, target);
+
+                /*
                 var assembly = proxy.GetAssembly(pluginFile);
                 foreach (var type in assembly.GetTypes())
                 {
@@ -122,6 +131,7 @@ namespace NullVoidCreations.Janitor.Shell.Core
                         _targets.Add(target.Name, target);
                     }
                 }
+                 */
             }
 
             SignalHost.Instance.RaiseSignal(Signal.PluginsLoaded, Targets);
@@ -130,8 +140,11 @@ namespace NullVoidCreations.Janitor.Shell.Core
         public void UnloadPlugins()
         {
             _targets.Clear();
+
+            /*
             DestroyContainer();
             CreateContainer();
+             */
 
             SignalHost.Instance.RaiseSignal(Signal.PluginsUnloaded);
         }
@@ -143,6 +156,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
             var pluginAssembly = Path.Combine(Constants.PluginsDirectory, string.Format("{0}.dll", assemblyName.Name));
             return Assembly.LoadFile(pluginAssembly);
         }
+
+        /*
 
         void CreateContainer()
         {
@@ -167,6 +182,8 @@ namespace NullVoidCreations.Janitor.Shell.Core
 
             _container = null;
         }
+
+         */
 
         void CopyDependencies()
         {

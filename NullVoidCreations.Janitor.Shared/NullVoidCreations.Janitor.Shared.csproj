@@ -82,6 +82,7 @@
     <Compile Include="Base\ScanAreaBase.cs" />
     <Compile Include="Base\ScanTargetBase.cs" />
     <Compile Include="Models\ScanAreaModel.cs" />
+    <Compile Include="Models\ScanPathModel.cs" />
     <Compile Include="Models\ScanTargetModel.cs" />
     <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -95,7 +96,20 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Xml\ScanTarget.xml" />
+    <None Include="Xml\ScanTarget.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Xml\ScanTargets\ApplicationsTarget.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Xml\ScanTargets\MultimediaTarget.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

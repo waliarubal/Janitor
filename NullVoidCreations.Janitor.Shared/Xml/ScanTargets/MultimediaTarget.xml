@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ScanTarget>
+  <Property Name="Name" Value="Multimedia" />
+  <Property Name="Version" Value="17.3.22.0" />
+  <Property Name="Date" Value="2017-3-22" />
+  <Property Name="Description" Value="" />
+  <Property Name="IconSource" Value="" />
+  <ScanAreas>
+    <ScanArea>
+      <Property Name="Name" Value="Adobe Flash Player" />
+      <ScanPaths>
+        <Path>
+          <Property Name="FullName" Value="%AppDataRoaming%\Macromedia\Flash Player" />
+          <Property Name="Type" Value="0" />
+          <Property Name="Recursive" Value="True" />
+          <Filters>
+            <Filter>\w*\.sol\b</Filter>
+          </Filters>
+        </Path>
+      </ScanPaths>
+    </ScanArea>
+    <ScanArea>
+      <Property Name="Name" Value="Steam" />
+      <ScanPaths>
+        <Path>
+          <Property Name="FullName" Value="%ProgramFilesDirectory%\Steam" />
+          <Property Name="Type" Value="0" />
+          <Property Name="Recursive" Value="False" />
+          <Filters>
+            <Filter>\w*\.log\b</Filter>
+          </Filters>
+        </Path>
+        <Path>
+          <Property Name="FullName" Value="%ProgramFilesDirectory%\Steam\Logs" />
+          <Property Name="Type" Value="0" />
+          <Property Name="Recursive" Value="False" />
+          <Filters>
+            <Filter>\w*\.txt\b</Filter>
+          </Filters>
+        </Path>
+      </ScanPaths>
+    </ScanArea>
+    <ScanArea>
+      <Property Name="Name" Value="VLC Media Player" />
+      <ScanPaths>
+        <Path>
+          <Property Name="FullName" Value="%AppDataRoaming%\vlc\art\artistalbum" />
+          <Property Name="Type" Value="0" />
+          <Property Name="Recursive" Value="True" />
+          <Filters>
+            <Filter>/^art$/</Filter>
+          </Filters>
+        </Path>
+      </ScanPaths>
+    </ScanArea>
+    <ScanArea>
+      <Property Name="Name" Value="Windows Media Player" />
+      <ScanPaths>
+        <Path>
+          <Property Name="FullName" Value="%MyDocumentsDirectory%\NetworkService\Local Settings\Application Data\Microsoft\Media Player" />
+          <Property Name="Type" Value="0" />
+          <Property Name="Recursive" Value="False" />
+        </Path>
+        <Path>
+          <Property Name="FullName" Value="%MyDocumentsDirectory%\NetworkService\Local Settings\Microsoft\Media Player" />
+          <Property Name="Type" Value="0" />
+          <Property Name="Recursive" Value="False" />
+        </Path>
+      </ScanPaths>
+    </ScanArea>
+  </ScanAreas>
+</ScanTarget>

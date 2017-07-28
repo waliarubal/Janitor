@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ScanTarget>
+  <Property Name="Name" Value="Applications" />
+  <Property Name="Version" Value="17.3.22.0" />
+  <Property Name="Date" Value="2017-3-22" />
+  <Property Name="Description" Value="" />
+  <Property Name="IconSource" Value="" />
+  <ScanAreas>
+    <ScanArea>
+      <Property Name="Name" Value="Foxit Reader" />
+      <ScanPaths>
+        <Path>
+          <Property Name="FullName" Value="%AppDataRoaming%\Foxit Software\Foxit Reader\Foxit Cloud" />
+          <Property Name="Type" Value="0" />
+          <Property Name="Recursive" Value="True" />
+        </Path>
+      </ScanPaths>
+    </ScanArea>
+    <ScanArea>
+      <Property Name="Name" Value="Microsoft Office" />
+      <ScanPaths>
+        <Path>
+          <Property Name="FullName" Value="%AppDataRoaming%\Microsoft\Office\Recent" />
+          <Property Name="Type" Value="0" />
+          <Property Name="Recursive" Value="True" />
+        </Path>
+      </ScanPaths>
+    </ScanArea>
+  </ScanAreas>
+</ScanTarget>

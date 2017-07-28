@@ -1,6 +1,6 @@
 // ZipStorer, by Jaime Olivares
-// Website: zipstorer.codeplex.com
-// Version: 2.35 (March 14, 2010)
+// Website: http://github.com/jaime-olivares/zipstorer
+// Version: 3.3.0 (April 19, 2017)
 
 using System;
 using System.Collections.Generic;
@@ -8,8 +8,26 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
+#if NET45
+using System.Threading.Tasks;
+#endif
+
 namespace NullVoidCreations.Janitor.Shared.Helpers
 {
+#if NETSTANDARD
+    /// <summary>
+    /// Extension method for covering missing Close() method in .Net Standard
+    /// </summary>
+    public static class StreamExtension
+    {
+        public static void Close(this Stream stream)
+        {
+            stream.Dispose(); 
+            GC.SuppressFinalize(stream);
+        }
+    }
+#endif
+
     /// <summary>
     /// Unique class for compression/decompression file. Represents a Zip file.
     /// </summary>
@@ -60,14 +78,14 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             }
         }
 
-        #region Public fields
+#region Public fields
         /// <summary>True if UTF8 encoding for filename and comments, false if default (CP 437)</summary>
         public bool EncodeUTF8 = false;
         /// <summary>Force deflate algotithm even if it inflates the stored file. Off by default.</summary>
         public bool ForceDeflating = false;
-        #endregion
+#endregion
 
-        #region Private fields
+#region Private fields
         // List of files to store
         private List<ZipFileEntry> Files = new List<ZipFileEntry>();
         // Filename of storage file
@@ -86,9 +104,9 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
         private static UInt32[] CrcTable = null;
         // Default filename encoder
         private static Encoding DefaultEncoding = Encoding.GetEncoding(437);
-        #endregion
+#endregion
 
-        #region Public methods
+#region Public methods
         // Static constructor. Just invoked once in order to create the CRC32 lookup table.
         static ZipStorer()
         {
@@ -186,9 +204,10 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             if (Access == FileAccess.Read)
                 throw new InvalidOperationException("Writing is not alowed");
 
-            FileStream stream = new FileStream(_pathname, FileMode.Open, FileAccess.Read);
-            AddStream(_method, _filenameInZip, stream, File.GetLastWriteTime(_pathname), _comment);
-            stream.Close();
+            using (var stream = new FileStream(_pathname, FileMode.Open, FileAccess.Read))
+            {
+                AddStream(_method, _filenameInZip, stream, File.GetLastWriteTime(_pathname), _comment);
+            }
         }
         /// <summary>
         /// Add full contents of a stream into the Zip storage
@@ -203,21 +222,12 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             if (Access == FileAccess.Read)
                 throw new InvalidOperationException("Writing is not alowed");
 
-            long offset;
-            if (this.Files.Count==0)
-                offset = 0;
-            else
-            {
-                ZipFileEntry last = this.Files[this.Files.Count-1];
-                offset = last.HeaderOffset + last.HeaderSize;
-            }
-
             // Prepare the fileinfo
             ZipFileEntry zfe = new ZipFileEntry();
             zfe.Method = _method;
             zfe.EncodeUTF8 = this.EncodeUTF8;
             zfe.FilenameInZip = NormalizedFilename(_filenameInZip);
-            zfe.Comment = (_comment == null ? "" : _comment);
+            zfe.Comment = _comment ?? "";
 
             // Even though we write the header now, it will have to be rewritten, since we don't know compressed size or crc.
             zfe.Crc32 = 0;  // to be updated later
@@ -310,7 +320,8 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
                 zfe.HeaderOffset = headerOffset;
                 zfe.HeaderSize = headerSize;
                 zfe.Crc32 = crc32;
-                zfe.ModifyTime = DosTimeToDateTime(modifyTime);
+                zfe.ModifyTime = DosTimeToDateTime(modifyTime) ?? DateTime.Now;
+
                 if (commentSize > 0)
                     zfe.Comment = encoder.GetString(CentralDirImage, pointer + 46 + filenameSize + extraSize, commentSize);
 
@@ -330,7 +341,7 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
         public bool ExtractFile(ZipFileEntry _zfe, string _filename)
         {
             // Make sure the parent directory exist
-            string path = System.IO.Path.GetDirectoryName(_filename);
+            string path = Path.GetDirectoryName(_filename);
 
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
@@ -338,13 +349,17 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             if (Directory.Exists(_filename))
                 return true;
 
-            Stream output = new FileStream(_filename, FileMode.Create, FileAccess.Write);
-            bool result = ExtractFile(_zfe, output);
+            bool result;
+            using(var output = new FileStream(_filename, FileMode.Create, FileAccess.Write))
+            {
+                result = ExtractFile(_zfe, output);
+            }
+                
             if (result)
-                output.Close();
-
-            File.SetCreationTime(_filename, _zfe.ModifyTime);
-            File.SetLastWriteTime(_filename, _zfe.ModifyTime);
+            {
+                File.SetCreationTime(_filename, _zfe.ModifyTime);
+                File.SetLastWriteTime(_filename, _zfe.ModifyTime);
+            }
             
             return result;
         }
@@ -392,6 +407,75 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
                 inStream.Dispose();
             return true;
         }
+#if NET45
+        /// <summary>
+        /// Copy the contents of a stored file into an opened stream
+        /// </summary>
+        /// <param name="_zfe">Entry information of file to extract</param>
+        /// <param name="_stream">Stream to store the uncompressed data</param>
+        /// <returns>True if success, false if not.</returns>
+        /// <remarks>Unique compression methods are Store and Deflate</remarks>
+        public async Task<bool> ExtractFileAsync(ZipFileEntry _zfe, Stream _stream)
+        {
+            if (!_stream.CanWrite)
+                throw new InvalidOperationException("Stream cannot be written");
+
+            // check signature
+            byte[] signature = new byte[4];
+            this.ZipFileStream.Seek(_zfe.HeaderOffset, SeekOrigin.Begin);
+            await this.ZipFileStream.ReadAsync(signature, 0, 4).ConfigureAwait(false);
+            if (BitConverter.ToUInt32(signature, 0) != 0x04034b50)
+                return false;
+
+            // Select input stream for inflating or just reading
+            Stream inStream;
+            if (_zfe.Method == Compression.Store)
+                inStream = this.ZipFileStream;
+            else if (_zfe.Method == Compression.Deflate)
+                inStream = new DeflateStream(this.ZipFileStream, CompressionMode.Decompress, true);
+            else
+                return false;
+
+            // Buffered copy
+            byte[] buffer = new byte[16384];
+            this.ZipFileStream.Seek(_zfe.FileOffset, SeekOrigin.Begin);
+            uint bytesPending = _zfe.FileSize;
+            while (bytesPending > 0)
+            {
+                int bytesRead = await inStream.ReadAsync(buffer, 0, (int)Math.Min(bytesPending, buffer.Length)).ConfigureAwait(false);
+                await _stream.WriteAsync(buffer, 0, bytesRead).ConfigureAwait(false);
+                bytesPending -= (uint)bytesRead;
+            }
+            _stream.Flush();
+
+            if (_zfe.Method == Compression.Deflate)
+                inStream.Dispose();
+            return true;
+        }
+#endif
+        /// <summary>
+        /// Copy the contents of a stored file into a byte array
+        /// </summary>
+        /// <param name="_zfe">Entry information of file to extract</param>
+        /// <param name="_file">Byte array with uncompressed data</param>
+        /// <returns>True if success, false if not.</returns>
+        /// <remarks>Unique compression methods are Store and Deflate</remarks>
+        public bool ExtractFile(ZipFileEntry _zfe, out byte[] _file)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                if (ExtractFile(_zfe, ms))
+                {
+                    _file = ms.ToArray();
+                    return true;
+                }
+                else
+                {
+                    _file = null;
+                    return false;
+                }
+            }
+        }
         /// <summary>
         /// Removes one of many files in storage. It creates a new Zip file.
         /// </summary>
@@ -406,15 +490,15 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
 
 
             //Get full list of entries
-            List<ZipFileEntry> fullList = _zip.ReadCentralDir();
+            var fullList = _zip.ReadCentralDir();
 
             //In order to delete we need to create a copy of the zip file excluding the selected items
-            string tempZipName = Path.GetTempFileName();
-            string tempEntryName = Path.GetTempFileName();
+            var tempZipName = Path.GetTempFileName();
+            var tempEntryName = Path.GetTempFileName();
 
             try
             {
-                ZipStorer tempZip = ZipStorer.Create(tempZipName, string.Empty);
+                var tempZip = ZipStorer.Create(tempZipName, string.Empty);
 
                 foreach (ZipFileEntry zfe in fullList)
                 {
@@ -447,9 +531,9 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             }
             return true;
         }
-        #endregion
+#endregion
 
-        #region Private methods
+#region Private methods
         // Calculate the file offset by reading the corresponding local header
         private uint GetFileOffset(uint _headerOffset)
         {
@@ -583,7 +667,7 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             Stream outStream;
 
             long posStart = this.ZipFileStream.Position;
-            long sourceStart = _source.Position;
+            long sourceStart = _source.CanSeek ? _source.Position : 0;
 
             if (_zfe.Method == Compression.Store)
                 outStream = this.ZipFileStream;
@@ -605,7 +689,7 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
                         _zfe.Crc32 = ZipStorer.CrcTable[(_zfe.Crc32 ^ buffer[i]) & 0xFF] ^ (_zfe.Crc32 >> 8);
                     }
                 }
-            } while (bytesRead == buffer.Length);
+            } while (bytesRead > 0);
             outStream.Flush();
 
             if (_zfe.Method == Compression.Deflate)
@@ -628,13 +712,13 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
         }
         /* DOS Date and time:
             MS-DOS date. The date is a packed value with the following format. Bits Description 
-                0-4 Day of the month (1–31) 
+                0-4 Day of the month (1Â–31) 
                 5-8 Month (1 = January, 2 = February, and so on) 
                 9-15 Year offset from 1980 (add 1980 to get actual year) 
             MS-DOS time. The time is a packed value with the following format. Bits Description 
                 0-4 Second divided by 2 
-                5-10 Minute (0–59) 
-                11-15 Hour (0–23 on a 24-hour clock) 
+                5-10 Minute (0Â–59) 
+                11-15 Hour (0Â–23 on a 24-hour clock) 
         */
         private uint DateTimeToDosTime(DateTime _dt)
         {
@@ -642,28 +726,28 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
                 (_dt.Second / 2) | (_dt.Minute << 5) | (_dt.Hour << 11) | 
                 (_dt.Day<<16) | (_dt.Month << 21) | ((_dt.Year - 1980) << 25));
         }
-        private DateTime DosTimeToDateTime(uint _dt)
+        private DateTime? DosTimeToDateTime(uint _dt)
         {
-            return new DateTime(
-                (int)(_dt >> 25) + 1980,
-                (int)(_dt >> 21) & 15,
-                (int)(_dt >> 16) & 31,
-                (int)(_dt >> 11) & 31,
-                (int)(_dt >> 5) & 63,
-                (int)(_dt & 31) * 2);
+            int year = (int)(_dt >> 25) + 1980;
+            int month = (int)(_dt >> 21) & 15;
+            int day = (int)(_dt >> 16) & 31;
+            int hours = (int)(_dt >> 11) & 31;
+            int minutes = (int)(_dt >> 5) & 63;
+            int seconds = (int)(_dt & 31) * 2;
+
+            if (month==0 || day == 0)
+                return null;
+
+            return new DateTime(year, month, day, hours, minutes, seconds);
         }
 
         /* CRC32 algorithm
           The 'magic number' for the CRC is 0xdebb20e3.  
-          The proper CRC pre and post conditioning
-          is used, meaning that the CRC register is
-          pre-conditioned with all ones (a starting value
-          of 0xffffffff) and the value is post-conditioned by
+          The proper CRC pre and post conditioning is used, meaning that the CRC register is
+          pre-conditioned with all ones (a starting value of 0xffffffff) and the value is post-conditioned by
           taking the one's complement of the CRC residual.
-          If bit 3 of the general purpose flag is set, this
-          field is set to zero in the local header and the correct
-          value is put in the data descriptor and in the central
-          directory.
+          If bit 3 of the general purpose flag is set, this field is set to zero in the local header and the correct
+          value is put in the data descriptor and in the central directory.
         */
         private void UpdateCrcAndSizes(ref ZipFileEntry _zfe)
         {
@@ -733,9 +817,9 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
 
             return false;
         }
-        #endregion
+#endregion
 
-        #region IDisposable Members
+#region IDisposable Members
         /// <summary>
         /// Closes the Zip file stream
         /// </summary>
@@ -743,6 +827,6 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
         {
             this.Close();
         }
-        #endregion
+#endregion
     }
 }

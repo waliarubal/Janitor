@@ -1,11 +1,14 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace NullVoidCreations.Janitor.Shared.Helpers
 {
     public class KnownPaths
     {
         static volatile KnownPaths _instance;
+        readonly Dictionary<string, string> _pathVariables;
         readonly string _taskScheduler, _desktopDirectory, _appTemp, _system32Directory, _windowsDirectory, _appDataRoaming, _appDataLocal, _appDataLocalLow, _appData, _internetCache, _appDirectory, _systemTemp, _userTemp, _programData, _myDataDirectory, _programFiles, _myDocuments;
 
         private KnownPaths()
@@ -28,6 +31,11 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
             _myDataDirectory = Path.Combine(ProgramDataDirectory, Constants.ProductName);
             _appTemp = Path.Combine(MyDataDirectory, "Temp");
             _taskScheduler = Path.Combine(System32Directory, "schtasks.exe");
+
+            // load path variables
+            _pathVariables = new Dictionary<string, string>();
+            foreach (var propInfo in this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty))
+                _pathVariables.Add(string.Format("%{0}%", propInfo.Name), propInfo.GetValue(this, null).ToString());
         }
 
         #region properties
@@ -129,5 +137,20 @@ namespace NullVoidCreations.Janitor.Shared.Helpers
         }
 
         #endregion
+
+        public string ExpandPath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+
+            if (!path.Contains("%"))
+                return path;
+
+            foreach (var variable in _pathVariables.Keys)
+                if (path.Contains(variable))
+                    path = path.Replace(variable, _pathVariables[variable]);
+
+            return path;
+        }
     }
 }

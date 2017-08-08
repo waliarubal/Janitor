@@ -12,10 +12,12 @@ namespace NullVoidCreations.Janitor.Shared.Models
 
         public ScanAreaModel(ScanTargetModel target, XmlNode areaXml): base("AreaName", target)
         {
-            Name = areaXml.SelectSingleNode("/ScanTarget/ScanAreas/ScanArea/Property[@Name='Name']/@Value").Value;
+            //TODO: work here
+            
+            Name = areaXml.SelectSingleNode("Property[@Name='Name']/@Value").Value;
 
             var paths = new List<ScanPathModel>();
-            foreach (XmlNode pathNode in areaXml.SelectNodes("/ScanTarget/ScanAreas/ScanArea/ScanPaths/Path"))
+            foreach (XmlNode pathNode in areaXml.SelectNodes("ScanPaths/Path"))
                 paths.Add(new ScanPathModel(pathNode));
             Paths = paths;
         }
@@ -49,12 +51,15 @@ namespace NullVoidCreations.Janitor.Shared.Models
                 if (path.Type == PathType.Directory)
                 {
                     _filters = path.Filters;
-                    foreach (var file in new DirectoryWalker(path.FullName, path.Recursive))
+
+                    var fullName = path.ExpandedFullName;
+                    foreach (var file in new DirectoryWalker(fullName, IncludeFile, path.Recursive))
                     {
                         var issue = new FileIssueModel(Target, this, file);
                         Issues.Add(issue);
                         yield return issue;
                     }
+
                     _filters = null;
                 }
             }

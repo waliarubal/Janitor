@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
 using NullVoidCreations.Janitor.Shared.Base;
+using NullVoidCreations.Janitor.Shared.Helpers;
 
 namespace NullVoidCreations.Janitor.Shared.Models
 {
@@ -29,6 +30,11 @@ namespace NullVoidCreations.Janitor.Shared.Models
         {
             get { return GetValue<string>("FullName"); }
             private set { this["FullName"] = value; }
+        }
+
+        public string ExpandedFullName
+        {
+            get { return KnownPaths.Instance.ExpandPath(FullName); }
         }
 
         public PathType Type
